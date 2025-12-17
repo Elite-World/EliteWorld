@@ -1,13 +1,6 @@
-import { LayoutProvider } from '@/components/providers/LayoutProvider';
-import { privacyPolicyContent } from '@/config/legal/privacy-policy';
+import { PrivacyPolicyPage } from '@/components/layouts/PrivacyPolicyPage';
+import { privacyPolicyContent } from '@/content/legal/privacy-policy';
 
-export default function PrivacyPolicyPage() {
-  return (
-    <LayoutProvider 
-      layoutName="PrivacyPolicyPage"
-      data={{
-        content: privacyPolicyContent
-      }}
-    />
-  );
+export default function Page() {
+  return <PrivacyPolicyPage content={privacyPolicyContent} />;
 }

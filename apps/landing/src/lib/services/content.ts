@@ -1,8 +1,5 @@
 import { Article, Category } from '@/lib/types/content';
-import { ContentProvider } from './providers/types';
-import { MarkdownProvider } from './providers/markdown';
-import { NotionProvider } from './providers/notion';
-import { NotionXProvider } from './providers/notion-x';
+import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } from '@repo/content';
 import { cache } from './cache';
 import { contentSections, ContentSection, getSectionConfig } from '@/config/content-sources';
 
@@ -13,6 +10,7 @@ export function getProviderForSection(sectionSlug: string): ContentProvider | nu
 
   switch (config.engine) {
     case 'markdown':
+      if (!config.config.folderPath) throw new Error(`Section ${sectionSlug} is missing folderPath configuration`);
       return new MarkdownProvider({ folderPath: config.config.folderPath });
     case 'notion':
       return new NotionProvider({ databaseId: config.config.databaseId });
@@ -39,7 +37,10 @@ export function getContentProvider(source: Exclude<ContentSource, 'json'> = 'mar
         return new NotionXProvider();
     case 'markdown':
     default:
-        return new MarkdownProvider();
+        const insights = contentSections.find(s => s.slug === 'insights');
+        return new MarkdownProvider({ 
+            folderPath: insights?.config.folderPath || 'src/content/insights' 
+        });
   }
 }
 

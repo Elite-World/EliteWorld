@@ -13,14 +13,13 @@ const nextConfig: NextConfig = {
   //   }
   //   return config
   // },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   typescript: {
     ignoreBuildErrors: true,
   },
   // Add image domains
   images: {
+    // Disable optimization in dev to avoid private IP resolution issues
+    unoptimized: process.env.NODE_ENV === 'development',
     remotePatterns: [
       {
         protocol: 'https',

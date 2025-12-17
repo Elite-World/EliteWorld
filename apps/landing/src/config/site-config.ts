@@ -16,7 +16,6 @@ export const siteConfig = {
     linkedin: 'https://linkedin.com/in/elite',
   },
   features: {
-    insights: process.env.NEXT_PUBLIC_ENABLE_INSIGHTS === 'true',
     search: process.env.NEXT_PUBLIC_ENABLE_SEARCH === 'true',
     mode: process.env.NEXT_PUBLIC_ENABLE_MODE === 'true',
     user: process.env.NEXT_PUBLIC_ENABLE_USER === 'true',

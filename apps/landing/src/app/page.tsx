@@ -1,4 +1,4 @@
-import { LayoutProvider } from '@/components/providers/LayoutProvider';
+import { HomePage } from '@/components/layouts/HomePage';
 // import { getNavigationData } from '@/config/navigation'; // No longer needed
 import { getArticles, getCategories } from '@/lib/services/content';
 
@@ -11,13 +11,5 @@ export default async function Home() {
     getCategories(),
   ]);
 
-  return (
-    <LayoutProvider 
-      layoutName="HomePage"
-      data={{
-        articles,
-        categories,
-      }}
-    />
-  );
+  return <HomePage articles={articles} categories={categories} />;
 }

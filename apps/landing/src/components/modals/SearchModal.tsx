@@ -1,8 +1,12 @@
 'use client';
 
-import { Modal } from '@/lib/themes/ios/components/Modal';
+import { Modal } from '@/components/ui/Modal';
 import { useModalStore } from '@/lib/stores/useModalStore';
-import { HiOutlineMagnifyingGlass, HiOutlineXMark, HiOutlineDocumentText } from 'react-icons/hi2';
+import {
+  HiOutlineMagnifyingGlass,
+  HiOutlineXMark,
+  HiOutlineDocumentText,
+} from 'react-icons/hi2';
 import { useState, useEffect, useTransition } from 'react';
 import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
@@ -15,7 +19,7 @@ const SUGGESTIONS = [
   'Study in UK',
   'Visa Requirements',
   'Top Universities',
-  'Scholarships'
+  'Scholarships',
 ];
 
 export function SearchModal() {
@@ -29,8 +33,8 @@ export function SearchModal() {
   // Focus input on open
   useEffect(() => {
     if (isOpen) {
-        // Don't clear query immediately so user can resume? 
-        // Or clear it? Let's clear it for fresh start.
+      // Don't clear query immediately so user can resume?
+      // Or clear it? Let's clear it for fresh start.
       setQuery('');
       setResults([]);
       // Slight delay to allow modal animation to start
@@ -60,8 +64,8 @@ export function SearchModal() {
   }, [query]);
 
   const handleSelect = (section: string, slug: string) => {
-      close();
-      router.push(`/${section}/${slug}`);
+    close();
+    router.push(`/${section}/${slug}`);
   };
 
   return (
@@ -80,60 +84,60 @@ export function SearchModal() {
             autoComplete="off"
           />
           {query ? (
-              <button 
-                type="button"
-                onClick={() => setQuery('')}
-                className="absolute right-6 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              >
-                  <HiOutlineXMark className="w-5 h-5" />
-              </button>
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="absolute right-6 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+            >
+              <HiOutlineXMark className="w-5 h-5" />
+            </button>
           ) : (
-             <div className="absolute right-6 pointer-events-none px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-xs text-gray-500">
-               ESC
-             </div>
+            <div className="absolute right-6 pointer-events-none px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-xs text-gray-500">
+              ESC
+            </div>
           )}
         </div>
 
         {/* Search Content */}
         <div className="flex-1 overflow-y-auto p-2 min-h-[300px] max-h-[500px]">
           {isPending ? (
-             <div className="flex flex-col items-center justify-center h-40 text-gray-400 animate-pulse">
-                <HiOutlineMagnifyingGlass className="w-8 h-8 mb-2 opacity-50" />
-                <span className="text-sm">Searching...</span>
-             </div>
+            <div className="flex flex-col items-center justify-center h-40 text-gray-400 animate-pulse">
+              <HiOutlineMagnifyingGlass className="w-8 h-8 mb-2 opacity-50" />
+              <span className="text-sm">Searching...</span>
+            </div>
           ) : query ? (
             results.length > 0 ? (
-                <div className="space-y-1">
-                     <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-2 px-4">
-                        Results
-                    </h3>
-                    {results.map((article) => (
-                        <button
-                            key={`${article.section}-${article.id}`}
-                            onClick={() => handleSelect(article.section, article.slug)}
-                            className="w-full flex items-start p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors group"
-                        >
-                            <div className="flex-shrink-0 mt-1 mr-4 p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-lg group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
-                                <HiOutlineDocumentText className="w-5 h-5" />
-                            </div>
-                            <div>
-                                <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-2">
-                                    <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                                        {article.sectionTitle}
-                                    </span>
-                                    {article.title}
-                                </h4>
-                                <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-                                    {article.excerpt}
-                                </p>
-                            </div>
-                        </button>
-                    ))}
-                </div>
+              <div className="space-y-1">
+                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-2 px-4">
+                  Results
+                </h3>
+                {results.map((article) => (
+                  <button
+                    key={`${article.section}-${article.id}`}
+                    onClick={() => handleSelect(article.section, article.slug)}
+                    className="w-full flex items-start p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors group"
+                  >
+                    <div className="flex-shrink-0 mt-1 mr-4 p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-lg group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
+                      <HiOutlineDocumentText className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-0.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex items-center gap-2">
+                        <span className="text-[10px] uppercase font-bold px-1.5 py-0.5 rounded bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                          {article.sectionTitle}
+                        </span>
+                        {article.title}
+                      </h4>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+                        {article.excerpt}
+                      </p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             ) : (
-                <div className="flex flex-col items-center justify-center h-40 text-gray-500">
-                    <p>No results found for "{query}"</p>
-                </div>
+              <div className="flex flex-col items-center justify-center h-40 text-gray-500">
+                <p>No results found for "{query}"</p>
+              </div>
             )
           ) : (
             <div className="p-2">
@@ -155,10 +159,14 @@ export function SearchModal() {
             </div>
           )}
         </div>
-        
+
         {/* Footer */}
         <div className="p-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 text-xs text-center text-gray-500">
-             Press <kbd className="font-sans px-1 rounded bg-gray-200 dark:bg-gray-700">↵</kbd> to select
+          Press{' '}
+          <kbd className="font-sans px-1 rounded bg-gray-200 dark:bg-gray-700">
+            ↵
+          </kbd>{' '}
+          to select
         </div>
       </div>
     </Modal>

@@ -1,0 +1,19 @@
+{
+  "name": "@repo/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "*.ts",
+    "*.js"
+  ],
+  "exports": {
+    "./typescript/*": "./typescript-config/*.json",
+    "./tailwind": "./tailwind.config.ts",
+    "./ui": "./ui-config.ts",
+    "./notion": "./notion-config.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5",
+    "tailwindcss": "^3.4.1"
+  }
+}

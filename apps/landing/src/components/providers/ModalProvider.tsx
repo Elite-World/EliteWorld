@@ -1,44 +1,31 @@
-//handle the modal
-
 'use client';
 
 import { useModalStore } from '@/lib/stores/useModalStore';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { modalRegistry } from '@/lib/themes/registry';
-import { useMemo } from 'react';
-import type { ModalType, ThemeName } from '@/lib/themes/registry';
+import { LoginModal } from '@/components/modals/LoginModal';
+import { MainMenuModal } from '@/components/modals/MainMenuModal';
+import { UserMenuModal } from '@/components/modals/UserMenuModal';
+import { SearchModal } from '@/components/modals/SearchModal';
+import { ModalType } from '@/lib/types/modal';
 
-type ThemeModals = Record<ModalType, React.ComponentType<any>>;
-type ModalRegistry = Record<ThemeName, ThemeModals>;
-
-// Create stable selector functions outside component
-const selectModal = (state: { activeModal: ModalType | null }) => state.activeModal;
-const selectProps = (state: { modalProps: Record<string, unknown> }) => state.modalProps;
-const selectTheme = (state: { currentTheme: ThemeName }) => state.currentTheme;
+const MODALS: Record<ModalType, React.ComponentType<any>> = {
+  login: LoginModal,
+  mainMenu: MainMenuModal,
+  userMenu: UserMenuModal,
+  search: SearchModal,
+};
 
 export function ModalProvider(): React.ReactElement | null {
-  // Use separate selectors to avoid unnecessary rerenders
-  const activeModal = useModalStore(selectModal);
-  const modalProps = useModalStore(selectProps);
-  const currentTheme = useThemeStore(selectTheme);
+  const activeModal = useModalStore((state) => state.activeModal);
+  const modalProps = useModalStore((state) => state.modalProps);
 
-  // Memoize modal component lookup
-  const Component = useMemo(() => {
-    if (!activeModal) return null;
+  if (!activeModal) return null;
 
-    const themeModals = (modalRegistry as ModalRegistry)[currentTheme];
-    if (!themeModals) return null;
+  const Component = MODALS[activeModal];
 
-    const ModalComponent = themeModals[activeModal];
-    if (!ModalComponent) {
-      console.warn(`Modal ${activeModal} not found in theme ${currentTheme}`);
-      return null;
-    }
-
-    return ModalComponent;
-  }, [activeModal, currentTheme]);
-
-  if (!Component) return null;
+  if (!Component) {
+    console.warn(`Modal ${activeModal} not found in registry`);
+    return null;
+  }
 
   return <Component {...modalProps} />;
-} 
+}

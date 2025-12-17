@@ -1,10 +1,5 @@
-import { LayoutProvider } from '@/components/providers/LayoutProvider';
+import { NotFoundPage } from '@/components/layouts/NotFoundPage';
 
 export default function NotFound() {
-  return (
-    <LayoutProvider 
-      layoutName="NotFoundPage"
-      data={{}}
-    />
-  );
+  return <NotFoundPage />;
 }

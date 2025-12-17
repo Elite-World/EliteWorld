@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { ModalType } from '@/lib/themes/registry';
+import type { ModalType } from '@/lib/types/modal';
 
 interface ModalState {
   activeModal: ModalType | null;
