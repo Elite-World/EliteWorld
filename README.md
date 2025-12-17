@@ -1,293 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EliteWorld - Next.js Monorepo
 
-## Getting Started
+Welcome to the **EliteWorld** project! This is a modern, high-performance web application built with **Next.js 15**, **React 19**, and **Turborepo**. It features a unique **Hybrid Server-Client Theming System** that ensures optimal performance and SEO while providing rich interactivity.
 
-First, run the development server:
+## 🚀 Getting Started
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### Prerequisites
+
+- **Node.js**: v18 or higher
+- **Package Manager**: npm (v9+ recommended) or pnpm
+- **Git**
+
+### Installation
+
+1.  **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/bjtiew/EliteWorld.git
+    cd EliteWorld
+    ```
+
+2.  **Install dependencies:**
+
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    This command starts the `landing` app (and any other apps in the workspace) in development mode.
+    Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📂 Project Structure
+
+Verified project structure for the `apps/landing` application:
+
+```
+apps/landing/
+├── src/
+│   ├── app/                 # Next.js App Router (pages and layouts)
+│   ├── components/          # Shared UI components
+│   │   ├── providers/       # Context providers (Theme, Modal)
+│   │   ├── shared/          # Reusable components across themes
+│   │   └── ui/              # Generic UI elements
+│   ├── config/              # Configuration files
+│   │   ├── site.ts          # Site metadata and global links
+│   │   └── mock-data.ts     # Mock data for development
+│   ├── lib/
+│   │   ├── services/        # Data fetching services
+│   │   ├── stores/          # Zustand state stores
+│   │   ├── themes/          # Theme definitions (The Core!)
+│   │   ├── types/           # TypeScript interfaces
+│   │   └── utils/           # Helper functions
+│   └── public/              # Static assets (images, fonts)
+├── .env.local               # Environment variables
+├── next.config.ts           # Next.js configuration
+├── tailwind.config.ts       # Tailwind CSS configuration
+└── tsconfig.json            # TypeScript configuration
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Configuration
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Site Metadata
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Located in `src/config/site.ts`. This file controls global constants like the site name, description, and social links used across the application.
 
-## Learn More
+### Environment Variables
 
-To learn more about Next.js, take a look at the following resources:
+Create a `.env.local` file in `apps/landing/` for local secrets.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `NEXT_PUBLIC_API_URL`: (Example) API endpoint base URL.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 💾 Data Management
 
-## Deploy on Vercel
+The application currently uses a service layer pattern to abstract data fetching. This allows for easy swapping between mock data and real APIs.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Navigation Data**: Managed in `src/lib/services/navigation.ts`. Returns the structure for menus.
+- **Content Data**: Managed in `src/lib/services/content.ts`. Fetches articles, categories, and other dynamic content.
+- **Mock Data**: Initial development data is stored in `src/config/mock-data.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🎨 Theme System Architecture
 
+This project implements a sophisticated **Hybrid Server-Client Theming System**.
 
-# Theme System Architecture
+### Core Concepts
 
-A flexible and extensible theme system for Next.js applications that supports multiple themes, layouts, and server/client component separation.
+1.  **Server-Side Rendering (SSR)**: The initial theme is determined on the server using cookies (`elitetheme`). This allows for instant compiled HTML with correct styles, preventing "flash of unstyled content" (FOUC).
+2.  **Client-Side Hydration**: The `ThemeProvider` hydrates the client-side state store (`zustand`) with the server-initially-rendered theme.
+3.  **Dynamic Loading**: Theme components (layouts, modals) are dynamically imported only when needed, keeping bundle sizes small.
 
-## Core Concepts
+### Theme Directory Structure (`src/lib/themes/`)
 
-### Theme Structure
-- Each theme is a complete set of components, layouts, and styles
-- Themes are dynamically loaded based on user preference
-- Server-side rendering with client-side interactivity
-- Dark/Light mode support using Tailwind CSS
+Each theme (e.g., `ios`, `daisy`) is a self-contained module:
 
-### Key Design Decisions
-1. **Server/Client Separation**
-   - Server components handle data fetching
-   - Client components handle interactivity
-   - Clear boundaries for better performance
-
-2. **Dynamic Theme Loading**
-   ```typescript
-   // Dynamic imports based on theme registry
-   const themeLayouts = Object.keys(themes).reduce((acc, themeName) => {
-     acc[themeName] = {
-       layouts: Object.values(LAYOUT_MAPPINGS).reduce((layouts, layoutName) => {
-         layouts[layoutName] = dynamic(() => 
-           import(`@/lib/themes/${themeName}/layouts/${layoutName}`)
-             .then(mod => mod[layoutName])
-         );
-         return layouts;
-       }, {})
-     };
-     return acc;
-   }, {});
-   ```
-
-3. **Route-Layout Mapping**
-   ```typescript
-   // src/lib/themes/registry.ts
-   export const LAYOUT_MAPPINGS = {
-     '/': 'HomePage',
-     '/about': 'AboutPage',
-     '/blog': 'BlogPage',
-     '/[slug]': 'ArticlePage',
-   } as const;
-   ```
-
-## Component Architecture
-
-### Theme Layout System
-1. **Server Theme Layout** (`ThemeLayout.tsx`)
-   ```typescript
-   export function ThemeLayout({ data }: ThemeLayoutProps) {
-     return <ClientThemeLayout data={data} />;
-   }
-   ```
-
-2. **Client Theme Layout** (`ClientThemeLayout.tsx`)
-   - Handles dynamic imports
-   - Manages theme switching
-   - Provides layout selection
-
-3. **Theme-Specific Layouts**
-   ```typescript
-   // src/lib/themes/ios/layouts/ThemeLayout.tsx
-   export function ThemeLayout({ children, navigation }: ThemeLayoutProps) {
-     return (
-       <div className="min-h-screen transition-colors bg-white dark:bg-black">
-         <ScrollProgress />
-         <Navbar navigation={navigation} />
-         {children}
-       </div>
-     );
-   }
-   ```
-
-### State Management
-
-#### Theme Store
-```typescript
-interface ThemeState {
-  isDark: boolean;
-  currentTheme: ThemeName;
-  toggle: () => void;
-  setDark: (dark: boolean) => void;
-  setTheme: (theme: ThemeName) => void;
-}
-
-export const useThemeStore = create<ThemeState>()(
-  persist(
-    (set) => ({
-      isDark: false,
-      currentTheme: 'ios',
-      toggle: () => set((state) => ({ isDark: !state.isDark })),
-      setDark: (dark) => set({ isDark: dark }),
-      setTheme: (theme) => set({ currentTheme: theme }),
-    }),
-    {
-      name: 'theme-storage',
-    }
-  )
-);
 ```
-
-## Data Flow Details
-
-### Page Level (SSR/ISR)
-```typescript
-// src/app/page.tsx
-export default async function Home() {
-  const [navigation, articles, categories] = await Promise.all([
-    getNavigationData(),
-    getArticles(),
-    getCategories(),
-  ]);
-
-  return (
-    <ThemeLayout 
-      data={{
-        articles,
-        categories,
-        navigation,
-      }}
-    />
-  );
-}
+src/lib/themes/[theme]/
+├── components/          # Theme-specific components (Cards, Navbar, etc.)
+├── layouts/             # Page layouts (HomePage, ArticlePage)
+├── modals/              # Theme-specific modals
+├── styles.config.ts     # CSS/Tailwind configurations
+├── theme.config.ts      # Tokens (colors, typography)
+└── index.ts             # Export file
 ```
-
-### Theme Implementation
-
-#### Theme Interface
-```typescript
-export interface Theme {
-  name: string;
-  components: Record<string, any>;
-  layouts: Record<string, any>;
-  config: ThemeConfig;
-  styles: ThemeStyles;
-  modals: Record<string, any>;
-  wrapper: ComponentType<ThemeWrapperProps>;
-}
-```
-
-#### Theme Configuration
-```typescript
-export interface ThemeConfig {
-  colors: {
-    light: Record<string, string>;
-    dark: Record<string, string>;
-  };
-  typography: {
-    fontFamily: string;
-    fontSize: Record<string, string>;
-    fontWeight: Record<string, string>;
-  };
-  layout: {
-    maxWidth: string;
-    containerPadding: string;
-    borderRadius: Record<string, string>;
-  };
-}
-```
-
-## Advanced Features
-
-### Dynamic Route Handling
-```typescript
-export function getLayoutFromPath(path: string): LayoutType {
-  const cleanPath = path.split('?')[0].split('#')[0];
-  
-  if (cleanPath in LAYOUT_MAPPINGS) {
-    return LAYOUT_MAPPINGS[cleanPath as PathType];
-  }
-
-  // Handle dynamic routes
-  if (cleanPath.includes('/')) {
-    const dynamicPath = Object.keys(LAYOUT_MAPPINGS).find(pattern => {
-      const regex = new RegExp(
-        '^' + pattern.replace(/\[.*?\]/g, '[^/]+') + '$'
-      );
-      return regex.test(cleanPath);
-    });
-    if (dynamicPath) {
-      return LAYOUT_MAPPINGS[dynamicPath as PathType];
-    }
-  }
-
-  return 'HomePage';
-}
-```
-
-### Performance Optimizations
-1. **Code Splitting**
-   - Dynamic imports for each theme
-   - Lazy loading of layouts
-   - Component-level code splitting
-
-2. **State Management**
-   - Persistent theme preferences
-   - Optimized re-renders
-   - Proper state isolation
-
-3. **SSR/ISR Strategy**
-   - Server-side data fetching
-   - Incremental Static Regeneration
-   - Client-side state hydration
-
-## Development Workflow
 
 ### Adding a New Theme
-1. Create theme directory structure:
-   ```
-   src/lib/themes/[theme]/
-   ├── components/
-   ├── layouts/
-   ├── modals/
-   ├── index.ts
-   └── theme.config.ts
-   ```
 
-2. Implement required interfaces:
-   - Layouts for each route
-   - Theme-specific components
-   - Modal components
-   - Theme configuration
+1.  Create a new folder in `src/lib/themes/` (e.g., `future-tech`).
+2.  Implement the required structure (`components`, `layouts`, `config`).
+3.  Register the new theme in `src/lib/themes/registry.ts`.
 
-3. Export theme in registry:
-   ```typescript
-   export const themes = {
-     ios: IosTheme,
-     daisy: DaisyTheme,
-     [newTheme]: NewTheme
-   } as const;
-   ```
+### Theme Switching
 
-### Adding a New Page
-1. Add route mapping
-2. Create layouts in each theme
-3. Update types
-4. Add data fetching if needed
+- **User Action**: When a user switches themes (via `SwitchTheme` component), it sets a cookie (`elitetheme`) and updates the global Zustand store.
+- **Mode Switching**: Dark/Light mode is handled via `next-themes` logic integrated into our custom `ThemeProvider`.
 
-## Testing Considerations
-- Component testing with theme context
-- Layout testing with different themes
-- Dark mode testing
-- Route testing
-- State management testing
+## 🛠️ Development & Deployment
 
-## Future Roadmap
-- [ ] Theme transition animations
-- [ ] Theme preview system
-- [ ] Theme customization UI
-- [ ] Error boundaries per theme
-- [ ] Theme-specific routing
-- [ ] Theme migration tools
-- [ ] Theme documentation generator
+### Build
+
+To build the application for production:
+
+```bash
+npm run build
+```
+
+This runs `next build` via Turbo, generating an optimized `.next` build folder.
+
+### Deployment
+
+This project is deployment-ready for **Vercel**.
+
+1.  Push your code to a Git repository.
+2.  Import the project into Vercel.
+3.  Ensure the "Root Directory" is set to `apps/landing` (or configure Vercel to handle monorepos automatically).
+4.  Deploy!
+
+---
+
+_Built with ❤️ by the EliteWorld Team_

@@ -1,23 +1,17 @@
-# Use Node.js LTS (Latest LTS version)
-FROM node:20-alpine
-
-# Set working directory
+# Use multi-stage build
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# Install dependencies first (for better caching)
 COPY package*.json ./
-
-# Install required dependencies
-RUN npm install clsx tailwind-merge zustand react-icons
-
-# Install other dependencies
-RUN npm install
-
-# Copy the rest of the code
+RUN npm ci
 COPY . .
+RUN npm run build
 
-# Expose port 3000
+FROM node:20-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package*.json ./
+RUN npm ci --omit=dev
+
 EXPOSE 3000
-
-# Start development server
-CMD ["npm", "run", "dev"] 
+CMD ["npm", "start"] 
