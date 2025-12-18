@@ -68,19 +68,19 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'about',
     label: 'About',
-    href: '/#about',
+    href: 'https://www.eliteworld.top/#about',
     icon: <HiOutlineInformationCircle className="w-5 h-5" />,
   },
   {
     id: 'team',
     label: 'Our Team',
-    href: '/#team',
+    href: 'https://www.eliteworld.top/#team',
     icon: <HiOutlineUserGroup className="w-5 h-5" />,
   },
   {
     id: 'contact',
     label: 'Contact Us',
-    href: '/#contact',
+    href: 'https://www.eliteworld.top/#contact',
     icon: <HiOutlineEnvelope className="w-5 h-5" />,
   },
   {
@@ -89,12 +89,12 @@ export const navigationItems: NavigationItem[] = [
     href: '/insights',
     icon: <HiOutlineLightBulb className="w-5 h-5" />,
   },
-  {
-    id: 'blog',
-    label: 'Blog',
-    href: '/blog',
-    icon: <HiOutlineLightBulb className="w-5 h-5" />,
-  },
+  // {
+  //   id: 'blog',
+  //   label: 'Blog',
+  //   href: '/blog',
+  //   icon: <HiOutlineLightBulb className="w-5 h-5" />,
+  // },
 ];
 
 import { siteConfig } from './site-config';

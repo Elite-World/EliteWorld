@@ -83,18 +83,18 @@ export const navigationItems: NavigationItem[] = [
     href: '/#contact',
     icon: <HiOutlineEnvelope className="w-5 h-5" />,
   },
-  {
-    id: 'insights',
-    label: 'Insights',
-    href: '/insights',
-    icon: <HiOutlineLightBulb className="w-5 h-5" />,
-  },
-  {
-    id: 'blog',
-    label: 'Blog',
-    href: '/blog',
-    icon: <HiOutlineLightBulb className="w-5 h-5" />,
-  },
+  // {
+  //   id: 'insights',
+  //   label: 'Insights',
+  //   href: '/insights',
+  //   icon: <HiOutlineLightBulb className="w-5 h-5" />,
+  // },
+  // {
+  //   id: 'blog',
+  //   label: 'Blog',
+  //   href: '/blog',
+  //   icon: <HiOutlineLightBulb className="w-5 h-5" />,
+  // },
 ];
 
 import { siteConfig } from './site-config';

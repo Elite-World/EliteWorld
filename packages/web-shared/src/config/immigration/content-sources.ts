@@ -14,24 +14,33 @@ export interface ContentSection {
 
 // Configurable Content Manifest
 export const contentSections: ContentSection[] = [
-  {
+    {
     slug: 'insights',
     title: 'Insights',
-    engine: 'markdown', 
+    engine: 'notion-x', 
     config: { 
-        folderPath: '../../packages/web-shared/src/content/immigration/insights'
+        databaseId: process.env.NOTION_DATABASE_ID
     },
     searchable: true
   },
-  {
-    slug: 'blog',
-    title: 'Blog',
-    engine: 'notion-x',
-    config: { 
-        databaseId: process.env.NOTION_DATABASE_ID 
-    },
-    searchable: true
-  }
+  // {
+  //   slug: 'insights',
+  //   title: 'Insights',
+  //   engine: 'markdown', 
+  //   config: { 
+  //       folderPath: '../../packages/web-shared/src/content/immigration/insights'
+  //   },
+  //   searchable: true
+  // },
+  // {
+  //   slug: 'blog',
+  //   title: 'Blog',
+  //   engine: 'notion-x',
+  //   config: { 
+  //       databaseId: process.env.NOTION_DATABASE_ID 
+  //   },
+  //   searchable: true
+  // }
 ];
 
 // Helper to get section config

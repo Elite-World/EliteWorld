@@ -68,19 +68,19 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'about',
     label: 'About',
-    href: '/#about',
+    href: 'https://edu.eliteworld.top/#about',
     icon: <HiOutlineInformationCircle className="w-5 h-5" />,
   },
   {
     id: 'team',
     label: 'Our Team',
-    href: '/#team',
+    href: 'https://edu.eliteworld.top/#team',
     icon: <HiOutlineUserGroup className="w-5 h-5" />,
   },
   {
     id: 'contact',
     label: 'Contact Us',
-    href: '/#contact',
+    href: 'https://edu.eliteworld.top/#contact',
     icon: <HiOutlineEnvelope className="w-5 h-5" />,
   },
   {
