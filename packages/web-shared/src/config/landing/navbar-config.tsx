@@ -9,7 +9,14 @@ import {
 
 export const navGateway = {
   ...(siteConfig.features.landing
-    ? { main: { id: 'main', name: 'ELITE', label: 'ELITE', href: '#' } }
+    ? {
+        main: {
+          id: 'main',
+          name: 'ELITE',
+          label: 'ELITE',
+          href: 'https://www.eliteworld.top',
+        },
+      }
     : {}),
   ...(siteConfig.features.immigration
     ? {
