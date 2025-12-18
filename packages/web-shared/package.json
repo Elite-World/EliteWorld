@@ -1,0 +1,48 @@
+{
+  "name": "@repo/web-shared",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "lint": "eslint ."
+  },
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*.ts",
+    "./components/*": "./src/components/*.tsx",
+    "./layouts/*": "./src/components/layouts/*.tsx",
+    "./stores/*": "./src/lib/stores/*.ts",
+    "./hooks/*": "./src/lib/hooks/*.ts",
+    "./types/*": "./src/lib/types/*.ts",
+    "./config/*": "./src/config/*",
+    "./content/*": "./src/content/*"
+  },
+  "dependencies": {
+    "@repo/config": "*",
+    "@repo/ui": "*",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.0.0",
+    "lucide-react": "^0.474.0",
+    "react-icons": "^5.4.0",
+    "tailwind-merge": "^3.0.1",
+    "zustand": "^5.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.4.5"
+  },
+  "peerDependencies": {
+    "next": "^15.0.0 || ^16.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}

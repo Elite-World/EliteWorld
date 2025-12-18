@@ -1,7 +1,10 @@
 import { getProviderForSection } from '@/lib/services/content';
 import { notFound } from 'next/navigation';
 import { BlogPage } from '@/components/layouts/BlogPage';
-import { contentSections, getSectionConfig } from '@/config/content-sources';
+import {
+  contentSections,
+  getSectionConfig,
+} from '@repo/web-shared/config/landing/content-sources';
 
 export const revalidate = 3600;
 

@@ -1,10 +1,10 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { cn } from '@/lib/utils';
+import { useThemeStore } from '@repo/web-shared';
+import { cn } from '@repo/web-shared';
 import ReactMarkdown from 'react-markdown';
-import { siteConfig } from '@/config/site-config';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
 
 interface TermsOfServicePageProps {
   content?: string;

@@ -1,46 +1,28 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import { Navbar, Footer } from '@repo/ui'; // Shared UI!
 
-const inter = Inter({ subsets: ['latin'] });
+import './globals.css';
+import { ModalProvider } from '@repo/web-shared';
+import { AppLayout } from '@/components/layouts/AppLayout';
+import { getNavigationData } from '@repo/web-shared/config/immigration/navbar-config';
+import { siteConfig } from '@repo/web-shared/config/immigration/site-config';
 
 export const metadata: Metadata = {
-  title: 'Elite Immigration',
-  description: 'Expert immigration services.',
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
-// Simple navigation mock for now
-const navigation = {
-  items: [
-    { id: 'home', label: 'Home', href: '/' },
-    { id: 'services', label: 'Services', href: '/services' },
-    { id: 'contact', label: 'Contact', href: '/contact' },
-  ]
-};
-
-const navGateway = {
-    'home': { href: '/', name: 'Home' }
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const navigation = await getNavigationData();
+
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Navbar 
-          navigation={navigation}
-          siteConfig={{ name: 'Elite Immigration', features: { search: true, mode: true, user: true } }}
-          navGateway={navGateway}
-          isDark={false} // Default for now
-        />
-        <main className="min-h-screen">
-            {children}
-        </main>
-        <Footer />
+    <html lang="en" className="dark">
+      <body className="antialiased">
+        <AppLayout navigation={navigation}>{children}</AppLayout>
+        <ModalProvider />
       </body>
     </html>
   );

@@ -1,9 +1,9 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { cn } from '@/lib/utils';
-import { siteConfig } from '@/config/site-config';
+import { useThemeStore } from '@repo/web-shared';
+import { cn } from '@repo/web-shared';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
 import ReactMarkdown from 'react-markdown';
 
 interface PrivacyPolicyPageProps {

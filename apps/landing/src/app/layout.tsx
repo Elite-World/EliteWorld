@@ -1,13 +1,14 @@
 import type { Metadata } from 'next';
 
 import './globals.css';
-import { ModalProvider } from '@/components/providers/ModalProvider';
+import { ModalProvider } from '@repo/web-shared';
 import { AppLayout } from '@/components/layouts/AppLayout';
-import { getNavigationData } from '@/config/navbar-config';
+import { getNavigationData } from '@repo/web-shared/config/landing/navbar-config';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
 
 export const metadata: Metadata = {
-  title: 'Elite World',
-  description: 'Elite World Landing Page',
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export default async function RootLayout({

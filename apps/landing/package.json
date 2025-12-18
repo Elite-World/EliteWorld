@@ -38,6 +38,7 @@
     "@repo/config": "*",
     "@repo/content": "*",
     "@repo/ui": "*",
+    "@repo/web-shared": "^0.1.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

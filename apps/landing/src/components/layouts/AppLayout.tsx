@@ -2,15 +2,15 @@
 
 import { useState, useEffect } from 'react';
 
-import { ScrollProgress } from '../shared/ScrollProgress';
+import { ScrollProgress } from '@repo/web-shared';
 import { Navbar, Footer } from '@repo/ui';
 import { NavigationData } from '@/lib/types/navigation';
-import { ScrollToTopButton } from '../shared/ScrollToTopButton';
+import { ScrollToTopButton } from '@repo/web-shared';
 // import { Footer } from '../Footer';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { useModalStore } from '@/lib/stores/useModalStore';
-import { siteConfig } from '@/config/site-config';
-import { navGateway } from '@/config/navbar-config';
+import { useThemeStore } from '@repo/web-shared';
+import { useModalStore } from '@repo/web-shared';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
+import { navGateway } from '@repo/web-shared/config/landing/navbar-config';
 
 interface BaseLayoutProps {
   children: React.ReactNode;

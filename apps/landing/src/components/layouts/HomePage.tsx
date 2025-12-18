@@ -1,19 +1,20 @@
 'use client';
 
-import { Article, Category } from '@/lib/types/content';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { Card } from '../ui/Card';
-import { ArticleCard } from '../shared/ArticleCard';
-import { cn } from '@/lib/utils';
+import { Article, Category } from '@repo/web-shared';
+import { useThemeStore } from '@repo/web-shared';
+import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
+// Card is in web-shared/ui/Card.tsx as seen in file listing.
+import { ArticleCard } from '@repo/web-shared'; // ArticleCard is shared
+import { cn } from '@repo/web-shared';
 import { useEffect, useState } from 'react';
-import { siteConfig } from '@/config/site-config';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
 import Image from 'next/image';
-import { useUnsplashImage } from '@/lib/hooks/useUnsplashImage';
+import { useUnsplashImage } from '@repo/web-shared';
 import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
-import { QRCode } from '@/components/shared/QRCode';
+import { QRCode } from '@repo/web-shared';
 
-import { navGateway } from '@/config/navbar-config';
-import { HeroSection } from '@repo/ui';
+import { navGateway } from '@repo/web-shared/config/landing/navbar-config';
+import { HeroSection, NavigationItem } from '@repo/ui';
 
 // Add subdomain config at the top of the file
 // const subdomains = {
@@ -149,7 +150,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
       >
         {Object.values(navGateway)
           .filter((item) => item !== navGateway.main)
-          .map((button, index) => (
+          .map((button: NavigationItem, index: number) => (
             <a
               key={index}
               href={button.href}

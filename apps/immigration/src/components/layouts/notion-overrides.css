@@ -1,0 +1,90 @@
+/* Global Overrides to match ArticlePage Layout */
+.notion {
+  font-family: inherit !important; /* Tailwind Sans */
+  color: #111827 !important; /* gray-900 */
+}
+
+/* Remove default Notion widths and padding to fit our container */
+.notion-frame, .notion-page {
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Mimic Tailwind 'prose-lg' typography scale */
+
+/* Body Text (prose-lg p: 1.125rem / 1.75) */
+.notion-text, .notion-list, .notion-quote {
+  font-size: 1.125rem !important; /* 18px */
+  line-height: 1.8 !important;
+  margin-bottom: 1.5em !important;
+  color: #374151 !important; /* gray-700 */
+}
+
+/* Headings (prose-lg) */
+.notion-h1 {
+  font-family: inherit !important;
+  font-weight: 800 !important;
+  font-size: 2.25rem !important; /* 36px */
+  line-height: 1.1111111 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0.8888889em !important;
+  color: #111827 !important; /* gray-900 */
+}
+
+.notion-h2 {
+  font-family: inherit !important;
+  font-weight: 700 !important;
+  font-size: 1.875rem !important; /* 30px */
+  line-height: 1.3333333 !important;
+  margin-top: 1.5em !important;
+  margin-bottom: 0.8em !important;
+  color: #111827 !important; /* gray-900 */
+}
+
+.notion-h3 {
+  font-family: inherit !important;
+  font-weight: 600 !important;
+  font-size: 1.5rem !important; /* 24px */
+  line-height: 1.6 !important;
+  margin-top: 1.6em !important;
+  margin-bottom: 0.6em !important;
+  color: #111827 !important; /* gray-900 */
+}
+
+/* Links */
+.notion-link {
+  color: #2563eb !important; /* blue-600 */
+  text-decoration: none !important;
+  font-weight: 500 !important;
+}
+.notion-link:hover {
+  text-decoration: underline !important;
+}
+
+/* Lists */
+.notion-list-disc { list-style-type: disc !important; }
+.notion-list-numbered { list-style-type: decimal !important; }
+
+/* Dark Mode Overrides */
+.dark-mode .notion { color: #e5e7eb !important; }
+.dark-mode .notion-text, 
+.dark-mode .notion-list, 
+.dark-mode .notion-quote { color: #d1d5db !important; } /* gray-300 */
+.dark-mode .notion-h1, 
+.dark-mode .notion-h2, 
+.dark-mode .notion-h3 { color: #f9fafb !important; } /* gray-50 */
+.dark-mode .notion-link { color: #60a5fa !important; } /* blue-400 */
+
+/* Fix Collection/Column/Image spacing */
+.notion-asset-wrapper {
+  margin-top: 2rem !important;
+  margin-bottom: 2rem !important;
+}
+
+/* Hide the Notion Properties Table (Category, Date, etc.) */
+.notion-collection-page-properties, 
+.notion-page-properties {
+  display: none !important;
+}

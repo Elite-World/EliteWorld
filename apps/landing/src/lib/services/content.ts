@@ -1,7 +1,7 @@
 import { Article, Category } from '@/lib/types/content';
 import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } from '@repo/content';
 import { cache } from './cache';
-import { contentSections, ContentSection, getSectionConfig } from '@/config/content-sources';
+import { contentSections, ContentSection, getSectionConfig } from '@repo/web-shared/config/landing/content-sources';
 
 // Factory to create provider from config
 export function getProviderForSection(sectionSlug: string): ContentProvider | null {

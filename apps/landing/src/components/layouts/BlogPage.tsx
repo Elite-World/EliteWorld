@@ -1,8 +1,8 @@
 'use client';
 
-import { Article, Category } from '@/lib/types/content';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { cn } from '@/lib/utils';
+import { Article, Category } from '@repo/web-shared';
+import { useThemeStore } from '@repo/web-shared';
+import { cn } from '@repo/web-shared';
 import { motion } from 'framer-motion';
 import { NewsletterForm } from '@/components/marketing/NewsletterForm';
 
@@ -14,11 +14,11 @@ interface BlogPageProps {
 }
 
 import { HeroSection } from '@repo/ui';
-import { siteConfig } from '@/config/site-config';
+import { siteConfig } from '@repo/web-shared/config/landing/site-config';
 
 import { useState } from 'react';
 
-import { ArticleCard } from '@/components/shared/ArticleCard';
+import { ArticleCard } from '@repo/web-shared';
 
 export function BlogPage(props: BlogPageProps) {
   const { articles, categories, basePath } = props;

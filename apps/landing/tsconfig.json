@@ -25,6 +25,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@repo/web-shared/*": [
+        "../../packages/web-shared/src/*"
       ]
     }
   },
