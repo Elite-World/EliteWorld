@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UniversityRanking } from '@repo/web-shared';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
+import RankingDetailModal from './RankingDetailModal';
 
 interface RankingListProps {
   initialUniversities: UniversityRanking[];
@@ -14,6 +15,21 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [sortOption, setSortOption] = useState('rank-asc');
+
+  // Modal State
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<UniversityRanking | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleUniversityClick = (uni: UniversityRanking) => {
+    setSelectedUniversity(uni);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => setSelectedUniversity(null), 300); // Clear after animation
+  };
 
   // Extract unique countries for filter dropdown
   const countries = useMemo(() => {
@@ -74,25 +90,38 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
         <span>Showing {filteredUniversities.length} universities</span>
       </div>
 
-      {/* List */}
-      <div className="space-y-3">
+      {/* List - Grid Layout Override */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence mode="popLayout">
           {filteredUniversities.length > 0 ? (
             filteredUniversities.map((uni, index) => (
-              <RankingCard key={uni.id} university={uni} index={index} />
+              <RankingCard
+                key={uni.id}
+                university={uni}
+                index={index}
+                onClick={handleUniversityClick}
+              />
             ))
           ) : (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="text-center py-12 text-gray-500 dark:text-gray-400"
+              className="col-span-full text-center py-20 text-gray-500 dark:text-gray-400"
             >
-              No universities found matching your criteria.
+              <div className="text-lg">No universities found</div>
+              <p className="text-sm mt-2">Try adjusting your filters</p>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
+
+      {/* Modal Integration */}
+      <RankingDetailModal
+        university={selectedUniversity}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

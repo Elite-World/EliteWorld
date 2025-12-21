@@ -21,7 +21,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
   countries,
 }) => {
   return (
-    <div className="flex flex-col md:flex-row gap-4 mb-6 p-4 bg-white dark:bg-zinc-900/50 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm sticky top-20 z-20 backdrop-blur-md bg-opacity-80 dark:bg-opacity-80">
+    <div className="flex flex-col md:flex-row gap-4 mb-8 p-4 bg-white/70 dark:bg-zinc-900/70 rounded-2xl border border-white/20 dark:border-white/10 shadow-lg shadow-black/5 sticky top-20 z-20 backdrop-blur-xl">
       {/* Search Input */}
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />

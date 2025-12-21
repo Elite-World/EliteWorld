@@ -1,100 +1,88 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, Star, MapPin } from 'lucide-react';
+import { Trophy, ArrowRight, MapPin } from 'lucide-react';
 import { UniversityRanking, cn } from '@repo/web-shared';
 
 interface RankingCardProps {
   university: UniversityRanking;
   index: number;
+  onClick: (university: UniversityRanking) => void;
 }
 
-const RankingCard: React.FC<RankingCardProps> = ({ university, index }) => {
-  const getRankColor = (rank: number) => {
-    if (rank === 1) return 'bg-yellow-500 text-white border-yellow-500';
-    if (rank === 2) return 'bg-gray-300 text-gray-800 border-gray-300';
-    if (rank === 3) return 'bg-amber-600 text-white border-amber-600';
-    if (rank <= 10)
-      return 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800';
-    return 'bg-gray-50 text-gray-600 border-gray-200 dark:bg-zinc-800/50 dark:text-zinc-400 dark:border-zinc-700';
-  };
-
+const RankingCard: React.FC<RankingCardProps> = ({
+  university,
+  index,
+  onClick,
+}) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3, delay: index * 0.05 }}
-      whileHover={{ y: -2 }}
-      className="group relative flex flex-col md:flex-row items-start md:items-center p-4 gap-4 bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all duration-300"
+      transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
+      whileHover={{ y: -4, scale: 1.01 }}
+      onClick={() => onClick(university)}
+      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition-all duration-300 cursor-pointer overflow-hidden"
     >
-      {/* Absolute Rank Badge for Mobile/Desktop */}
-      <div
-        className={cn(
-          'absolute -top-3 left-4 md:static md:top-auto md:left-auto flex items-center justify-center w-8 h-8 md:w-12 md:h-12 rounded-full border-2 font-bold text-sm md:text-lg shadow-sm z-10',
-          getRankColor(university.rank)
-        )}
-      >
-        {university.rank}
-      </div>
+      {/* Decorative Gradient Blob on Hover */}
+      <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-      {/* Content */}
-      <div className="flex-1 w-full pt-3 md:pt-0 pl-1 md:pl-0">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-2">
-          <div className="flex-1">
-            <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-              {university.name}
-            </h3>
-
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
-              <MapPin className="w-3.5 h-3.5" />
-              <span>{university.country}</span>
-            </div>
-
-            {university.description && (
-              <p className="text-xs text-gray-400 dark:text-gray-500 mt-2 line-clamp-1 md:line-clamp-none hidden md:block">
-                {university.description}
-              </p>
+      <div className="relative z-10 flex flex-col h-full">
+        {/* Top Row: Rank & Score */}
+        <div className="flex justify-between items-start mb-4">
+          <div
+            className={cn(
+              'flex items-center justify-center w-12 h-12 rounded-xl text-xl font-bold border',
+              university.rank === 1
+                ? 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-900/20 dark:border-yellow-900/30'
+                : university.rank <= 10
+                ? 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30'
+                : 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
             )}
+          >
+            #{university.rank}
+          </div>
+          <div className="flex flex-col items-end">
+            <span className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white leading-none">
+              {university.overallScore}
+            </span>
+            <span className="text-[10px] uppercase font-semibold text-gray-400 tracking-wider mt-1">
+              Score
+            </span>
+          </div>
+        </div>
 
-            {/* Badges - Mobile sensitive */}
-            {university.badges && university.badges.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
-                {university.badges.map((badge) => (
-                  <span
-                    key={badge}
-                    className="px-2 py-0.5 text-[10px] font-medium bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-300 rounded-full border border-blue-100 dark:border-blue-900/30"
-                  >
-                    {badge}
-                  </span>
-                ))}
-              </div>
-            )}
+        {/* Center: Info */}
+        <div className="flex-1 mb-6">
+          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            {university.name}
+          </h3>
+          <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
+            <MapPin className="w-4 h-4" />
+            {university.country}
           </div>
 
-          <div className="flex flex-col items-end gap-1 mt-2 md:mt-0 pt-2 md:pt-0 border-t md:border-t-0 border-gray-50 dark:border-zinc-800 w-full md:w-auto">
-            {/* Score */}
-            <div className="flex items-center gap-1.5">
-              <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">
-                Overall
-              </div>
-              <div className="text-lg font-bold text-gray-900 dark:text-white bg-gray-100 dark:bg-zinc-800 px-2 py-0.5 rounded">
-                {university.overallScore}
-              </div>
-            </div>
-
-            {/* Subject Ranks Preview - Only if relevant */}
-            {university.subjects &&
-              university.subjects.slice(0, 2).map((sub) => (
-                <div
-                  key={sub.name}
-                  className="flex items-center gap-1 text-xs text-gray-500"
+          {/* Tags Preview */}
+          {university.badges && university.badges.length > 0 && (
+            <div className="flex flex-wrap gap-2 mt-4">
+              {university.badges.slice(0, 2).map((badge) => (
+                <span
+                  key={badge}
+                  className="px-2 py-1 text-[10px] font-medium bg-gray-100 dark:bg-zinc-800 text-gray-600 dark:text-gray-300 rounded-md"
                 >
-                  <Star className="w-3 h-3 text-yellow-500" />
-                  <span className="truncate max-w-[100px]">{sub.name}:</span>
-                  <span className="font-semibold text-gray-700 dark:text-gray-300">
-                    #{sub.rank}
-                  </span>
-                </div>
+                  {badge}
+                </span>
               ))}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom: Action */}
+        <div className="mt-auto border-t border-gray-100 dark:border-zinc-800 pt-4 flex justify-between items-center group-hover:border-transparent transition-colors">
+          <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            View Details
+          </span>
+          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+            <ArrowRight className="w-4 h-4" />
           </div>
         </div>
       </div>

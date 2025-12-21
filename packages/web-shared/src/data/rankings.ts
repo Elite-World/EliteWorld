@@ -14,6 +14,11 @@ export interface UniversityRanking {
   description?: string;
   subjects?: RankingSubject[];
   badges?: string[]; // e.g. "Top 10", "Best Research"
+  // Extended details for Modal
+  history?: string;
+  visitGuide?: string;
+  websiteUrl?: string;
+  locationDetails?: string;
 }
 
 export interface RankingData {
