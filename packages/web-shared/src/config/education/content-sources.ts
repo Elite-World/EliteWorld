@@ -19,7 +19,16 @@ export const contentSections: ContentSection[] = [
     title: 'Insights',
     engine: 'notion-x', 
     config: { 
-        databaseId: process.env.NOTION_DATABASE_ID
+        databaseId: process.env.NOTION_DATABASE_ID_INSIGHTS
+    },
+    searchable: true
+  },
+  {
+    slug: 'tips',
+    title: 'Tips',
+    engine: 'notion-x', 
+    config: { 
+        databaseId: process.env.NOTION_DATABASE_ID_TIPS
     },
     searchable: true
   },

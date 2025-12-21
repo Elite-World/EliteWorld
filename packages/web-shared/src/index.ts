@@ -26,3 +26,4 @@ export * from './components/modals/UserMenuModal';
 // Utils
 export * from './lib/utils';
 export * from './lib/types/content';
+export * from './data/rankings';

@@ -1,10 +1,16 @@
 import { NavigationData, NavigationItem } from '@repo/ui';
 import {
+  HiOutlineAcademicCap,
+  HiOutlineBookOpen,
+  HiOutlineChartBar,
+  HiOutlineEnvelope,
   HiOutlineHome,
   HiOutlineInformationCircle,
-  HiOutlineUserGroup,
-  HiOutlineEnvelope,
   HiOutlineLightBulb,
+  HiOutlinePencilSquare,
+  HiOutlinePresentationChartLine,
+  HiOutlineSparkles,
+  HiOutlineUserGroup,
 } from 'react-icons/hi2';
 
 export const navGateway = {
@@ -57,43 +63,64 @@ export const navigationItems: NavigationItem[] = [
     href: '/',
     icon: <HiOutlineHome className="w-5 h-5" />,
   },
-  // {
-  //   id: 'categories',
-  //   label: 'Categories',
-  //   href: '/categories',
-  //   children: [
-  //     ...
-  //   ]
-  // },
   {
-    id: 'about',
-    label: 'About',
-    href: 'https://edu.eliteworld.top/#about',
-    icon: <HiOutlineInformationCircle className="w-5 h-5" />,
+    id: 'services',
+    label: 'Services',
+    href: '',
+    icon: <HiOutlineSparkles className="w-5 h-5" />,
+    children: [
+      {
+        id: 'admissions-consulting',
+        label: 'Admissions Consulting',
+        href: '/services/admissions-consulting',
+        icon: <HiOutlineAcademicCap className="w-5 h-5" />,
+      },
+      {
+        id: 'essay-coaching',
+        label: 'Essay Coaching',
+        href: '/services/essay-coaching',
+        icon: <HiOutlinePencilSquare className="w-5 h-5" />,
+      },
+    ],
   },
   {
-    id: 'team',
-    label: 'Our Team',
-    href: 'https://edu.eliteworld.top/#team',
-    icon: <HiOutlineUserGroup className="w-5 h-5" />,
+    id: 'resources',
+    label: 'Resources',
+    href: '',
+    icon: <HiOutlineBookOpen className="w-5 h-5" />,
+    children: [
+      {
+        id: 'insights',
+        label: 'Insights',
+        href: '/insights',
+        icon: <HiOutlinePresentationChartLine className="w-5 h-5" />,
+      },
+      {
+        id: 'tips',
+        label: 'Tips',
+        href: '/tips',
+        icon: <HiOutlineLightBulb className="w-5 h-5" />,
+      },
+      {
+        id: 'ranking',
+        label: 'Ranking',
+        href: '/ranking',
+        icon: <HiOutlineChartBar className="w-5 h-5" />,
+      },
+      {
+        id: 'universities',
+        label: 'Universities',
+        href: '/universities',
+        icon: <HiOutlineChartBar className="w-5 h-5" />,
+      },
+    ],
   },
+
   {
     id: 'contact',
     label: 'Contact Us',
-    href: 'https://edu.eliteworld.top/#contact',
+    href: 'https://www.eliteworld.top/#contact',
     icon: <HiOutlineEnvelope className="w-5 h-5" />,
-  },
-  {
-    id: 'insights',
-    label: 'Insights',
-    href: '/insights',
-    icon: <HiOutlineLightBulb className="w-5 h-5" />,
-  },
-  {
-    id: 'blog',
-    label: 'Blog',
-    href: '/blog',
-    icon: <HiOutlineLightBulb className="w-5 h-5" />,
   },
 ];
 
