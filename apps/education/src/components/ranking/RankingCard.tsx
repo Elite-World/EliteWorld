@@ -9,6 +9,8 @@ interface RankingCardProps {
   index: number;
   onClick: (university: UniversityRanking) => void;
   selectedSource?: string;
+  onRankClick?: (source: string) => void;
+  hideFooterRanks?: boolean;
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({
@@ -16,6 +18,8 @@ const RankingCard: React.FC<RankingCardProps> = ({
   index,
   onClick,
   selectedSource = 'qs',
+  onRankClick,
+  hideFooterRanks = false,
 }) => {
   const logoUrl = university.logoUrl;
   // Determine rank to display
@@ -24,27 +28,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
       ? university.ranks[selectedSource]
       : university.rank;
 
-  // Resolve logo
-  // Use university.name (English) for matching since filenames are English
-  // The DB provides `name` which might be Chinese if `name_cn` is used.
-  // We need to check if `ranking-service` provides English name.
-  // Looking at `ranking-service.ts`: `name: uni.name_cn || uni.name_en`.
-  // This is a problem. The name might be Chinese.
-  // We should try to use the ID if it's the English name, OR we need to update the interface to pass English name explicitly.
-
-  // For now, let's assume `university.id` might be useful or just try to pass `name`.
-  // Since `RankingCard` only gets `university`, let's check `UniversityRanking` interface properties in `rankings.ts`.
-  // It has `id`, `rank`, `name`, `country`...
-  // Wait, `ranking-service.ts` converts DB data.
-  // Let's assume we can try matching using `university.name`.
-  // If it's Chinese, it won't match.
-  // PROPOSAL: I need to update `UniversityRanking` to include `nameEn` for logo matching later.
-  // But for this step, let's just try implementing with what we have and assume `name` might work or I'll implement a fallback.
-
-  // Actually, I should update `ranking-service.ts` to include `nameEn` in the object.
-  // Let's do that in a separate step if this fails.
-
-  // const logoUrl = getUniversityLogo(university.nameEn || university.name); // Removed getUniversityLogo call
+  // Resolve logo... (omitted comments)
 
   return (
     <motion.div
@@ -71,7 +55,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                 : 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
             )}
           >
-            #{displayRank}
+            {displayRank}
           </div>
 
           {/* Logo Display */}
@@ -126,9 +110,10 @@ const RankingCard: React.FC<RankingCardProps> = ({
           )}
 
           {/* Multiple Rankings Display */}
-          {university.ranks && (
+          {university.ranks && !hideFooterRanks && (
             <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800">
               {Object.entries(university.ranks)
+                .filter(([source]) => source !== selectedSource) // ifSelected, dont show
                 .map(([source, rank]) => {
                   // Map source codes to display names
                   const sourceNames: Record<string, string> = {
@@ -150,18 +135,43 @@ const RankingCard: React.FC<RankingCardProps> = ({
                   const displayName =
                     sourceNames[source.toLowerCase()] || source.toUpperCase();
 
+                  const isSelected = selectedSource === source;
+
                   return (
-                    <div
+                    <button
                       key={source}
-                      className="flex flex-col items-center p-1.5 bg-gray-50 dark:bg-zinc-800/50 rounded-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onRankClick?.(source);
+                      }}
+                      className={cn(
+                        'flex flex-col items-center p-1.5 rounded-lg transition-all border',
+                        isSelected
+                          ? 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 ring-1 ring-blue-500/20'
+                          : 'bg-gray-50 border-transparent dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-200 dark:hover:border-zinc-700'
+                      )}
                     >
-                      <span className="text-[10px] font-semibold text-gray-400 uppercase">
+                      <span
+                        className={cn(
+                          'text-[10px] font-semibold uppercase mb-0.5',
+                          isSelected
+                            ? 'text-blue-600 dark:text-blue-400'
+                            : 'text-gray-400'
+                        )}
+                      >
                         {displayName}
                       </span>
-                      <span className="text-sm font-bold text-gray-900 dark:text-white">
-                        #{rank}
+                      <span
+                        className={cn(
+                          'text-sm font-bold',
+                          isSelected
+                            ? 'text-blue-700 dark:text-blue-300'
+                            : 'text-gray-900 dark:text-white'
+                        )}
+                      >
+                        {rank}
                       </span>
-                    </div>
+                    </button>
                   );
                 })
                 .slice(0, 6)}{' '}

@@ -1,25 +1,185 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { UniversityRanking } from '@repo/web-shared';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
 import RankingDetailModal from './RankingDetailModal';
+import { fetchRankings } from '@/app/ranking/actions';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 interface RankingListProps {
   initialUniversities: UniversityRanking[];
+  currentYear: number;
+  initialSource: string;
+  initialRankType: 'General' | 'Subject';
+  initialSubject?: string;
+  meta: {
+    generalSources: { value: string; label: string }[];
+    subjectSources: { value: string; label: string }[];
+    years: {
+      general: Record<string, number[]>;
+      subject: Record<string, number[]>;
+    };
+    subjects: Record<string, Record<string, string[]>>;
+  };
 }
 
-const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
+const RankingList: React.FC<RankingListProps> = ({
+  initialUniversities,
+  currentYear: initialYear,
+  initialSource,
+  initialRankType,
+  initialSubject,
+  meta,
+}) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // State
+  const [universities, setUniversities] =
+    useState<UniversityRanking[]>(initialUniversities);
+  const [currentYear, setCurrentYear] = useState(initialYear);
+  const [rankType, setRankType] = useState<'General' | 'Subject'>(
+    initialRankType
+  );
+  const [selectedSource, setSelectedSource] = useState(initialSource);
+  const [selectedSubject, setSelectedSubject] = useState(initialSubject || '');
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [selectedSource, setSelectedSource] = useState('qs'); // Default source
+  const [isLoading, setIsLoading] = useState(false);
 
   // Modal State
   const [selectedUniversity, setSelectedUniversity] =
     useState<UniversityRanking | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Derived Data
+  const currentSources =
+    rankType === 'General' ? meta.generalSources : meta.subjectSources;
+
+  const yearsBySource =
+    rankType === 'General' ? meta.years.general : meta.years.subject;
+
+  const availableYears = yearsBySource[selectedSource] || [];
+
+  // Data Fetching Wrapper
+  const updateData = async (
+    year: number,
+    source: string,
+    type: 'General' | 'Subject',
+    subject?: string
+  ) => {
+    setIsLoading(true);
+
+    // Update URL
+    const params = new URLSearchParams();
+    if (year) params.set('year', year.toString());
+    if (source) params.set('source', source);
+    if (type) params.set('rankType', type);
+    if (type === 'Subject' && subject) params.set('subject', subject);
+
+    router.replace(`?${params.toString()}`, { scroll: false });
+
+    try {
+      const data = await fetchRankings(year, source, type, subject);
+      setUniversities(data);
+    } catch (error) {
+      console.error('Failed to fetch rankings', error);
+      setUniversities([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handlers
+  const handleRankTypeChange = (type: 'General' | 'Subject') => {
+    // Reset/Default logics
+    let newSource = selectedSource;
+    let newSubject = selectedSubject;
+    let newYear = currentYear;
+
+    const validSources =
+      type === 'General' ? meta.generalSources : meta.subjectSources;
+    if (!validSources.find((s) => s.value === newSource)) {
+      newSource = validSources[0]?.value || 'qs';
+    }
+
+    if (type === 'Subject') {
+      if (!newSubject) {
+        const cats = meta.subjects[newSource];
+        if (cats) {
+          const firstCat = Object.keys(cats)[0];
+          if (firstCat && cats[firstCat].length > 0) {
+            newSubject = cats[firstCat][0];
+          }
+        }
+      }
+    } else {
+      newSubject = '';
+    }
+
+    const newYearsMap =
+      type === 'General' ? meta.years.general : meta.years.subject;
+    const newYears = newYearsMap[newSource] || [];
+    if (!newYears.includes(newYear) && newYears.length > 0) {
+      newYear = newYears[0];
+    }
+
+    setRankType(type);
+    setSelectedSource(newSource);
+    setSelectedSubject(newSubject);
+    setCurrentYear(newYear);
+
+    updateData(newYear, newSource, type, newSubject);
+  };
+
+  const handleSourceChange = (source: string) => {
+    let newYear = currentYear;
+    let newSubject = selectedSubject;
+
+    const sourceYears = yearsBySource[source] || [];
+    if (!sourceYears.includes(newYear) && sourceYears.length > 0) {
+      newYear = sourceYears[0];
+    }
+
+    if (rankType === 'Subject') {
+      const cats = meta.subjects[source] || {};
+      // Just pick first available subject if current one is invalid for new source?
+      // Checking validity across all categories
+      let valid = false;
+      for (const cat in cats) {
+        if (cats[cat].includes(newSubject)) valid = true;
+      }
+
+      if (!valid) {
+        const firstCat = Object.keys(cats)[0];
+        if (firstCat && cats[firstCat].length > 0) {
+          newSubject = cats[firstCat][0];
+        } else {
+          newSubject = '';
+        }
+      }
+    }
+
+    setSelectedSource(source);
+    setCurrentYear(newYear);
+    setSelectedSubject(newSubject);
+
+    updateData(newYear, source, rankType, newSubject);
+  };
+
+  const handleYearChange = (year: number) => {
+    setCurrentYear(year);
+    updateData(year, selectedSource, rankType, selectedSubject);
+  };
+
+  const handleSubjectChange = (subject: string) => {
+    setSelectedSubject(subject);
+    updateData(currentYear, selectedSource, rankType, subject);
+  };
 
   const handleUniversityClick = (uni: UniversityRanking) => {
     setSelectedUniversity(uni);
@@ -28,95 +188,105 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setTimeout(() => setSelectedUniversity(null), 300); // Clear after animation
+    setTimeout(() => setSelectedUniversity(null), 300);
   };
 
-  // Extract unique countries for filter dropdown
   const countries = useMemo(() => {
-    const uniqueCountries = new Set(initialUniversities.map((u) => u.country));
+    const uniqueCountries = new Set(universities.map((u) => u.country));
     return Array.from(uniqueCountries).sort();
-  }, [initialUniversities]);
+  }, [universities]);
 
-  // Filter and sort universities
   const filteredUniversities = useMemo(() => {
-    let result = initialUniversities.filter((uni) => {
+    let result = universities.filter((uni) => {
       const matchesSearch = uni.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
       const matchesCountry = selectedCountry
         ? uni.country === selectedCountry
         : true;
-
-      // Filter by existence in the selected ranking source
-      // If ranks map is missing or selectedSource not in it, filter out
       const hasRank = uni.ranks && uni.ranks[selectedSource] !== undefined;
-
       return matchesSearch && matchesCountry && hasRank;
     });
 
-    // Sort logic: Sort by rank in selected source, then by name
     result.sort((a, b) => {
-      const rankA = (a.ranks && a.ranks[selectedSource]) || 999999;
-      const rankB = (b.ranks && b.ranks[selectedSource]) || 999999;
+      const ranksA = a.ranks || {};
+      const ranksB = b.ranks || {};
+      const rA = ranksA[selectedSource];
+      const rB = ranksB[selectedSource];
 
-      if (rankA !== rankB) {
-        return (rankA as number) - (rankB as number);
-      }
-      return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
+      const rankA = typeof rA === 'string' ? parseInt(rA) : rA || 999999;
+      const rankB = typeof rB === 'string' ? parseInt(rB) : rB || 999999;
+
+      if (rankA !== rankB) return rankA - rankB;
+
+      const nameA = a.nameEn || a.name || '';
+      const nameB = b.nameEn || b.name || '';
+
+      return nameA.localeCompare(nameB, 'en');
     });
 
     return result;
-  }, [initialUniversities, searchQuery, selectedCountry, selectedSource]);
+  }, [universities, searchQuery, selectedCountry, selectedSource]);
+
+  const selectedSourceLabel =
+    currentSources.find((s) => s.value === selectedSource)?.label ||
+    selectedSource.toUpperCase();
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Filters Section */}
+    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <RankingFilters
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
-        selectedSource={selectedSource}
-        setSelectedSource={setSelectedSource}
         countries={countries}
+        rankType={rankType}
+        setRankType={handleRankTypeChange}
+        selectedSource={selectedSource}
+        setSelectedSource={handleSourceChange}
+        rankingSources={currentSources}
+        currentYear={currentYear}
+        onYearChange={handleYearChange}
+        availableYears={availableYears}
+        yearsBySource={yearsBySource}
+        selectedSubject={selectedSubject}
+        setSelectedSubject={handleSubjectChange}
+        subjects={meta.subjects[selectedSource]} // Pass subjects only for current source
       />
 
-      {/* Results Count */}
       <div className="mb-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-1">
         <span>
           Showing {filteredUniversities.length} universities from{' '}
-          {selectedSource.toUpperCase()}
+          {selectedSourceLabel}{' '}
+          {rankType === 'Subject' ? `- ${selectedSubject} ` : ''}({currentYear})
         </span>
+        {isLoading && (
+          <span className="text-blue-500 animate-pulse">Updating...</span>
+        )}
       </div>
 
-      {/* List - Grid Layout Override */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
-          {filteredUniversities.length > 0 ? (
-            filteredUniversities.map((uni, index) => (
-              <RankingCard
-                key={uni.id}
-                university={uni}
-                index={index}
-                onClick={handleUniversityClick}
-                selectedSource={selectedSource}
-              />
-            ))
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="col-span-full text-center py-20 text-gray-500 dark:text-gray-400"
-            >
-              <div className="text-lg">No universities found</div>
-              <p className="text-sm mt-2">Try adjusting your filters</p>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+      <AnimatePresence mode="wait">
+        <motion.div
+          layout
+          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          {filteredUniversities.map((uni, index) => (
+            <RankingCard
+              key={uni.id}
+              index={index}
+              university={uni}
+              onClick={handleUniversityClick}
+              selectedSource={selectedSource}
+              onRankClick={handleSourceChange}
+              hideFooterRanks={rankType === 'Subject'}
+            />
+          ))}
+        </motion.div>
+      </AnimatePresence>
 
-      {/* Modal Integration */}
       <RankingDetailModal
         university={selectedUniversity}
         isOpen={isModalOpen}
