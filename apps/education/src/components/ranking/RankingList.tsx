@@ -50,6 +50,7 @@ const RankingList: React.FC<RankingListProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(50);
 
   // Modal State
   const [selectedUniversity, setSelectedUniversity] =
@@ -228,6 +229,29 @@ const RankingList: React.FC<RankingListProps> = ({
     return result;
   }, [universities, searchQuery, selectedCountry, selectedSource]);
 
+  // Reset visible count when filters/search change
+  useEffect(() => {
+    setVisibleCount(50);
+  }, [
+    selectedSource,
+    currentYear,
+    searchQuery,
+    selectedCountry,
+    rankType,
+    selectedSubject,
+    universities,
+  ]);
+
+  const displayedUniversities = useMemo(() => {
+    return filteredUniversities.slice(0, visibleCount);
+  }, [filteredUniversities, visibleCount]);
+
+  const hasMore = visibleCount < filteredUniversities.length;
+
+  const handleShowMore = () => {
+    setVisibleCount((prev) => prev + 50);
+  };
+
   const selectedSourceLabel =
     currentSources.find((s) => s.value === selectedSource)?.label ||
     selectedSource.toUpperCase();
@@ -273,7 +297,7 @@ const RankingList: React.FC<RankingListProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {filteredUniversities.map((uni, index) => (
+          {displayedUniversities.map((uni, index) => (
             <RankingCard
               key={uni.id}
               index={index}
@@ -286,6 +310,17 @@ const RankingList: React.FC<RankingListProps> = ({
           ))}
         </motion.div>
       </AnimatePresence>
+
+      {hasMore && (
+        <div className="mt-12 flex justify-center">
+          <button
+            onClick={handleShowMore}
+            className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition-all active:scale-95"
+          >
+            Show More Universities
+          </button>
+        </div>
+      )}
 
       <RankingDetailModal
         university={selectedUniversity}
