@@ -14,7 +14,7 @@ interface RankingListProps {
 const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
-  const [sortOption, setSortOption] = useState('rank-asc');
+  const [selectedSource, setSelectedSource] = useState('qs'); // Default source
 
   // Modal State
   const [selectedUniversity, setSelectedUniversity] =
@@ -46,31 +46,27 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
       const matchesCountry = selectedCountry
         ? uni.country === selectedCountry
         : true;
-      return matchesSearch && matchesCountry;
+
+      // Filter by existence in the selected ranking source
+      // If ranks map is missing or selectedSource not in it, filter out
+      const hasRank = uni.ranks && uni.ranks[selectedSource] !== undefined;
+
+      return matchesSearch && matchesCountry && hasRank;
     });
 
-    // Sort logic
+    // Sort logic: Sort by rank in selected source, then by name
     result.sort((a, b) => {
-      switch (sortOption) {
-        case 'rank-asc':
-          return a.rank - b.rank;
-        case 'rank-desc':
-          return b.rank - a.rank;
-        case 'score-desc':
-          return b.overallScore - a.overallScore;
-        case 'score-asc':
-          return a.overallScore - b.overallScore;
-        case 'name-asc':
-          return a.name.localeCompare(b.name);
-        case 'name-desc':
-          return b.name.localeCompare(a.name);
-        default:
-          return 0;
+      const rankA = (a.ranks && a.ranks[selectedSource]) || 999999;
+      const rankB = (b.ranks && b.ranks[selectedSource]) || 999999;
+
+      if (rankA !== rankB) {
+        return (rankA as number) - (rankB as number);
       }
+      return a.name < b.name ? -1 : a.name > b.name ? 1 : 0;
     });
 
     return result;
-  }, [initialUniversities, searchQuery, selectedCountry, sortOption]);
+  }, [initialUniversities, searchQuery, selectedCountry, selectedSource]);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -80,14 +76,17 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
         setSearchQuery={setSearchQuery}
         selectedCountry={selectedCountry}
         setSelectedCountry={setSelectedCountry}
-        sortOption={sortOption}
-        setSortOption={setSortOption}
+        selectedSource={selectedSource}
+        setSelectedSource={setSelectedSource}
         countries={countries}
       />
 
       {/* Results Count */}
       <div className="mb-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-1">
-        <span>Showing {filteredUniversities.length} universities</span>
+        <span>
+          Showing {filteredUniversities.length} universities from{' '}
+          {selectedSource.toUpperCase()}
+        </span>
       </div>
 
       {/* List - Grid Layout Override */}
@@ -100,6 +99,7 @@ const RankingList: React.FC<RankingListProps> = ({ initialUniversities }) => {
                 university={uni}
                 index={index}
                 onClick={handleUniversityClick}
+                selectedSource={selectedSource}
               />
             ))
           ) : (

@@ -2,18 +2,50 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Trophy, ArrowRight, MapPin } from 'lucide-react';
 import { UniversityRanking, cn } from '@repo/web-shared';
+import { Building2 } from 'lucide-react';
 
 interface RankingCardProps {
   university: UniversityRanking;
   index: number;
   onClick: (university: UniversityRanking) => void;
+  selectedSource?: string;
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({
   university,
   index,
   onClick,
+  selectedSource = 'qs',
 }) => {
+  const logoUrl = university.logoUrl;
+  // Determine rank to display
+  const displayRank =
+    selectedSource && university.ranks && university.ranks[selectedSource]
+      ? university.ranks[selectedSource]
+      : university.rank;
+
+  // Resolve logo
+  // Use university.name (English) for matching since filenames are English
+  // The DB provides `name` which might be Chinese if `name_cn` is used.
+  // We need to check if `ranking-service` provides English name.
+  // Looking at `ranking-service.ts`: `name: uni.name_cn || uni.name_en`.
+  // This is a problem. The name might be Chinese.
+  // We should try to use the ID if it's the English name, OR we need to update the interface to pass English name explicitly.
+
+  // For now, let's assume `university.id` might be useful or just try to pass `name`.
+  // Since `RankingCard` only gets `university`, let's check `UniversityRanking` interface properties in `rankings.ts`.
+  // It has `id`, `rank`, `name`, `country`...
+  // Wait, `ranking-service.ts` converts DB data.
+  // Let's assume we can try matching using `university.name`.
+  // If it's Chinese, it won't match.
+  // PROPOSAL: I need to update `UniversityRanking` to include `nameEn` for logo matching later.
+  // But for this step, let's just try implementing with what we have and assume `name` might work or I'll implement a fallback.
+
+  // Actually, I should update `ranking-service.ts` to include `nameEn` in the object.
+  // Let's do that in a separate step if this fails.
+
+  // const logoUrl = getUniversityLogo(university.nameEn || university.name); // Removed getUniversityLogo call
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -27,27 +59,45 @@ const RankingCard: React.FC<RankingCardProps> = ({
       <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative z-10 flex flex-col h-full">
-        {/* Top Row: Rank & Score */}
+        {/* Top Row: Rank & Logo */}
         <div className="flex justify-between items-start mb-4">
           <div
             className={cn(
-              'flex items-center justify-center w-12 h-12 rounded-xl text-xl font-bold border',
-              university.rank === 1
+              'flex items-center justify-center w-14 h-14 rounded-xl text-2xl font-bold border transition-colors',
+              displayRank === 1
                 ? 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-900/20 dark:border-yellow-900/30'
-                : university.rank <= 10
+                : (displayRank as number) <= 10
                 ? 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30'
                 : 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
             )}
           >
-            #{university.rank}
+            #{displayRank}
           </div>
-          <div className="flex flex-col items-end">
-            <span className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white leading-none">
-              {university.overallScore}
-            </span>
-            <span className="text-[10px] uppercase font-semibold text-gray-400 tracking-wider mt-1">
-              Score
-            </span>
+
+          {/* Logo Display */}
+          <div className="w-12 h-12 flex items-center justify-center bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 p-1 overflow-hidden shrink-0">
+            {logoUrl ? (
+              <img
+                src={logoUrl}
+                alt={university.name}
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).style.display = 'none';
+                  (
+                    e.target as HTMLImageElement
+                  ).nextElementSibling?.classList.remove('hidden');
+                }}
+              />
+            ) : (
+              <Building2 className="w-6 h-6 text-gray-300 dark:text-gray-600" />
+            )}
+            {/* Fallback Icon (Hidden by default if logo exists) */}
+            <Building2
+              className={cn(
+                'w-6 h-6 text-gray-300 dark:text-gray-600',
+                logoUrl ? 'hidden' : ''
+              )}
+            />
           </div>
         </div>
 
@@ -72,6 +122,50 @@ const RankingCard: React.FC<RankingCardProps> = ({
                   {badge}
                 </span>
               ))}
+            </div>
+          )}
+
+          {/* Multiple Rankings Display */}
+          {university.ranks && (
+            <div className="grid grid-cols-3 gap-2 mt-4 pt-4 border-t border-gray-100 dark:border-zinc-800">
+              {Object.entries(university.ranks)
+                .map(([source, rank]) => {
+                  // Map source codes to display names
+                  const sourceNames: Record<string, string> = {
+                    qs: 'QS',
+                    the: 'THE',
+                    usnews: 'US News',
+                    arwu: 'ARWU',
+                    cwur: 'CWUR',
+                    guardian: 'Guardian',
+                    cug: 'CUG',
+                    niche: 'Niche',
+                    wrwu: 'WRWU',
+                    rk: 'SoftScience', // 软科
+                    edur: 'EduR', // 易度
+                    urap: 'URAP',
+                    wm: 'WM',
+                    fb: 'Forbes',
+                  };
+                  const displayName =
+                    sourceNames[source.toLowerCase()] || source.toUpperCase();
+
+                  return (
+                    <div
+                      key={source}
+                      className="flex flex-col items-center p-1.5 bg-gray-50 dark:bg-zinc-800/50 rounded-lg"
+                    >
+                      <span className="text-[10px] font-semibold text-gray-400 uppercase">
+                        {displayName}
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        #{rank}
+                      </span>
+                    </div>
+                  );
+                })
+                .slice(0, 6)}{' '}
+              {/* Show up to 6 rankings to avoid clutter */}
             </div>
           )}
         </div>
