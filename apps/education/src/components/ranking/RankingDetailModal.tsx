@@ -2,8 +2,18 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, MapPin, Globe, Trophy, Info, BookOpen, Clock } from 'lucide-react';
+import {
+  X,
+  MapPin,
+  Globe,
+  Trophy,
+  Info,
+  BookOpen,
+  Clock,
+  ArrowRight,
+} from 'lucide-react';
 import { UniversityRanking } from '@repo/web-shared';
+import Link from 'next/link';
 import { cn } from '@repo/web-shared';
 
 interface RankingDetailModalProps {
@@ -96,32 +106,27 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                   {/* Left Column: Stats & Quick Info */}
                   <div className="md:col-span-1 space-y-6">
-                    <div className="p-5 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border border-gray-100 dark:border-zinc-700/50">
-                      <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                        <Trophy className="w-4 h-4" /> Performance
-                      </h3>
-                      <div className="space-y-4">
-                        <div>
-                          <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                            {university.overallScore}
-                          </div>
-                          <div className="text-sm text-gray-500">
-                            Overall Score
-                          </div>
-                        </div>
-                        <div className="h-px bg-gray-200 dark:bg-zinc-700" />
-                        <div className="space-y-2">
-                          {university.badges?.map((badge) => (
-                            <span
-                              key={badge}
-                              className="inline-block px-2.5 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-medium rounded-md mr-2"
-                            >
-                              {badge}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
+                    {/* Overall Score - Hidden for now */}
+                    {/* <div className="p-5 bg-gray-50 dark:bg-zinc-800/50 rounded-2xl border border-gray-100 dark:border-zinc-700/50">
+                        <h3 className="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                          <Trophy className="w-4 h-4" /> Performance
+                        </h3>
+                        ...
+                      </div> */}
+
+                    {/* View Profile CTA */}
+                    <Link
+                      href={`/universities/${(
+                        university.nameEn || university.name
+                      )
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '')}`}
+                      className="w-full flex items-center justify-between p-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all group"
+                    >
+                      <span className="font-semibold">View Full Profile</span>
+                      <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                    </Link>
 
                     {/* Subject Highlights */}
                     {university.subjects && university.subjects.length > 0 && (

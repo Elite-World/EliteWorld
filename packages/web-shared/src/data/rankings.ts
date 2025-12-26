@@ -4,6 +4,14 @@ export interface RankingSubject {
   score?: number;
 }
 
+
+export interface RankingHistoryItem {
+  year: number;
+  source: string;
+  rank: number;
+  score?: number;
+}
+
 export interface UniversityRanking {
   id: string;
   rank: number;
@@ -21,6 +29,7 @@ export interface UniversityRanking {
   websiteUrl?: string;
   locationDetails?: string;
   ranks?: Record<string, number | string>; // Map of source code to rank (e.g. { qs: 1, the: 5 })
+  rankingHistory?: RankingHistoryItem[];
 }
 
 export interface RankingData {

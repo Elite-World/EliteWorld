@@ -32,6 +32,7 @@
     "react-notion-x": "^7.7.3",
     "react-simple-maps": "^3.0.0",
     "react-tooltip": "^5.30.0",
+    "recharts": "^3.6.0",
     "rehype-raw": "^7.0.0",
     "remark-gfm": "^4.0.1",
     "zustand": "^5.0.3"

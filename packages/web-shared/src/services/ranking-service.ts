@@ -201,3 +201,104 @@ export async function getRankingList(
 
   return result;
 }
+export async function getUniversity(slug: string): Promise<UniversityRanking | null> {
+  const db = getDb();
+
+  // 1. Find university ID by matching slug
+  // This is a temporary inefficient solution until we have indexed slugs in DB
+  const unis = db.prepare('SELECT univ_id, name_en FROM universities').all() as {
+    univ_id: number;
+    name_en: string;
+  }[];
+
+  const matchedUni = unis.find((u) => {
+    const s = (u.name_en || '')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '');
+    return s === slug;
+  });
+
+  if (!matchedUni) return null;
+
+  // 2. Fetch Aggregated Data for this University
+  // We reuse logic similar to getRankingList but strictly for one ID
+  // and aggregating all available data (all years/sources)
+
+  const rankings = db
+    .prepare(
+      `SELECT
+        r.score as ranking_score,
+        r.rank_display,
+        l.source_code,
+        l.year
+      FROM ranking_items r
+      JOIN ranking_lists l ON r.list_id = l.lib_id
+      WHERE r.univ_id = ?
+      ORDER BY l.year DESC`
+    )
+    .all(matchedUni.univ_id) as {
+    ranking_score: number; 
+    rank_display: string;
+    source_code: string;
+    year: number;
+  }[];
+
+  const uniDetails = db
+    .prepare(
+      `SELECT
+        u.univ_id,
+        u.name_en,
+        u.name_cn,
+        r.name_cn as region_name,
+        u.logo_file,
+        u.website_url
+      FROM universities u
+      LEFT JOIN regions r ON u.region_id = r.id
+      WHERE u.univ_id = ?`
+    )
+    .get(matchedUni.univ_id) as any;
+
+  if (!uniDetails) return null;
+
+  // Process Ranks: showing the LATEST rank for each source
+  const ranks: Record<string, number | string> = {};
+  const seenSources = new Set<string>();
+
+  for (const r of rankings) {
+    if (!seenSources.has(r.source_code)) {
+      ranks[r.source_code] = r.rank_display || 0; // or parse int
+      seenSources.add(r.source_code);
+    }
+  }
+
+  // Construct Result
+  return {
+    id: uniDetails.univ_id,
+    name: uniDetails.name_cn || uniDetails.name_en, // Default to CN if available? Or stick to EN/mixed logic
+    nameEn: uniDetails.name_en, // Ensure we have English name explicitly
+    country: uniDetails.region_name,
+    region: 'Global', // TODO: Populate if available in DB
+    logoUrl: uniDetails.logo_file
+      ? `/logos/${uniDetails.logo_file}`
+      : undefined,
+    websiteUrl: uniDetails.website_url,
+    description: undefined, // Schema update pending
+    history: undefined,     // Schema update pending
+    visitGuide: undefined,  // Schema update pending
+    rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0, // Fallback/Primary rank
+    ranks: ranks,
+    rankingHistory: rankings.map(r => {
+      const rankNum = parseInt(r.rank_display.replace(/[^0-9].*$/, '')) || 999; 
+      return {
+        year: r.year,
+        source: r.source_code,
+        rank: rankNum,
+        score: r.ranking_score
+      };
+    }),
+    badges: [], // TODO: Populate badges if needed
+    overallScore: 0, // To be populated
+
+  };
+}

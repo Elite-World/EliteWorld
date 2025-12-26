@@ -27,6 +27,7 @@ export default async function RankingPage({
   const sourceParam = (params.source as string) || 'qs';
   const rankTypeParam = (params.rankType as 'General' | 'Subject') || 'General';
   const subjectParam = params.subject as string | undefined;
+  const countryParam = params.country as string | undefined;
 
   const selectedYear = yearParam ? parseInt(yearParam, 10) : undefined;
 
@@ -55,14 +56,17 @@ export default async function RankingPage({
       </div>
 
       {/* Main Content */}
-      <RankingList
-        initialUniversities={universities}
-        currentYear={displayYear}
-        initialSource={sourceParam}
-        initialRankType={rankTypeParam}
-        initialSubject={subjectParam}
-        meta={meta}
-      />
+      <div className="container mx-auto px-4 -mt-8 relative z-10">
+        <RankingList
+          initialUniversities={universities}
+          currentYear={displayYear}
+          initialSource={sourceParam}
+          initialRankType={rankTypeParam}
+          initialSubject={subjectParam}
+          initialCountry={countryParam}
+          meta={meta}
+        />
+      </div>
     </div>
   );
 }

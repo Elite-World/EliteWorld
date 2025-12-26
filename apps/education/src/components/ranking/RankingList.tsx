@@ -15,6 +15,7 @@ interface RankingListProps {
   initialSource: string;
   initialRankType: 'General' | 'Subject';
   initialSubject?: string;
+  initialCountry?: string;
   meta: {
     generalSources: { value: string; label: string }[];
     subjectSources: { value: string; label: string }[];
@@ -32,6 +33,7 @@ const RankingList: React.FC<RankingListProps> = ({
   initialSource,
   initialRankType,
   initialSubject,
+  initialCountry,
   meta,
 }) => {
   const router = useRouter();
@@ -48,7 +50,7 @@ const RankingList: React.FC<RankingListProps> = ({
   const [selectedSubject, setSelectedSubject] = useState(initialSubject || '');
 
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(initialCountry || '');
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(50);
 
@@ -71,7 +73,8 @@ const RankingList: React.FC<RankingListProps> = ({
     year: number,
     source: string,
     type: 'General' | 'Subject',
-    subject?: string
+    subject?: string,
+    country?: string
   ) => {
     setIsLoading(true);
 
@@ -81,6 +84,7 @@ const RankingList: React.FC<RankingListProps> = ({
     if (source) params.set('source', source);
     if (type) params.set('rankType', type);
     if (type === 'Subject' && subject) params.set('subject', subject);
+    if (country) params.set('country', country);
 
     router.replace(`?${params.toString()}`, { scroll: false });
 
@@ -134,14 +138,19 @@ const RankingList: React.FC<RankingListProps> = ({
     setSelectedSubject(newSubject);
     setCurrentYear(newYear);
 
-    updateData(newYear, newSource, type, newSubject);
+    updateData(newYear, newSource, type, newSubject, selectedCountry);
   };
 
   const handleSourceChange = (source: string) => {
     let newYear = currentYear;
     let newSubject = selectedSubject;
 
-    const sourceYears = yearsBySource[source] || [];
+    // The logic below was checking yearsBySource[source] but relying on closure variable `yearsBySource` which depends on rankType.
+    // Correct logic:
+    const yearsMap =
+      rankType === 'General' ? meta.years.general : meta.years.subject;
+    const sourceYears = yearsMap[source] || [];
+
     if (!sourceYears.includes(newYear) && sourceYears.length > 0) {
       newYear = sourceYears[0];
     }
@@ -169,17 +178,28 @@ const RankingList: React.FC<RankingListProps> = ({
     setCurrentYear(newYear);
     setSelectedSubject(newSubject);
 
-    updateData(newYear, source, rankType, newSubject);
+    updateData(newYear, source, rankType, newSubject, selectedCountry);
   };
 
   const handleYearChange = (year: number) => {
     setCurrentYear(year);
-    updateData(year, selectedSource, rankType, selectedSubject);
+    updateData(
+      year,
+      selectedSource,
+      rankType,
+      selectedSubject,
+      selectedCountry
+    );
   };
 
   const handleSubjectChange = (subject: string) => {
     setSelectedSubject(subject);
-    updateData(currentYear, selectedSource, rankType, subject);
+    updateData(currentYear, selectedSource, rankType, subject, selectedCountry);
+  };
+
+  const handleCountryChange = (country: string) => {
+    setSelectedCountry(country);
+    updateData(currentYear, selectedSource, rankType, selectedSubject, country);
   };
 
   const handleUniversityClick = (uni: UniversityRanking) => {
@@ -262,7 +282,7 @@ const RankingList: React.FC<RankingListProps> = ({
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}
+        setSelectedCountry={handleCountryChange}
         countries={countries}
         rankType={rankType}
         setRankType={handleRankTypeChange}
