@@ -55,6 +55,7 @@ const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
         智利: 'Chile',
         墨西哥: 'Mexico',
         USA: 'United States of America',
+        'United States': 'United States of America',
         UK: 'United Kingdom',
       };
       if (countryMap[country]) country = countryMap[country];

@@ -4,3 +4,4 @@ export * from './components/Footer';
 export * from './components/UserMenu';
 // export * from './components/ui/IconButton';
 export * from './types';
+export * from './components/Tabs';

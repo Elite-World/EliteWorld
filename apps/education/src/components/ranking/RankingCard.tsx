@@ -4,6 +4,8 @@ import { Trophy, ArrowRight, MapPin } from 'lucide-react';
 import { UniversityRanking, cn } from '@repo/web-shared';
 import { Building2 } from 'lucide-react';
 
+import Link from 'next/link';
+
 interface RankingCardProps {
   university: UniversityRanking;
   index: number;
@@ -11,6 +13,7 @@ interface RankingCardProps {
   selectedSource?: string;
   onRankClick?: (source: string) => void;
   hideFooterRanks?: boolean;
+  href?: string;
 }
 
 const RankingCard: React.FC<RankingCardProps> = ({
@@ -20,6 +23,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
   selectedSource = 'qs',
   onRankClick,
   hideFooterRanks = false,
+  href,
 }) => {
   const logoUrl = university.logoUrl;
   // Determine rank to display
@@ -60,7 +64,32 @@ const RankingCard: React.FC<RankingCardProps> = ({
 
           {/* Logo Display */}
           <div className="w-12 h-12 flex items-center justify-center bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 p-1 overflow-hidden shrink-0">
-            {logoUrl ? (
+            {href ? (
+              <Link
+                href={href}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onClick(university);
+                }}
+                className="w-full h-full block"
+              >
+                {logoUrl ? (
+                  <img
+                    src={logoUrl}
+                    alt={university.name}
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = 'none';
+                      (
+                        e.target as HTMLImageElement
+                      ).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : (
+                  <Building2 className="w-6 h-6 text-gray-300 dark:text-gray-600" />
+                )}
+              </Link>
+            ) : logoUrl ? (
               <img
                 src={logoUrl}
                 alt={university.name}
@@ -75,21 +104,30 @@ const RankingCard: React.FC<RankingCardProps> = ({
             ) : (
               <Building2 className="w-6 h-6 text-gray-300 dark:text-gray-600" />
             )}
-            {/* Fallback Icon (Hidden by default if logo exists) */}
-            <Building2
-              className={cn(
-                'w-6 h-6 text-gray-300 dark:text-gray-600',
-                logoUrl ? 'hidden' : ''
-              )}
-            />
+            {/* Fallback Icon logic simplified above, reusing structure if needed */}
           </div>
         </div>
 
         {/* Center: Info */}
         <div className="flex-1 mb-6">
-          <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-            {university.name}
-          </h3>
+          {href ? (
+            <Link
+              href={href}
+              onClick={(e) => {
+                e.preventDefault();
+                onClick(university);
+              }}
+              className="block"
+            >
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                {university.name}
+              </h3>
+            </Link>
+          ) : (
+            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              {university.name}
+            </h3>
+          )}
           <div className="flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400">
             <MapPin className="w-4 h-4" />
             {university.country}

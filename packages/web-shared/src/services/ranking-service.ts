@@ -7,6 +7,8 @@ interface AggregatedRanking {
   name_en: string;
   name_cn: string;
   region_name: string;
+  region_name_en?: string;
+  region_name_cn?: string;
   logo_file?: string;
   website_url?: string;
   ranks: Record<string, number | string>;
@@ -154,7 +156,8 @@ export async function getRankingList(
         u.name_cn,
         u.logo_file,
         u.website_url,
-        r.name_cn as region_name
+        r.name_en as region_name_en,
+        r.name_cn as region_name_cn
       FROM ranking_items ri
       JOIN universities u ON ri.univ_id = u.univ_id
       LEFT JOIN regions r ON u.region_id = r.id
@@ -169,7 +172,9 @@ export async function getRankingList(
           univ_id: item.univ_id,
           name_en: item.name_en,
           name_cn: item.name_cn,
-          region_name: item.region_name,
+          region_name: item.region_name_cn || item.region_name_en || '',
+          region_name_en: item.region_name_en,
+          region_name_cn: item.region_name_cn,
           logo_file: item.logo_file,
           website_url: item.website_url,
           ranks: {},
@@ -185,13 +190,14 @@ export async function getRankingList(
   // 4. Convert to array and sort
   const result = Array.from(universityMap.values()).map((uni) => {
     const primaryRank = uni.ranks[source] || Object.values(uni.ranks)[0];
+    const countryName = uni.region_name_en || uni.region_name_cn || 'Unknown';
     return {
       id: uni.univ_id.toString(),
       rank: typeof primaryRank === 'string' ? parseInt(primaryRank) || 999 : primaryRank || 999,
-      name: uni.name_cn || uni.name_en,
+      name: uni.name_en || uni.name_cn,
       nameEn: uni.name_en,
-      country: uni.region_name || 'Unknown',
-      region: uni.region_name || 'Unknown', // Fallback as DB regions are countries
+      country: countryName,
+      region: countryName, // Fallback as DB regions are countries
       overallScore: uni.scores[source] || 0,
       logoUrl: uni.logo_file ? `/logos/${uni.logo_file}` : undefined,
       badges: [],
@@ -247,17 +253,17 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
   const uniDetails = db
     .prepare(
       `SELECT
-        u.univ_id,
-        u.name_en,
-        u.name_cn,
+        u.*,
         r.name_cn as region_name,
-        u.logo_file,
-        u.website_url
+        r.name_en as region_name_en
       FROM universities u
       LEFT JOIN regions r ON u.region_id = r.id
       WHERE u.univ_id = ?`
     )
     .get(matchedUni.univ_id) as any;
+
+  // 3. Fetch Scholarships
+  const scholarships = db.prepare('SELECT name, amount, type FROM university_scholarships WHERE univ_id = ?').all(matchedUni.univ_id) as any[];
 
   if (!uniDetails) return null;
 
@@ -275,17 +281,39 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
   // Construct Result
   return {
     id: uniDetails.univ_id,
-    name: uniDetails.name_cn || uniDetails.name_en, // Default to CN if available? Or stick to EN/mixed logic
-    nameEn: uniDetails.name_en, // Ensure we have English name explicitly
-    country: uniDetails.region_name,
+    name: uniDetails.name_en || uniDetails.name_cn, 
+    nameEn: uniDetails.name_en, 
+    country: uniDetails.region_name_en || uniDetails.region_name,
     region: 'Global', // TODO: Populate if available in DB
     logoUrl: uniDetails.logo_file
       ? `/logos/${uniDetails.logo_file}`
       : undefined,
     websiteUrl: uniDetails.website_url,
-    description: undefined, // Schema update pending
-    history: undefined,     // Schema update pending
-    visitGuide: undefined,  // Schema update pending
+    description: uniDetails.description,
+    history: uniDetails.history,
+    education: uniDetails.education,
+    research: uniDetails.research,
+    accreditation: uniDetails.accreditation,
+    visitGuide: uniDetails.visit_guide,
+    
+    // Stats
+    foundedYear: uniDetails.founded_year,
+    campusType: uniDetails.campus_type,
+    studentCount: uniDetails.student_count,
+    undergradCount: uniDetails.undergrad_count,
+    postgradCount: uniDetails.postgrad_count,
+    staffCount: uniDetails.staff_count,
+    femaleMaleRatio: uniDetails.female_male_ratio,
+    intlStudentPercent: uniDetails.intl_student_percent,
+    
+    // Programs
+    courseShortCount: uniDetails.course_short_count,
+    courseBachelorCount: uniDetails.course_bachelor_count,
+    courseMasterCount: uniDetails.course_master_count,
+    coursePhdCount: uniDetails.course_phd_count,
+
+    scholarships: scholarships,
+
     rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0, // Fallback/Primary rank
     ranks: ranks,
     rankingHistory: rankings.map(r => {

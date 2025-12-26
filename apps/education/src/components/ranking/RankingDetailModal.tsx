@@ -116,7 +116,10 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
 
                     {/* View Profile CTA */}
                     <Link
-                      href={`/universities/${(
+                      href={`/universities/${(university.country || 'global')
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/(^-|-$)/g, '')}/${(
                         university.nameEn || university.name
                       )
                         .toLowerCase()

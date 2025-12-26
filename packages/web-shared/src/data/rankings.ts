@@ -24,10 +24,33 @@ export interface UniversityRanking {
   description?: string;
   subjects?: RankingSubject[];
   badges?: string[]; // e.g. "Top 10", "Best Research"
+  // Extended Profile Details
   history?: string;
+  education?: string; // New
+  research?: string; // New
+  accreditation?: string; // New
   visitGuide?: string;
   websiteUrl?: string;
   locationDetails?: string;
+  
+  // Stats
+  foundedYear?: number;
+  campusType?: string;
+  studentCount?: number;
+  undergradCount?: number;
+  postgradCount?: number;
+  staffCount?: number;
+  femaleMaleRatio?: string;
+  intlStudentPercent?: string;
+
+  // Programs
+  courseShortCount?: number;
+  courseBachelorCount?: number;
+  courseMasterCount?: number;
+  coursePhdCount?: number;
+
+  scholarships?: { name: string; amount?: string; type?: string }[];
+  
   ranks?: Record<string, number | string>; // Map of source code to rank (e.g. { qs: 1, the: 5 })
   rankingHistory?: RankingHistoryItem[];
 }

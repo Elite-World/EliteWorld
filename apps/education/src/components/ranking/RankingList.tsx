@@ -317,17 +317,30 @@ const RankingList: React.FC<RankingListProps> = ({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          {displayedUniversities.map((uni, index) => (
-            <RankingCard
-              key={uni.id}
-              index={index}
-              university={uni}
-              onClick={handleUniversityClick}
-              selectedSource={selectedSource}
-              onRankClick={handleSourceChange}
-              hideFooterRanks={rankType === 'Subject'}
-            />
-          ))}
+          {displayedUniversities.map((uni, index) => {
+            const countrySlug = (uni.country || 'global')
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, '');
+            const nameSlug = (uni.nameEn || uni.name)
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, '');
+            const profileUrl = `/universities/${countrySlug}/${nameSlug}`;
+
+            return (
+              <RankingCard
+                key={uni.id}
+                index={index}
+                university={uni}
+                onClick={handleUniversityClick}
+                selectedSource={selectedSource}
+                onRankClick={handleSourceChange}
+                hideFooterRanks={rankType === 'Subject'}
+                href={profileUrl}
+              />
+            );
+          })}
         </motion.div>
       </AnimatePresence>
 
