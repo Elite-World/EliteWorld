@@ -285,10 +285,12 @@ export default async function UniversityPage({ params }: PageProps) {
   // Definition moved to top level
 
   // 5. Location Tab (Leaflet Map)
+  // 5. Location Tab (Leaflet Map)
   const LocationTab = (
     <UniversityLocationTab
       name={university.name}
       country={university.country}
+      locations={university.locationCoords}
     />
   );
 
@@ -299,7 +301,10 @@ export default async function UniversityPage({ params }: PageProps) {
     stats: true,
     ranking: true,
     scholarship: true,
-    location: true,
+    location:
+      university.locationCoords && university.locationCoords.length > 0
+        ? true
+        : false,
     programs: true, // For the bottom section
   };
 

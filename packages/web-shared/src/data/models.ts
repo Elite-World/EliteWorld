@@ -48,6 +48,11 @@ export interface IUniversity extends Document {
   location: {
     country_id: mongoose.Types.ObjectId; // Reference to Country
     region?: string; 
+    coordinates?: {
+      label: string;
+      lat: number;
+      lng: number;
+    }[];
   };
 
   assets: {
@@ -86,7 +91,12 @@ const UniversitySchema = new Schema<IUniversity>({
 
   location: {
     country_id: { type: Schema.Types.ObjectId, ref: 'Country', required: true },
-    region: String
+    region: String,
+    coordinates: [{
+      label: String,
+      lat: Number,
+      lng: Number
+    }]
   },
 
   assets: {

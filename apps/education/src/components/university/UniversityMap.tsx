@@ -17,53 +17,27 @@ const createCustomIcon = () =>
 
 interface UniversityMapProps {
   name: string;
-  lat?: number;
-  lng?: number;
   country?: string;
+  locations?: { label: string; lat: number; lng: number }[];
 }
 
 const UniversityMap: React.FC<UniversityMapProps> = ({
   name,
-  lat,
-  lng,
   country,
+  locations = [],
 }) => {
   const mapRef = React.useRef<L.Map | null>(null);
   const [activeLocationIndex, setActiveLocationIndex] = React.useState(0);
 
-  // Use provided coordinates or fallback
-  // If no coords provided, we handle it gracefully (maybe show whole world or country center if we had that data)
-  // For this implementation, we'll default to 0,0 if missing, but typically we want to avoid showing the ocean.
-  // We'll use the MIT coordinates as a placeholder "demo" if lat/lng are missing?
-  // No, that's confusing.
-  // Ideally we should have the coordinates.
-  // The user said "use it later" regarding the extracted data.
-  // I will check if I should hardcode the MIT data IF the university is naturally MIT, but currently I don't have lat/long in the props from the database yet.
-
-  // Strategy:
-  // If lat/lng provided: Center and zoom there.
-  // If NOT provided: Default to world view (zoom 1).
-
-  const hasCoords = lat !== undefined && lng !== undefined;
-
-  // Dummy locations for testing/demo purposes as requested
-  const demoLocations = [
-    { name: 'Main Campus', lat: 42.360091, lng: -71.09416 },
-    { name: 'Kendall Square (Branch)', lat: 42.3625, lng: -71.087 },
-  ];
-
-  // Prioritize props, but fall back to demo locations if it's MIT (or just use demo for now)
-  // The user said "put 2 dummy locations" implies forcing them for visualization.
-  const isMIT = name.includes('Massachusetts');
-  const markers = isMIT
-    ? demoLocations
-    : hasCoords
-    ? [{ name, lat: lat!, lng: lng! }]
-    : [];
+  const markers = locations.map((loc) => ({
+    name: loc.label,
+    lat: loc.lat,
+    lng: loc.lng,
+  }));
 
   const center: [number, number] =
     markers.length > 0 ? [markers[0].lat, markers[0].lng] : [20, 0];
-  const zoom = markers.length > 0 ? 14 : 2; // Zoom 14 to see both
+  const zoom = markers.length > 0 ? 14 : 2;
 
   const handleFlyTo = (index: number, lat: number, lng: number) => {
     setActiveLocationIndex(index);

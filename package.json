@@ -9,6 +9,7 @@
     "lint": "turbo lint"
   },
   "devDependencies": {
+    "dotenv": "^17.2.3",
     "turbo": "latest"
   },
   "workspaces": [

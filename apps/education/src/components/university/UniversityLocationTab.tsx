@@ -16,21 +16,17 @@ const UniversityMap = dynamic(() => import('./UniversityMap'), {
 interface UniversityLocationTabProps {
   name: string;
   country: string;
+  locations?: { label: string; lat: number; lng: number }[];
 }
 
 export const UniversityLocationTab: React.FC<UniversityLocationTabProps> = ({
   name,
   country,
+  locations,
 }) => {
   return (
     <div className="bg-white dark:bg-zinc-900 p-2 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-sm h-[400px] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-0">
-      <UniversityMap
-        name={name}
-        // Temporary logic moved here
-        lat={name.includes('Massachusetts') ? 42.360091 : undefined}
-        lng={name.includes('Massachusetts') ? -71.09416 : undefined}
-        country={country}
-      />
+      <UniversityMap name={name} country={country} locations={locations} />
     </div>
   );
 };

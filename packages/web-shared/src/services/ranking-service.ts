@@ -285,6 +285,7 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     nameEn: u.name?.en,
     country: countryName,
     region: 'Global',
+    locationCoords: u.location?.coordinates || [],
     logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
     websiteUrl: u.assets?.website,
     

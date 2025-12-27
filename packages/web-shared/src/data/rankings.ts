@@ -28,6 +28,7 @@ export interface UniversityRanking {
   research?: string; // New
   websiteUrl?: string;
   locationDetails?: string;
+  locationCoords?: { label: string; lat: number; lng: number }[];
   
   // Dynamic Overview Sections
   overview?: { label: string; content: string }[];
