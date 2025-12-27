@@ -23,7 +23,10 @@ interface RankingListProps {
       general: Record<string, number[]>;
       subject: Record<string, number[]>;
     };
-    subjects: Record<string, Record<string, string[]>>;
+    subjects: Record<
+      string,
+      Record<string, { label: string; value: string }[]>
+    >;
   };
 }
 
@@ -118,7 +121,7 @@ const RankingList: React.FC<RankingListProps> = ({
         if (cats) {
           const firstCat = Object.keys(cats)[0];
           if (firstCat && cats[firstCat].length > 0) {
-            newSubject = cats[firstCat][0];
+            newSubject = cats[firstCat][0].value;
           }
         }
       }
@@ -161,13 +164,13 @@ const RankingList: React.FC<RankingListProps> = ({
       // Checking validity across all categories
       let valid = false;
       for (const cat in cats) {
-        if (cats[cat].includes(newSubject)) valid = true;
+        if (cats[cat].some((s) => s.value === newSubject)) valid = true;
       }
 
       if (!valid) {
         const firstCat = Object.keys(cats)[0];
         if (firstCat && cats[firstCat].length > 0) {
-          newSubject = cats[firstCat][0];
+          newSubject = cats[firstCat][0].value;
         } else {
           newSubject = '';
         }

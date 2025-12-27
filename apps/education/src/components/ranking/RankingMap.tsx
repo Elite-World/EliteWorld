@@ -81,7 +81,7 @@ const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
   }, [countryCounts, isDark]);
 
   return (
-    <div className="w-full h-[500px] bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm overflow-hidden relative mb-8 z-10">
+    <div className="w-full h-[500px] bg-white dark:bg-zinc-900 rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm overflow-hidden relative mb-8 z-0">
       <ComposableMap
         projection="geoMercator"
         projectionConfig={{ scale: 100, center: [0, 10] }}

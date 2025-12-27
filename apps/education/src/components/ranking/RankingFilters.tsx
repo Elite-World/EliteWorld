@@ -41,7 +41,7 @@ interface RankingFiltersProps {
   // Subject Filter
   selectedSubject: string;
   setSelectedSubject: (subject: string) => void;
-  subjects?: Record<string, string[]>; // Category -> Subjects list
+  subjects?: Record<string, { label: string; value: string }[]>; // Category -> Subjects list
 }
 
 const RankingFilters: React.FC<RankingFiltersProps> = ({
@@ -247,7 +247,12 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                                   : 'text-gray-500'
                               }
                             >
-                              {selectedSubject || 'Select Subject'}
+                              {selectedSubject
+                                ? Object.values(subjects)
+                                    .flat()
+                                    .find((s) => s.value === selectedSubject)
+                                    ?.label || selectedSubject
+                                : 'Select Subject'}
                             </span>
                             <ArrowDownUp className="w-4 h-4 text-gray-400" />
                           </button>
@@ -344,18 +349,18 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                             <div className="divide-y divide-gray-100 dark:divide-zinc-800">
                               {subs.map((sub) => (
                                 <button
-                                  key={sub}
+                                  key={sub.value}
                                   onClick={() => {
-                                    setSelectedSubject(sub);
+                                    setSelectedSubject(sub.value);
                                     setMobileView('main');
                                   }}
                                   className={`w-full text-left p-4 text-base ${
-                                    selectedSubject === sub
+                                    selectedSubject === sub.value
                                       ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-600 font-medium'
                                       : 'text-gray-700 dark:text-gray-300'
                                   }`}
                                 >
-                                  {sub}
+                                  {sub.label}
                                 </button>
                               ))}
                             </div>
@@ -483,7 +488,12 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                           : 'text-gray-500'
                       }`}
                     >
-                      {selectedSubject || 'Select Subject'}
+                      {selectedSubject
+                        ? Object.values(subjects)
+                            .flat()
+                            .find((s) => s.value === selectedSubject)?.label ||
+                          selectedSubject
+                        : 'Select Subject'}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 text-gray-400 shrink-0 transition-transform ${
@@ -524,7 +534,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                       <div className="overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-gray-200 dark:scrollbar-thumb-zinc-700">
                         {Object.entries(subjects).map(([category, subs]) => {
                           const filteredSubs = subs.filter((s) =>
-                            s
+                            s.label
                               .toLowerCase()
                               .includes(subjectSearch.toLowerCase())
                           );
@@ -539,21 +549,23 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                               <div className="space-y-0.5">
                                 {filteredSubs.map((subject) => (
                                   <button
-                                    key={subject}
+                                    key={subject.value}
                                     onClick={(e) => {
                                       e.stopPropagation();
-                                      setSelectedSubject(subject);
+                                      setSelectedSubject(subject.value);
                                       setShowSubjectMenu(false);
                                       setSubjectSearch('');
                                     }}
                                     className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-between group ${
-                                      selectedSubject === subject
+                                      selectedSubject === subject.value
                                         ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
                                         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:text-gray-900 dark:hover:text-gray-100'
                                     }`}
                                   >
-                                    <span className="truncate">{subject}</span>
-                                    {selectedSubject === subject && (
+                                    <span className="truncate">
+                                      {subject.label}
+                                    </span>
+                                    {selectedSubject === subject.value && (
                                       <Check className="w-3.5 h-3.5 shrink-0" />
                                     )}
                                   </button>
@@ -566,7 +578,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                         {Object.values(subjects)
                           .flat()
                           .filter((s) =>
-                            s
+                            s.label
                               .toLowerCase()
                               .includes(subjectSearch.toLowerCase())
                           ).length === 0 && (

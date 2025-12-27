@@ -1,18 +1,13 @@
-import { getDb } from '../lib/db';
-import { UniversityRanking } from '../data/rankings';
+import { University, RankingSystem, Scholarship, Country, IUniversity, IRankingSystem, IScholarship } from '../data/models';
+import dbConnect from '../lib/mongoose';
+import { UniversityRanking, RankingHistoryItem } from '../data/rankings';
 import 'server-only';
 
-interface AggregatedRanking {
-  univ_id: number;
-  name_en: string;
-  name_cn: string;
-  region_name: string;
-  region_name_en?: string;
-  region_name_cn?: string;
-  logo_file?: string;
-  website_url?: string;
-  ranks: Record<string, number | string>;
-  scores: Record<string, number>;
+// Helper to get localized string (default to en)
+function getLoc(field: any, lang: 'en' | 'cn' = 'en'): string {
+  if (!field) return '';
+  if (typeof field === 'string') return field;
+  return field[lang] || field['en'] || '';
 }
 
 export async function getGlobalRankingMeta(): Promise<{
@@ -22,80 +17,76 @@ export async function getGlobalRankingMeta(): Promise<{
     general: Record<string, number[]>;
     subject: Record<string, number[]>;
   };
-  subjects: Record<string, Record<string, string[]>>; // source -> category -> subjects
+  subjects: Record<string, Record<string, { label: string; value: string }[]>>; 
 }> {
-  const db = getDb();
+  await dbConnect();
   
-  // Fetch all ranking lists metadata
-  const rows = db
-    .prepare(
-      `SELECT DISTINCT source_code, year, rank_type, field_rank, field_broad, field_specific 
-       FROM ranking_lists 
-       ORDER BY year DESC`
-    )
-    .all() as { 
-      source_code: string; 
-      year: number; 
-      rank_type: string; 
-      field_rank: string;
-      field_broad: string | null;
-      field_specific: string | null;
-    }[];
-
+  const systems = await RankingSystem.find({}).lean();
+  
   const generalSourcesMap = new Map<string, string>();
   const subjectSourcesMap = new Map<string, string>();
-  
-  const years = {
-    general: {} as Record<string, number[]>,
-    subject: {} as Record<string, number[]>
-  };
-  
-  const subjects: Record<string, Record<string, Set<string>>> = {}; 
+  const generalYears: Record<string, number[]> = {};
+  const subjectYears: Record<string, number[]> = {};
+  const subjects: Record<string, Record<string, { label: string; value: string }[]>> = {};
 
-  for (const row of rows) {
-    const isSubject = row.rank_type === 'Subject';
-    const sourceMap = isSubject ? subjectSourcesMap : generalSourcesMap;
-    const yearRecord = isSubject ? years.subject : years.general;
-    
-    // Store Source Label
-    if (!sourceMap.has(row.source_code)) {
-      sourceMap.set(row.source_code, row.field_rank);
-    }
-    
-    // Store Year
-    if (!yearRecord[row.source_code]) {
-      yearRecord[row.source_code] = [];
-    }
-    if (!yearRecord[row.source_code].includes(row.year)) {
-      yearRecord[row.source_code].push(row.year);
-    }
-
-    // Store Subject (if applicable)
-    if (isSubject && row.field_broad && row.field_specific) {
-      if (!subjects[row.source_code]) {
-        subjects[row.source_code] = {};
+  for (const sys of systems) {
+      if (sys.general && Object.keys(sys.general).length > 0) {
+          generalSourcesMap.set(sys.slug, sys.name);
+          const ys = Object.keys(sys.general).map(Number).sort((a,b) => b-a);
+          generalYears[sys.slug] = ys;
       }
-      if (!subjects[row.source_code][row.field_broad]) {
-        subjects[row.source_code][row.field_broad] = new Set();
-      }
-      subjects[row.source_code][row.field_broad].add(row.field_specific);
-    }
-  }
 
-  // Convert Sets to Arrays for JSON serialization
-  const finalSubjects: Record<string, Record<string, string[]>> = {};
-  for (const [source, categories] of Object.entries(subjects)) {
-    finalSubjects[source] = {};
-    for (const [cat, subSet] of Object.entries(categories)) {
-      finalSubjects[source][cat] = Array.from(subSet).sort();
-    }
+      if (sys.subjects && Object.keys(sys.subjects).length > 0) {
+          // If this system has subjects, it's a valid subject source
+          subjectSourcesMap.set(sys.slug, sys.name);
+          
+          // Collect all years across all subjects to show available years
+          const allYears = new Set<number>();
+          const sysSubjects: Record<string, { label: string; value: string }[]> = {}; // category -> subjects
+
+          // Group subjects (flat structure in DB, we'll put them all in "All" or similar for now)
+          // Since our schema stores flattened subjects, we need to reconstruct categories if needed.
+          // For now, we'll put them under 'General' or classify dynamically.
+          // To keep it simple for M3: We'll put all under 'All Subjects' category.
+          const subjectKeys = Object.keys(sys.subjects).sort();
+          
+          /* 
+             NOTE: 'sys.subjects' and 'sys.subject_labels' from .lean() are usually plain objects 
+             if simple lean/toJSON was used, but if strict schema types are Map, helper might be needed.
+             However since we used lean(), they are POJOs.
+             The type definition in models.ts says Map, but .lean() returns Record<string, ...>.
+          */
+          
+          const translatedList = subjectKeys.map(slug => {
+              // @ts-ignore
+              const labelObj = sys.subject_labels ? sys.subject_labels[slug] : null;
+              return {
+                  value: slug,
+                  label: labelObj ? (labelObj.en || slug) : slug
+              };
+          });
+          
+          sysSubjects['Different Subjects'] = translatedList;
+          subjects[sys.slug] = sysSubjects;
+
+          for (const subj of subjectKeys) {
+             // @ts-ignore
+             const yKeys = Object.keys(sys.subjects[subj] || {});
+             yKeys.forEach(y => allYears.add(Number(y)));
+          }
+
+          subjectYears[sys.slug] = Array.from(allYears).sort((a,b) => b-a);
+      }
   }
 
   return {
     generalSources: Array.from(generalSourcesMap.entries()).map(([v, l]) => ({ value: v, label: l })),
-    subjectSources: Array.from(subjectSourcesMap.entries()).map(([v, l]) => ({ value: v, label: l })),
-    years,
-    subjects: finalSubjects
+    subjectSources: Array.from(subjectSourcesMap.entries()).map(([v, l]) => ({ value: v, label: l })), 
+    years: {
+      general: generalYears,
+      subject: subjectYears
+    },
+    subjects
   };
 }
 
@@ -105,228 +96,215 @@ export async function getRankingList(
   rankType: 'General' | 'Subject' = 'General',
   subject?: string
 ): Promise<UniversityRanking[]> {
-  const db = getDb();
+  await dbConnect();
+
+  // 1. Fetch Ranking Bucket
+  const system = await RankingSystem.findOne({ slug: source }).lean();
+  if (!system) return [];
+
+  // 2. Select Bucket (General Bucket)
+  let entries: { rank: number; uni_id: any }[] = [];
+  let availableYears: number[] = [];
   let targetYear = year;
 
-  // 1. Determine Target Year
-  if (!targetYear) {
-    let queryStr = `SELECT MAX(year) as max_year FROM ranking_lists WHERE source_code = ? AND rank_type = ?`;
-    const params: any[] = [source, rankType];
-    
-    if (rankType === 'Subject' && subject) {
-      queryStr += ` AND field_specific = ?`;
-      params.push(subject);
-    } 
-
-    const latestYearQuery = db.prepare(queryStr);
-    const result = latestYearQuery.get(...params) as { max_year: number };
-    targetYear = result.max_year || 2025;
-  }
-
-  // 2. Fetch Lists to Query
-  let listsQuerySql = `SELECT lib_id, source_code FROM ranking_lists WHERE year = ? AND rank_type = ?`;
-  const listsQueryParams: any[] = [targetYear, rankType];
+  // We need to fetch 'peer' rankings to show "Other Rankings" on the card
+  // e.g. if viewing "QS 2025", we also want "THE 2025", "USNEWS 2025" etc for the same unis.
+  const peerSystems = await RankingSystem.find({ 
+      slug: { $in: ['qs', 'the', 'usnews', 'arwu'] }, // Major ones only for performance
+      _id: { $ne: system._id } 
+  }).lean();
 
   if (rankType === 'General') {
-    // For General, we get all lists to aggregate
+      if (!system.general) return [];
+      availableYears = Object.keys(system.general).map(Number).sort((a,b) => b-a);
+      
+      if (!targetYear) targetYear = availableYears[0] || 2025;
+      
+      entries = system.general[String(targetYear)] || [];
+  
   } else {
-    // For Subject, we must filter by Source and Subject Name
-    if (!subject) return []; // Subject is required
-    listsQuerySql += ` AND source_code = ? AND field_specific = ?`;
-    listsQueryParams.push(source, subject);
+      // Subject Ranking
+      if (!subject || !system.subjects) return [];
+      
+      // With .lean(), system.subjects is a POJO Record<string, ...> despite Map schema
+      // New DB uses English slugs directly (e.g. 'business')
+      // @ts-ignore
+      const subjectBucket = system.subjects[subject];
+      
+      if (!subjectBucket) return [];
+
+      availableYears = Object.keys(subjectBucket).map(Number).sort((a,b) => b-a);
+      
+      if (!targetYear) targetYear = availableYears[0] || 2025;
+
+      entries = subjectBucket[String(targetYear)] || [];
   }
 
-  const lists = db.prepare(listsQuerySql).all(...listsQueryParams) as {
-    lib_id: number;
-    source_code: string;
-  }[];
+  if (entries.length === 0) return [];
 
-  if (lists.length === 0) return [];
+  // 3. Extract Uni IDs and Fetch Profile Data
+  const uniIds = entries.map((e: any) => e.uni_id);
+  const universities = await University.find({ _id: { $in: uniIds } })
+      .populate({ path: 'location.country_id', strictPopulate: false })
+      .lean();
 
-  // 3. Aggregate Data
-  const universityMap = new Map<number, AggregatedRanking>();
+  const uniMap = new Map<string, any>();
+  universities.forEach((u: any) => uniMap.set(u._id.toString(), u));
 
-  for (const list of lists) {
-    const itemsQuery = db.prepare(`
-      SELECT 
-        ri.rank_display,
-        ri.score,
-        ri.univ_id,
-        u.name_en,
-        u.name_cn,
-        u.logo_file,
-        u.website_url,
-        r.name_en as region_name_en,
-        r.name_cn as region_name_cn
-      FROM ranking_items ri
-      JOIN universities u ON ri.univ_id = u.univ_id
-      LEFT JOIN regions r ON u.region_id = r.id
-      WHERE ri.list_id = ?
-    `);
+  // 4. Build Cross-Ranking Map
+  // Map<uniId, Record<source, rank>>
+  const crossRanks = new Map<string, Record<string, number>>();
+  
+  // Pre-fill with current list
+  entries.forEach((e: any) => {
+      const uid = e.uni_id.toString();
+      if (!crossRanks.has(uid)) crossRanks.set(uid, {});
+      crossRanks.get(uid)![source] = e.rank;
+  });
 
-    const items = itemsQuery.all(list.lib_id) as any[];
-
-    for (const item of items) {
-      if (!universityMap.has(item.univ_id)) {
-        universityMap.set(item.univ_id, {
-          univ_id: item.univ_id,
-          name_en: item.name_en,
-          name_cn: item.name_cn,
-          region_name: item.region_name_cn || item.region_name_en || '',
-          region_name_en: item.region_name_en,
-          region_name_cn: item.region_name_cn,
-          logo_file: item.logo_file,
-          website_url: item.website_url,
-          ranks: {},
-          scores: {},
-        });
+  // Fill from peers (General rankings only for cross-comparison)
+  if (rankType === 'General') { // Only valid to cross-compare general ranks usually
+      for (const peer of peerSystems) {
+          const peerEntries = peer.general?.[String(targetYear)];
+          if (peerEntries) {
+              peerEntries.forEach((pe: any) => {
+                  const uid = pe.uni_id.toString();
+                  // Only add if this university is in our main list (optimization)
+                  if (crossRanks.has(uid)) {
+                      crossRanks.get(uid)![peer.slug] = pe.rank;
+                  }
+              });
+          }
       }
-      const uni = universityMap.get(item.univ_id)!;
-      uni.ranks[list.source_code] = item.rank_display; 
-      if (item.score) uni.scores[list.source_code] = item.score;
-    }
   }
 
-  // 4. Convert to array and sort
-  const result = Array.from(universityMap.values()).map((uni) => {
-    const primaryRank = uni.ranks[source] || Object.values(uni.ranks)[0];
-    const countryName = uni.region_name_en || uni.region_name_cn || 'Unknown';
-    return {
-      id: uni.univ_id.toString(),
-      rank: typeof primaryRank === 'string' ? parseInt(primaryRank) || 999 : primaryRank || 999,
-      name: uni.name_en || uni.name_cn,
-      nameEn: uni.name_en,
-      country: countryName,
-      region: countryName, // Fallback as DB regions are countries
-      overallScore: uni.scores[source] || 0,
-      logoUrl: uni.logo_file ? `/logos/${uni.logo_file}` : undefined,
-      badges: [],
-      ranks: uni.ranks,
-    };
-  });
+  // 5. Map to Response
+  return entries.map((entry: any) => {
+      const u = uniMap.get(entry.uni_id.toString());
+      if (!u) return null;
 
-  return result;
-}
-export async function getUniversity(slug: string): Promise<UniversityRanking | null> {
-  const db = getDb();
+      const countryName = u.location?.country_id?.name?.en || 'Unknown';
+      const uid = entry.uni_id.toString();
 
-  // 1. Find university ID by matching slug
-  // This is a temporary inefficient solution until we have indexed slugs in DB
-  const unis = db.prepare('SELECT univ_id, name_en FROM universities').all() as {
-    univ_id: number;
-    name_en: string;
-  }[];
-
-  const matchedUni = unis.find((u) => {
-    const s = (u.name_en || '')
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-    return s === slug;
-  });
-
-  if (!matchedUni) return null;
-
-  // 2. Fetch Aggregated Data for this University
-  // We reuse logic similar to getRankingList but strictly for one ID
-  // and aggregating all available data (all years/sources)
-
-  const rankings = db
-    .prepare(
-      `SELECT
-        r.score as ranking_score,
-        r.rank_display,
-        l.source_code,
-        l.year
-      FROM ranking_items r
-      JOIN ranking_lists l ON r.list_id = l.lib_id
-      WHERE r.univ_id = ?
-      ORDER BY l.year DESC`
-    )
-    .all(matchedUni.univ_id) as {
-    ranking_score: number; 
-    rank_display: string;
-    source_code: string;
-    year: number;
-  }[];
-
-  const uniDetails = db
-    .prepare(
-      `SELECT
-        u.*,
-        r.name_cn as region_name,
-        r.name_en as region_name_en
-      FROM universities u
-      LEFT JOIN regions r ON u.region_id = r.id
-      WHERE u.univ_id = ?`
-    )
-    .get(matchedUni.univ_id) as any;
-
-  // 3. Fetch Scholarships
-  const scholarships = db.prepare('SELECT name, amount, type FROM university_scholarships WHERE univ_id = ?').all(matchedUni.univ_id) as any[];
-
-  if (!uniDetails) return null;
-
-  // Process Ranks: showing the LATEST rank for each source
-  const ranks: Record<string, number | string> = {};
-  const seenSources = new Set<string>();
-
-  for (const r of rankings) {
-    if (!seenSources.has(r.source_code)) {
-      ranks[r.source_code] = r.rank_display || 0; // or parse int
-      seenSources.add(r.source_code);
-    }
-  }
-
-  // Construct Result
-  return {
-    id: uniDetails.univ_id,
-    name: uniDetails.name_en || uniDetails.name_cn, 
-    nameEn: uniDetails.name_en, 
-    country: uniDetails.region_name_en || uniDetails.region_name,
-    region: 'Global', // TODO: Populate if available in DB
-    logoUrl: uniDetails.logo_file
-      ? `/logos/${uniDetails.logo_file}`
-      : undefined,
-    websiteUrl: uniDetails.website_url,
-    description: uniDetails.description,
-    history: uniDetails.history,
-    education: uniDetails.education,
-    research: uniDetails.research,
-    accreditation: uniDetails.accreditation,
-    visitGuide: uniDetails.visit_guide,
-    
-    // Stats
-    foundedYear: uniDetails.founded_year,
-    campusType: uniDetails.campus_type,
-    studentCount: uniDetails.student_count,
-    undergradCount: uniDetails.undergrad_count,
-    postgradCount: uniDetails.postgrad_count,
-    staffCount: uniDetails.staff_count,
-    femaleMaleRatio: uniDetails.female_male_ratio,
-    intlStudentPercent: uniDetails.intl_student_percent,
-    
-    // Programs
-    courseShortCount: uniDetails.course_short_count,
-    courseBachelorCount: uniDetails.course_bachelor_count,
-    courseMasterCount: uniDetails.course_master_count,
-    coursePhdCount: uniDetails.course_phd_count,
-
-    scholarships: scholarships,
-
-    rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0, // Fallback/Primary rank
-    ranks: ranks,
-    rankingHistory: rankings.map(r => {
-      const rankNum = parseInt(r.rank_display.replace(/[^0-9].*$/, '')) || 999; 
       return {
-        year: r.year,
-        source: r.source_code,
-        rank: rankNum,
-        score: r.ranking_score
+          id: u.slug, 
+          rank: entry.rank,
+          name: getLoc(u.name),
+          nameEn: u.name?.en,
+          country: countryName,
+          region: countryName,
+          logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+          websiteUrl: u.assets?.website,
+          description: u.description,
+          details: u.details || {},
+          stats: u.details?.stat || [],
+          ranks: crossRanks.get(uid) || { [source]: entry.rank }
       };
-    }),
-    badges: [], // TODO: Populate badges if needed
-    overallScore: 0, // To be populated
+  }).filter(Boolean) as UniversityRanking[];
+}
 
+export async function getUniversity(slug: string): Promise<UniversityRanking | null> {
+  await dbConnect();
+  
+  // 1. Fetch University
+  const u = await University.findOne({ slug })
+    .populate({ path: 'location.country_id', strictPopulate: false })
+    .lean() as any;
+    
+  if (!u) return null;
+
+  // 2. Parallel Fetch: Scholarships + ALL Ranking Buckets
+  // Fetching all buckets is cheap because there are few systems (<10 typically)
+  const [scholarships, countryScholarships, allSystems] = await Promise.all([
+     Scholarship.find({ entity_id: u._id, scope: 'university' }).lean() as Promise<any[]>,
+     u.location?.country_id?._id 
+        ? Scholarship.find({ entity_id: u.location.country_id._id, scope: 'country' }).lean() as Promise<any[]>
+        : Promise.resolve([]),
+     RankingSystem.find({}).lean()
+  ]);
+
+  const allScholarships = [...scholarships, ...(countryScholarships as any[])];
+
+  // 3. Scan Buckets for Rankings
+  const ranks: Record<string, number | string> = {};
+  const history: RankingHistoryItem[] = [];
+  const bestRanks: Record<string, any> = {};
+
+  const uniIdStr = u._id.toString();
+
+  for (const sys of allSystems) {
+      // Check General Rankings
+      if (sys.general) {
+          for (const [yearStr, entries] of Object.entries(sys.general)) {
+              // @ts-ignore
+              const entry = entries.find((e: any) => e.uni_id.toString() === uniIdStr);
+              if (entry) {
+                  const yearNum = parseInt(yearStr);
+                  history.push({
+                      source: sys.slug,
+                      year: yearNum,
+                      rank: entry.rank,
+                      score: 0
+                  });
+                  // Latest General Rank Logic
+                  if (!bestRanks[sys.slug] || bestRanks[sys.slug].year < yearNum) {
+                      bestRanks[sys.slug] = { ...entry, year: yearNum };
+                      ranks[sys.slug] = entry.rank;
+                  }
+              }
+          }
+      }
+      
+      // Note: We currently don't add specific SUBJECT rankings to the main 'ranks' map 
+      // or 'history' list displayed on the main profile, as that would be overwhelming.
+      // We only show General rankings there. Subject rankings are viewed via the Ranking List filter.
+  }
+
+  // Sort history
+  history.sort((a, b) => b.year - a.year);
+
+  // Map Details
+  const overview = (u.details?.overall || []).map((d: any) => ({
+      label: getLoc(d.label),
+      content: getLoc(d.content)
+  }));
+  
+  const stats = (u.details?.stat || []).map((s: any) => ({
+      label: getLoc(s.label),
+      content: getLoc(s.content),
+      type: s.type || 'statistic'
+  }));
+
+  const detailsOverall = overview.map((d: any) => d.content).join('\n\n');
+  
+  const countryName = u.location?.country_id?.name?.en || 'Unknown';
+
+  return {
+    id: u.slug, // Use slug
+    name: getLoc(u.name),
+    nameEn: u.name?.en,
+    country: countryName,
+    region: 'Global',
+    logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+    websiteUrl: u.assets?.website,
+    
+    description: u.description, // Direct field now
+    // Fallback mapping for old interface fields if needed, or use specific new fields
+    // For now mapping back to the interface expected by frontend
+    overview, // New dynamic field 
+    stats, // New dynamic field 
+    
+    // Legacy stats mapping removed
+     
+    scholarships: allScholarships.map((s: any) => ({
+        name: getLoc(s.name),
+        amount: getLoc(s.amount),
+        type: s.type
+    })),
+
+    rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0,
+    ranks: ranks,
+    rankingHistory: history,
+    badges: [],
   };
 }
