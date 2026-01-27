@@ -24,7 +24,7 @@ export function WorldGlobe() {
   const [arcsData, setArcsData] = useState<any[]>([]);
   const [continents, setContinents] = useState<string[]>([]);
   const [selectedContinent, setSelectedContinent] = useState<string | null>(
-    null
+    null,
   );
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -36,19 +36,20 @@ export function WorldGlobe() {
 
   useEffect(() => {
     // Load country polygons from a reliable public source (50m for better resolution/Singapore)
-    fetch(
-      'https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_50m_admin_0_countries.geojson'
-    )
+    fetch('/data/ne_50m_admin_0_countries.geojson')
       .then((res) => res.json())
       .then((data) => {
         setCountries(data);
         // Extract unique continents
         const uniqueContinents = Array.from(
-          new Set(data.features.map((f: any) => f.properties.CONTINENT))
+          new Set(data.features.map((f: any) => f.properties.CONTINENT)),
         )
           .filter(Boolean)
           .sort() as string[];
         setContinents(uniqueContinents);
+      })
+      .catch((error) => {
+        console.error('Failed to load country data:', error);
       });
   }, []);
 
@@ -201,7 +202,7 @@ export function WorldGlobe() {
   const visibleCountries = useMemo(() => {
     if (!selectedContinent) return countries.features;
     return countries.features.filter(
-      (f: any) => f.properties.CONTINENT === selectedContinent
+      (f: any) => f.properties.CONTINENT === selectedContinent,
     );
   }, [countries, selectedContinent]);
 
@@ -281,7 +282,7 @@ export function WorldGlobe() {
               }
               const matches = countries.features
                 .filter((f: any) =>
-                  f.properties.ADMIN.toLowerCase().includes(val)
+                  f.properties.ADMIN.toLowerCase().includes(val),
                 )
                 .slice(0, 5); // Limit to 5 results
               setSearchResults(matches);
@@ -301,7 +302,7 @@ export function WorldGlobe() {
                         setSearchResults([]);
                         // Clear input manually
                         const input = document.querySelector(
-                          'input[placeholder="Search country..."]'
+                          'input[placeholder="Search country..."]',
                         ) as HTMLInputElement;
                         if (input) input.value = '';
                       }}
@@ -324,8 +325,8 @@ export function WorldGlobe() {
 
       <Globe
         ref={globeEl}
-        globeImageUrl={undefined}
-        backgroundImageUrl="//unpkg.com/three-globe/example/img/night-sky.png"
+        // globeImageUrl={undefined}
+        backgroundImageUrl="/images/night-sky.png"
         lineHoverPrecision={0}
         polygonsData={visibleCountries}
         polygonAltitude={(d: any) => (d === hoverD ? 0.12 : 0.06)}
@@ -348,8 +349,8 @@ export function WorldGlobe() {
               <div class="font-bold text-lg mb-2 text-blue-100">${
                 d.ADMIN
               } <span class="text-xs text-gray-500 font-normal">(${
-          d.ISO_A2
-        })</span></div>
+                d.ISO_A2
+              })</span></div>
               <div class="space-y-1.5 text-xs text-gray-300">
                   <div class="flex justify-between gap-4 border-b border-white/10 pb-1">
                     <span>Population</span> 
@@ -363,7 +364,7 @@ export function WorldGlobe() {
                   <div class="flex justify-between gap-4 border-b border-white/10 pb-1">
                     <span>GDP (Est.)</span> 
                     <span class="text-emerald-400 font-mono">$${Number(
-                      d.GDP_MD_EST
+                      d.GDP_MD_EST,
                     ).toLocaleString()} M</span>
                   </div>`
                       : ''
@@ -375,7 +376,7 @@ export function WorldGlobe() {
                     <span>Economy</span> 
                     <span class="text-white font-medium text-right max-w-[120px] leading-tight">${d.ECONOMY.replace(
                       /^\d+\.\s*/,
-                      ''
+                      '',
                     )}</span>
                   </div>`
                       : ''
@@ -387,7 +388,7 @@ export function WorldGlobe() {
                     <span>Income</span> 
                     <span class="text-blue-300 font-medium text-right max-w-[120px] leading-tight">${d.INCOME_GRP.replace(
                       /^\d+\.\s*/,
-                      ''
+                      '',
                     )}</span>
                   </div>`
                       : ''
@@ -441,7 +442,7 @@ export function WorldGlobe() {
           className="absolute top-36 left-4 right-4 md:left-auto md:right-4 bg-gray-900/95 backdrop-blur-md border border-white/20 p-5 rounded-2xl shadow-2xl text-white md:w-72 z-50 cursor-move"
         >
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent pointer-events-none select-none">
+            <h2 className="text-xl font-bold bg-linear-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent pointer-events-none select-none">
               {selectedCountry.properties.ADMIN}
             </h2>
             <button
