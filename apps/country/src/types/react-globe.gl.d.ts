@@ -1,5 +1,5 @@
 declare module 'react-globe.gl' {
-  import { Component, ForwardRefExoticComponent, RefAttributes } from 'react';
+  import { ForwardRefExoticComponent, RefAttributes } from 'react';
 
   export interface GlobeProps {
     globeImageUrl?: string;

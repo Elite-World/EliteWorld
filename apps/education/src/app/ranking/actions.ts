@@ -1,7 +1,7 @@
 'use server';
 
-import { getRankingList as getRankingListService } from '@repo/web-shared/services/ranking-service';
-import { UniversityRanking } from '@repo/web-shared';
+import { getRankingList as getRankingListService } from '@repo/domain/services/ranking-service';
+import { UniversityRanking } from '@repo/domain';
 
 export async function fetchRankings(
   year: number,

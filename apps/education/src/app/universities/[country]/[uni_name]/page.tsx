@@ -1,23 +1,23 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getUniversity } from '@repo/web-shared/services/ranking-service';
+import { getUniversity } from '@repo/domain/services/ranking-service';
 import {
-  Info,
+  // Info,
   MapPin,
   Globe,
   Trophy,
   Users,
-  BookOpen,
+  // BookOpen,
   Clock,
   Calendar,
   ExternalLink,
   GraduationCap,
   Building2,
   Award,
-  CheckCircle,
+  // CheckCircle,
   ArrowRight,
 } from 'lucide-react';
-import { RankingChart } from '@/components/ranking/RankingChart';
+// import { RankingChart } from '@/components/ranking/RankingChart';
 import { RankingSourceCard } from '@/components/ranking/RankingSourceCard';
 import { Metadata } from 'next';
 import Image from 'next/image';
@@ -346,7 +346,7 @@ export default async function UniversityPage({ params }: PageProps) {
       {/* Custom Header */}
       <div className="relative bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 pb-12 pt-32 md:pt-40">
         <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-          <div className="absolute -top-[50%] -right-[10%] w-[70%] h-[150%] bg-gradient-to-l from-blue-50 to-transparent dark:from-blue-900/10 rounded-full blur-3xl" />
+          <div className="absolute -top-[50%] -right-[10%] w-[70%] h-[150%] bg-linear-to-l from-blue-50 to-transparent dark:from-blue-900/10 rounded-full blur-3xl" />
         </div>
 
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
@@ -419,7 +419,7 @@ export default async function UniversityPage({ params }: PageProps) {
         {SHOW_SECTIONS.programs && (
           <div className="grid md:grid-cols-3 gap-8 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
             {/* Free Test CTA */}
-            <div className="md:col-span-1 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group">
+            <div className="md:col-span-1 bg-linear-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group">
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-4">
                   Take a Free Practice Test

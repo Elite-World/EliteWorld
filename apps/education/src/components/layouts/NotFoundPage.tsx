@@ -1,8 +1,8 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 import Link from 'next/link';
 
 export function NotFoundPage() {

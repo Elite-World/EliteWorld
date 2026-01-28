@@ -1,0 +1,27 @@
+{
+  "name": "@repo/tooling",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "*.ts",
+    "*.js"
+  ],
+  "exports": {
+    "./typescript/*": "./typescript-config/*.json",
+    "./tailwind": "./tailwind.config.ts",
+    "./ui": "./ui-config.ts",
+    "./notion": "./notion-config.ts"
+  },
+  "devDependencies": {
+    "tailwindcss": "4.1.18",
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "framer-motion": "12.29.2",
+    "lucide-react": "0.563.0",
+    "next": "16.1.5",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "tailwind-merge": "3.4.0"
+  }
+}

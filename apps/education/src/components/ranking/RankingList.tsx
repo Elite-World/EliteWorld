@@ -2,12 +2,13 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UniversityRanking } from '@repo/web-shared';
+import { UniversityRanking } from '@repo/domain';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
 import RankingDetailModal from './RankingDetailModal';
 import { fetchRankings } from '@/app/ranking/actions';
-import { useRouter, useSearchParams } from 'next/navigation';
+// import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 interface RankingListProps {
   initialUniversities: UniversityRanking[];
@@ -40,14 +41,14 @@ const RankingList: React.FC<RankingListProps> = ({
   meta,
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  // const searchParams = useSearchParams();
 
   // State
   const [universities, setUniversities] =
     useState<UniversityRanking[]>(initialUniversities);
   const [currentYear, setCurrentYear] = useState(initialYear);
   const [rankType, setRankType] = useState<'General' | 'Subject'>(
-    initialRankType
+    initialRankType,
   );
   const [selectedSource, setSelectedSource] = useState(initialSource);
   const [selectedSubject, setSelectedSubject] = useState(initialSubject || '');
@@ -77,7 +78,7 @@ const RankingList: React.FC<RankingListProps> = ({
     source: string,
     type: 'General' | 'Subject',
     subject?: string,
-    country?: string
+    country?: string,
   ) => {
     setIsLoading(true);
 
@@ -191,7 +192,7 @@ const RankingList: React.FC<RankingListProps> = ({
       selectedSource,
       rankType,
       selectedSubject,
-      selectedCountry
+      selectedCountry,
     );
   };
 
@@ -221,7 +222,7 @@ const RankingList: React.FC<RankingListProps> = ({
   }, [universities]);
 
   const filteredUniversities = useMemo(() => {
-    let result = universities.filter((uni) => {
+    const result = universities.filter((uni) => {
       const matchesSearch = uni.name
         .toLowerCase()
         .includes(searchQuery.toLowerCase());

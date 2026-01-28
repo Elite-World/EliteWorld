@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useAppContext } from '@/context/AppContext';
 import CourseCard from '@/components/CourseCard';
 import { CourseCategory } from '@/types';

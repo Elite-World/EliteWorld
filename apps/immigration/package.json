@@ -6,12 +6,11 @@
     "dev": "next dev --port 3001 --turbopack",
     "build": "next build",
     "start": "next start --port 3001",
-    "lint": "next lint"
+    "lint": "eslint ."
   },
   "dependencies": {
     "@notionhq/client": "^5.6.0",
-    "@repo/config": "*",
-    "@repo/content": "*",
+    "@repo/cms": "*",
     "@repo/ui": "*",
     "@tailwindcss/postcss": "4.1.18",
     "@tailwindcss/typography": "^0.5.19",
@@ -35,15 +34,16 @@
     "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@repo/config": "*",
-    "@repo/content": "*",
+    "@repo/apps-config": "*",
+    "@repo/cms": "*",
+    "@repo/domain": "^0.1.0",
+    "@repo/tooling": "*",
     "@repo/ui": "*",
-    "@repo/web-shared": "^0.1.0",
     "@types/node": "^20",
     "@types/react": "19.0.0",
     "@types/react-dom": "19.0.0",
-    "eslint": "^9",
-    "eslint-config-next": "^16.0.10",
+    "eslint": "^8.57.0",
+    "eslint-config-next": "^15.0.4",
     "postcss": "^8",
     "tailwind-merge": "3.4.0",
     "tailwindcss": "4.1.18",

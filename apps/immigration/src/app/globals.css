@@ -1,4 +1,8 @@
 @import "tailwindcss";
+@source "../../../../packages/ui";
+@source "../../../../packages/domain";
+@source "../../../../packages/cms";
+@source "../../../../packages/apps-config";
 
 @layer base {
   :root {

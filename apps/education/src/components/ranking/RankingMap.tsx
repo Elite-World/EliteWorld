@@ -5,7 +5,7 @@ import { ComposableMap, Geographies, Geography } from 'react-simple-maps';
 import { scaleQuantile } from 'd3-scale';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
-import { UniversityRanking, useThemeStore } from '@repo/web-shared';
+import { UniversityRanking, useThemeStore } from '@repo/domain';
 
 // TopoJSON URL (Standard World Map)
 import geoUrl from '../../data/world-countries.json';
@@ -67,9 +67,6 @@ const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
 
   // Create color scale
   const colorScale = useMemo(() => {
-    // Determine max count for domain
-    const maxCount = Math.max(...Object.values(countryCounts), 0);
-
     // Blue shades palette
     const colors = isDark
       ? ['#27272a', '#1e3a8a', '#2563eb', '#3b82f6', '#60a5fa', '#93c5fd'] // Dark mode blues
@@ -107,8 +104,8 @@ const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
                     count > 0
                       ? colorScale(count)
                       : isDark
-                      ? '#3f3f46'
-                      : '#e4e4e7'
+                        ? '#3f3f46'
+                        : '#e4e4e7'
                   }
                   stroke={isDark ? '#18181b' : '#fff'}
                   strokeWidth={0.5}

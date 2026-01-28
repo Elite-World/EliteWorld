@@ -3,11 +3,11 @@ import { Metadata } from 'next';
 import RankingList from '@/components/ranking/RankingList';
 import { HeroSection } from '@repo/ui';
 import RankingMap from '@/components/ranking/RankingMap';
-import { UniversityRanking } from '@repo/web-shared';
+// import { UniversityRanking } from '@repo/domain';
 import {
   getRankingList,
   getGlobalRankingMeta,
-} from '@repo/web-shared/services/ranking-service';
+} from '@repo/domain/services/ranking-service';
 
 export const metadata: Metadata = {
   title: 'Global University Rankings | Elite World Education',
@@ -38,7 +38,7 @@ export default async function RankingPage({
 
   // Flatten generic years to find a default if needed
   const allGeneralYears = Array.from(
-    new Set(Object.values(meta.years.general).flat())
+    new Set(Object.values(meta.years.general).flat()),
   ).sort((a, b) => b - a);
 
   const displayYear = selectedYear || allGeneralYears[0] || 2025;

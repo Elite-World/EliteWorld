@@ -2,8 +2,9 @@
 
 import React from 'react';
 import { useParams } from 'next/navigation';
+import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
-import Rating from '@/components/Rating';
+// import Rating from '@/components/Rating';
 import Button from '@/components/Button';
 
 const StarIcon = () => (
@@ -72,19 +73,24 @@ const CourseDetailPage: React.FC = () => {
 
       {/* Image Gallery */}
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-2 rounded-xl overflow-hidden h-96">
-        <img
-          src={course.images[0]}
-          alt={course.title}
-          className="w-full h-full object-cover"
-        />
+        <div className="relative w-full h-full">
+          <Image
+            src={course.images[0]}
+            alt={course.title}
+            fill
+            className="object-cover"
+          />
+        </div>
         <div className="hidden md:grid grid-cols-2 gap-2">
           {course.images.slice(1, 5).map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt={`${course.title} ${index + 1}`}
-              className="w-full h-full object-cover"
-            />
+            <div key={index} className="relative w-full h-full">
+              <Image
+                src={img}
+                alt={`${course.title} ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -102,7 +108,9 @@ const CourseDetailPage: React.FC = () => {
 
           {/* What you'll learn */}
           <div className="py-6 border-b">
-            <h2 className="text-2xl font-semibold mb-4">What you'll learn</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              What you&apos;ll learn
+            </h2>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {course.whatYouWillLearn.map((item, index) => (
                 <li key={index} className="flex items-start gap-3">
@@ -146,11 +154,14 @@ const CourseDetailPage: React.FC = () => {
               Meet your instructor
             </h2>
             <div className="flex items-center gap-4">
-              <img
-                src={owner.avatarUrl}
-                alt={owner.name}
-                className="w-20 h-20 rounded-full"
-              />
+              <div className="relative w-20 h-20 rounded-full overflow-hidden shrink-0">
+                <Image
+                  src={owner.avatarUrl}
+                  alt={owner.name}
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div>
                 <h3 className="text-xl font-semibold">{owner.name}</h3>
                 <p className="text-gray-600">
@@ -168,11 +179,14 @@ const CourseDetailPage: React.FC = () => {
               {course.reviews.map((review) => (
                 <div key={review.id}>
                   <div className="flex items-center gap-3">
-                    <img
-                      src={review.authorAvatarUrl}
-                      alt={review.authorName}
-                      className="w-12 h-12 rounded-full"
-                    />
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
+                      <Image
+                        src={review.authorAvatarUrl}
+                        alt={review.authorName}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <div>
                       <p className="font-semibold">{review.authorName}</p>
                       <p className="text-sm text-gray-500">{review.date}</p>

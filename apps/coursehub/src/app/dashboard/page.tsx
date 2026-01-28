@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/AppContext';
 import { Course } from '@/types';
@@ -52,11 +53,14 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
       href={linkDestination}
       className="flex flex-col sm:flex-row items-center gap-4 p-4 border rounded-lg bg-white relative transition hover:shadow-md group"
     >
-      <img
-        src={course.images[0]}
-        alt={course.title}
-        className="w-full sm:w-40 h-32 object-cover rounded-md flex-shrink-0"
-      />
+      <div className="relative w-full sm:w-40 h-32 shrink-0">
+        <Image
+          src={course.images[0]}
+          alt={course.title}
+          fill
+          className="object-cover rounded-md"
+        />
+      </div>
       <div className="grow self-start sm:self-center w-full">
         <p className="text-sm text-gray-500">{course.category}</p>
         <h3 className="font-semibold text-lg text-gray-800 group-hover:underline">
@@ -168,11 +172,14 @@ const DashboardPage: React.FC = () => {
                   className="bg-white p-4 rounded-lg shadow border flex flex-col sm:flex-row items-start sm:items-center gap-4"
                 >
                   <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 text-2xl font-bold shrink-0">
-                    <img
-                      src={user.avatarUrl}
-                      alt={user.name}
-                      className="w-12 h-12 rounded-full mr-4"
-                    />
+                    <div className="relative w-12 h-12 rounded-full mr-4 overflow-hidden shrink-0">
+                      <Image
+                        src={user.avatarUrl}
+                        alt={user.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <div>
                       <p className="font-semibold text-gray-800">{user.name}</p>
                       <p className="text-sm text-gray-500">{user.email}</p>
@@ -202,7 +209,9 @@ const DashboardPage: React.FC = () => {
                 </div>
               ))
             ) : (
-              <p>You haven't assigned any collaborators to your courses yet.</p>
+              <p>
+                You haven&apos;t assigned any collaborators to your courses yet.
+              </p>
             )}
           </div>
         </div>
@@ -218,14 +227,14 @@ const DashboardPage: React.FC = () => {
       case 'myLearning':
         list = enrolledCourses;
         type = 'learning';
-        title = "Courses you're learning";
-        emptyText = "You haven't enrolled in any courses yet.";
+        title = 'Courses you&apos;re learning';
+        emptyText = 'You haven&apos;t enrolled in any courses yet.';
         break;
       case 'myCourses':
         list = myCourses;
         type = 'owned';
         title = 'Courses I Own';
-        emptyText = "You haven't created any courses yet.";
+        emptyText = 'You haven&apos;t created any courses yet.';
         break;
       case 'managedCourses':
         list = managedCourses;
@@ -275,13 +284,18 @@ const DashboardPage: React.FC = () => {
             <h1 className="text-3xl font-bold text-gray-900">
               Welcome back, {currentUser.name}!
             </h1>
-            <p className="text-gray-600 mt-1">Here's your member dashboard.</p>
+            <p className="text-gray-600 mt-1">
+              Here&apos;s your member dashboard.
+            </p>
           </div>
-          <img
-            src={currentUser.avatarUrl}
-            alt={currentUser.name}
-            className="w-16 h-16 rounded-full mt-4 md:mt-0"
-          />
+          <div className="relative w-16 h-16 mt-4 md:mt-0 rounded-full overflow-hidden shrink-0">
+            <Image
+              src={currentUser.avatarUrl}
+              alt={currentUser.name}
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
 
         <div className="flex items-center border-b border-gray-200 mb-6 flex-wrap">

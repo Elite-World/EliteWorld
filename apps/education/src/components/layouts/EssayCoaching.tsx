@@ -1,14 +1,12 @@
 'use client';
 
+import Image from 'next/image';
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
-import { siteConfig } from '@repo/web-shared/config/education/site-config';
-import ReactMarkdown from 'react-markdown';
+
 import {
   PackageItem,
   ServiceItem,
-} from '@repo/web-shared/content/education/pricing/essayCoaching';
+} from '@repo/apps-config/content/education/pricing/essayCoaching';
 
 interface EssayCoachingProps {
   documentTypes: ServiceItem[];
@@ -19,8 +17,6 @@ export function EssayCoachingContent({
   documentTypes,
   packages,
 }: EssayCoachingProps) {
-  const isDark = useThemeStore((state) => state.isDark);
-
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
       <HeroSection
@@ -43,14 +39,15 @@ export function EssayCoachingContent({
             {documentTypes.map((item) => (
               <div
                 key={item.id}
-                className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-transparent dark:border-white/10"
+                className="relative aspect-4/3 rounded-lg overflow-hidden group cursor-pointer shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-transparent dark:border-white/10"
               >
-                <img
+                <Image
                   src={item.image}
                   alt={item.title}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-300" />
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 transform transition-transform duration-300 group-hover:translate-x-1">
                   <span className="text-white font-bold text-sm md:text-base tracking-wide border-l-2 border-[#4c5cec] pl-2">
                     {item.title}
@@ -89,7 +86,7 @@ export function EssayCoachingContent({
                   </div>
                   {pkg.tags.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-2 md:mt-0 md:justify-end">
-                      {pkg.tags.map((tag) => (
+                      {pkg.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="px-3 py-1 bg-white/60 dark:bg-white/10 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-full text-xs font-semibold hover:bg-[#4c5cec] hover:border-[#4c5cec] hover:text-white transition-all duration-200 cursor-default"
@@ -103,7 +100,7 @@ export function EssayCoachingContent({
 
                 <div className="flex flex-col lg:flex-row gap-8">
                   {/* Left Side: Info Grid */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 flex-grow">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 grow">
                     {/* Price */}
                     <div className="bg-white/50 dark:bg-white/5 p-4 rounded-xl border border-transparent dark:border-white/5 min-h-[100px] flex flex-col justify-center">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2 flex items-center gap-2">
@@ -160,7 +157,7 @@ export function EssayCoachingContent({
 
                   {/* Right Side: Description & CTA */}
                   <div className="lg:w-1/3 flex flex-col justify-between gap-4">
-                    <div className="bg-white/60 dark:bg-white/5 p-4 rounded-xl flex-grow border border-transparent dark:border-white/5">
+                    <div className="bg-white/60 dark:bg-white/5 p-4 rounded-xl grow border border-transparent dark:border-white/5">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2">
                         Service Description
                       </h3>

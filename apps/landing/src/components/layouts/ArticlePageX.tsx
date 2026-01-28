@@ -1,14 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Article } from '@repo/web-shared';
+import { Article } from '@repo/domain';
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
-import { ArticleCard } from '@repo/web-shared';
+import { ArticleCard } from '@repo/domain';
 
 // react-notion-x imports
 import { NotionRenderer } from 'react-notion-x';

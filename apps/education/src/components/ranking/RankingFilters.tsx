@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Search,
-  Filter,
+  // Filter,
   X,
   SlidersHorizontal,
   ArrowDownUp,
@@ -11,7 +11,7 @@ import {
   Globe,
   ArrowLeft,
   ChevronDown,
-  ChevronRight,
+  // ChevronRight,
   Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -224,7 +224,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                         >
                           <span className="text-gray-900 dark:text-gray-100">
                             {rankingSources.find(
-                              (s) => s.value === selectedSource
+                              (s) => s.value === selectedSource,
                             )?.label || selectedSource}
                           </span>
                           <ArrowDownUp className="w-4 h-4 text-gray-400" />
@@ -536,7 +536,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                           const filteredSubs = subs.filter((s) =>
                             s.label
                               .toLowerCase()
-                              .includes(subjectSearch.toLowerCase())
+                              .includes(subjectSearch.toLowerCase()),
                           );
 
                           if (filteredSubs.length === 0) return null;
@@ -580,10 +580,11 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                           .filter((s) =>
                             s.label
                               .toLowerCase()
-                              .includes(subjectSearch.toLowerCase())
+                              .includes(subjectSearch.toLowerCase()),
                           ).length === 0 && (
                           <div className="p-8 text-center text-gray-500 text-sm">
-                            No subjects found matching "{subjectSearch}"
+                            No subjects found matching &quot;{subjectSearch}
+                            &quot;
                           </div>
                         )}
                       </div>

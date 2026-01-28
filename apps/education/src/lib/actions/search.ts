@@ -1,7 +1,7 @@
 'use server';
 
 import { getProviderForSection } from '@/lib/services/content';
-import { contentSections } from '@repo/web-shared/config/education/content-sources';
+import { contentSections } from '@repo/apps-config/education/content-sources';
 import { Article } from '@/lib/types/content';
 
 export interface SearchResult extends Article {

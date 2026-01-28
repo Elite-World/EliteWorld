@@ -1,0 +1,10 @@
+{
+  "extends": "../tooling/typescript-config/base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2019",
+    "moduleResolution": "bundler"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

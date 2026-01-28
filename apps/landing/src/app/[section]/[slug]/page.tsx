@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import {
   contentSections,
   getSectionConfig,
-} from '@repo/web-shared/config/landing/content-sources';
+} from '@repo/apps-config/landing/content-sources';
 import { ArticlePage } from '@/components/layouts/ArticlePage';
 import { ArticlePageX } from '@/components/layouts/ArticlePageX';
 

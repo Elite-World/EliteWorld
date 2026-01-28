@@ -1,7 +1,7 @@
 import { Article, Category } from '@/lib/types/content';
-import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } from '@repo/content';
-import { cache } from './cache';
-import { contentSections, ContentSection, getSectionConfig } from '@repo/web-shared/config/education/content-sources';
+import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } from '@repo/cms';
+// import { cache } from './cache';
+import { contentSections, ContentSection, getSectionConfig } from '@repo/apps-config/education/content-sources';
 
 // Factory to create provider from config
 export function getProviderForSection(sectionSlug: string): ContentProvider | null {
@@ -37,7 +37,7 @@ export function getContentProvider(source: Exclude<ContentSource, 'json'> = 'mar
         return new NotionXProvider();
     case 'markdown':
     default:
-        const insights = contentSections.find(s => s.slug === 'insights');
+        const insights = contentSections.find((s: ContentSection) => s.slug === 'insights');
         return new MarkdownProvider({ 
             folderPath: insights?.config.folderPath || 'src/content/insights' 
         });

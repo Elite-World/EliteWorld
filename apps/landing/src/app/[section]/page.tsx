@@ -4,7 +4,7 @@ import { BlogPage } from '@/components/layouts/BlogPage';
 import {
   contentSections,
   getSectionConfig,
-} from '@repo/web-shared/config/landing/content-sources';
+} from '@repo/apps-config/landing/content-sources';
 
 export const revalidate = 3600;
 

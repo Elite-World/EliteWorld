@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAppContext } from '../context/AppContext';
 import LoginModal from './LoginModal';
 
@@ -115,9 +116,11 @@ const Header: React.FC = () => {
                 >
                   <MenuIcon />
                   {currentUser ? (
-                    <img
+                    <Image
                       src={currentUser.avatarUrl}
                       alt={currentUser.name}
+                      width={28}
+                      height={28}
                       className="w-7 h-7 rounded-full"
                     />
                   ) : (

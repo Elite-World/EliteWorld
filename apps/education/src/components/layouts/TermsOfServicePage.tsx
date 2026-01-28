@@ -1,10 +1,10 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 import ReactMarkdown from 'react-markdown';
-import { siteConfig } from '@repo/web-shared/config/education/site-config';
+// import { siteConfig } from '@repo/apps-config/education/site-config';
 
 interface TermsOfServicePageProps {
   content?: string;
@@ -25,7 +25,7 @@ export function TermsOfServicePage({ content }: TermsOfServicePageProps) {
         <article
           className={cn(
             'max-w-4xl mx-auto prose prose-lg',
-            isDark ? 'prose-invert' : 'prose-slate'
+            isDark ? 'prose-invert' : 'prose-slate',
           )}
         >
           {content && <ReactMarkdown>{content}</ReactMarkdown>}

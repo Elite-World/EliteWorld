@@ -1,15 +1,15 @@
 'use client';
 
-import { Article } from '@repo/web-shared';
+import { Article } from '@repo/domain';
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
 
-import { ArticleCard } from '@repo/web-shared';
+import { ArticleCard } from '@repo/domain';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 
@@ -60,7 +60,7 @@ export function ArticlePage({
         <div
           className={cn(
             'rounded-3xl p-8 md:p-12 shadow-xl',
-            isDark ? 'bg-[#1C1C1E] border border-gray-800' : 'bg-white'
+            isDark ? 'bg-[#1C1C1E] border border-gray-800' : 'bg-white',
           )}
         >
           {/* Metadata Header */}
@@ -85,7 +85,7 @@ export function ArticlePage({
               // Custom prose overrides for cleaner look
               'prose-headings:font-bold prose-headings:tracking-tight',
               'prose-a:text-blue-600 dark:prose-a:text-blue-400 no-underline hover:prose-a:underline',
-              'prose-img:rounded-2xl prose-img:shadow-lg'
+              'prose-img:rounded-2xl prose-img:shadow-lg',
             )}
           >
             <ReactMarkdown
@@ -93,7 +93,7 @@ export function ArticlePage({
               rehypePlugins={[rehypeRaw]}
               components={{
                 // Custom Image with better fallback/styling
-                img: ({ node, ...props }) => {
+                img: ({ ...props }) => {
                   if (!props.src) return null;
                   return (
                     <span className="block my-8 relative">
@@ -109,7 +109,7 @@ export function ArticlePage({
                   );
                 },
                 // Custom Table styling
-                table: ({ node, ...props }) => (
+                table: ({ ...props }) => (
                   <div className="overflow-x-auto my-8 rounded-xl border border-gray-200 dark:border-gray-800">
                     <table
                       {...props}
@@ -117,25 +117,25 @@ export function ArticlePage({
                     />
                   </div>
                 ),
-                thead: ({ node, ...props }) => (
+                thead: ({ ...props }) => (
                   <thead
                     {...props}
                     className="bg-gray-50 dark:bg-zinc-900/50"
                   />
                 ),
-                th: ({ node, ...props }) => (
+                th: ({ ...props }) => (
                   <th
                     {...props}
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
                   />
                 ),
-                td: ({ node, ...props }) => (
+                td: ({ ...props }) => (
                   <td
                     {...props}
                     className="px-6 py-4 whitespace-normal text-sm"
                   />
                 ),
-                tr: ({ node, ...props }) => (
+                tr: ({ ...props }) => (
                   <tr
                     {...props}
                     className="even:bg-gray-50/50 dark:even:bg-zinc-900/30"
@@ -158,7 +158,7 @@ export function ArticlePage({
                   'group block p-6 rounded-2xl transition-all',
                   isDark
                     ? 'bg-[#1C1C1E] hover:bg-[#2C2C2E] border border-gray-800'
-                    : 'bg-white hover:bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md'
+                    : 'bg-white hover:bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md',
                 )}
               >
                 <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -168,7 +168,7 @@ export function ArticlePage({
                 <h4
                   className={cn(
                     'font-semibold line-clamp-2',
-                    isDark ? 'text-gray-200' : 'text-gray-900'
+                    isDark ? 'text-gray-200' : 'text-gray-900',
                   )}
                 >
                   {prevArticle.title}
@@ -185,7 +185,7 @@ export function ArticlePage({
                   'group block p-6 rounded-2xl transition-all text-right',
                   isDark
                     ? 'bg-[#1C1C1E] hover:bg-[#2C2C2E] border border-gray-800'
-                    : 'bg-white hover:bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md'
+                    : 'bg-white hover:bg-gray-50 border border-gray-100 shadow-sm hover:shadow-md',
                 )}
               >
                 <div className="flex items-center justify-end text-sm text-gray-500 dark:text-gray-400 mb-2">
@@ -195,7 +195,7 @@ export function ArticlePage({
                 <h4
                   className={cn(
                     'font-semibold line-clamp-2',
-                    isDark ? 'text-gray-200' : 'text-gray-900'
+                    isDark ? 'text-gray-200' : 'text-gray-900',
                   )}
                 >
                   {nextArticle.title}
@@ -211,7 +211,7 @@ export function ArticlePage({
             <h3
               className={cn(
                 'text-2xl font-bold mb-8',
-                isDark ? 'text-gray-200' : 'text-gray-900'
+                isDark ? 'text-gray-200' : 'text-gray-900',
               )}
             >
               You might also like

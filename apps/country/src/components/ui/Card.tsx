@@ -1,7 +1,6 @@
 'use client';
 
-import { cn } from '@repo/web-shared';
-import { useThemeStore } from '@repo/web-shared';
+import { cn } from '@repo/domain';
 
 interface CardProps {
   children: React.ReactNode;
@@ -16,7 +15,7 @@ export function Card({ children, className }: CardProps) {
         'bg-white dark:bg-[#1C1C1E]',
         'border border-gray-100 dark:border-[#2C2C2E]',
         'shadow-sm',
-        className
+        className,
       )}
     >
       {children}

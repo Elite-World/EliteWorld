@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { cn } from '@repo/web-shared';
-import { useThemeStore } from '@repo/web-shared';
+import { cn } from '@repo/domain';
+import { useThemeStore } from '@repo/domain';
 
 interface BottomSheetProps {
   isOpen: boolean;

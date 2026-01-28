@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { cn } from '@repo/web-shared';
+import { cn } from '@repo/domain';
 import { Loader2 } from 'lucide-react';
 
 export function NewsletterForm() {
@@ -32,7 +32,7 @@ export function NewsletterForm() {
     <section
       className={cn(
         'mt-16 p-8 rounded-2xl text-center relative overflow-hidden',
-        'bg-gradient-to-r from-blue-600 to-purple-600 text-white'
+        'bg-linear-to-r from-blue-600 to-purple-600 text-white',
       )}
     >
       <div className="relative z-10">
@@ -43,7 +43,7 @@ export function NewsletterForm() {
 
         {status === 'success' ? (
           <div className="flex items-center justify-center h-[52px] bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 text-white font-medium animate-in fade-in zoom-in duration-300">
-            ✨ You're all set! Check your inbox soon.
+            ✨ You&apos;re all set! Check your inbox soon.
           </div>
         ) : (
           <form

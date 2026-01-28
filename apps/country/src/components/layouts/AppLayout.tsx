@@ -1,16 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
-import { ScrollProgress } from '@repo/web-shared';
+import { ScrollProgress } from '@repo/domain';
 import { Navbar, Footer } from '@repo/ui';
 import { NavigationData } from '@/lib/types/navigation';
-import { ScrollToTopButton } from '@repo/web-shared';
+import { ScrollToTopButton } from '@repo/domain';
 // import { Footer } from '../Footer';
-import { useThemeStore } from '@repo/web-shared';
-import { useModalStore } from '@repo/web-shared';
-import { siteConfig } from '@repo/web-shared/config/country/site-config';
-import { navGateway } from '@repo/web-shared/config/country/navbar-config';
+import { useThemeStore } from '@repo/domain';
+import { useModalStore } from '@repo/domain';
+import { siteConfig } from '@repo/apps-config/country/site-config';
+import { navGateway } from '@repo/apps-config/country/navbar-config';
 
 interface BaseLayoutProps {
   children: React.ReactNode;
@@ -29,7 +29,7 @@ export function AppLayout({ children, navigation }: BaseLayoutProps) {
   useEffect(() => {
     const handleThemeChange = () => {
       const isSystemDark = window.matchMedia(
-        '(prefers-color-scheme: dark)'
+        '(prefers-color-scheme: dark)',
       ).matches;
       const shouldBeDark =
         mode === 'dark' || (mode === 'system' && isSystemDark);

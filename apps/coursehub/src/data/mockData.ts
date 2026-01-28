@@ -1,5 +1,5 @@
 
-import { Course, Review, User, CourseCategory, CourseAdmin, SessionPerformance } from '../types';
+import { Course, Review, User, CourseCategory, SessionPerformance } from '../types';
 
 const reviews: Review[] = [
   { id: 'rev1', authorName: 'Alex Johnson', authorAvatarUrl: 'https://picsum.photos/seed/rev1/50/50', rating: 5, comment: 'This course was absolutely fantastic! Changed my career path.', date: '2023-08-15' },

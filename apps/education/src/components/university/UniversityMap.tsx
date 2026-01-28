@@ -22,8 +22,8 @@ interface UniversityMapProps {
 }
 
 const UniversityMap: React.FC<UniversityMapProps> = ({
-  name,
-  country,
+  // name,
+  // country,
   locations = [],
 }) => {
   const mapRef = React.useRef<L.Map | null>(null);
@@ -77,7 +77,7 @@ const UniversityMap: React.FC<UniversityMapProps> = ({
 
       {/* Floating Campus Controls */}
       {markers.length > 1 && (
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-[1000] flex gap-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md p-1.5 rounded-full shadow-xl border border-gray-200 dark:border-zinc-700 transition-all opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-1000 flex gap-2 bg-white/90 dark:bg-zinc-900/90 backdrop-blur-md p-1.5 rounded-full shadow-xl border border-gray-200 dark:border-zinc-700 transition-all opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0">
           {markers.map((loc, idx) => {
             const isActive = activeLocationIndex === idx;
             return (

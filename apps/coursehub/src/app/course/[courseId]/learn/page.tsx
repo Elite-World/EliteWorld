@@ -3,6 +3,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
 import Button from '@/components/Button';
 
@@ -166,11 +167,14 @@ const StudentCoursePage: React.FC = () => {
                 </Button>
               </div>
               <div className="bg-white p-6 rounded-lg shadow-sm flex items-center gap-4">
-                <img
-                  src={owner.avatarUrl}
-                  alt={owner.name}
-                  className="w-16 h-16 rounded-full"
-                />
+                <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0">
+                  <Image
+                    src={owner.avatarUrl}
+                    alt={owner.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
                 <div>
                   <p className="text-sm text-gray-500">Your Instructor</p>
                   <h3 className="text-lg font-semibold">{owner.name}</h3>

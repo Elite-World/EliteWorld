@@ -7,14 +7,14 @@ import {
   X,
   MapPin,
   Globe,
-  Trophy,
+  // Trophy,
   Info,
   BookOpen,
   ArrowRight,
 } from 'lucide-react';
-import { UniversityRanking } from '@repo/web-shared';
+import { UniversityRanking } from '@repo/domain';
 import Link from 'next/link';
-import { cn } from '@repo/web-shared';
+// import { cn } from '@repo/domain';
 
 interface RankingDetailModalProps {
   university: UniversityRanking | null;
@@ -58,11 +58,11 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-100"
           />
 
           {/* Modal Container */}
-          <div className="fixed inset-0 z-[101] flex items-center justify-center p-4 sm:p-6 pointer-events-none">
+          <div className="fixed inset-0 z-101 flex items-center justify-center p-4 sm:p-6 pointer-events-none">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -71,7 +71,7 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
               className="bg-white dark:bg-[#1c1c1e] w-full max-w-5xl max-h-[90vh] rounded-3xl shadow-2xl overflow-hidden pointer-events-auto flex flex-col"
             >
               {/* Header Image / Pattern Area */}
-              <div className="relative h-48 sm:h-56 bg-gradient-to-br from-blue-600 to-indigo-700 overflow-hidden shrink-0">
+              <div className="relative h-48 sm:h-56 bg-linear-to-br from-blue-600 to-indigo-700 overflow-hidden shrink-0">
                 <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 brightness-100 contrast-150"></div>
 
                 {/* Close Button */}
@@ -82,10 +82,10 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
                   <X className="w-5 h-5" />
                 </button>
 
-                <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 bg-gradient-to-t from-black/60 to-transparent">
+                <div className="absolute bottom-0 left-0 w-full p-6 sm:p-8 bg-linear-to-t from-black/60 to-transparent">
                   <div className="flex flex-col sm:flex-row sm:items-end gap-5">
                     {/* Rank Badge */}
-                    <div className="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg">
+                    <div className="shrink-0 w-16 h-16 sm:w-20 sm:h-20 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl flex flex-col items-center justify-center text-white shadow-lg">
                       <span className="text-xs font-medium uppercase tracking-wider opacity-80">
                         Rank
                       </span>
@@ -167,7 +167,7 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
                               <span className="text-gray-700 dark:text-gray-300 font-medium truncate flex-1 pr-2">
                                 {sub.name}
                               </span>
-                              <span className="flex-shrink-0 px-2 py-0.5 bg-white dark:bg-zinc-700 rounded text-gray-900 dark:text-white font-bold border border-gray-100 dark:border-zinc-600 text-xs">
+                              <span className="shrink-0 px-2 py-0.5 bg-white dark:bg-zinc-700 rounded text-gray-900 dark:text-white font-bold border border-gray-100 dark:border-zinc-600 text-xs">
                                 #{sub.rank}
                               </span>
                             </div>
@@ -224,7 +224,7 @@ const RankingDetailModal: React.FC<RankingDetailModalProps> = ({
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };
 

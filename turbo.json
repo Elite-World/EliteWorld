@@ -3,7 +3,11 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
+    },
+    "@repo/domain#build": {
+      "dependsOn": ["^build"],
+      "outputs": []
     },
     "lint": {},
     "dev": {

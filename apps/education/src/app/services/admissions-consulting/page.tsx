@@ -4,7 +4,7 @@ import {
   highEndPackages,
   mentorTeams,
   serviceProcess,
-} from '@repo/web-shared/content/education/pricing/admissionsConsulting';
+} from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 
 export default function Page() {
   return (

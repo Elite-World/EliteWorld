@@ -1,7 +1,7 @@
 'use client';
 
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 
 interface LoadingSpinnerProps {
   /** The size of the spinner */

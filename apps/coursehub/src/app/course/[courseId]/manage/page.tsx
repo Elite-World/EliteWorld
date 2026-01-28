@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
 import { Course, User, CourseCategory, Session } from '@/types';
 import Button from '@/components/Button';
@@ -124,11 +125,14 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                 className="flex items-center justify-between p-3 bg-gray-100 rounded-md"
               >
                 <div className="flex items-center">
-                  <img
-                    src={owner.avatarUrl}
-                    alt={owner.name}
-                    className="w-10 h-10 rounded-full mr-3"
-                  />
+                  <div className="relative w-10 h-10 rounded-full mr-3 shrink-0 overflow-hidden">
+                    <Image
+                      src={owner.avatarUrl}
+                      alt={owner.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
                   <div>
                     <p className="font-semibold">{owner.name}</p>
                     <p className="text-sm text-gray-500">Owner</p>
@@ -147,11 +151,14 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                   className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
                 >
                   <div className="flex items-center">
-                    <img
-                      src={adminUser?.avatarUrl}
-                      alt={adminUser?.name}
-                      className="w-10 h-10 rounded-full mr-3"
-                    />
+                    <div className="relative w-10 h-10 rounded-full mr-3 shrink-0 overflow-hidden">
+                      <Image
+                        src={adminUser?.avatarUrl || ''}
+                        alt={adminUser?.name || 'Admin'}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
                     <div>
                       <p className="font-semibold">{adminUser?.name}</p>
                       <p className="text-sm text-gray-500">{admin.role}</p>

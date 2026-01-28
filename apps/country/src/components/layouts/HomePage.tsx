@@ -1,19 +1,19 @@
 'use client';
 
-import { Article, Category } from '@repo/web-shared';
-import { useThemeStore } from '@repo/web-shared';
-import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
+// import { Article, Category } from '@repo/domain';
+import { useThemeStore } from '@repo/domain';
+// import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
 // Card is in web-shared/ui/Card.tsx as seen in file listing.
-import { ArticleCard } from '@repo/web-shared'; // ArticleCard is shared
-import { cn } from '@repo/web-shared';
-import { useEffect, useState } from 'react';
-import { siteConfig } from '@repo/web-shared/config/landing/site-config';
+// import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
+import { cn } from '@repo/domain';
+// import { useEffect, useState } from 'react';
+import { siteConfig } from '@repo/apps-config/landing/site-config';
 import Image from 'next/image';
-import { useUnsplashImage } from '@repo/web-shared';
+// import { useUnsplashImage } from '@repo/domain';
 import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
-import { QRCode } from '@repo/web-shared';
+import { QRCode } from '@repo/domain';
 
-import { navGateway } from '@repo/web-shared/config/landing/navbar-config';
+import { navGateway } from '@repo/apps-config/landing/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
 
 // Add subdomain config at the top of the file
@@ -23,75 +23,75 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 // } as const;
 
 // Loading animation component
-function LoadingAnimation() {
-  return (
-    <div className="relative w-24 h-24">
-      <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
-      <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
-    </div>
-  );
-}
+// function LoadingAnimation() {
+//   return (
+//     <div className="relative w-24 h-24">
+//       <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
+//       <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
+//     </div>
+//   );
+// }
 
 // Company loading page
-function CompanyLoadingPage() {
-  const isDark = useThemeStore((state) => state.isDark);
-  const [progress, setProgress] = useState(0);
+// function CompanyLoadingPage() {
+//   const isDark = useThemeStore((state) => state.isDark);
+//   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(timer);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, 20);
+//   useEffect(() => {
+//     const timer = setInterval(() => {
+//       setProgress((prev) => {
+//         if (prev >= 100) {
+//           clearInterval(timer);
+//           return 100;
+//         }
+//         return prev + 1;
+//       });
+//     }, 20);
 
-    return () => clearInterval(timer);
-  }, []);
+//     return () => clearInterval(timer);
+//   }, []);
 
-  return (
-    <div
-      className={cn(
-        'fixed inset-0 z-50 flex flex-col items-center justify-center',
-        'transition-colors duration-300',
-        isDark ? 'bg-black text-white' : 'bg-white text-black'
-      )}
-    >
-      {/* Company Logo */}
-      <div className="mb-8 text-4xl font-bold tracking-tight">
-        {siteConfig.name}
-      </div>
+//   return (
+//     <div
+//       className={cn(
+//         'fixed inset-0 z-50 flex flex-col items-center justify-center',
+//         'transition-colors duration-300',
+//         isDark ? 'bg-black text-white' : 'bg-white text-black',
+//       )}
+//     >
+//       {/* Company Logo */}
+//       <div className="mb-8 text-4xl font-bold tracking-tight">
+//         {siteConfig.name}
+//       </div>
 
-      {/* Loading Animation */}
-      <LoadingAnimation />
+//       {/* Loading Animation */}
+//       <LoadingAnimation />
 
-      {/* Progress Bar */}
-      <div className="w-64 h-1 mt-8 bg-gray-200 rounded-full overflow-hidden">
-        <div
-          className="h-full bg-blue-500 transition-all duration-300 ease-out"
-          style={{ width: `${progress}%` }}
-        />
-      </div>
+//       {/* Progress Bar */}
+//       <div className="w-64 h-1 mt-8 bg-gray-200 rounded-full overflow-hidden">
+//         <div
+//           className="h-full bg-blue-500 transition-all duration-300 ease-out"
+//           style={{ width: `${progress}%` }}
+//         />
+//       </div>
 
-      {/* Loading Text */}
-      <div
-        className={cn(
-          'mt-4 text-sm font-medium',
-          isDark ? 'text-gray-400' : 'text-gray-600'
-        )}
-      >
-        Loading... {progress}%
-      </div>
-    </div>
-  );
-}
+//       {/* Loading Text */}
+//       <div
+//         className={cn(
+//           'mt-4 text-sm font-medium',
+//           isDark ? 'text-gray-400' : 'text-gray-600',
+//         )}
+//       >
+//         Loading... {progress}%
+//       </div>
+//     </div>
+//   );
+// }
 
-interface HomePageProps {
-  categories: Category[];
-  articles: Article[];
-}
+// interface HomePageProps {
+//   categories: Category[];
+//   articles: Article[];
+// }
 
 // Define the social media links with proper icon types
 const socialLinks = [
@@ -102,23 +102,24 @@ const socialLinks = [
 ] as const;
 
 // Add skeleton loading states
-function ArticleListSkeleton() {
-  return (
-    <div className="space-y-4">
-      {[...Array(3)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-3/4" />
-          <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
-        </div>
-      ))}
-    </div>
-  );
-}
+// function ArticleListSkeleton() {
+//   return (
+//     <div className="space-y-4">
+//       {[...Array(3)].map((_, i) => (
+//         <div key={i} className="animate-pulse">
+//           <div className="h-4 bg-gray-200 rounded w-3/4" />
+//           <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
 
-export function HomePage({ categories, articles }: HomePageProps) {
+// export function HomePage({ categories, articles }: HomePageProps) {
+export function HomePage() {
   const isDark = useThemeStore((state) => state.isDark);
 
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
   /*
   useEffect(() => {
@@ -170,7 +171,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
                 'hover:scale-105',
                 // Subtle shadow
                 'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
-                'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
               )}
             >
               {button.label}
@@ -181,13 +182,13 @@ export function HomePage({ categories, articles }: HomePageProps) {
       {/* Achievements Section */}
       <section
         id="about"
-        className="py-24 bg-gradient-to-b from-transparent to-gray-50 dark:to-gray-900"
+        className="py-24 bg-linear-to-b from-transparent to-gray-50 dark:to-gray-900"
       >
         <div className="container mx-auto px-4">
           <h2
             className={cn(
               'text-4xl font-bold text-center mb-16',
-              'bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent'
+              'bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent',
             )}
           >
             Our Global Impact
@@ -223,17 +224,17 @@ export function HomePage({ categories, articles }: HomePageProps) {
                   'hover:transform hover:-translate-y-1',
                   isDark
                     ? 'bg-gray-800 hover:bg-gray-700'
-                    : 'bg-white hover:bg-blue-50 shadow-lg'
+                    : 'bg-white hover:bg-blue-50 shadow-lg',
                 )}
               >
-                <div className="text-4xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">
+                <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">
                   {stat.number}
                 </div>
                 <div className="text-lg font-semibold mb-2">{stat.label}</div>
                 <p
                   className={cn(
                     'text-sm',
-                    isDark ? 'text-gray-400' : 'text-gray-600'
+                    isDark ? 'text-gray-400' : 'text-gray-600',
                   )}
                 >
                   {stat.description}
@@ -250,7 +251,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
           <h2
             className={cn(
               'text-4xl font-bold text-center mb-6',
-              isDark ? 'text-gray-100' : 'text-gray-800'
+              isDark ? 'text-gray-100' : 'text-gray-800',
             )}
           >
             Meet Our Expert Team
@@ -258,7 +259,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
           <p
             className={cn(
               'text-center max-w-2xl mx-auto mb-16',
-              isDark ? 'text-gray-400' : 'text-gray-600'
+              isDark ? 'text-gray-400' : 'text-gray-600',
             )}
           >
             Our experienced consultants are dedicated to guiding you through
@@ -292,7 +293,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
                   'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
                   'hover:transform hover:-translate-y-1',
                   isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
-                  'h-full'
+                  'h-full',
                 )}
               >
                 <div className="relative h-64 w-full">
@@ -309,7 +310,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
                   <p
                     className={cn(
                       'text-sm mb-2',
-                      isDark ? 'text-blue-400' : 'text-blue-600'
+                      isDark ? 'text-blue-400' : 'text-blue-600',
                     )}
                   >
                     {member.role}
@@ -317,7 +318,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
                   <p
                     className={cn(
                       'text-sm',
-                      isDark ? 'text-gray-400' : 'text-gray-600'
+                      isDark ? 'text-gray-400' : 'text-gray-600',
                     )}
                   >
                     {member.speciality}
@@ -330,7 +331,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 bg-gradient-to-r from-blue-500 to-purple-500">
+      <section className="py-24 bg-linear-to-r from-blue-500 to-purple-500">
         <div className="container mx-auto px-4 text-center text-white">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Start Your Journey?
@@ -358,7 +359,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
               <h2
                 className={cn(
                   'text-4xl font-bold mb-6',
-                  isDark ? 'text-gray-100' : 'text-gray-800'
+                  isDark ? 'text-gray-100' : 'text-gray-800',
                 )}
               >
                 Get in Touch
@@ -366,7 +367,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
               <p
                 className={cn(
                   'text-lg mb-8',
-                  isDark ? 'text-gray-400' : 'text-gray-600'
+                  isDark ? 'text-gray-400' : 'text-gray-600',
                 )}
               >
                 Have questions? Connect with us through any of these channels:
@@ -402,7 +403,7 @@ export function HomePage({ categories, articles }: HomePageProps) {
                         'text-2xl transition-colors',
                         isDark
                           ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-blue-500'
+                          : 'text-gray-600 hover:text-blue-500',
                       )}
                     >
                       <IconComponent className="w-6 h-6" />

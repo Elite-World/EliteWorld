@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Trophy, ArrowRight, MapPin } from 'lucide-react';
-import { UniversityRanking, cn } from '@repo/web-shared';
+import { ArrowRight, MapPin } from 'lucide-react';
+import { UniversityRanking, cn } from '@repo/domain';
 import { Building2 } from 'lucide-react';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { useState } from 'react';
 
 interface RankingCardProps {
   university: UniversityRanking;
@@ -25,6 +27,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
   hideFooterRanks = false,
   href,
 }) => {
+  const [logoError, setLogoError] = useState(false);
   const logoUrl = university.logoUrl;
   // Determine rank to display
   const displayRank =
@@ -55,8 +58,8 @@ const RankingCard: React.FC<RankingCardProps> = ({
               displayRank === 1
                 ? 'bg-yellow-50 text-yellow-600 border-yellow-100 dark:bg-yellow-900/20 dark:border-yellow-900/30'
                 : (displayRank as number) <= 10
-                ? 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30'
-                : 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
+                  ? 'bg-blue-50 text-blue-600 border-blue-100 dark:bg-blue-900/20 dark:border-blue-900/30'
+                  : 'bg-gray-50 text-gray-500 border-gray-100 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700',
             )}
           >
             {displayRank}
@@ -73,33 +76,25 @@ const RankingCard: React.FC<RankingCardProps> = ({
                 }}
                 className="w-full h-full block"
               >
-                {logoUrl ? (
-                  <img
+                {logoUrl && !logoError ? (
+                  <Image
                     src={logoUrl}
                     alt={university.name}
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
-                      (
-                        e.target as HTMLImageElement
-                      ).nextElementSibling?.classList.remove('hidden');
-                    }}
+                    fill
+                    className="object-contain"
+                    onError={() => setLogoError(true)}
                   />
                 ) : (
                   <Building2 className="w-6 h-6 text-gray-300 dark:text-gray-600" />
                 )}
               </Link>
-            ) : logoUrl ? (
-              <img
+            ) : logoUrl && !logoError ? (
+              <Image
                 src={logoUrl}
                 alt={university.name}
-                className="w-full h-full object-contain"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).style.display = 'none';
-                  (
-                    e.target as HTMLImageElement
-                  ).nextElementSibling?.classList.remove('hidden');
-                }}
+                fill
+                className="object-contain"
+                onError={() => setLogoError(true)}
               />
             ) : (
               <Building2 className="w-6 h-6 text-gray-300 dark:text-gray-600" />
@@ -186,7 +181,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                         'flex flex-col items-center p-1.5 rounded-lg transition-all border',
                         isSelected
                           ? 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 ring-1 ring-blue-500/20'
-                          : 'bg-gray-50 border-transparent dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-200 dark:hover:border-zinc-700'
+                          : 'bg-gray-50 border-transparent dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-200 dark:hover:border-zinc-700',
                       )}
                     >
                       <span
@@ -194,7 +189,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                           'text-[10px] font-semibold uppercase mb-0.5',
                           isSelected
                             ? 'text-blue-600 dark:text-blue-400'
-                            : 'text-gray-400'
+                            : 'text-gray-400',
                         )}
                       >
                         {displayName}
@@ -204,7 +199,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                           'text-sm font-bold',
                           isSelected
                             ? 'text-blue-700 dark:text-blue-300'
-                            : 'text-gray-900 dark:text-white'
+                            : 'text-gray-900 dark:text-white',
                         )}
                       >
                         {rank}

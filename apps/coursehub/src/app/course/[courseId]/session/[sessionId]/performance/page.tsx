@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
 
 const StarIcon: React.FC<{ filled?: boolean }> = ({ filled = true }) => (
@@ -193,11 +194,15 @@ const SessionPerformancePage: React.FC = () => {
                       <li key={index} className="border-b pb-3">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <img
-                              src={author?.avatarUrl}
-                              alt={author?.name}
-                              className="w-8 h-8 rounded-full"
-                            />
+                            {author?.avatarUrl && (
+                              <Image
+                                src={author.avatarUrl}
+                                alt={author.name || ''}
+                                width={32}
+                                height={32}
+                                className="w-8 h-8 rounded-full"
+                              />
+                            )}
                             <span className="font-semibold text-sm">
                               {author?.name}
                             </span>
@@ -210,7 +215,7 @@ const SessionPerformancePage: React.FC = () => {
                           </div>
                         </div>
                         <p className="text-sm text-gray-600 mt-2 italic">
-                          "{fb.comment}"
+                          &quot;{fb.comment}&quot;
                         </p>
                       </li>
                     );

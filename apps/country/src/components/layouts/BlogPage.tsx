@@ -1,8 +1,8 @@
 'use client';
 
-import { Article, Category } from '@repo/web-shared';
-import { useThemeStore } from '@repo/web-shared';
-import { cn } from '@repo/web-shared';
+import { Article, Category } from '@repo/domain';
+import { useThemeStore } from '@repo/domain';
+import { cn } from '@repo/domain';
 import { motion } from 'framer-motion';
 import { NewsletterForm } from '@/components/marketing/NewsletterForm';
 
@@ -14,11 +14,11 @@ interface BlogPageProps {
 }
 
 import { HeroSection } from '@repo/ui';
-import { siteConfig } from '@repo/web-shared/config/landing/site-config';
+import { siteConfig } from '@repo/apps-config/landing/site-config';
 
 import { useState } from 'react';
 
-import { ArticleCard } from '@repo/web-shared';
+import { ArticleCard } from '@repo/domain';
 
 export function BlogPage(props: BlogPageProps) {
   const { articles, categories, basePath } = props;

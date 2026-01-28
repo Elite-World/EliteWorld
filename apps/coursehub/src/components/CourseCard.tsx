@@ -2,11 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Course } from '../types';
-import Rating from './Rating';
+// import Rating from './Rating';
 import { useAppContext } from '../context/AppContext';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Assuming you have a utils file, if not I will just use template literals or install clsx/tailwind-merge
+// import { cn } from '@/lib/utils'; // Assuming you have a utils file, if not I will just use template literals or install clsx/tailwind-merge
 
 interface CourseCardProps {
   course: Course;
@@ -59,9 +60,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
       className={`group block bg-white rounded-2xl p-3 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${className}`}
     >
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-100">
-        <img
+        <Image
           src={course.images[currentImageIndex]}
           alt={course.title}
+          fill
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
 

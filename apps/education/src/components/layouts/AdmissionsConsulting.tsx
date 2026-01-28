@@ -1,12 +1,13 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
+import Image from 'next/image';
 import {
   DIYPackage,
   HighEndPackage,
   MentorTeam,
   ServiceStep,
-} from '@repo/web-shared/content/education/pricing/admissionsConsulting';
+} from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 
 interface AdmissionsConsultingProps {
   mentorTeams: MentorTeam[];
@@ -46,12 +47,13 @@ export function AdmissionsConsultingContent({
                 className="bg-white dark:bg-[#1a1a1a] rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
               >
                 <div className="h-48 overflow-hidden relative">
-                  <img
+                  <Image
                     src={team.image}
                     alt={team.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-4 left-4 text-white">
                     <h3 className="font-bold text-lg">{team.name}</h3>
                   </div>
@@ -61,7 +63,7 @@ export function AdmissionsConsultingContent({
                     {team.title}
                   </h4>
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {team.tags.map((tag) => (
+                    {team.tags.map((tag: string) => (
                       <span
                         key={tag}
                         className="text-xs bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-300 px-2 py-1 rounded"
@@ -107,8 +109,8 @@ export function AdmissionsConsultingContent({
             Service Process
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            Our "5v1" exclusive service model ensures precision guidance at
-            every step, from brainstorming to enrollment.
+            Our &quot;5v1&quot; exclusive service model ensures precision
+            guidance at every step, from brainstorming to enrollment.
           </p>
         </div>
 
@@ -221,7 +223,7 @@ export function AdmissionsConsultingContent({
               key={pkg.id}
               className="bg-white dark:bg-[#1a1a1a] rounded-xl border border-gray-200 dark:border-white/10 p-8 flex flex-col md:flex-row gap-6 hover:border-[#4c5cec] transition-colors group"
             >
-              <div className="flex-grow">
+              <div className="grow">
                 <h3 className="text-xl font-bold text-[#010022] dark:text-white mb-2 group-hover:text-[#4c5cec] transition-colors">
                   {pkg.title}
                 </h3>

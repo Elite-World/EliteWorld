@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useEffect, useRef, useState, useMemo } from 'react';
-import { useThemeStore } from '@repo/web-shared';
+
 import { motion } from 'framer-motion';
 
 // Dynamically import Globe with no SSR to avoid window issues
@@ -17,7 +17,7 @@ const Globe = dynamic(() => import('react-globe.gl'), {
 
 export function WorldGlobe() {
   const globeEl = useRef<any>(null);
-  const isDark = useThemeStore((state) => state.isDark);
+
   const [countries, setCountries] = useState({ features: [] });
   const [hoverD, setHoverD] = useState<any | null>(null);
   const [selectedCountry, setSelectedCountry] = useState<any | null>(null);
@@ -26,7 +26,7 @@ export function WorldGlobe() {
   const [selectedContinent, setSelectedContinent] = useState<string | null>(
     null,
   );
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+
   const [searchResults, setSearchResults] = useState<any[]>([]);
   // Store position as { x, y } in pixels relative to center. Null means "default centered".
   const [popupPosition, setPopupPosition] = useState<{
@@ -66,7 +66,7 @@ export function WorldGlobe() {
       globeEl.current.controls().autoRotate = true;
       globeEl.current.controls().autoRotateSpeed = 0.5;
     }
-  }, [globeEl.current]);
+  }, []);
 
   const handleGlobeClick = () => {
     if (globeEl.current) {
@@ -136,7 +136,7 @@ export function WorldGlobe() {
         // Cap at 2.5 (view whole earth) and min 0.15.
         // For Russia (span ~170), alt ~ 4.0 -> clamped to 2.5
         // For Singapore (span ~0.4), alt ~ 0.1 + 0.01 = 0.11.
-        let altitude = Math.max(0.15, Math.min(2.5, maxSpan * 0.04 + 0.1));
+        const altitude = Math.max(0.15, Math.min(2.5, maxSpan * 0.04 + 0.1));
 
         globeEl.current.pointOfView({ lat, lng, altitude }, 1000);
 
@@ -189,7 +189,6 @@ export function WorldGlobe() {
   const handleContinentSelect = (continent: string | null) => {
     setSelectedContinent(continent);
     setSelectedCountry(null); // Clear country selection when filter changes
-    setIsMobileFilterOpen(false); // Close mobile menu after selection
     if (continent === null) {
       // Reset view
       if (globeEl.current) {

@@ -1,0 +1,23 @@
+{
+  "name": "@repo/apps-config",
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "private": true,
+  "exports": {
+    ".": "./src/index.ts",
+    "./*": "./src/*",
+    "./education/*": "./src/config/education/*",
+    "./immigration/*": "./src/config/immigration/*",
+    "./landing/*": "./src/config/landing/*",
+    "./country/*": "./src/config/country/*",
+    "./content/*": "./src/content/*"
+  },
+  "dependencies": {
+    "lucide-react": "0.563.0"
+  },
+  "devDependencies": {
+    "@repo/tooling": "*",
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

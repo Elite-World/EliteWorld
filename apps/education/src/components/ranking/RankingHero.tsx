@@ -22,7 +22,7 @@ const RankingHero: React.FC = () => {
             World University Rankings
           </h1>
           <p className="text-lg md:text-xl text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
-            Discover the world's most prestigious institutions. A curated,
+            Discover the world&apos;s most prestigious institutions. A curated,
             interactive guide to top-tier education.
           </p>
         </motion.div>
