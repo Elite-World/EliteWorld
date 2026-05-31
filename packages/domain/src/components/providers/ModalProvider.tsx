@@ -14,18 +14,27 @@ const MODALS: Record<ModalType, React.ComponentType<any>> = {
   search: SearchModal,
 };
 
+import { AnimatePresence } from 'framer-motion';
+import { useEffect, useState } from 'react';
+
 export function ModalProvider(): React.ReactElement | null {
+  const [mounted, setMounted] = useState(false);
   const activeModal = useModalStore((state) => state.activeModal);
   const modalProps = useModalStore((state) => state.modalProps);
 
-  if (!activeModal) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const Component = MODALS[activeModal];
+  const Component = activeModal ? MODALS[activeModal] : null;
 
-  if (!Component) {
-    console.warn(`Modal ${activeModal} not found in registry`);
-    return null;
-  }
+  if (!mounted) return null;
 
-  return <Component {...modalProps} />;
+  return (
+    <AnimatePresence mode="wait">
+      {activeModal && Component && (
+        <Component key={activeModal} {...modalProps} />
+      )}
+    </AnimatePresence>
+  );
 }

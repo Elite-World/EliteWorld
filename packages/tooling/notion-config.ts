@@ -6,6 +6,7 @@ export const NOTION_CONFIG = {
     SLUG: 'Slug',
     SUMMARY: 'Summary',
     CATEGORY: 'Category',
+    TAGS: 'Tags',
     COVER: 'Cover',
     NAME: 'Name',
   },

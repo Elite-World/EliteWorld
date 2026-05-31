@@ -25,7 +25,7 @@ export const siteConfig = {
   },
   features: {
     search: process.env.NEXT_PUBLIC_ENABLE_SEARCH === 'true',
-    mode: process.env.NEXT_PUBLIC_ENABLE_MODE === 'true',
+    mode: true,
     user: process.env.NEXT_PUBLIC_ENABLE_USER === 'true',
     landing: process.env.NEXT_PUBLIC_ENABLE_LANDING === 'true',
     education: process.env.NEXT_PUBLIC_ENABLE_EDUCATION === 'true',

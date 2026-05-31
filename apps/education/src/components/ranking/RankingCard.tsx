@@ -66,7 +66,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
           </div>
 
           {/* Logo Display */}
-          <div className="w-12 h-12 flex items-center justify-center bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 p-1 overflow-hidden shrink-0">
+          <div className="relative w-12 h-12 flex items-center justify-center bg-white dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 p-1 overflow-hidden shrink-0">
             {href ? (
               <Link
                 href={href}
@@ -74,7 +74,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                   e.preventDefault();
                   onClick(university);
                 }}
-                className="w-full h-full block"
+                className="w-full h-full block relative"
               >
                 {logoUrl && !logoError ? (
                   <Image

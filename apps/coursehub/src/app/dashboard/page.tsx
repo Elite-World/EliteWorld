@@ -6,6 +6,17 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppContext } from '@/context/AppContext';
 import { Course } from '@/types';
+import {
+  Trash2,
+  PlayCircle,
+  Heart,
+  Users,
+  GraduationCap,
+  ShieldCheck,
+  ChevronRight,
+  TrendingUp,
+} from 'lucide-react';
+import { cn } from '@repo/domain';
 
 // --- Reusable Dashboard Course Card ---
 interface DashboardCourseCardProps {
@@ -14,22 +25,7 @@ interface DashboardCourseCardProps {
   onRemoveFromWishlist?: (courseId: string) => void;
 }
 
-const TrashIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-5 w-5"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-    />
-  </svg>
-);
+const TrashIcon = () => <Trash2 className="w-5 h-5" />;
 
 const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
   course,
@@ -51,31 +47,63 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
   return (
     <Link
       href={linkDestination}
-      className="flex flex-col sm:flex-row items-center gap-4 p-4 border rounded-lg bg-white relative transition hover:shadow-md group"
+      className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl relative transition-all duration-300 hover:shadow-2xl hover:border-blue-500/30 group"
     >
-      <div className="relative w-full sm:w-40 h-32 shrink-0">
+      <div className="relative w-full sm:w-48 h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
         <Image
           src={course.images[0]}
           alt={course.title}
           fill
-          className="object-cover rounded-md"
+          className="object-cover transition-transform duration-700 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+          <span className="text-[10px] font-bold text-white uppercase tracking-widest">
+            View Module
+          </span>
+        </div>
       </div>
       <div className="grow self-start sm:self-center w-full">
-        <p className="text-sm text-gray-500">{course.category}</p>
-        <h3 className="font-semibold text-lg text-gray-800 group-hover:underline">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="px-2 py-0.5 rounded-md bg-blue-600/10 text-blue-600 text-[10px] font-bold uppercase tracking-wider">
+            {course.category}
+          </span>
+          <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+            {course.level}
+          </span>
+        </div>
+        <h3 className="font-bold text-lg text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors leading-snug">
           {course.title}
         </h3>
-        <p className="text-sm text-gray-600 mt-1">by {owner?.name}</p>
+        <p className="text-xs font-medium text-gray-500 mt-1 flex items-center gap-1">
+          <Users className="w-3 h-3" />
+          Expert:{' '}
+          <span className="text-gray-700 dark:text-gray-300">
+            {owner?.name}
+          </span>
+        </p>
+
         {cardType === 'learning' && (
-          <div className="w-full bg-gray-200 rounded-full h-2.5 mt-3">
-            <div
-              className="bg-teal-500 h-2.5 rounded-full"
-              style={{ width: `${Math.random() * 80 + 10}%` }}
-            ></div>
+          <div className="mt-4">
+            <div className="flex justify-between items-center mb-1.5">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                Course Progress
+              </span>
+              <span className="text-[10px] font-bold text-blue-600">65%</span>
+            </div>
+            <div className="w-full bg-gray-100 dark:bg-white/5 rounded-full h-1.5 overflow-hidden">
+              <div
+                className="bg-linear-to-r from-blue-600 to-purple-600 h-full rounded-full transition-all duration-1000"
+                style={{ width: `65%` }}
+              ></div>
+            </div>
           </div>
         )}
       </div>
+
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+        <ChevronRight className="w-6 h-6 text-blue-600" />
+      </div>
+
       {cardType === 'wishlist' && onRemoveFromWishlist && (
         <button
           onClick={(e) => {
@@ -83,7 +111,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
             e.stopPropagation();
             onRemoveFromWishlist(course.id);
           }}
-          className="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 z-10"
+          className="absolute top-4 right-4 p-2 text-gray-300 hover:text-red-500 hover:bg-red-500/5 rounded-full transition-colors z-10"
           aria-label="Remove from wishlist"
         >
           <TrashIcon />
@@ -125,7 +153,12 @@ const DashboardPage: React.FC = () => {
   }) => (
     <button
       onClick={() => setActiveTab(tabName)}
-      className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === tabName ? 'bg-teal-500 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-200'}`}
+      className={cn(
+        'px-6 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-all duration-300',
+        activeTab === tabName
+          ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 translate-y--0.5'
+          : 'text-gray-500 hover:bg-gray-200/50 dark:hover:bg-white/5',
+      )}
     >
       {label}
     </button>
@@ -162,17 +195,25 @@ const DashboardPage: React.FC = () => {
       const collaborators = Array.from(collaboratorsMap.values());
 
       return (
-        <div>
-          <h2 className="text-2xl font-semibold mb-4">My Collaborators</h2>
-          <div className="space-y-4">
+        <div className="space-y-6">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2 rounded-xl bg-purple-600/10">
+              <Users className="w-5 h-5 text-purple-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              Active Collaborators
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {collaborators.length > 0 ? (
               collaborators.map(({ user, managedCourses }: any) => (
                 <div
                   key={user.id}
-                  className="bg-white p-4 rounded-lg shadow border flex flex-col sm:flex-row items-start sm:items-center gap-4"
+                  className="bg-white dark:bg-[#1A1A1A] p-6 rounded-3xl border border-gray-100 dark:border-white/5 shadow-xl flex flex-col gap-6"
                 >
-                  <div className="w-20 h-20 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 text-2xl font-bold shrink-0">
-                    <div className="relative w-12 h-12 rounded-full mr-4 overflow-hidden shrink-0">
+                  <div className="flex items-center gap-4">
+                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-white dark:border-[#2A2A2A] shadow-lg">
                       <Image
                         src={user.avatarUrl}
                         alt={user.name}
@@ -181,37 +222,46 @@ const DashboardPage: React.FC = () => {
                       />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-800">{user.name}</p>
-                      <p className="text-sm text-gray-500">{user.email}</p>
+                      <p className="font-bold text-gray-900 dark:text-white text-lg">
+                        {user.name}
+                      </p>
+                      <p className="text-xs font-medium text-gray-500">
+                        {user.email}
+                      </p>
                     </div>
                   </div>
-                  <div className="border-t sm:border-t-0 sm:border-l border-gray-200 pl-0 sm:pl-4 pt-4 sm:pt-0 w-full">
-                    <p className="text-sm font-medium text-gray-600 mb-2">
-                      Manages:
-                    </p>
-                    <ul className="space-y-1">
+
+                  <div className="border-t border-gray-100 dark:border-white/5 pt-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <GraduationCap className="w-4 h-4 text-blue-600" />
+                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
+                        Assigned Responsibilities
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
                       {managedCourses.map((c: any) => (
-                        <li key={c.id} className="text-sm text-gray-500">
-                          <Link
-                            href={`/course/${c.id}`}
-                            className="hover:underline text-teal-600"
-                          >
-                            {c.title}
-                          </Link>{' '}
-                          as{' '}
-                          <span className="font-semibold text-gray-700">
+                        <Link
+                          key={c.id}
+                          href={`/course/${c.id}`}
+                          className="px-3 py-1.5 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 text-[10px] font-bold text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:border-blue-500/30 transition-all flex items-center gap-2 group"
+                        >
+                          {c.title}
+                          <span className="px-1.5 py-0.5 bg-blue-600/10 text-blue-600 rounded text-[8px]">
                             {c.role}
                           </span>
-                        </li>
+                        </Link>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
-              <p>
-                You haven&apos;t assigned any collaborators to your courses yet.
-              </p>
+              <div className="col-span-2 p-12 text-center bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-white/10">
+                <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 font-medium">
+                  No external collaborators assigned yet.
+                </p>
+              </div>
             )}
           </div>
         </div>
@@ -251,9 +301,23 @@ const DashboardPage: React.FC = () => {
     }
 
     return (
-      <div>
-        <h2 className="text-2xl font-semibold mb-4">{title}</h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3">
+          <div className="p-2 rounded-xl bg-blue-600/10">
+            {activeTab === 'myLearning' ? (
+              <PlayCircle className="w-5 h-5 text-blue-600" />
+            ) : activeTab === 'wishlist' ? (
+              <Heart className="w-5 h-5 text-red-600" />
+            ) : (
+              <GraduationCap className="w-5 h-5 text-blue-600" />
+            )}
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white uppercase tracking-tighter">
+            {title}
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {list.length > 0 ? (
             list.map((course) => (
               <DashboardCourseCard
@@ -264,12 +328,15 @@ const DashboardPage: React.FC = () => {
               />
             ))
           ) : (
-            <p>
-              {emptyText}{' '}
-              <Link href="/search" className="text-teal-500 hover:underline">
-                Explore courses
+            <div className="col-span-2 p-16 text-center bg-white dark:bg-[#1A1A1A] rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl">
+              <p className="text-gray-500 font-bold mb-6 italic">{emptyText}</p>
+              <Link
+                href="/search"
+                className="px-8 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-blue-500/25 transition-all inline-block"
+              >
+                Discover Elite Content
               </Link>
-            </p>
+            </div>
           )}
         </div>
       </div>
@@ -277,34 +344,59 @@ const DashboardPage: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-full">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6">
+    <div className="bg-gray-50 dark:bg-[#0a0a0a] min-h-screen transition-colors duration-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              Welcome back, {currentUser.name}!
+            <div className="flex items-center gap-3 mb-4">
+              <ShieldCheck className="w-5 h-5 text-blue-600" />
+              <span className="text-xs font-black uppercase tracking-widest text-blue-600/60">
+                Elite Member Access
+              </span>
+            </div>
+            <h1 className="text-5xl font-black text-gray-900 dark:text-white tracking-tighter">
+              Greetings,{' '}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                {currentUser.name.split(' ')[0]}
+              </span>
+              .
             </h1>
-            <p className="text-gray-600 mt-1">
-              Here&apos;s your member dashboard.
+            <p className="text-gray-500 dark:text-gray-400 mt-2 font-medium max-w-md">
+              Welcome to your exclusive academic command center. Track your
+              progress across global experiences.
             </p>
           </div>
-          <div className="relative w-16 h-16 mt-4 md:mt-0 rounded-full overflow-hidden shrink-0">
-            <Image
-              src={currentUser.avatarUrl}
-              alt={currentUser.name}
-              fill
-              className="object-cover"
-            />
+          <div className="flex items-center gap-6 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl shadow-xl">
+            <div className="text-right">
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">
+                Global Ranking
+              </p>
+              <p className="text-2xl font-black text-gray-900 dark:text-white">
+                Top 2%
+              </p>
+            </div>
+            <div className="relative w-20 h-20 rounded-2xl overflow-hidden border-4 border-gray-50 dark:border-[#2A2A2A] shadow-2xl shrink-0 group">
+              <Image
+                src={currentUser.avatarUrl}
+                alt={currentUser.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+              />
+            </div>
           </div>
         </div>
 
-        <div className="flex items-center border-b border-gray-200 mb-6 flex-wrap">
-          <div className="flex space-x-2 py-2">
+        <div className="flex items-center justify-between mb-12 bg-white dark:bg-[#1A1A1A] p-2 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm overflow-x-auto">
+          <div className="flex space-x-2 min-w-max">
             <TabButton tabName="myLearning" label="My Learning" />
-            <TabButton tabName="myCourses" label="Courses I Own" />
-            <TabButton tabName="myCollaborators" label="My Collaborators" />
-            <TabButton tabName="managedCourses" label="Courses I Manage" />
-            <TabButton tabName="myWishlist" label="My Wishlist" />
+            <TabButton tabName="myCourses" label="Catalog" />
+            <TabButton tabName="myCollaborators" label="Team" />
+            <TabButton tabName="managedCourses" label="Management" />
+            <TabButton tabName="myWishlist" label="Aspirations" />
+          </div>
+          <div className="px-6 hidden lg:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">
+            <TrendingUp className="w-3 h-3 text-green-500" />
+            Active Session
           </div>
         </div>
         {renderContent()}

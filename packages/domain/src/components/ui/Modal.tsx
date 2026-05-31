@@ -2,23 +2,52 @@
 
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
-import { useEffect, useCallback, useState } from 'react';
-import type { ClassValue } from 'clsx';
+import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
   className?: string;
-  variant?: 'popup' | 'bottom';
+  variant?: 'popup' | 'bottom' | 'side';
 }
 
-const popupClasses: ClassValue[] = [
-  'inset-0 flex items-center justify-center p-4',
-  'w-full max-w-lg mx-auto',
-];
+// Animation Variants
+const backdropVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0 },
+};
 
-const bottomClasses: ClassValue[] = ['inset-x-0 bottom-0', 'h-[75vh]'];
+const modalVariants = {
+  popup: {
+    hidden: { opacity: 0, scale: 0.95, y: 10 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: { type: 'spring', duration: 0.3 },
+    },
+    exit: { opacity: 0, scale: 0.95, y: 10, transition: { duration: 0.2 } },
+  },
+  bottom: {
+    hidden: { y: '100%' },
+    visible: {
+      y: 0,
+      transition: { type: 'spring', damping: 25, stiffness: 300 },
+    },
+    exit: { y: '100%', transition: { duration: 0.2 } },
+  },
+  side: {
+    hidden: { x: '100%' },
+    visible: {
+      x: 0,
+      transition: { type: 'spring', damping: 30, stiffness: 300 },
+    },
+    exit: { x: '100%', transition: { duration: 0.3, ease: 'easeInOut' } },
+  },
+} as const;
 
 export function Modal({
   isOpen,
@@ -26,96 +55,78 @@ export function Modal({
   children,
   className,
   variant = 'popup',
-}: ModalProps): React.ReactElement | null {
+}: ModalProps) {
   const isDark = useThemeStore((state) => state.isDark);
-  const [isVisible, setIsVisible] = useState(false);
-  const [shouldRender, setShouldRender] = useState(false);
 
-  // Handle mount/enter animation
+  // Lock body scroll and Listen for Escape key
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
     if (isOpen) {
-      setShouldRender(true);
-      // Double requestAnimationFrame to ensure DOM paint before transition
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          setIsVisible(true);
-        });
-      });
       document.body.style.overflow = 'hidden';
+      document.addEventListener('keydown', handleKeyDown);
     } else {
-      // logic handled in handleClose usually, but if props change externally:
-      setIsVisible(false);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        document.body.style.overflow = 'unset';
-      }, 300); // 300ms match duration
-      return () => clearTimeout(timer);
+      document.body.style.overflow = 'unset';
+      document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen]);
-
-  // Clean up overflow on unmount
-  useEffect(() => {
     return () => {
       document.body.style.overflow = 'unset';
+      document.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isOpen, onClose]);
 
-  const handleClose = useCallback(() => {
-    setIsVisible(false);
-    setTimeout(() => {
-      onClose();
-    }, 300);
-  }, [onClose]);
+  const wrapperClasses = cn(
+    variant === 'popup' &&
+      'fixed inset-0 z-50 flex items-center justify-center p-4',
+    variant === 'side' && 'fixed inset-0 z-50 flex justify-end',
+    variant === 'bottom' && 'fixed inset-0 z-50 flex items-end',
+  );
 
-  if (!shouldRender) return null;
+  const contentClasses = cn(
+    'relative w-full shadow-2xl overflow-hidden',
+    isDark ? 'bg-[#1C1C1E]' : 'bg-white',
+    // Shape & Size
+    variant === 'popup' && 'max-w-lg rounded-2xl',
+    variant === 'side' &&
+      'w-[85vw] max-w-sm h-full rounded-l-2xl border-l border-gray-100 dark:border-white/10',
+    variant === 'bottom' && 'h-[80vh] rounded-t-2xl',
+    className,
+  );
 
   return (
-    <div
-      className={cn(
-        'fixed inset-0 z-50 transition-all duration-300 ease-out',
-        isVisible ? 'visible' : 'invisible',
-      )}
-    >
+    <div className="relative z-50">
       {/* Backdrop */}
-      <div
-        className={cn(
-          'fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300',
-          isVisible ? 'opacity-100' : 'opacity-0',
-        )}
-        onClick={handleClose}
+      <motion.div
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={backdropVariants}
+        onClick={onClose}
       />
 
-      {/* Modal */}
-      <div
-        className={cn(
-          'fixed transition-all duration-300',
-          variant === 'popup' && popupClasses,
-          variant === 'bottom' && bottomClasses,
-          // Animation States
-          isVisible
-            ? 'opacity-100 translate-y-0 scale-100'
-            : variant === 'bottom'
-              ? 'opacity-0 translate-y-full' // Slide down for bottom
-              : 'opacity-0 scale-95', // Fade/scale for popup
-        )}
-      >
-        <div
-          className={cn(
-            'w-full shadow-lg',
-            isDark ? 'bg-[#1C1C1E]' : 'bg-white',
-            variant === 'popup' && 'rounded-2xl',
-            variant === 'bottom' && 'h-full rounded-t-2xl',
-            className,
-          )}
+      {/* Container to position the modal */}
+      <div className={wrapperClasses}>
+        <motion.div
+          className={contentClasses}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          variants={modalVariants[variant]}
+          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking content
         >
-          {/* Bottom sheet handle */}
+          {/* Bottom Sheet Handle */}
           {variant === 'bottom' && (
-            <div className="flex-none py-3" onClick={handleClose}>
+            <div className="flex-none py-3" onClick={onClose}>
               <div className="mx-auto w-12 h-1.5 rounded-full bg-gray-300 dark:bg-gray-600" />
             </div>
           )}
           {children}
-        </div>
+        </motion.div>
       </div>
     </div>
   );

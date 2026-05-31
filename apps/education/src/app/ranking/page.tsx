@@ -46,17 +46,18 @@ export default async function RankingPage({
   return (
     <div className="min-h-screen bg-gray-50/50 dark:bg-black/20 pb-20">
       <HeroSection
+        mode="page"
         title="Global University Rankings"
-        subtitle="Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject."
-        className="-mt-20"
+        // subtitle="Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject."
+        className=""
       />
 
-      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-20 relative z-20">
+      <div className="hidden md:block max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-36 relative z-20">
         <RankingMap universities={universities} />
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 -mt-8 relative z-10">
+      <div className="container mx-auto px-4 relative z-10">
         <RankingList
           initialUniversities={universities}
           currentYear={displayYear}

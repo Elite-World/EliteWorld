@@ -32,14 +32,14 @@ export function EssayCoachingContent({
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
               Global Application Documents
             </h2>
-            <div className="w-20 h-1 bg-[#4c5cec] mx-auto" />
+            <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
             {documentTypes.map((item) => (
               <div
                 key={item.id}
-                className="relative aspect-4/3 rounded-lg overflow-hidden group cursor-pointer shadow hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 border border-transparent dark:border-white/10"
+                className="relative aspect-4/3 rounded-xl overflow-hidden group cursor-pointer shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 dark:border-white/5"
               >
                 <Image
                   src={item.image}
@@ -49,7 +49,7 @@ export function EssayCoachingContent({
                 />
                 <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-90 transition-opacity duration-300" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 transform transition-transform duration-300 group-hover:translate-x-1">
-                  <span className="text-white font-bold text-sm md:text-base tracking-wide border-l-2 border-[#4c5cec] pl-2">
+                  <span className="text-white font-bold text-sm md:text-base tracking-wide border-l-4 border-blue-500 pl-3">
                     {item.title}
                   </span>
                 </div>
@@ -66,14 +66,14 @@ export function EssayCoachingContent({
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
               Service Packages
             </h2>
-            <div className="w-20 h-1 bg-[#4c5cec] mx-auto" />
+            <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>
 
           <div className="space-y-8">
             {packages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="bg-[#f3effb] dark:bg-white/5 rounded-2xl p-6 md:p-10 hover:shadow-md transition-all duration-300 border border-transparent dark:border-white/10"
+                className="bg-white dark:bg-[#1A1A1A] rounded-3xl p-6 md:p-10 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-white/5"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8 border-b border-gray-200/50 dark:border-white/10 pb-6">
                   <div>
@@ -89,7 +89,7 @@ export function EssayCoachingContent({
                       {pkg.tags.map((tag: string) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 bg-white/60 dark:bg-white/10 border border-gray-300 dark:border-white/10 text-gray-700 dark:text-gray-300 rounded-full text-xs font-semibold hover:bg-[#4c5cec] hover:border-[#4c5cec] hover:text-white transition-all duration-200 cursor-default"
+                          className="px-3 py-1 bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-default"
                         >
                           {tag}
                         </span>
@@ -107,7 +107,7 @@ export function EssayCoachingContent({
                         <span className="w-1 h-4 bg-[#4c5cec] rounded-full" />
                         Price
                       </h3>
-                      <div className="text-xl font-bold text-[#4c5cec] mb-1">
+                      <div className="text-xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500 mb-1">
                         {pkg.price}
                       </div>
                       <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
@@ -144,7 +144,7 @@ export function EssayCoachingContent({
                         Validity
                       </h3>
                       <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-bold text-xl">
-                        <div className="w-1.5 h-1.5 rotate-45 bg-[#a3b1ff] rounded-[0.5px]" />
+                        <div className="w-1.5 h-1.5 rotate-45 bg-linear-to-br from-blue-500 to-purple-500 rounded-[0.5px]" />
                         <span>
                           {
                             pkg.features.find((f) => f.label === 'Validity')
@@ -169,7 +169,7 @@ export function EssayCoachingContent({
                       </div>
                     </div>
 
-                    <button className="w-full bg-[#35579f] text-white py-3 rounded-xl hover:bg-[#2a4680] transition-colors text-sm font-bold shadow-sm hover:shadow-md tracking-wide">
+                    <button className="w-full bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
                       Order Now
                     </button>
                   </div>

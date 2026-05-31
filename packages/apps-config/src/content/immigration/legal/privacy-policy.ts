@@ -1,6 +1,8 @@
 import { siteConfig } from '../../../config/immigration/site-config';
 
 export const privacyPolicyContent = `
+At ${siteConfig.name}, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safe-guard your information when you visit our website and use our services.
+
 ### 1. Information We Collect
 We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, request customer support, or contact us. This may include:
 - Name and contact information (email address, phone number)

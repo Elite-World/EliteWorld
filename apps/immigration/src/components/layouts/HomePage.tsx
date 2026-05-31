@@ -10,7 +10,15 @@ import { cn } from '@repo/domain';
 import { siteConfig } from '@repo/apps-config/immigration/site-config';
 import Image from 'next/image';
 // import { useUnsplashImage } from '@repo/domain';
-import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
+import {
+  Linkedin,
+  Twitter,
+  Instagram,
+  Facebook,
+  MapPin,
+  Phone,
+  Mail,
+} from 'lucide-react';
 import { QRCode } from '@repo/domain';
 
 import { navGateway } from '@repo/apps-config/immigration/navbar-config';
@@ -220,11 +228,11 @@ export function HomePage() {
               <div
                 key={index}
                 className={cn(
-                  'text-center p-8 rounded-2xl transition-all duration-300',
+                  'text-center p-8 rounded-2xl transition-all duration-300 border',
                   'hover:transform hover:-translate-y-1',
                   isDark
-                    ? 'bg-gray-800 hover:bg-gray-700'
-                    : 'bg-white hover:bg-blue-50 shadow-lg',
+                    ? 'bg-[#1A1A1A] hover:bg-[#222] border-white/5 hover:border-white/10'
+                    : 'bg-white hover:bg-white border-gray-100 shadow-sm hover:shadow-xl',
                 )}
               >
                 <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">
@@ -250,12 +258,12 @@ export function HomePage() {
         <div className="container mx-auto px-4">
           <h2
             className={cn(
-              'text-4xl font-bold text-center mb-6',
-              isDark ? 'text-gray-100' : 'text-gray-800',
+              'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
             )}
           >
-            Meet Our Expert Team
+            Meet Our Immigration Experts
           </h2>
+          <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
           <p
             className={cn(
               'text-center max-w-2xl mx-auto mb-16',
@@ -269,22 +277,22 @@ export function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Sarah Chen',
-                role: 'Education Consultant',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'UK & US Universities',
+                name: 'David Lim',
+                role: 'Senior Consultant',
+                image: '/images/team/david-lim.png',
+                speciality: 'Investor & Skilled Migration',
               },
               {
-                name: 'Michael Zhang',
-                role: 'Immigration Specialist',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'Visa & Immigration',
+                name: 'Linda Wu',
+                role: 'Immigration Lawyer',
+                image: '/images/team/linda-wu.png',
+                speciality: 'Visa Compliance & Appeals',
               },
               {
-                name: 'Emma Liu',
-                role: 'Career Advisor',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'Career Planning',
+                name: 'Robert Ng',
+                role: 'Relocation Specialist',
+                image: '/images/team/robert-ng.png',
+                speciality: 'Global Mobility',
               },
             ].map((member, index) => (
               <div
@@ -309,8 +317,7 @@ export function HomePage() {
                   <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
                   <p
                     className={cn(
-                      'text-sm mb-2',
-                      isDark ? 'text-blue-400' : 'text-blue-600',
+                      'text-sm mb-2 font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400',
                     )}
                   >
                     {member.role}
@@ -318,7 +325,7 @@ export function HomePage() {
                   <p
                     className={cn(
                       'text-sm',
-                      isDark ? 'text-gray-400' : 'text-gray-600',
+                      isDark ? 'text-gray-400' : 'text-gray-500',
                     )}
                   >
                     {member.speciality}
@@ -372,21 +379,29 @@ export function HomePage() {
               >
                 Have questions? Connect with us through any of these channels:
               </p>
-              <div className="space-y-4 mb-8">
+              <div className="space-y-6 mb-12">
                 {[
-                  { icon: '📍', label: siteConfig.contact.address },
-                  { icon: '📞', label: siteConfig.contact.phone },
-                  { icon: '✉️', label: siteConfig.contact.email },
-                ].map((contact, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <span className="text-2xl">{contact.icon}</span>
-                    <span
-                      className={cn(isDark ? 'text-gray-300' : 'text-gray-700')}
-                    >
-                      {contact.label}
-                    </span>
-                  </div>
-                ))}
+                  { icon: MapPin, label: siteConfig.contact.address },
+                  { icon: Phone, label: siteConfig.contact.phone },
+                  { icon: Mail, label: siteConfig.contact.email },
+                ].map((contact, index) => {
+                  const Icon = contact.icon;
+                  return (
+                    <div key={index} className="flex items-start space-x-4">
+                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span
+                        className={cn(
+                          'text-sm leading-relaxed',
+                          isDark ? 'text-gray-300' : 'text-gray-600',
+                        )}
+                      >
+                        {contact.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Social Media Links */}

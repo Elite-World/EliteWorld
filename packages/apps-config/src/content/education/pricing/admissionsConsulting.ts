@@ -49,7 +49,7 @@ export const mentorTeams: MentorTeam[] = [
       served: '300+',
       score: '9.8',
     },
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
   },
   {
     id: 'taozhou',
@@ -61,7 +61,7 @@ export const mentorTeams: MentorTeam[] = [
       served: '300+',
       score: '9.8',
     },
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
   },
   {
     id: 'chenmu',
@@ -73,7 +73,7 @@ export const mentorTeams: MentorTeam[] = [
       served: '300+',
       score: '9.8',
     },
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
   },
   {
     id: 'wangyi',
@@ -85,7 +85,7 @@ export const mentorTeams: MentorTeam[] = [
       served: '300+',
       score: '9.8',
     },
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6ufvrwYo7KmWrQQwsAk4ggM.png',
   },
 ];
 

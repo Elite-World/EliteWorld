@@ -5,64 +5,17 @@ import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
-
-const StarIcon: React.FC<{ filled?: boolean }> = ({ filled = true }) => (
-  <svg
-    className={`w-5 h-5 ${filled ? 'text-yellow-400' : 'text-gray-300'}`}
-    fill="currentColor"
-    viewBox="0 0 20 20"
-  >
-    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-  </svg>
-);
-const UsersIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-8 w-8 text-blue-500"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.124-1.282-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.124-1.282.356-1.857m0 0a3.001 3.001 0 01-2.702 0M7 16V5m0 11a-3 3 0 01-5.995-1.058M17 16V5m0 11a-3 3 0 00-5.995-1.058"
-    />
-  </svg>
-);
-const SparklesIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-8 w-8 text-yellow-500"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"
-    />
-  </svg>
-);
-const ChartBarIcon = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    className="h-8 w-8 text-green-500"
-    fill="none"
-    viewBox="0 0 24 24"
-    stroke="currentColor"
-  >
-    <path
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-    />
-  </svg>
-);
+import {
+  ArrowLeft,
+  Users,
+  BarChart3,
+  Star,
+  MessageSquare,
+  Trophy,
+  Activity,
+  Award,
+} from 'lucide-react';
+import { cn } from '@repo/domain';
 
 const SessionPerformancePage: React.FC = () => {
   const params = useParams();
@@ -106,115 +59,250 @@ const SessionPerformancePage: React.FC = () => {
     : 0;
 
   const StatCard: React.FC<{
-    icon: React.ReactNode;
+    icon: React.ElementType;
     title: string;
     value: string;
-  }> = ({ icon, title, value }) => (
-    <div className="bg-white p-6 rounded-lg shadow flex items-center gap-4">
-      {icon}
-      <div>
-        <p className="text-sm text-gray-500">{title}</p>
-        <p className="text-2xl font-bold text-gray-800">{value}</p>
+    trend?: string;
+    variant: 'blue' | 'purple' | 'emerald';
+  }> = ({ icon: Icon, title, value, trend, variant }) => (
+    <div className="bg-white dark:bg-[#1A1A1A] p-8 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl relative overflow-hidden group">
+      <div
+        className={cn(
+          'absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl -mr-12 -mt-12 transition-all duration-500',
+          variant === 'blue'
+            ? 'bg-blue-600/5 group-hover:bg-blue-600/10'
+            : variant === 'purple'
+              ? 'bg-purple-600/5 group-hover:bg-purple-600/10'
+              : 'bg-emerald-600/5 group-hover:bg-emerald-600/10',
+        )}
+      />
+
+      <div className="flex items-center gap-6 relative z-10">
+        <div
+          className={cn(
+            'p-4 rounded-2xl shadow-inner transition-transform group-hover:scale-110 duration-500',
+            variant === 'blue'
+              ? 'bg-blue-600/10 text-blue-600'
+              : variant === 'purple'
+                ? 'bg-purple-600/10 text-purple-600'
+                : 'bg-emerald-600/10 text-emerald-600',
+          )}
+        >
+          <Icon className="w-8 h-8" />
+        </div>
+        <div>
+          <p className="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-1">
+            {title}
+          </p>
+          <div className="flex items-end gap-2">
+            <p className="text-3xl font-black text-gray-900 dark:text-white tracking-tighter">
+              {value}
+            </p>
+            {trend && (
+              <span className="text-[10px] font-bold text-emerald-500 mb-1 leading-none">
+                {trend}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 
   return (
-    <div className="bg-gray-100 min-h-full">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Link
-            href={`/course/${courseId}/manage`}
-            className="text-teal-600 hover:underline text-sm"
-          >
-            &larr; Back to Course Management
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mt-2">
-            Session Performance
-          </h1>
-          <p className="text-lg text-gray-600">
-            {session.title} - {session.date}
-          </p>
+    <div className="bg-gray-50 dark:bg-[#0a0a0a] min-h-screen transition-colors duration-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div>
+            <Link
+              href={`/course/${courseId}/manage`}
+              className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors mb-4"
+            >
+              <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+              Return to Parameters
+            </Link>
+            <div className="flex items-center gap-3 mb-2">
+              <Award className="w-6 h-6 text-blue-600" />
+              <div className="px-2 py-0.5 rounded-md bg-blue-600/10 border border-blue-600/20">
+                <span className="text-[8px] font-black uppercase tracking-widest text-blue-600">
+                  Operational Intelligence
+                </span>
+              </div>
+            </div>
+            <h1 className="text-5xl font-black text-gray-900 dark:text-white tracking-tighter leading-tight">
+              Session{' '}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                Insights
+              </span>
+            </h1>
+            <p className="text-gray-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">
+              {session.title} &middot; {session.date}
+            </p>
+          </div>
+
+          <div className="hidden lg:flex items-center gap-4 p-4 bg-white dark:bg-[#1A1A1A] rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl">
+            <div className="flex -space-x-3">
+              {[1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className="w-10 h-10 rounded-xl border-4 border-white dark:border-[#1A1A1A] bg-gray-200 dark:bg-white/5 overflow-hidden shadow-sm"
+                >
+                  <div className="w-full h-full bg-linear-to-br from-blue-600/20 to-purple-600/20" />
+                </div>
+              ))}
+            </div>
+            <div className="pr-2">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                Active Cohort
+              </p>
+              <p className="text-sm font-black text-gray-900 dark:text-white">
+                {performance?.totalAttendees || 0} Registered
+              </p>
+            </div>
+          </div>
         </div>
 
         {!performance ? (
-          <div className="bg-white p-8 rounded-lg shadow text-center">
-            <h2 className="text-xl font-semibold">No Performance Data Yet</h2>
-            <p className="text-gray-600 mt-2">
-              Performance data for this session is not yet available. Please
-              check back after the session is completed.
+          <div className="bg-white dark:bg-[#1A1A1A] p-20 rounded-[3rem] border border-dashed border-gray-200 dark:border-white/10 shadow-xl text-center">
+            <div className="w-20 h-20 bg-gray-50 dark:bg-white/5 rounded-3xl flex items-center justify-center mx-auto mb-8 border border-gray-100 dark:border-white/5">
+              <Activity className="w-10 h-10 text-gray-300" />
+            </div>
+            <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase mb-4">
+              Awaiting Signal
+            </h2>
+            <p className="text-gray-500 font-medium max-w-md mx-auto">
+              Performance telemetry for this session is not yet synchronized.
+              Operation data will populate upon mission completion.
             </p>
           </div>
         ) : (
-          <div className="space-y-8">
+          <div className="space-y-12">
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <StatCard
-                icon={<UsersIcon />}
+                icon={Users}
                 title="Attendance Rate"
                 value={`${attendanceRate.toFixed(1)}%`}
+                trend="+12.4% vs prev"
+                variant="blue"
               />
               <StatCard
-                icon={<SparklesIcon />}
-                title="Average Rating"
+                icon={Trophy}
+                title="Prestige Rating"
                 value={`${performance.averageRating.toFixed(1)} / 5`}
+                trend="Platinum Tier"
+                variant="purple"
               />
               <StatCard
-                icon={<ChartBarIcon />}
+                icon={Activity}
                 title="Engagement Score"
                 value={`${performance.engagementScore} / 100`}
+                trend="High Intensity"
+                variant="emerald"
               />
             </div>
 
             {/* Engagement Chart & Feedback */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow">
-                <h3 className="text-xl font-semibold mb-4">
-                  Engagement Over Time
-                </h3>
-                <div className="h-64 bg-gray-50 rounded-md flex items-end justify-around p-4">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+              <div className="lg:col-span-2 bg-white dark:bg-[#1A1A1A] p-10 rounded-[3rem] border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden group">
+                <div className="flex items-center justify-between mb-10">
+                  <div className="flex items-center gap-3">
+                    <BarChart3 className="w-5 h-5 text-blue-600" />
+                    <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest">
+                      Intensity Mapping
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
+                    <div className="w-1.5 h-1.5 rounded-full bg-blue-600 shadow-[0_0_8px_rgba(37,99,235,0.6)]" />
+                    <span className="text-[8px] font-black uppercase text-blue-600">
+                      Live Telemetry
+                    </span>
+                  </div>
+                </div>
+
+                <div className="h-80 flex items-end justify-around gap-2 px-4 pb-4 border-b border-gray-100 dark:border-white/5 relative">
+                  {/* Grid Lines */}
+                  <div className="absolute inset-0 flex flex-col justify-between pointer-events-none pb-4 opacity-50">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div
+                        key={i}
+                        className="w-full border-t border-gray-100 dark:border-white/5"
+                      />
+                    ))}
+                  </div>
+
                   {performance.engagementData.map((value, index) => (
-                    <div
-                      key={index}
-                      className="w-4 bg-teal-300 hover:bg-teal-500 transition-colors rounded-t-sm"
-                      style={{ height: `${value}%` }}
-                      title={`Minute ${index * 5}: ${value}%`}
-                    ></div>
+                    <div key={index} className="grow group/bar relative">
+                      <div
+                        className="w-full bg-linear-to-t from-blue-600/40 to-blue-600 group-hover/bar:from-blue-600 group-hover/bar:to-purple-600 transition-all duration-500 rounded-2xl shadow-lg relative z-10"
+                        style={{ height: `${value}%` }}
+                      >
+                        <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-black px-2 py-1 rounded-lg opacity-0 group-hover/bar:opacity-100 transition-opacity whitespace-nowrap">
+                          {value}% Intensity
+                        </div>
+                      </div>
+                    </div>
                   ))}
                 </div>
+                <div className="flex justify-between mt-6 px-4">
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Protocol Initiation
+                  </span>
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                    Mission Complete
+                  </span>
+                </div>
               </div>
-              <div className="bg-white p-6 rounded-lg shadow">
-                <h3 className="text-xl font-semibold mb-4">
-                  Attendee Feedback
-                </h3>
-                <ul className="space-y-4 max-h-96 overflow-y-auto">
+
+              <div className="bg-white dark:bg-[#1A1A1A] p-10 rounded-[3rem] border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden flex flex-col">
+                <div className="flex items-center gap-3 mb-10">
+                  <MessageSquare className="w-5 h-5 text-purple-600" />
+                  <h3 className="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest">
+                    Intel Feed
+                  </h3>
+                </div>
+
+                <ul className="space-y-6 overflow-y-auto pr-2 custom-scrollbar grow">
                   {performance.feedback.map((fb, index) => {
                     const author = allUsers.find((u) => u.id === fb.authorId);
                     return (
-                      <li key={index} className="border-b pb-3">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            {author?.avatarUrl && (
-                              <Image
-                                src={author.avatarUrl}
-                                alt={author.name || ''}
-                                width={32}
-                                height={32}
-                                className="w-8 h-8 rounded-full"
-                              />
-                            )}
-                            <span className="font-semibold text-sm">
-                              {author?.name}
-                            </span>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <StarIcon />
-                            <span className="text-sm font-bold">
-                              {fb.rating}
-                            </span>
+                      <li
+                        key={index}
+                        className="group p-5 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all"
+                      >
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <div className="relative w-10 h-10 rounded-xl overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm group-hover:scale-110 transition-transform">
+                              {author?.avatarUrl && (
+                                <Image
+                                  src={author.avatarUrl}
+                                  alt={author.name || ''}
+                                  fill
+                                  className="object-cover"
+                                />
+                              )}
+                            </div>
+                            <div>
+                              <p className="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-tight leading-none mb-1">
+                                {author?.name}
+                              </p>
+                              <div className="flex items-center gap-1">
+                                {[1, 2, 3, 4, 5].map((s) => (
+                                  <Star
+                                    key={s}
+                                    className={cn(
+                                      'w-2 h-2',
+                                      s <= fb.rating
+                                        ? 'text-yellow-400 fill-yellow-400'
+                                        : 'text-gray-300',
+                                    )}
+                                  />
+                                ))}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <p className="text-sm text-gray-600 mt-2 italic">
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 leading-relaxed italic">
                           &quot;{fb.comment}&quot;
                         </p>
                       </li>

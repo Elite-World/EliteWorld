@@ -90,7 +90,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              img-src 'self' data: blob: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://*.amazonaws.com https://*.notion.so https://*.googleusercontent.com https://*.openstreetmap.org https://*.basemaps.cartocdn.com https://unpkg.com;
+              img-src 'self' data: blob: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://*.amazonaws.com https://*.notion.so https://*.googleusercontent.com https://*.openstreetmap.org https://*.basemaps.cartocdn.com https://*.faiusr.com https://31786002.s21i.faiusr.com https://unpkg.com;
               script-src 'self' 'unsafe-inline';
               style-src 'self' 'unsafe-inline';
               font-src 'self'; 

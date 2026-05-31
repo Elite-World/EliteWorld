@@ -81,33 +81,49 @@ export function SearchModal() {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={close} variant="popup">
-      <div className="flex flex-col max-h-[80vh] bg-white dark:bg-gray-900 overflow-hidden rounded-2xl w-full">
+    <Modal
+      isOpen={isOpen}
+      onClose={close}
+      variant="popup"
+      className="max-w-3xl w-full mx-auto p-0 md:p-4 bg-transparent shadow-none"
+    >
+      <div className="flex flex-col h-full md:h-auto md:max-h-[80vh] bg-white dark:bg-gray-900 md:rounded-2xl w-full shadow-2xl overflow-hidden">
         {/* Search Header */}
-        <div className="relative flex items-center border-b border-gray-100 dark:border-gray-800 p-4">
-          <HiOutlineMagnifyingGlass className="w-6 h-6 text-gray-400 absolute left-6" />
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search articles, guides, and more..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-12 pr-12 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-lg outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition-all"
-            autoComplete="off"
-          />
-          {query ? (
-            <button
-              type="button"
-              onClick={() => setQuery('')}
-              className="absolute right-6 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-            >
-              <HiOutlineXMark className="w-5 h-5" />
-            </button>
-          ) : (
-            <div className="absolute right-6 pointer-events-none px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-xs text-gray-500">
-              ESC
-            </div>
-          )}
+        <div className="relative flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 p-4">
+          <div className="relative flex-1">
+            <HiOutlineMagnifyingGlass className="w-5 h-5 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="w-full pl-11 pr-10 py-3 bg-gray-100 dark:bg-gray-800/50 rounded-xl text-base outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+              autoComplete="off"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 bg-gray-100 dark:bg-gray-800/50 rounded-full"
+              >
+                <HiOutlineXMark className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Mobile Close Button */}
+          <button
+            onClick={close}
+            className="md:hidden text-sm font-semibold text-gray-500 dark:text-gray-400 px-2"
+          >
+            Cancel
+          </button>
+
+          {/* Desktop ESC Hint */}
+          <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-[10px] uppercase font-bold text-gray-400 select-none">
+            ESC
+          </div>
         </div>
 
         {/* Search Content */}

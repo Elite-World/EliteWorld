@@ -1,15 +1,24 @@
 'use client';
 
-// import { Article, Category } from '@repo/domain';
+import { Article, Category } from '@repo/domain';
 import { useThemeStore } from '@repo/domain';
-// import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
-// Card is in web-shared/ui/Card.tsx as seen in file listing.
-// import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
+import { ArticleCard } from '@repo/domain';
+
 import { cn } from '@repo/domain';
 import { siteConfig } from '@repo/apps-config/education/site-config';
 import Image from 'next/image';
 // import { useUnsplashImage } from '@repo/domain';
-import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
+import {
+  Linkedin,
+  Twitter,
+  Instagram,
+  Facebook,
+  MapPin,
+  Phone,
+  Mail,
+  ArrowRight,
+} from 'lucide-react';
+import Link from 'next/link';
 import { QRCode } from '@repo/domain';
 
 import { navGateway } from '@repo/apps-config/education/navbar-config';
@@ -87,10 +96,10 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 //   );
 // }
 
-// interface HomePageProps {
-//   categories: Category[];
-//   articles: Article[];
-// }
+interface HomePageProps {
+  articles: Article[];
+  tips?: Article[];
+}
 
 // Define the social media links with proper icon types
 const socialLinks = [
@@ -114,8 +123,7 @@ const socialLinks = [
 //   );
 // }
 
-// export function HomePage({ categories, articles }: HomePageProps) {
-export function HomePage() {
+export function HomePage({ articles, tips = [] }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
 
   // const [isLoading, setIsLoading] = useState(false);
@@ -219,11 +227,11 @@ export function HomePage() {
               <div
                 key={index}
                 className={cn(
-                  'text-center p-8 rounded-2xl transition-all duration-300',
+                  'text-center p-8 rounded-2xl transition-all duration-300 border',
                   'hover:transform hover:-translate-y-1',
                   isDark
-                    ? 'bg-gray-800 hover:bg-gray-700'
-                    : 'bg-white hover:bg-blue-50 shadow-lg',
+                    ? 'bg-[#1A1A1A] hover:bg-[#222] border-white/5 hover:border-white/10'
+                    : 'bg-white hover:bg-white border-gray-100 shadow-sm hover:shadow-xl',
                 )}
               >
                 <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">
@@ -244,17 +252,113 @@ export function HomePage() {
         </div>
       </section>
 
+      {/* Latest Insights Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+            <div>
+              <h2
+                className={cn(
+                  'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
+                )}
+              >
+                Latest Insights
+              </h2>
+              <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
+              <p
+                className={cn(
+                  'max-w-2xl',
+                  isDark ? 'text-gray-400' : 'text-gray-600',
+                )}
+              >
+                Stay updated with the latest news, guides, and tips for your international education journey.
+              </p>
+            </div>
+            <Link
+              href="/insights"
+              className={cn(
+                'inline-flex items-center space-x-2 mt-6 md:mt-0 font-semibold',
+                isDark ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700',
+                'transition-colors'
+              )}
+            >
+              <span>View all articles</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {articles.slice(0, 3).map((article) => (
+              <ArticleCard
+                key={article.id}
+                article={article}
+                basePath="/insights"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tips & Guides Section */}
+      {tips.length > 0 && (
+        <section className="py-24 bg-linear-to-b from-gray-50 to-transparent dark:from-gray-900 dark:to-transparent">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-12">
+              <div>
+                <h2
+                  className={cn(
+                    'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
+                  )}
+                >
+                  Tips & Guides
+                </h2>
+                <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
+                <p
+                  className={cn(
+                    'max-w-2xl',
+                    isDark ? 'text-gray-400' : 'text-gray-600',
+                  )}
+                >
+                  Actionable advice to help you ace your applications and transition smoothly.
+                </p>
+              </div>
+              <Link
+                href="/tips"
+                className={cn(
+                  'inline-flex items-center space-x-2 mt-6 md:mt-0 font-semibold',
+                  isDark ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-700',
+                  'transition-colors'
+                )}
+              >
+                <span>View all tips</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {tips.slice(0, 3).map((article) => (
+                <ArticleCard
+                  key={article.id}
+                  article={article}
+                  basePath="/tips"
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Team Section */}
       <section id="team" className="py-24">
         <div className="container mx-auto px-4">
           <h2
             className={cn(
-              'text-4xl font-bold text-center mb-6',
-              isDark ? 'text-gray-100' : 'text-gray-800',
+              'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
             )}
           >
-            Meet Our Expert Team
+            Meet Our Education Experts
           </h2>
+          <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
           <p
             className={cn(
               'text-center max-w-2xl mx-auto mb-16',
@@ -268,22 +372,22 @@ export function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Sarah Chen',
-                role: 'Education Consultant',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'UK & US Universities',
+                name: 'Dr. Evelyn Vance',
+                role: 'Academic Director',
+                image: '/images/team/evelyn-vance.png',
+                speciality: 'Strategic Planning & Research',
               },
               {
-                name: 'Michael Zhang',
-                role: 'Immigration Specialist',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'Visa & Immigration',
+                name: 'James Miller',
+                role: 'Admissions Specialist',
+                image: '/images/team/james-miller.png',
+                speciality: 'Ivy League & Oxbridge',
               },
               {
-                name: 'Emma Liu',
-                role: 'Career Advisor',
-                image: 'https://avatar.iran.liara.run/public',
-                speciality: 'Career Planning',
+                name: 'Grace Tan',
+                role: 'Writing Consultant',
+                image: '/images/team/grace-tan.png',
+                speciality: 'Personal Statements & Essays',
               },
             ].map((member, index) => (
               <div
@@ -308,8 +412,7 @@ export function HomePage() {
                   <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
                   <p
                     className={cn(
-                      'text-sm mb-2',
-                      isDark ? 'text-blue-400' : 'text-blue-600',
+                      'text-sm mb-2 font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400',
                     )}
                   >
                     {member.role}
@@ -317,7 +420,7 @@ export function HomePage() {
                   <p
                     className={cn(
                       'text-sm',
-                      isDark ? 'text-gray-400' : 'text-gray-600',
+                      isDark ? 'text-gray-400' : 'text-gray-500',
                     )}
                   >
                     {member.speciality}
@@ -371,21 +474,29 @@ export function HomePage() {
               >
                 Have questions? Connect with us through any of these channels:
               </p>
-              <div className="space-y-4 mb-8">
+              <div className="space-y-6 mb-12">
                 {[
-                  { icon: '📍', label: siteConfig.contact.address },
-                  { icon: '📞', label: siteConfig.contact.phone },
-                  { icon: '✉️', label: siteConfig.contact.email },
-                ].map((contact, index) => (
-                  <div key={index} className="flex items-center space-x-4">
-                    <span className="text-2xl">{contact.icon}</span>
-                    <span
-                      className={cn(isDark ? 'text-gray-300' : 'text-gray-700')}
-                    >
-                      {contact.label}
-                    </span>
-                  </div>
-                ))}
+                  { icon: MapPin, label: siteConfig.contact.address },
+                  { icon: Phone, label: siteConfig.contact.phone },
+                  { icon: Mail, label: siteConfig.contact.email },
+                ].map((contact, index) => {
+                  const Icon = contact.icon;
+                  return (
+                    <div key={index} className="flex items-start space-x-4">
+                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span
+                        className={cn(
+                          'text-sm leading-relaxed',
+                          isDark ? 'text-gray-300' : 'text-gray-600',
+                        )}
+                      >
+                        {contact.label}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
 
               {/* Social Media Links */}

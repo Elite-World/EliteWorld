@@ -50,6 +50,30 @@ interface NotionProviderOptions {
     databaseId?: string;
 }
 
+
+// Helper for robust fetching with timeout and retries
+async function fetchWithRetry(url: string, options: RequestInit & { next?: any }, retries = 3, timeout = 15000): Promise<Response> {
+  const controller = new AbortController();
+  const id = setTimeout(() => controller.abort(), timeout);
+  
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal
+    });
+    clearTimeout(id);
+    return response;
+  } catch (error) {
+    clearTimeout(id);
+    if (retries > 0) {
+      console.warn(`Fetch failed, retrying... (${retries} attempts left)`);
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1s delay
+      return fetchWithRetry(url, options, retries - 1, timeout);
+    }
+    throw error;
+  }
+}
+
 export class NotionProvider implements ContentProvider {
   private databaseId: string;
 
@@ -75,13 +99,14 @@ export class NotionProvider implements ContentProvider {
     console.log(`[NotionProvider] Fetching articles from Database ID: ${this.databaseId}`);
 
     try {
-      const response = await fetch(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
+      const response = await fetchWithRetry(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
           'Notion-Version': '2022-06-28',
           'Content-Type': 'application/json',
         },
+        next: { revalidate: 3600 },
         body: JSON.stringify({
           filter: {
             and: [
@@ -130,19 +155,17 @@ export class NotionProvider implements ContentProvider {
   }
 
   async getArticleById(id: string): Promise<Article | null> {
-    // In Notion, we usually query by Slug to find the ID, or if ID is the slug.
-    // Our 'id' in Article interface is usually the slug for routing.
-    // Let's assume 'id' passed here is the slug.
     if (!this.checkConfig()) return null;
 
     try {
-      const response = await fetch(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
+      const response = await fetchWithRetry(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
           'Notion-Version': '2022-06-28',
           'Content-Type': 'application/json',
         },
+        next: { revalidate: 3600 },
         body: JSON.stringify({
           filter: {
             property: 'Slug',
@@ -176,7 +199,6 @@ export class NotionProvider implements ContentProvider {
   }
 
   async getCategories(): Promise<Category[]> {
-    // We can fetch all articles and extract categories
     const articles = await this.getArticles();
     const categoriesMap = new Map<string, Category>();
 
@@ -200,17 +222,15 @@ export class NotionProvider implements ContentProvider {
   async getArticlesByCategory(category: string): Promise<Article[]> {
     if (!this.checkConfig()) return [];
     
-    // We could filter in Notion API if 'Category' is a Select property
-    // But for simplicity/consistency with mapped types, we can fetch all and filter
-    // Or optimized:
     try {
-        const response = await fetch(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
+        const response = await fetchWithRetry(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${process.env.NOTION_API_KEY}`,
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json',
             },
+            next: { revalidate: 3600 },
             body: JSON.stringify({
                 filter: {
                     and: [
@@ -257,7 +277,8 @@ export class NotionProvider implements ContentProvider {
         const slug = props[P.SLUG]?.rich_text?.[0]?.plain_text || page.id;
         const date = props[P.DATE]?.date?.start || new Date().toISOString();
         const excerpt = props[P.SUMMARY]?.rich_text?.[0]?.plain_text || '';
-        const category = props[P.CATEGORY]?.select?.name || D.UNCATEGORIZED;
+        const category = props[P.CATEGORY]?.select?.name || undefined;
+        const tags = props[P.TAGS]?.multi_select?.map((t: any) => t.name) || [];
         
         let image = '/images/placeholder.jpg';
         
@@ -281,6 +302,7 @@ export class NotionProvider implements ContentProvider {
             date,
             excerpt,
             category,
+            tags,
             image,
             readTime: 5, 
             content: '' 

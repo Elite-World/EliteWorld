@@ -37,14 +37,14 @@ export function AdmissionsConsultingContent({
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
               Mentor Team Introduction
             </h2>
-            <div className="w-20 h-1 bg-[#4c5cec] mx-auto" />
+            <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {mentorTeams.map((team) => (
               <div
                 key={team.id}
-                className="bg-white dark:bg-[#1a1a1a] rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
+                className="bg-white dark:bg-[#1A1A1A] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 dark:border-white/5 transition-all duration-300 group"
               >
                 <div className="h-48 overflow-hidden relative">
                   <Image
@@ -59,7 +59,7 @@ export function AdmissionsConsultingContent({
                   </div>
                 </div>
                 <div className="p-6">
-                  <h4 className="text-[#2d4f9e] dark:text-[#5d7aff] font-bold text-lg mb-2">
+                  <h4 className="text-blue-600 dark:text-blue-400 font-bold text-lg mb-2">
                     {team.title}
                   </h4>
                   <div className="flex flex-wrap gap-2 mb-4">
@@ -78,7 +78,7 @@ export function AdmissionsConsultingContent({
 
                   <div className="flex justify-between items-center border-t border-gray-100 dark:border-white/10 pt-4">
                     <div className="text-center">
-                      <div className="text-[#4c5cec] font-bold text-xl">
+                      <div className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500 font-bold text-xl">
                         {team.stats.served}
                       </div>
                       <div className="text-xs text-gray-400 dark:text-gray-500">
@@ -87,7 +87,7 @@ export function AdmissionsConsultingContent({
                     </div>
                     <div className="w-px h-8 bg-gray-200 dark:bg-white/10" />
                     <div className="text-center">
-                      <div className="text-[#4c5cec] font-bold text-xl">
+                      <div className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500 font-bold text-xl">
                         {team.stats.score}
                       </div>
                       <div className="text-xs text-gray-400 dark:text-gray-500">
@@ -117,8 +117,8 @@ export function AdmissionsConsultingContent({
         <div className="flex flex-wrap justify-center gap-4 md:gap-8">
           {serviceProcess.map((step, idx) => (
             <div key={step.id} className="flex items-center">
-              <div className="flex flex-col items-center gap-3">
-                <div className="w-16 h-16 rounded-full bg-[#f3effb] dark:bg-white/5 flex items-center justify-center text-[#4c5cec] font-bold text-xl shadow-sm border border-[#e0defe] dark:border-white/10">
+              <div className="flex flex-col items-center gap-3 group">
+                <div className="w-16 h-16 rounded-full bg-linear-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-bold text-xl shadow-lg border-2 border-white/20 transition-transform group-hover:scale-110">
                   {idx + 1}
                 </div>
                 <span className="text-sm font-bold text-gray-700 dark:text-gray-300">
@@ -152,7 +152,7 @@ export function AdmissionsConsultingContent({
                 className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-white/5 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <span className="text-6xl font-bold text-[#4c5cec]">
+                  <span className="text-6xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500">
                     0{idx + 1}
                   </span>
                 </div>
@@ -160,7 +160,7 @@ export function AdmissionsConsultingContent({
                 <h3 className="text-xl font-bold text-[#010022] dark:text-white mb-6 pr-8">
                   {pkg.title}
                 </h3>
-                <div className="text-[#eb1d4e] text-3xl font-bold mb-8">
+                <div className="text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500 text-3xl font-bold mb-8">
                   {pkg.price}
                 </div>
 
@@ -199,7 +199,7 @@ export function AdmissionsConsultingContent({
                   </div>
                 </div>
 
-                <button className="w-full mt-8 bg-white dark:bg-transparent border-2 border-[#4c5cec] text-[#4c5cec] py-2 rounded-full font-bold hover:bg-[#4c5cec] hover:text-white transition-colors">
+                <button className="w-full mt-8 bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
                   Book Now
                 </button>
               </div>
@@ -214,14 +214,14 @@ export function AdmissionsConsultingContent({
           <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-2">
             Study Abroad DIY Services
           </h2>
-          <div className="w-20 h-1 bg-[#4c5cec] mx-auto mt-4" />
+          <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mt-4" />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {diyPackages.map((pkg) => (
             <div
               key={pkg.id}
-              className="bg-white dark:bg-[#1a1a1a] rounded-xl border border-gray-200 dark:border-white/10 p-8 flex flex-col md:flex-row gap-6 hover:border-[#4c5cec] transition-colors group"
+              className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-100 dark:border-white/5 p-8 flex flex-col md:flex-row gap-6 hover:border-blue-500/50 shadow-sm hover:shadow-xl transition-all group"
             >
               <div className="grow">
                 <h3 className="text-xl font-bold text-[#010022] dark:text-white mb-2 group-hover:text-[#4c5cec] transition-colors">
@@ -235,7 +235,7 @@ export function AdmissionsConsultingContent({
                 <div className="text-2xl font-bold text-[#010022] dark:text-white mb-4">
                   {pkg.price}
                 </div>
-                <button className="px-6 py-2 bg-[#010022] dark:bg-white dark:text-black dark:hover:bg-[#4c5cec] dark:hover:text-white text-white text-sm rounded hover:bg-[#4c5cec] transition-colors">
+                <button className="px-6 py-2 bg-linear-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95">
                   Select
                 </button>
               </div>

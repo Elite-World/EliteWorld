@@ -6,22 +6,28 @@ description: Check the current component design against strict "Premium Aestheti
     - Use `view_file` to read the component source code provided by the user or identified from context.
 
 2.  **Analyze against "Premium Aesthetic" Rubric**:
-    - **Visual Hierarchy**: Is the most important action clearly dominant? Are standard text sizes (sm/base/lg) used effectively to create depth?
-    - **Spacing & Layout**: Is whitespace generous (`p-6`, `gap-6` instead of `p-2`)? Does it feel cramped?
-    - **Color Palette**:
-      - Are colors semantic (Teal/Gray) or generic (Blue/Red)?
-      - Are gradients used for "Hero" elements?
-      - Is `text-gray-500/600` used for secondary text instead of `text-gray-900`?
-    - **Interaction**: Are `hover:scale`, `hover:shadow-lg`, or `transition-all` present on interactive elements?
-    - **Depth**: Are shadows (`shadow-sm`, `shadow-xl`) used to differentiate layers?
-    - **Glassmorphism**: Is `backdrop-blur-md` or `bg-white/80` used for overlays/sticky headers?
+    - **Typography**:
+      - Is `font-black uppercase tracking-tighter` used for Headings?
+      - Are subheadings `text-[10px]` with `tracking-[0.2em]`?
+    - **Visual Hierarchy**:
+      - Is whitespace deep (`py-24`, `gap-8`)?
+      - Do cards use large radii (`rounded-[2.5rem]`)?
+    - **Color & Atmosphere**:
+      - Is `bg-[#0a0a0a]` used for dark mode?
+      - Are trust badges (`bg-blue-600/10`) present instead of plain text tags?
+    - **Interaction**:
+      - Are transitions `duration-500` or slower?
+      - Do hover effects include glows or blur layers?
+    - **Terminology**:
+      - Does it say "Team" (Standard) or "Faculty" (Elite)?
+      - Does it say "Contact" (Standard) or "Secure Channel" (Elite)?
 
 3.  **Generate Report**:
     - **Rating**: Give a score out of 10.
-    - **Critique**: Briefly list 1-2 major weaknesses.
+    - **Critique**: Briefly list 1-2 weaknessess relative to the "Institutional" standard.
     - **Actionable Fixes**: Provide 3 specific Tailwind class changes.
-      - _Example:_ "Change `bg-blue-500` to `bg-gradient-to-r from-teal-500 to-emerald-500`."
-      - _Example:_ "Add `hover:-translate-y-1 transition-transform` to the card container."
+      - _Example:_ "Change `duration-300` to `duration-700` for a more luxurious feel."
+      - _Example:_ "Replace `rounded-lg` with `rounded-[2rem]`."
 
 4.  **Confirm**:
     - Ask the user if they want to apply these changes automatically.

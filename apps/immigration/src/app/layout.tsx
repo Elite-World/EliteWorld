@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 import { ModalProvider } from '@repo/domain';
-import { AppLayout } from '@/components/layouts/AppLayout';
-import { getNavigationData } from '@repo/apps-config/immigration/navbar-config';
+import { CoreAppLayout } from '@repo/domain';
+import { getNavigationData, navGateway } from '@repo/apps-config/immigration/navbar-config';
 import { siteConfig } from '@repo/apps-config/immigration/site-config';
 
 export const metadata: Metadata = {
@@ -19,9 +19,9 @@ export default async function RootLayout({
   const navigation = await getNavigationData();
 
   return (
-    <html lang="en" className="dark">
-      <body className="antialiased">
-        <AppLayout navigation={navigation}>{children}</AppLayout>
+    <html lang="en" className="dark" suppressHydrationWarning>
+      <body className="antialiased" suppressHydrationWarning>
+        <CoreAppLayout navigation={navigation} siteConfig={siteConfig} navGateway={navGateway}>{children}</CoreAppLayout>
         <ModalProvider />
       </body>
     </html>

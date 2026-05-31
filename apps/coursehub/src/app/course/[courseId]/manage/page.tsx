@@ -6,20 +6,50 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
 import { Course, User, CourseCategory, Session } from '@/types';
-import Button from '@/components/Button';
+import {
+  ArrowLeft,
+  Settings,
+  Calendar,
+  Users,
+  ShieldCheck,
+  Edit3,
+  Plus,
+  Clock,
+  MapPin,
+  ChevronDown,
+  X,
+  Sparkles,
+  Layout,
+  DollarSign,
+} from 'lucide-react';
+import { cn } from '@repo/domain';
 
-// --- Reusable Tab Button ---
 const TabButton: React.FC<{
   tabName: string;
   activeTab: string;
   onClick: (tabName: string) => void;
+  icon: React.ElementType;
   children: React.ReactNode;
-}> = ({ tabName, activeTab, onClick, children }) => (
+}> = ({ tabName, activeTab, onClick, icon: Icon, children }) => (
   <button
     onClick={() => onClick(tabName)}
-    className={`px-4 py-2 text-sm font-medium rounded-md transition ${activeTab === tabName ? 'bg-teal-500 text-white shadow-sm' : 'text-gray-600 hover:bg-gray-200'}`}
+    className={cn(
+      'relative py-4 px-6 transition-all duration-300 flex items-center gap-2 text-xs font-black uppercase tracking-widest',
+      activeTab === tabName
+        ? 'text-blue-600'
+        : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
+    )}
   >
+    <Icon
+      className={cn(
+        'w-4 h-4',
+        activeTab === tabName ? 'text-blue-600' : 'text-gray-400',
+      )}
+    />
     {children}
+    {activeTab === tabName && (
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-full shadow-[0_-2px_10px_rgba(37,99,235,0.4)]" />
+    )}
   </button>
 );
 
@@ -33,99 +63,120 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
   const owner = users.find((u) => u.id === course.ownerId);
 
   return (
-    <div className="mt-6 bg-white p-8 rounded-lg shadow">
-      {/* Course Details Form */}
-      <h3 className="text-xl font-semibold mb-6">Edit Course Details</h3>
-      <form className="space-y-6">
-        <div>
-          <label
-            htmlFor="title"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Course Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            defaultValue={course.title}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-          />
+    <div className="space-y-12">
+      <div className="bg-white dark:bg-[#1A1A1A] p-10 md:p-14 rounded-[3rem] border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden group">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -mr-32 -mt-32" />
+
+        <div className="flex items-center gap-3 pb-6 border-b border-gray-100 dark:border-white/5 mb-10">
+          <Edit3 className="w-5 h-5 text-blue-600" />
+          <h3 className="text-sm font-black uppercase tracking-widest text-gray-400">
+            Core Architecture
+          </h3>
         </div>
-        <div>
-          <label
-            htmlFor="description"
-            className="block text-sm font-medium text-gray-700"
-          >
-            Description
-          </label>
-          <textarea
-            id="description"
-            name="description"
-            rows={5}
-            defaultValue={course.description}
-            className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
-          ></textarea>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
+
+        <form className="space-y-10">
+          <div className="space-y-2">
             <label
-              htmlFor="category"
-              className="block text-sm font-medium text-gray-700"
+              htmlFor="title"
+              className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 flex items-center gap-2"
             >
-              Category
-            </label>
-            <select
-              id="category"
-              name="category"
-              defaultValue={course.category}
-              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md"
-            >
-              {Object.values(CourseCategory).map((cat) => (
-                <option key={cat}>{cat}</option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="price"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Default Price ($)
+              <span className="w-1 h-1 rounded-full bg-blue-600" /> Experience
+              Title
             </label>
             <input
-              type="number"
-              id="price"
-              name="price"
-              defaultValue={course.price}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              type="text"
+              id="title"
+              name="title"
+              defaultValue={course.title}
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
             />
           </div>
-        </div>
-        <div className="flex justify-end pt-4">
-          <Button variant="secondary" type="button" className="mr-3">
-            Cancel
-          </Button>
-          <Button type="submit">Save Changes</Button>
-        </div>
-      </form>
 
-      <div className="border-t my-8"></div>
+          <div className="space-y-2">
+            <label
+              htmlFor="description"
+              className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 flex items-center gap-2"
+            >
+              <span className="w-1 h-1 rounded-full bg-purple-600" /> Strategic
+              Overview
+            </label>
+            <textarea
+              id="description"
+              name="description"
+              rows={5}
+              defaultValue={course.description}
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none"
+            ></textarea>
+          </div>
 
-      {/* Admin Management Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <h3 className="text-xl font-semibold mb-4">
-            Default Admins & Instructors
-          </h3>
-          <ul className="space-y-3">
-            {owner && (
-              <li
-                key={owner.id}
-                className="flex items-center justify-between p-3 bg-gray-100 rounded-md"
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="space-y-2">
+              <label
+                htmlFor="category"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 flex items-center gap-2"
               >
+                <span className="w-1 h-1 rounded-full bg-blue-600" /> Market
+                Vertical
+              </label>
+              <div className="relative">
+                <select
+                  id="category"
+                  name="category"
+                  defaultValue={course.category}
+                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                >
+                  {Object.values(CourseCategory).map((cat) => (
+                    <option key={cat}>{cat}</option>
+                  ))}
+                </select>
+                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="price"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1 flex items-center gap-2"
+              >
+                <span className="w-1 h-1 rounded-full bg-purple-600" /> Standard
+                Access Fee ($)
+              </label>
+              <div className="relative">
+                <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-600" />
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  defaultValue={course.price}
+                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end gap-4 pt-6">
+            <button
+              type="submit"
+              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest text-[10px]"
+            >
+              Update Intelligence
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <div className="bg-white dark:bg-[#1A1A1A] p-10 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl">
+          <div className="flex items-center gap-3 pb-6 border-b border-gray-100 dark:border-white/5 mb-8">
+            <Users className="w-4 h-4 text-blue-600" />
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+              Personnel Roster
+            </h3>
+          </div>
+          <ul className="space-y-4">
+            {owner && (
+              <li className="flex items-center justify-between p-5 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5">
                 <div className="flex items-center">
-                  <div className="relative w-10 h-10 rounded-full mr-3 shrink-0 overflow-hidden">
+                  <div className="relative w-12 h-12 rounded-2xl mr-4 shrink-0 overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm">
                     <Image
                       src={owner.avatarUrl}
                       alt={owner.name}
@@ -134,13 +185,17 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                     />
                   </div>
                   <div>
-                    <p className="font-semibold">{owner.name}</p>
-                    <p className="text-sm text-gray-500">Owner</p>
+                    <p className="font-black text-sm text-gray-900 dark:text-white leading-none mb-1">
+                      {owner.name}
+                    </p>
+                    <p className="text-[10px] font-black text-blue-600 uppercase tracking-widest">
+                      Master Commander
+                    </p>
                   </div>
                 </div>
-                <span className="text-xs font-medium text-gray-500">
-                  Cannot be removed
-                </span>
+                <div className="p-2 rounded-xl bg-gray-200/50 dark:bg-white/10">
+                  <ShieldCheck className="w-4 h-4 text-gray-400" />
+                </div>
               </li>
             )}
             {course.admins.map((admin) => {
@@ -148,10 +203,10 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
               return (
                 <li
                   key={admin.userId}
-                  className="flex items-center justify-between p-3 bg-gray-50 rounded-md"
+                  className="flex items-center justify-between p-5 bg-white dark:bg-[#222] rounded-3xl border border-gray-100 dark:border-white/5 group hover:border-blue-500/30 transition-all"
                 >
                   <div className="flex items-center">
-                    <div className="relative w-10 h-10 rounded-full mr-3 shrink-0 overflow-hidden">
+                    <div className="relative w-12 h-12 rounded-2xl mr-4 shrink-0 overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm group-hover:scale-105 transition-transform">
                       <Image
                         src={adminUser?.avatarUrl || ''}
                         alt={adminUser?.name || 'Admin'}
@@ -160,68 +215,81 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                       />
                     </div>
                     <div>
-                      <p className="font-semibold">{adminUser?.name}</p>
-                      <p className="text-sm text-gray-500">{admin.role}</p>
+                      <p className="font-black text-sm text-gray-900 dark:text-white leading-none mb-1">
+                        {adminUser?.name}
+                      </p>
+                      <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                        {admin.role}
+                      </p>
                     </div>
                   </div>
-                  <button className="text-xs text-red-500 hover:underline">
-                    Remove
+                  <button className="text-[10px] font-black text-red-500 uppercase tracking-widest hover:text-red-600 transition-colors px-3 py-1 rounded-lg hover:bg-red-50 dark:hover:bg-red-500/10">
+                    Evict
                   </button>
                 </li>
               );
             })}
-            {course.admins.length === 0 && (
-              <p className="text-sm text-gray-500 mt-2">
-                No other admins assigned yet.
-              </p>
-            )}
           </ul>
         </div>
-        <div>
-          <h3 className="text-xl font-semibold mb-4">Add New Default Admin</h3>
-          <form className="space-y-4">
-            <div>
+
+        <div className="bg-white dark:bg-[#1A1A1A] p-10 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/5 rounded-full blur-2xl -mr-16 -mt-16" />
+
+          <div className="flex items-center gap-3 pb-6 border-b border-gray-100 dark:border-white/5 mb-8">
+            <Plus className="w-4 h-4 text-purple-600" />
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+              Expand Fleet
+            </h3>
+          </div>
+
+          <form className="space-y-6 relative z-10">
+            <div className="space-y-2">
               <label
                 htmlFor="user"
-                className="block text-sm font-medium text-gray-700"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
               >
-                Select Member
+                Identify Agent
               </label>
-              <select
-                id="user"
-                name="user"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-teal-500 focus:border-teal-500 sm:text-sm rounded-md"
-              >
-                <option>Select a member...</option>
-                {users
-                  .filter(
-                    (u) =>
-                      u.id !== course.ownerId &&
-                      !course.admins.some((a) => a.userId === u.id),
-                  )
-                  .map((user) => (
-                    <option key={user.id} value={user.id}>
-                      {user.name} ({user.email})
-                    </option>
-                  ))}
-              </select>
+              <div className="relative">
+                <select
+                  id="user"
+                  name="user"
+                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                >
+                  <option>Select an expert...</option>
+                  {users
+                    .filter(
+                      (u) =>
+                        u.id !== course.ownerId &&
+                        !course.admins.some((a) => a.userId === u.id),
+                    )
+                    .map((user) => (
+                      <option key={user.id} value={user.id}>
+                        {user.name}
+                      </option>
+                    ))}
+                </select>
+                <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
             </div>
-            <div>
+            <div className="space-y-2">
               <label
                 htmlFor="role"
-                className="block text-sm font-medium text-gray-700"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
               >
-                Assign Role
+                Designate Role
               </label>
               <input
                 type="text"
                 id="role"
                 name="role"
-                placeholder="e.g., Instructor"
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                placeholder="e.g., Strategic Instructor"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
               />
             </div>
-            <Button type="submit">Assign Role</Button>
+            <button className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]">
+              Authorize Agent
+            </button>
           </form>
         </div>
       </div>
@@ -237,132 +305,169 @@ const SessionsPanel: React.FC<{
   const getStatusColor = (status: 'Upcoming' | 'In Progress' | 'Completed') => {
     switch (status) {
       case 'Upcoming':
-        return 'bg-blue-100 text-blue-800';
+        return 'bg-blue-500';
       case 'In Progress':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-500';
       case 'Completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-500';
     }
   };
 
   return (
-    <div className="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="lg:col-span-2 bg-white p-6 rounded-lg shadow">
-        <h3 className="text-xl font-semibold mb-4">Course Sessions</h3>
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="lg:col-span-2 space-y-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Calendar className="w-5 h-5 text-blue-600" />
+          <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase">
+            Mission Timeline
+          </h2>
+        </div>
+
         {course.sessions.length > 0 ? (
-          <ul className="space-y-4">
+          <div className="space-y-4">
             {course.sessions.map((session) => (
-              <li key={session.id} className="p-4 bg-gray-50 rounded-lg border">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center">
-                  <div>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <h4 className="font-semibold text-gray-800">
+              <div
+                key={session.id}
+                className="group bg-white dark:bg-[#1A1A1A] p-6 rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+              >
+                <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 rounded-full blur-2xl -mr-12 -mt-12 opacity-0 group-hover:opacity-100 transition-opacity" />
+
+                <div className="flex flex-col sm:flex-row justify-between sm:items-center relative z-10">
+                  <div className="grow">
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <h4 className="text-lg font-black text-gray-900 dark:text-white tracking-tight">
                         {session.title}
                       </h4>
-                      <span
-                        className={`text-xs font-medium px-2 py-0.5 rounded-full ${getStatusColor(session.status)}`}
-                      >
-                        {session.status}
-                      </span>
-                      {session.price && (
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
-                          Custom Price
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10">
+                        <div
+                          className={cn(
+                            'w-1.5 h-1.5 rounded-full shadow-[0_0_8px]',
+                            getStatusColor(session.status),
+                          )}
+                        />
+                        <span className="text-[8px] font-black uppercase tracking-widest text-gray-500">
+                          {session.status}
                         </span>
-                      )}
-                      {session.assignedPersonnel && (
-                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-orange-100 text-orange-800">
-                          Custom Staff
+                      </div>
+                      {session.price && (
+                        <span className="text-[8px] font-black uppercase tracking-widest bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 px-2 py-1 rounded-lg border border-purple-200 dark:border-purple-800/50">
+                          Custom Pricing
                         </span>
                       )}
                     </div>
-                    <p className="text-sm text-gray-500 mt-1">
-                      {session.date} at {session.time} &middot;{' '}
-                      {session.location}
-                    </p>
+
+                    <div className="flex items-center gap-4 text-xs font-bold text-gray-400">
+                      <div className="flex items-center gap-1.5">
+                        <Clock className="w-3 h-3 text-blue-600" />
+                        {session.date} at {session.time}
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <MapPin className="w-3 h-3 text-purple-600" />
+                        {session.location}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 mt-3 sm:mt-0">
-                    <Button
+
+                  <div className="flex items-center gap-3 mt-4 sm:mt-0">
+                    <button
                       onClick={() => onAmend(session)}
-                      variant="secondary"
-                      className="px-3 py-1 text-sm"
+                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-gray-50 dark:bg-white/5 text-gray-400 hover:text-blue-600 border border-gray-100 dark:border-white/10 transition-all hover:-translate-y-0.5"
                     >
                       Amend
-                    </Button>
+                    </button>
                     <Link
                       href={`/course/${course.id}/session/${session.id}/performance`}
-                      className="px-3 py-1 text-sm font-semibold rounded-lg transition-all duration-300 bg-teal-500 text-white hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 text-center"
+                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all text-center"
                     >
                       Performance
                     </Link>
                   </div>
                 </div>
-              </li>
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
-          <p className="text-sm text-gray-500">
-            No sessions have been set up for this course yet.
-          </p>
+          <div className="p-12 text-center bg-gray-50 dark:bg-white/5 border border-dashed border-gray-200 dark:border-white/10 rounded-[3rem]">
+            <Calendar className="w-8 h-8 text-gray-300 mx-auto mb-4" />
+            <p className="text-xs font-black uppercase tracking-widest text-gray-400">
+              No operations scheduled
+            </p>
+          </div>
         )}
       </div>
-      <div className="bg-white p-6 rounded-lg shadow">
-        <h3 className="text-xl font-semibold mb-4">Add New Session</h3>
-        <form className="space-y-4">
-          <div>
+
+      <div className="bg-white dark:bg-[#1A1A1A] p-10 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden group h-fit lg:sticky lg:top-10">
+        <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 rounded-full blur-2xl -mr-16 -mt-16" />
+
+        <div className="flex items-center gap-3 pb-6 border-b border-gray-100 dark:border-white/5 mb-10">
+          <Plus className="w-4 h-4 text-blue-600" />
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+            Initialize Session
+          </h3>
+        </div>
+
+        <form className="space-y-8 relative z-10">
+          <div className="space-y-2">
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
+              className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
             >
-              Session Title
+              Event Designation
             </label>
             <input
               type="text"
               id="title"
               name="title"
-              placeholder="e.g., Live Q&A"
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              placeholder="e.g., Strategic Deep-Dive"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
             />
           </div>
-          <div>
+
+          <div className="space-y-2">
             <label
               htmlFor="date"
-              className="block text-sm font-medium text-gray-700"
+              className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
             >
-              Date & Time
+              Temporal Alignment
             </label>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-1 gap-4">
               <input
                 type="date"
                 id="date"
                 name="date"
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition-all cursor-pointer"
               />
               <input
                 type="time"
                 id="time"
                 name="time"
-                className="mt-1 block w-1/2 border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition-all cursor-pointer"
               />
             </div>
           </div>
-          <div>
+
+          <div className="space-y-2">
             <label
               htmlFor="location"
-              className="block text-sm font-medium text-gray-700"
+              className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
             >
-              Location / Link
+              Coordinates / Access Hub
             </label>
             <input
               type="text"
               id="location"
               name="location"
-              placeholder="e.g., Zoom or Room 101"
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:text-sm"
+              placeholder="e.g., Secure Terminal A"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
             />
           </div>
-          <Button type="submit" fullWidth>
-            Add Session
-          </Button>
+
+          <button
+            type="submit"
+            className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
+          >
+            Confirm Mission
+          </button>
         </form>
       </div>
     </div>
@@ -381,88 +486,118 @@ const AmendSessionModal: React.FC<{
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center"
+      className="fixed inset-0 bg-black/40 backdrop-blur-xl z-50 flex items-center justify-center p-6"
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-xl shadow-2xl w-full max-w-2xl p-8"
+        className="bg-white dark:bg-[#111] rounded-[3rem] border border-white/10 shadow-3xl w-full max-w-2xl overflow-hidden relative"
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">
-          Amend Session: {session.title}
-        </h2>
-        <form className="space-y-4 max-h-[70vh] overflow-y-auto pr-4">
-          <div>
-            <label
-              htmlFor="session-title"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Session Title
-            </label>
-            <input
-              type="text"
-              id="session-title"
-              defaultValue={session.title}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="session-price"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Override Price ($)
-            </label>
-            <input
-              type="number"
-              id="session-price"
-              defaultValue={session.price}
-              placeholder={`Default: $${course.price}`}
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Override Instructors/Admins
-            </label>
-            <p className="text-xs text-gray-500 mb-2">
-              Select staff for this session. If empty, course defaults will be
-              used.
-            </p>
-            <div className="space-y-2 max-h-40 overflow-y-auto border p-2 rounded-md">
-              {users.map((user) => (
-                <div key={user.id} className="flex items-center">
-                  <input
-                    id={`user-${user.id}`}
-                    type="checkbox"
-                    className="h-4 w-4 text-teal-600 border-gray-300 rounded"
-                    defaultChecked={(
-                      session.assignedPersonnel || course.admins
-                    ).some((a) => a.userId === user.id)}
-                  />
-                  <label
-                    htmlFor={`user-${user.id}`}
-                    className="ml-3 text-sm text-gray-700"
-                  >
-                    {user.name}
-                  </label>
-                </div>
-              ))}
-            </div>
-          </div>
-        </form>
-        <div className="flex justify-end pt-6 border-t mt-6">
-          <Button
-            variant="secondary"
-            type="button"
+        <div className="absolute top-0 right-0 p-8">
+          <button
             onClick={onClose}
-            className="mr-3"
+            className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
           >
-            Cancel
-          </Button>
-          <Button type="submit" onClick={onClose}>
-            Save Changes
-          </Button>
+            <X className="w-5 h-5 text-gray-400" />
+          </button>
+        </div>
+
+        <div className="p-12 md:p-14">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="p-2 rounded-xl bg-blue-600/10">
+              <Sparkles className="w-5 h-5 text-blue-600" />
+            </div>
+            <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight uppercase">
+              Refine parameters
+            </h2>
+          </div>
+
+          <form className="space-y-8 max-h-[60vh] overflow-y-auto pr-6 custom-scrollbar">
+            <div className="space-y-2">
+              <label
+                htmlFor="session-title"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
+              >
+                Event Code Name
+              </label>
+              <input
+                type="text"
+                id="session-title"
+                defaultValue={session.title}
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+              />
+            </div>
+            <div className="space-y-2">
+              <label
+                htmlFor="session-price"
+                className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1"
+              >
+                Modified Value ($)
+              </label>
+              <div className="relative">
+                <DollarSign className="absolute left-6 top-1/2 -translate-y-1/2 w-4 h-4 text-blue-600" />
+                <input
+                  type="number"
+                  id="session-price"
+                  defaultValue={session.price}
+                  placeholder={`Default: $${course.price}`}
+                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                />
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 mb-4">
+                <Users className="w-4 h-4 text-purple-600" />
+                <h3 className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                  Personnel Overrides
+                </h3>
+              </div>
+              <div className="grid grid-cols-1 gap-2 p-2 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/10 max-h-48 overflow-y-auto">
+                {users.map((user) => (
+                  <label
+                    key={user.id}
+                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer group"
+                  >
+                    <input
+                      type="checkbox"
+                      className="w-5 h-5 rounded-lg border-2 border-gray-200 dark:border-white/10 text-blue-600 focus:ring-blue-500/20 bg-transparent transition-all"
+                      defaultChecked={(
+                        session.assignedPersonnel || course.admins
+                      ).some((a) => a.userId === user.id)}
+                    />
+                    <div className="flex items-center gap-3">
+                      <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-gray-100 dark:border-white/10 shadow-sm">
+                        <Image
+                          src={user.avatarUrl}
+                          alt={user.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <span className="text-sm font-bold text-gray-700 dark:text-gray-300 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
+                        {user.name}
+                      </span>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </form>
+
+          <div className="flex justify-end gap-4 pt-10 mt-6 border-t border-gray-100 dark:border-white/5">
+            <button
+              onClick={onClose}
+              className="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            >
+              Abort
+            </button>
+            <button
+              onClick={onClose}
+              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
+            >
+              Commit Changes
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -513,46 +648,82 @@ const CourseManagementPage: React.FC = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-full">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-6">
-          <Link
-            href="/dashboard"
-            className="text-teal-600 hover:underline text-sm"
-          >
-            &larr; Back to Dashboard
-          </Link>
-          <h1 className="text-3xl font-bold text-gray-900 mt-2">
-            Course Management
-          </h1>
-          <p className="text-lg text-gray-600">{course.title}</p>
-        </div>
+    <div className="bg-gray-50 dark:bg-[#0a0a0a] min-h-screen transition-colors duration-300">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-16">
+          <div>
+            <Link
+              href="/dashboard"
+              className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors mb-4"
+            >
+              <ArrowLeft className="w-3 h-3 transition-transform group-hover:-translate-x-1" />
+              Return to Command Center
+            </Link>
+            <div className="flex items-center gap-3 mb-2">
+              <Settings className="w-6 h-6 text-blue-600" />
+              <div className="px-2 py-0.5 rounded-md bg-blue-600/10 border border-blue-600/20">
+                <span className="text-[8px] font-black uppercase tracking-widest text-blue-600">
+                  Administrative Hub
+                </span>
+              </div>
+            </div>
+            <h1 className="text-5xl font-black text-gray-900 dark:text-white tracking-tighter leading-tight">
+              Operational{' '}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                Parameters
+              </span>
+            </h1>
+            <p className="text-gray-500 font-medium mt-1 uppercase tracking-[0.2em] text-[10px]">
+              Managing Experience: {course.title}
+            </p>
+          </div>
 
-        <div className="flex items-center border-b border-gray-200 mb-6 flex-wrap">
-          <div className="flex space-x-2 py-2">
-            <TabButton
-              tabName="details"
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            >
-              Details
-            </TabButton>
-            <TabButton
-              tabName="sessions"
-              activeTab={activeTab}
-              onClick={setActiveTab}
-            >
-              Sessions
-            </TabButton>
+          <div className="hidden lg:flex items-center gap-2 p-2 bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-100 dark:border-white/5 shadow-xl">
+            <div className="w-12 h-12 rounded-xl bg-blue-600/10 flex items-center justify-center">
+              <Sparkles className="w-6 h-6 text-blue-600" />
+            </div>
+            <div className="pr-4">
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                Global Status
+              </p>
+              <p className="text-sm font-black text-gray-900 dark:text-white">
+                Active Deployment
+              </p>
+            </div>
           </div>
         </div>
 
-        {activeTab === 'details' && (
-          <DetailsPanel course={course} users={getAllUsers()} />
-        )}
-        {activeTab === 'sessions' && (
-          <SessionsPanel course={course} onAmend={handleOpenAmendModal} />
-        )}
+        <div className="flex items-center gap-2 mb-12 border-b border-gray-100 dark:border-white/5 overflow-x-auto no-scrollbar">
+          <TabButton
+            tabName="details"
+            activeTab={activeTab}
+            onClick={setActiveTab}
+            icon={Layout}
+          >
+            Architecture
+          </TabButton>
+          <TabButton
+            tabName="sessions"
+            activeTab={activeTab}
+            onClick={setActiveTab}
+            icon={Calendar}
+          >
+            Mission Log
+          </TabButton>
+        </div>
+
+        <div className="relative">
+          {activeTab === 'details' && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <DetailsPanel course={course} users={getAllUsers()} />
+            </div>
+          )}
+          {activeTab === 'sessions' && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+              <SessionsPanel course={course} onAmend={handleOpenAmendModal} />
+            </div>
+          )}
+        </div>
       </div>
       <AmendSessionModal
         isOpen={isAmendModalOpen}

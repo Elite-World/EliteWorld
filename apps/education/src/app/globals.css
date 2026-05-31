@@ -1,8 +1,11 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @source "../../../../packages/ui";
 @source "../../../../packages/domain";
 @source "../../../../packages/cms";
 @source "../../../../packages/apps-config";
+
+@custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
   :root {

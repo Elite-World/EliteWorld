@@ -12,27 +12,31 @@ interface QRCodeProps {
   title: string;
   description: string;
   isDark?: boolean;
+  className?: string; // Add className
 }
 
-export function QRCode({ src, alt, title, description, isDark }: QRCodeProps) {
+export function QRCode({
+  src,
+  alt,
+  title,
+  description,
+  isDark,
+  className,
+}: QRCodeProps) {
   const [imageError, setImageError] = useState(false);
 
   return (
     <div
       className={cn(
         'rounded-2xl p-4 sm:p-6 text-center',
-        isDark ? 'bg-gray-800' : 'bg-white shadow-lg'
+        isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
+        className, // Merge custom classes
       )}
     >
       <div
-        className={cn(
-          'mb-4 relative mx-auto',
-          'w-[140px] h-[140px]', // Default size for mobile
-          'sm:w-[180px] sm:h-[180px]', // Medium screens
-          'md:w-[200px] md:h-[200px]' // Larger screens
-        )}
+        className="relative mx-auto mb-4 w-[140px] h-[140px] sm:w-[180px] sm:h-[180px] md:w-[200px] md:h-[200px]"
       >
-        <div aria-live="polite" aria-atomic="true">
+        <div aria-live="polite" aria-atomic="true" className="absolute inset-0 w-full h-full">
           {!imageError ? (
             <Image
               src={src}
@@ -45,28 +49,26 @@ export function QRCode({ src, alt, title, description, isDark }: QRCodeProps) {
             // fallback QR image
             <div
               className={cn(
-                'w-full h-full flex items-center justify-center rounded-lg border-2 border-dashed aspect-square',
+                'w-full h-full flex flex-col items-center justify-center rounded-lg border-2 border-dashed',
                 isDark
                   ? 'border-gray-700 bg-gray-900'
-                  : 'border-gray-200 bg-gray-50'
+                  : 'border-gray-200 bg-gray-50',
               )}
             >
-              <div className="text-center">
-                <QrCode
-                  className={cn(
-                    'w-8 h-8 sm:w-12 sm:h-12 mx-auto mb-2',
-                    isDark ? 'text-gray-600' : 'text-gray-400'
-                  )}
-                />
-                <span
-                  className={cn(
-                    'text-xs sm:text-sm',
-                    isDark ? 'text-gray-500' : 'text-gray-400'
-                  )}
-                >
-                  QR Code not available
-                </span>
-              </div>
+              <QrCode
+                className={cn(
+                  'w-8 h-8 sm:w-12 sm:h-12 mb-2',
+                  isDark ? 'text-gray-600' : 'text-gray-400',
+                )}
+              />
+              <span
+                className={cn(
+                  'text-xs sm:text-sm text-center px-2',
+                  isDark ? 'text-gray-500' : 'text-gray-400',
+                )}
+              >
+                QR Code not available
+              </span>
             </div>
           )}
         </div>
@@ -77,7 +79,7 @@ export function QRCode({ src, alt, title, description, isDark }: QRCodeProps) {
       <p
         className={cn(
           'text-xs sm:text-sm',
-          isDark ? 'text-gray-400' : 'text-gray-600'
+          isDark ? 'text-gray-400' : 'text-gray-600',
         )}
       >
         {description}

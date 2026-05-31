@@ -3,8 +3,9 @@
 import { HeroSection } from '@repo/ui';
 import { useThemeStore } from '@repo/domain';
 import { cn } from '@repo/domain';
-import { siteConfig } from '@repo/apps-config/immigration/site-config';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 
 interface PrivacyPolicyPageProps {
   content?: string;
@@ -21,20 +22,31 @@ export function PrivacyPolicyPage({ content }: PrivacyPolicyPageProps) {
         subtitle="Last updated: December 16, 2025"
       />
 
-      <div className="container mx-auto px-4 py-12">
-        <article
+      <div className="container mx-auto px-4 py-12 relative">
+        <div
           className={cn(
-            'max-w-4xl mx-auto prose prose-lg',
-            isDark ? 'prose-invert' : 'prose-slate'
+            'max-w-4xl mx-auto rounded-3xl p-8 md:p-12 shadow-xl border',
+            isDark ? 'bg-[#1A1A1A] border-white/5' : 'bg-white border-gray-100',
           )}
         >
-          <p className="lead">
-            At {siteConfig.name}, we are committed to protecting your privacy.
-            This Privacy Policy explains how we collect, use, and safe-guard
-            your information when you visit our website and use our services.
-          </p>
-          {content && <ReactMarkdown>{content}</ReactMarkdown>}
-        </article>
+          <article
+            className={cn(
+              'prose prose-lg max-w-none',
+              isDark ? 'prose-invert' : 'prose-slate',
+              'prose-headings:font-bold prose-headings:tracking-tight',
+              'prose-a:text-blue-600 dark:prose-a:text-blue-400 no-underline hover:prose-a:underline',
+            )}
+          >
+            {content && (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+              >
+                {content}
+              </ReactMarkdown>
+            )}
+          </article>
+        </div>
       </div>
     </div>
   );

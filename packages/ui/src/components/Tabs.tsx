@@ -23,28 +23,30 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
   return (
     <div className={cn('w-full', className)}>
       {/* Tab Headers */}
-      <div className="flex overflow-x-auto border-b border-gray-100 dark:border-zinc-800 scrollbar-hide">
-        <div className="flex gap-6 min-w-full px-1">
+      <div className="flex overflow-x-auto border-b border-gray-100 dark:border-white/5 scrollbar-hide mb-8">
+        <div className="flex gap-8 min-w-full px-1">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'relative pb-4 text-sm font-medium transition-colors whitespace-nowrap outline-none focus-visible:ring-2 focus-visible:ring-blue-500 rounded-t-sm',
+                'relative pb-4 transition-all duration-300 outline-none group',
                 activeTab === tab.id
-                  ? 'text-blue-600 dark:text-blue-400'
-                  : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                  ? 'text-blue-600'
+                  : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
               )}
             >
-              <div className="flex items-center gap-2">
-                {tab.label}
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                  {tab.label}
+                </span>
                 {tab.count !== undefined && (
                   <span
                     className={cn(
-                      'px-2 py-0.5 text-[10px] rounded-full',
+                      'px-2 py-0.5 text-[8px] font-black rounded-full transition-colors',
                       activeTab === tab.id
-                        ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-                        : 'bg-gray-100 text-gray-500 dark:bg-zinc-800 dark:text-gray-400'
+                        ? 'bg-blue-600/10 text-blue-600 border border-blue-600/20'
+                        : 'bg-gray-50 text-gray-400 border border-gray-100 dark:bg-white/5 dark:border-white/10',
                     )}
                   >
                     {tab.count}
@@ -55,8 +57,8 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
               {/* Active Indicator Line */}
               {activeTab === tab.id && (
                 <motion.div
-                  layoutId="activeTab"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 dark:bg-blue-400"
+                  layoutId="activeTabUnderline"
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"
                   initial={false}
                   transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                 />
@@ -67,22 +69,25 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
       </div>
 
       {/* Tab Content */}
-      <div className="mt-8 relative">
+      <div className="relative">
         <AnimatePresence mode="wait">
           {tabs.map(
             (tab) =>
               tab.id === activeTab && (
                 <motion.div
                   key={tab.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
+                  initial={{ opacity: 0, y: 12, filter: 'blur(8px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                  exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
+                  transition={{
+                    duration: 0.4,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
                   className="w-full"
                 >
                   {tab.content}
                 </motion.div>
-              )
+              ),
           )}
         </AnimatePresence>
       </div>

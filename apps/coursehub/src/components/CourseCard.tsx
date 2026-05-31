@@ -2,12 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import NextImage from 'next/image';
 import { Course } from '../types';
-// import Rating from './Rating';
 import { useAppContext } from '../context/AppContext';
-import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
-// import { cn } from '@/lib/utils'; // Assuming you have a utils file, if not I will just use template literals or install clsx/tailwind-merge
+import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react';
 
 interface CourseCardProps {
   course: Course;
@@ -57,14 +55,14 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
   return (
     <Link
       href={`/course/${course.id}`}
-      className={`group block bg-white rounded-2xl p-3 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${className}`}
+      className={`group block bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_24px_48px_rgba(0,0,0,0.1)] hover:-translate-y-2 ${className}`}
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl bg-gray-100">
-        <Image
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-gray-50 dark:bg-white/2 shadow-inner">
+        <NextImage
           src={course.images[currentImageIndex]}
           alt={course.title}
           fill
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
         />
 
         {/* Navigation Arrows (Glassmorphism) */}
@@ -103,25 +101,41 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
 
       <div className="mt-4 px-1">
         <div className="flex justify-between items-start gap-4">
-          <h3 className="font-bold text-lg text-gray-900 leading-snug line-clamp-2 group-hover:text-teal-600 transition-colors">
+          <h3 className="font-sans font-black text-lg text-gray-900 dark:text-white leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
             {course.title}
           </h3>
-          <div className="flex items-center gap-1 shrink-0 bg-yellow-400/10 px-2 py-1 rounded-md">
-            <span className="text-yellow-500 text-xs text-nowrap">
-              ★ {course.rating.toFixed(1)}
+          <div className="flex items-center gap-1.5 shrink-0 bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1.5 rounded-xl">
+            <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+            <span className="text-yellow-700 dark:text-yellow-500 text-[10px] font-black">
+              {course.rating.toFixed(1)}
             </span>
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mt-2 font-medium">
-          {owner?.name || 'Unknown Owner'}
-        </p>
+        <div className="flex items-center gap-2 mt-3">
+          <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
+          <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">
+            {owner?.name || 'Grand Architect'}
+          </p>
+        </div>
 
-        <div className="mt-4 flex items-center justify-between">
-          <p className="text-teal-600 font-bold text-lg">${course.price}</p>
-          <span className="text-xs text-gray-400 font-medium px-2 py-1 bg-gray-100 rounded-full">
-            {course.duration}
-          </span>
+        <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-50 dark:border-white/5">
+          <div className="flex flex-col">
+            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">
+              Tuition Fee
+            </span>
+            <p className="font-black text-2xl text-gray-900 dark:text-white tracking-tighter">
+              ${course.price}
+            </p>
+          </div>
+          <div className="px-3 py-1.5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-xl">
+            <span className="text-[9px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest">
+              {course.duration.split(' ')[0]}{' '}
+              <span className="text-blue-600">
+                {course.duration.split(' ')[1]}
+              </span>
+            </span>
+          </div>
         </div>
       </div>
     </Link>

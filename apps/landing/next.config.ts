@@ -4,7 +4,7 @@ const nextConfig: NextConfig = {
   /* config options here */
   /* config options here */
   output: 'standalone',
-  transpilePackages: ['react-notion-x', 'notion-client', 'notion-utils', 'notion-types'],
+  transpilePackages: ['react-notion-x', 'notion-client', 'notion-utils', 'notion-types', '@repo/ui', '@repo/domain'],
   // Enable Docker hot reload
   // webpack: (config) => {
   //   config.watchOptions = {
@@ -91,7 +91,7 @@ const nextConfig: NextConfig = {
             value: `
               default-src 'self';
               img-src 'self' data: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://prod-files-secure.s3.us-west-2.amazonaws.com https://www.notion.so;
-              script-src 'self' 'unsafe-inline';
+              script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ""};
               style-src 'self' 'unsafe-inline';
               font-src 'self'; 
             `.replace(/\s+/g, ' '),

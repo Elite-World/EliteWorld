@@ -22,52 +22,52 @@ export const documentTypes: ServiceItem[] = [
   {
     id: 'ps',
     title: 'PS',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYotPz_zwIw9wQ4jAM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYotPz_zwIw9wQ4jAM!300x300.png',
   },
   {
     id: 'cv',
     title: 'CV',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYovJGl6AYw9wQ4jAM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYovJGl6AYw9wQ4jAM!300x300.png',
   },
   {
     id: 'resume',
     title: 'RESUME',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYooKG5qgEw9wQ4jAM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYooKG5qgEw9wQ4jAM!300x300.png',
   },
   {
     id: 'ws',
     title: 'WRITING SAMPLE',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYo8NDs0AUw9wQ4jAM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYo8NDs0AUw9wQ4jAM!300x300.png',
   },
   {
     id: 'cl',
     title: 'COVER LETTER',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg4rj7uQYo7uWTlAYw9wQ4jwM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg4rj7uQYo7uWTlAYw9wQ4jwM!300x300.png',
   },
   {
     id: 'rl',
     title: 'RL',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYosIzIXTD3BDiMAw!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYosIzIXTD3BDiMAw!300x300.png',
   },
   {
     id: 'motivation',
     title: 'MOTIVATION LETTER',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYo0PLz1wUw9wQ4jwM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYo0PLz1wUw9wQ4jwM!300x300.png',
   },
   {
     id: 'essay',
     title: 'ESSAY',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYou6CktwEw9wQ4jwM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYou6CktwEw9wQ4jwM!300x300.png',
   },
   {
     id: 'sop',
     title: 'SOP',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYouO-tkgUw9wQ4jwM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYouO-tkgUw9wQ4jwM!300x300.png',
   },
   {
     id: 'rp',
     title: 'RP',
-    image: '//31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYovLqftgYw9wQ4jwM!300x300.png',
+    image: 'https://31786002.s21i.faiusr.com/4/2/ABUIABAEGAAg6Lj7uQYovLqftgYw9wQ4jwM!300x300.png',
   },
 ];
 

@@ -14,17 +14,30 @@ export class NotionXProvider extends NotionProvider {
     const article = await super.getArticleById(id);
     if (!article) return null;
 
-    try {
+    // Retry logic for RecordMap
+    const MAX_RETRIES = 3;
+    let lastError;
+
+    for (let i = 0; i < MAX_RETRIES; i++) {
+      try {
         // 2. Fetch the RecordMap using notion-client
         // We use article.id (which is the Page ID)
-        console.log(`[NotionXProvider] Fetching RecordMap for ${article.title} (${article.id})`);
+        console.log(`[NotionXProvider] Fetching RecordMap for ${article.title} (${article.id}) (Attempt ${i + 1}/${MAX_RETRIES})`);
         const recordMap = await notionX.getPage(article.id);
         
         article.recordMap = recordMap;
         return article;
-    } catch (error) {
-        console.error('Error fetching RecordMap:', error);
-        return article; // Fallback to basic article (or null?)
+      } catch (error) {
+        console.warn(`[NotionXProvider] Fetch failed attempt ${i+1}:`, error);
+        lastError = error;
+        // Wait before retry (exponential backoff: 1s, 2s, 4s)
+        if (i < MAX_RETRIES - 1) {
+             await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
+        }
+      }
     }
+
+    console.error('Error fetching RecordMap after retries:', lastError);
+    return article; // Fallback
   }
 }
