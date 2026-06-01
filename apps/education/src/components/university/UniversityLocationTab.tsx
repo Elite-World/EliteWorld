@@ -15,18 +15,22 @@ const UniversityMap = dynamic(() => import('./UniversityMap'), {
 
 interface UniversityLocationTabProps {
   name: string;
+  slug?: string;
   country: string;
   locations?: { label: string; lat: number; lng: number }[];
+  nearbyUniversities?: any[];
 }
 
 export const UniversityLocationTab: React.FC<UniversityLocationTabProps> = ({
   name,
+  slug,
   country,
   locations,
+  nearbyUniversities,
 }) => {
   return (
-    <div className="bg-white dark:bg-zinc-900 p-2 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-sm h-[400px] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-0">
-      <UniversityMap name={name} country={country} locations={locations} />
+    <div className="bg-white dark:bg-zinc-900 p-2 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-sm h-[600px] overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-500 relative z-0">
+      <UniversityMap name={name} slug={slug} country={country} locations={locations} nearbyUniversities={nearbyUniversities} />
     </div>
   );
 };

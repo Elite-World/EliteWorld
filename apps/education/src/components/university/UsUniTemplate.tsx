@@ -133,8 +133,13 @@ export function UsUniTemplate({ university }: { university: any }) {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <UniversityLocationTab
         name={university.name}
+        slug={university.slug}
         country={university.country}
         locations={university.locationCoords}
+        nearbyUniversities={[
+          ...(Array.isArray(university.rich_data?.school_nearby?.images2) ? university.rich_data.school_nearby.images2 : []),
+          ...(Array.isArray(university.rich_data?.school_nearby?.images3) ? university.rich_data.school_nearby.images3 : [])
+        ]}
       />
       {university.rich_data?.crime && (
         <CrimeSpiderChart 
