@@ -1,0 +1,42 @@
+name: Update University Rankings
+
+on:
+  schedule:
+    # Run at 00:00 on day-of-month 1 (Monthly)
+    - cron: '0 0 1 * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  update-rankings:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Install Puppeteer Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libx11-xcb1 libxcomposite1 libxcursor1 libxdamage1 libxi6 libxtst6 libnss3 libcups2 libxss1 libxrandr2 libasound2 libpangocairo-1.0-0 libatk1.0-0 libatk-bridge2.0-0 libgtk-3-0
+
+    - name: Run Update Script
+      env:
+        MONGODB_URI: ${{ secrets.MONGODB_URI }}
+      run: npm run update-rankings
+
+    - name: Commit and Push Changes (if data file updated)
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git add forwardpathway_data.json unmatched_universities.csv
+        git commit -m "chore: update university ranking data" || echo "No changes to commit"
+        git push || echo "No changes to push"

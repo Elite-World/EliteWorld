@@ -1,0 +1,1150 @@
+{
+  "name": "Massachusetts Institute of Technology",
+  "ranking": 2,
+  "ranking_year": "2026",
+  "cname": "麻省理工学院",
+  "state": "马萨诸塞州",
+  "estate": "Massachusetts",
+  "city": "Cambridge",
+  "long": "-71.093226",
+  "lat": "42.359243",
+  "type": 1,
+  "charactorE": "Private, non-Profit (4-Years)",
+  "charactor": "私立非盈利（4年制）",
+  "affliationE": "Not applicable",
+  "affliation": "无宗教",
+  "tuition_in_under": 62396,
+  "tuition_out_under": 62396,
+  "tuition_in_grad": 62396,
+  "tuition_out_grad": 62396,
+  "room_board": "20280",
+  "s2f": 3,
+  "ranking_admin": [
+    {
+      "year": 2014,
+      "rank": 7,
+      "rate": 0.06038863976083707,
+      "rate2": 0.1319308254590836
+    },
+    {
+      "year": 2015,
+      "rank": 7,
+      "rate": 0.057971014492753624,
+      "rate2": 0.1264532284027902
+    },
+    {
+      "year": 2016,
+      "rank": 7,
+      "rate": 0.0611764705882353,
+      "rate2": 0.1330093592512599
+    },
+    {
+      "year": 2017,
+      "rank": 7,
+      "rate": 0.057649836265326326,
+      "rate2": 0.1280353200883002
+    },
+    {
+      "year": 2018,
+      "rank": 5,
+      "rate": 0.05245479882798542,
+      "rate2": 0.11480652382475216
+    },
+    {
+      "year": 2019,
+      "rank": 3,
+      "rate": 0.049084348832459664,
+      "rate2": 0.10588570614222602
+    },
+    {
+      "year": 2020,
+      "rank": 3,
+      "rate": 0.048409310012394985,
+      "rate2": 0.10662739322533137
+    },
+    {
+      "year": 2021,
+      "rank": 4,
+      "rate": 0.05189237137788291,
+      "rate2": 0.11531999389033144
+    },
+    {
+      "year": 2022,
+      "rank": 2,
+      "rate": 0.030684754521963824,
+      "rate2": 0.060511756569847856
+    },
+    {
+      "year": 2023,
+      "rank": 2,
+      "rate": 0.030618862330924587,
+      "rate2": 0.05550537810986124
+    },
+    {
+      "year": 2024,
+      "rank": 2,
+      "rate": 0.036274746499275715,
+      "rate2": 0.07047768206734534
+    },
+    {
+      "year": 2025,
+      "rank": 2,
+      "rate": 0.03521208599651365,
+      "rate2": 0.06818941504178273
+    },
+    {
+      "year": 2026,
+      "rank": 2,
+      "rate": null,
+      "rate2": null
+    }
+  ],
+  "scores": [
+    {
+      "name": "SATR",
+      "start": "740",
+      "end": "780"
+    },
+    {
+      "name": "SATM",
+      "start": "780",
+      "end": "800"
+    },
+    {
+      "name": "ACTC",
+      "start": "34",
+      "end": "36"
+    },
+    {
+      "name": "ACTE",
+      "start": "35",
+      "end": "36"
+    },
+    {
+      "name": "ACTM",
+      "start": "35",
+      "end": "36"
+    }
+  ],
+  "student_comp": {
+    "mw": [
+      {
+        "name": "men",
+        "value": 6650
+      },
+      {
+        "name": "women",
+        "value": 5236
+      }
+    ],
+    "races": [
+      {
+        "name": "white",
+        "value": 2647
+      },
+      {
+        "name": "asian",
+        "value": 2550
+      },
+      {
+        "name": "latio",
+        "value": 1041
+      },
+      {
+        "name": "others",
+        "value": 1665
+      },
+      {
+        "name": "african",
+        "value": 528
+      },
+      {
+        "name": "nr",
+        "value": 3455
+      }
+    ],
+    "degrees": [
+      {
+        "name": "underf",
+        "value": 1098
+      },
+      {
+        "name": "undernf",
+        "value": 3409
+      },
+      {
+        "name": "undert",
+        "value": 28
+      },
+      {
+        "name": "grad",
+        "value": 7351
+      },
+      {
+        "name": "nondegree",
+        "value": 0
+      }
+    ]
+  },
+  "international": [
+    {
+      "year": 2010,
+      "value": 2746
+    },
+    {
+      "year": 2011,
+      "value": 2766
+    },
+    {
+      "year": 2012,
+      "value": 2909
+    },
+    {
+      "year": 2013,
+      "value": 3167
+    },
+    {
+      "year": 2014,
+      "value": 3244
+    },
+    {
+      "year": 2015,
+      "value": 3302
+    },
+    {
+      "year": 2016,
+      "value": 3411
+    },
+    {
+      "year": 2017,
+      "value": 3365
+    },
+    {
+      "year": 2018,
+      "value": 3413
+    },
+    {
+      "year": 2019,
+      "value": 3411
+    },
+    {
+      "year": 2020,
+      "value": 3387
+    },
+    {
+      "year": 2021,
+      "value": 3274
+    },
+    {
+      "year": 2022,
+      "value": 3489
+    },
+    {
+      "year": 2023,
+      "value": 3513
+    },
+    {
+      "year": 2024,
+      "value": 3505
+    },
+    {
+      "year": 2025,
+      "value": 3455
+    }
+  ],
+  "brand": [
+    "B",
+    "y",
+    " ",
+    "美",
+    "国",
+    "续",
+    "航",
+    "教",
+    "育",
+    " ",
+    "f",
+    "o",
+    "r",
+    "w",
+    "a",
+    "r",
+    "d",
+    "p",
+    "a",
+    "t",
+    "h",
+    "w",
+    "a",
+    "y",
+    ".",
+    "c",
+    "o",
+    "m"
+  ],
+  "Ebrand": [
+    "B",
+    "y",
+    " ",
+    "F",
+    "o",
+    "r",
+    "w",
+    "a",
+    "r",
+    "d",
+    " ",
+    "P",
+    "a",
+    "t",
+    "h",
+    "w",
+    "a",
+    "y",
+    " | ",
+    "f",
+    "o",
+    "r",
+    "w",
+    "a",
+    "r",
+    "d",
+    "p",
+    "a",
+    "t",
+    "h",
+    "w",
+    "a",
+    "y",
+    ".",
+    "u",
+    "s"
+  ],
+  "degrees": {
+    "children": [
+      {
+        "name": "建筑类",
+        "ename": "Architecture",
+        "children": [
+          {
+            "name": "建筑",
+            "ename": "Architecture.",
+            "count0": 0,
+            "count1": 7,
+            "count2": 9,
+            "count3": 1
+          },
+          {
+            "name": "城市，社区和区域规划",
+            "ename": "City/Urban, Community, and Regional Planning.",
+            "count0": 0,
+            "count1": 9,
+            "count2": 70,
+            "count3": 11
+          },
+          {
+            "name": "建筑和建筑科学/技术",
+            "ename": "Architectural and Building Sciences/Technology.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 47,
+            "count3": 3
+          },
+          {
+            "name": "房地产开发",
+            "ename": "Real Estate Development.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 23,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "新闻类",
+        "ename": "Communication",
+        "children": [
+          {
+            "name": "大众传播/媒体研究",
+            "ename": "Mass Communication/Media Studies.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "新闻学（其他）",
+            "ename": "Journalism, Other.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 7,
+            "count3": 0
+          },
+          {
+            "name": "数字通信和媒体/多媒体",
+            "ename": "Digital Communication and Media/Multimedia.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 21,
+            "count3": 13
+          }
+        ]
+      },
+      {
+        "name": "计算机类",
+        "ename": "Computer and information science",
+        "children": [
+          {
+            "name": "计算机和信息科学（普通）",
+            "ename": "Computer and Information Sciences, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 9,
+            "count3": 14
+          },
+          {
+            "name": "人工智能",
+            "ename": "Artificial Intelligence.",
+            "count0": 0,
+            "count1": 19,
+            "count2": 16,
+            "count3": 0
+          },
+          {
+            "name": "计算机科学",
+            "ename": "Computer Science.",
+            "count0": 0,
+            "count1": 323,
+            "count2": 236,
+            "count3": 86
+          }
+        ]
+      },
+      {
+        "name": "工科类",
+        "ename": "Engineering",
+        "children": [
+          {
+            "name": "航空航天，航空和宇航/空间工程",
+            "ename": "Aerospace, Aeronautical, and Astronautical/Space Engineering, General.",
+            "count0": 0,
+            "count1": 55,
+            "count2": 46,
+            "count3": 47
+          },
+          {
+            "name": "生物工程和生物医学工程",
+            "ename": "Bioengineering and Biomedical Engineering.",
+            "count0": 0,
+            "count1": 48,
+            "count2": 4,
+            "count3": 42
+          },
+          {
+            "name": "化学工程",
+            "ename": "Chemical Engineering.",
+            "count0": 0,
+            "count1": 32,
+            "count2": 26,
+            "count3": 33
+          },
+          {
+            "name": "化学和生物分子工程",
+            "ename": "Chemical and Biomolecular Engineering.",
+            "count0": 0,
+            "count1": 17,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "土木工程（普通）",
+            "ename": "Civil Engineering, General.",
+            "count0": 0,
+            "count1": 4,
+            "count2": 26,
+            "count3": 4
+          },
+          {
+            "name": "交通和公路工程",
+            "ename": "Transportation and Highway Engineering.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 3,
+            "count3": 5
+          },
+          {
+            "name": "电气和电子工程",
+            "ename": "Electrical and Electronics Engineering.",
+            "count0": 0,
+            "count1": 58,
+            "count2": 108,
+            "count3": 51
+          },
+          {
+            "name": "环境/环境健康工程",
+            "ename": "Environmental/Environmental Health Engineering.",
+            "count0": 0,
+            "count1": 5,
+            "count2": 11,
+            "count3": 8
+          },
+          {
+            "name": "材料工程",
+            "ename": "Materials Engineering.",
+            "count0": 0,
+            "count1": 23,
+            "count2": 5,
+            "count3": 24
+          },
+          {
+            "name": "机械工程",
+            "ename": "Mechanical Engineering.",
+            "count0": 0,
+            "count1": 104,
+            "count2": 131,
+            "count3": 47
+          },
+          {
+            "name": "核工程",
+            "ename": "Nuclear Engineering.",
+            "count0": 0,
+            "count1": 9,
+            "count2": 18,
+            "count3": 13
+          },
+          {
+            "name": "系统工程",
+            "ename": "Systems Engineering.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 199,
+            "count3": 5
+          },
+          {
+            "name": "操作调查",
+            "ename": "Operations Research.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 6,
+            "count3": 10
+          }
+        ]
+      },
+      {
+        "name": "外语类",
+        "ename": "Foreign languages",
+        "children": [
+          {
+            "name": "外国语言和文学（普通）",
+            "ename": "Foreign Languages and Literatures, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "语言学",
+            "ename": "Linguistics.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 9
+          }
+        ]
+      },
+      {
+        "name": "英语类",
+        "ename": "English",
+        "children": [
+          {
+            "name": "英语语言文学（普通）",
+            "ename": "English Language and Literature, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "创意写作",
+            "ename": "Creative Writing.",
+            "count0": 0,
+            "count1": 2,
+            "count2": 0,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "通识教育",
+        "ename": "Liberal arts",
+        "children": [
+          {
+            "name": "文理学/通识教育",
+            "ename": "Liberal Arts and Sciences/Liberal Studies.",
+            "count0": 0,
+            "count1": 6,
+            "count2": 0,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "生物类",
+        "ename": "Biology",
+        "children": [
+          {
+            "name": "生物学/生物科学（普通）",
+            "ename": "Biology/Biological Sciences, General.",
+            "count0": 0,
+            "count1": 23,
+            "count2": 1,
+            "count3": 44
+          },
+          {
+            "name": "计算生物学",
+            "ename": "Computational Biology.",
+            "count0": 0,
+            "count1": 22,
+            "count2": 14,
+            "count3": 9
+          },
+          {
+            "name": "神经科学",
+            "ename": "Neuroscience.",
+            "count0": 0,
+            "count1": 7,
+            "count2": 0,
+            "count3": 16
+          }
+        ]
+      },
+      {
+        "name": "数学类",
+        "ename": "Mathmatics and statistics",
+        "children": [
+          {
+            "name": "数学（普通）",
+            "ename": "Mathematics, General.",
+            "count0": 0,
+            "count1": 98,
+            "count2": 0,
+            "count3": 26
+          },
+          {
+            "name": "金融数学",
+            "ename": "Financial Mathematics.",
+            "count0": 0,
+            "count1": 19,
+            "count2": 128,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "交叉学科",
+        "ename": "Multi/inerdisciplinary studies",
+        "children": [
+          {
+            "name": "数学和计算机科学",
+            "ename": "Mathematics and Computer Science.",
+            "count0": 0,
+            "count1": 19,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "科学，技术和社会",
+            "ename": "Science, Technology and Society.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 1,
+            "count3": 4
+          },
+          {
+            "name": "认知科学",
+            "ename": "Cognitive Science, General.",
+            "count0": 0,
+            "count1": 44,
+            "count2": 24,
+            "count3": 1
+          },
+          {
+            "name": "气候科学",
+            "ename": "Climate Science.",
+            "count0": 0,
+            "count1": 1,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "经济学与计算机科学",
+            "ename": "Economics and Computer Science.",
+            "count0": 0,
+            "count1": 39,
+            "count2": 14,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "哲学类",
+        "ename": "Philosophy",
+        "children": [
+          {
+            "name": "哲学",
+            "ename": "Philosophy.",
+            "count0": 0,
+            "count1": 2,
+            "count2": 0,
+            "count3": 6
+          }
+        ]
+      },
+      {
+        "name": "自然科学",
+        "ename": "Physical sciences",
+        "children": [
+          {
+            "name": "行星天文学和科学",
+            "ename": "Planetary Astronomy and Science.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 2,
+            "count3": 2
+          },
+          {
+            "name": "大气科学和气象（普通）",
+            "ename": "Atmospheric Sciences and Meteorology, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "气象",
+            "ename": "Meteorology.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 2
+          },
+          {
+            "name": "化学（普通）",
+            "ename": "Chemistry, General.",
+            "count0": 0,
+            "count1": 26,
+            "count2": 5,
+            "count3": 50
+          },
+          {
+            "name": "地质学/地球科学（普通）",
+            "ename": "Geology/Earth Science, General.",
+            "count0": 0,
+            "count1": 4,
+            "count2": 0,
+            "count3": 8
+          },
+          {
+            "name": "地球物理学和地震学",
+            "ename": "Geophysics and Seismology.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 2,
+            "count3": 2
+          },
+          {
+            "name": "海洋学，化学和物理",
+            "ename": "Oceanography, Chemical and Physical.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 6,
+            "count3": 11
+          },
+          {
+            "name": "物理学（普通）",
+            "ename": "Physics, General.",
+            "count0": 0,
+            "count1": 49,
+            "count2": 1,
+            "count3": 31
+          }
+        ]
+      },
+      {
+        "name": "社会学",
+        "ename": "Social science",
+        "children": [
+          {
+            "name": "人类学",
+            "ename": "Anthropology, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "计量经济学和量化经济学",
+            "ename": "Econometrics and Quantitative Economics.",
+            "count0": 0,
+            "count1": 6,
+            "count2": 21,
+            "count3": 18
+          },
+          {
+            "name": "政治学和政府（普通）",
+            "ename": "Political Science and Government, General.",
+            "count0": 0,
+            "count1": 4,
+            "count2": 4,
+            "count3": 17
+          }
+        ]
+      },
+      {
+        "name": "表演艺术",
+        "ename": "Visual and Performing arts",
+        "children": [
+          {
+            "name": "戏剧和戏剧/戏剧艺术（普通）",
+            "ename": "Drama and Dramatics/Theatre Arts, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "音乐（普通）",
+            "ename": "Music, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "商科",
+        "ename": "Business",
+        "children": [
+          {
+            "name": "商务/商业（普通）",
+            "ename": "Business/Commerce, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          },
+          {
+            "name": "管理科学",
+            "ename": "Management Science.",
+            "count0": 0,
+            "count1": 6,
+            "count2": 701,
+            "count3": 19
+          },
+          {
+            "name": "管理科学和量化方法（其他）",
+            "ename": "Management Sciences and Quantitative Methods, Other.",
+            "count0": 0,
+            "count1": 9,
+            "count2": 78,
+            "count3": 0
+          }
+        ]
+      },
+      {
+        "name": "历史",
+        "ename": "History",
+        "children": [
+          {
+            "name": "历史（普通）",
+            "ename": "History, General.",
+            "count0": 0,
+            "count1": 0,
+            "count2": 0,
+            "count3": 0
+          }
+        ]
+      }
+    ],
+    "name": "麻省理工学院",
+    "ename": "Massachusetts Institute of Technology",
+    "flags": {
+      "flag0": false,
+      "flag1": true,
+      "flag2": true,
+      "flag3": true
+    }
+  },
+  "salary": {
+    "count0": [],
+    "count1": [
+      {
+        "name": "计算机科学",
+        "ename": "Computer Science.",
+        "salary": 199774
+      },
+      {
+        "name": "数学（其他）",
+        "ename": "Mathematics.",
+        "salary": 180882
+      },
+      {
+        "name": "电气，电子和通信工程（其他）",
+        "ename": "Electrical, Electronics and Communications Engineering.",
+        "salary": 172897
+      },
+      {
+        "name": "物理（其他）",
+        "ename": "Physics.",
+        "salary": 166156
+      },
+      {
+        "name": "商务/商业（普通）",
+        "ename": "Business/Commerce, General.",
+        "salary": 124443
+      },
+      {
+        "name": "生物工程和生物医学工程",
+        "ename": "Biomedical/Medical Engineering.",
+        "salary": 116182
+      }
+    ],
+    "count2": [
+      {
+        "name": "商务/商业（普通）",
+        "ename": "Business/Commerce, General.",
+        "salary": 226312
+      },
+      {
+        "name": "电气，电子和通信工程（其他）",
+        "ename": "Electrical, Electronics and Communications Engineering.",
+        "salary": 213235
+      },
+      {
+        "name": "系统工程",
+        "ename": "Systems Engineering.",
+        "salary": 175681
+      },
+      {
+        "name": "机械工程",
+        "ename": "Mechanical Engineering.",
+        "salary": 131008
+      },
+      {
+        "name": "航空航天，航空和航天/太空工程，其他",
+        "ename": "Aerospace, Aeronautical and Astronautical Engineering.",
+        "salary": 125550
+      },
+      {
+        "name": "土木工程（其他）",
+        "ename": "Civil Engineering.",
+        "salary": 93692
+      }
+    ],
+    "count3": [
+      {
+        "name": "电气，电子和通信工程（其他）",
+        "ename": "Electrical, Electronics and Communications Engineering.",
+        "salary": 149169
+      },
+      {
+        "name": "机械工程",
+        "ename": "Mechanical Engineering.",
+        "salary": 143230
+      },
+      {
+        "name": "生物医学科学（普通）",
+        "ename": "Biology, General.",
+        "salary": 84643
+      }
+    ]
+  },
+  "crime": {
+    "data": [
+      {
+        "type": "weapona",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "druga",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "liquora",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "weapond",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "drugd",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "liquord",
+        "oncampus": 43,
+        "noncampus": "4",
+        "publicproperty": 0,
+        "residencehall": 43,
+        "number": 47,
+        "numberR": 47
+      },
+      {
+        "type": "domest",
+        "oncampus": 5,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": "3",
+        "number": 5,
+        "numberR": 5
+      },
+      {
+        "type": "dating",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "stalk",
+        "oncampus": 12,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": "7",
+        "number": 12,
+        "numberR": 12
+      },
+      {
+        "type": "murd",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "negm",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "rape",
+        "oncampus": 4,
+        "noncampus": 2,
+        "publicproperty": 0,
+        "residencehall": 3,
+        "number": 6,
+        "numberR": 6
+      },
+      {
+        "type": "fondl",
+        "oncampus": 1,
+        "noncampus": 4,
+        "publicproperty": 0,
+        "residencehall": 1,
+        "number": 5,
+        "numberR": 5
+      },
+      {
+        "type": "inces",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "robbe",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "agga",
+        "oncampus": 3,
+        "noncampus": "2",
+        "publicproperty": 1,
+        "residencehall": "2",
+        "number": 6,
+        "numberR": 6
+      },
+      {
+        "type": "burgla",
+        "oncampus": 1,
+        "noncampus": "4",
+        "publicproperty": 0,
+        "residencehall": "1",
+        "number": 5,
+        "numberR": 5
+      },
+      {
+        "type": "vehic",
+        "oncampus": 1,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1.2,
+        "numberR": 1
+      },
+      {
+        "type": "arson",
+        "oncampus": 0,
+        "noncampus": 0,
+        "publicproperty": 0,
+        "residencehall": 0,
+        "number": 1,
+        "numberR": 0
+      },
+      {
+        "type": "fire",
+        "residencehall": "1",
+        "oncampus": "1",
+        "noncampus": 0,
+        "publicproperty": 0,
+        "number": 1.2,
+        "numberR": 1
+      }
+    ],
+    "total": 50.4,
+    "avg1000": 4.240282685512367,
+    "year": 24
+  }
+}

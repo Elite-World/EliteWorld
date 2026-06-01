@@ -139,3 +139,7 @@ This project is deployment-ready for **Vercel**.
 ---
 
 _Built with ❤️ by the EliteWorld Team_
+
+## Data Management & Scraping
+
+If you need to update the ranking data or interact with the scraping architecture, please see the dedicated documentation in [scripts/README.md](./scripts/README.md) for full instructions, API endpoints, and cURL examples.

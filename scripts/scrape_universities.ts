@@ -124,7 +124,7 @@ async function scrape() {
   console.log(`📋 Found ${records.length} universities to scrape.`);
 
   const browser = await puppeteer.launch({
-    headless: true, 
+    headless: false, // Changed to false to allow manual Cloudflare bypass
     defaultViewport: { width: 1280, height: 800 },
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
@@ -164,6 +164,22 @@ async function scrape() {
       
       try {
         await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+        // Wait for the Cloudflare challenge to pass
+        try {
+          await page.waitForFunction(() => {
+            return !document.title.includes('Just a moment') && 
+                   !document.title.includes('Attention Required') &&
+                   document.querySelector('h1') !== null;
+          }, { timeout: 60000 });
+        } catch (e) {
+          console.log(`⏳ Waiting longer for Cloudflare on ${url}... Please solve the CAPTCHA in the browser.`);
+          await page.waitForFunction(() => {
+            return !document.title.includes('Just a moment') && 
+                   !document.title.includes('Attention Required') &&
+                   document.querySelector('h1') !== null;
+          }, { timeout: 120000 }).catch(() => console.log('Timeout waiting for Cloudflare or page content.'));
+        }
 
         // A. Basic Info
         let name = await page.$eval(SEL.NAME, el => el.textContent?.trim()).catch(() => '');

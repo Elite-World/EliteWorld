@@ -131,8 +131,6 @@ export interface IRankingSystem extends Document {
   
   // The Bucket Split (Schema v3.1)
   general: Record<string, IRankingEntry[]>; // Year -> Entries
-  subjects?: Map<string, Map<string, IRankingEntry[]>>; // Subject -> Year -> Entries
-  subject_labels?: Map<string, { en: string; cn: string }>; // Slug -> { en, cn }
 }
 
 const RankingEntrySchema = new Schema<IRankingEntry>({
@@ -149,26 +147,6 @@ const RankingSystemSchema = new Schema<IRankingSystem>({
     type: Map,
     of: [RankingEntrySchema],
     default: {}
-  },
-
-  subjects: {
-    type: Map,
-    of: {
-      type: Map,
-      of: [RankingEntrySchema]
-    },
-    default: {}
-  },
-  
-  // Subject Translations (Schema v3.2)
-  // slug -> { en: "Philosophy", cn: "哲学" }
-  subject_labels: {
-      type: Map,
-      of: {
-          en: String,
-          cn: String
-      },
-      default: {}
   }
 });
 

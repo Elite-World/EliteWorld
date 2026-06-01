@@ -1,48 +1,24 @@
 import mongoose from 'mongoose';
-import dbConnect from '../packages/web-shared/src/lib/mongoose';
-import { University } from '../packages/web-shared/src/data/models';
+import dbConnect from '../packages/domain/src/lib/mongoose';
+import { University } from '../packages/domain/src/data/models';
 
 async function cleanup() {
   console.log('🧹 Starting MongoDB Cleanup (Force Mode)...');
   await dbConnect();
 
-  // 1. Drop the unused 'rankings' collection
+  // 1. Drop collections for a complete wipe
   try {
-    const collections = await mongoose.connection.db?.listCollections({ name: 'rankings' }).toArray();
-    if (collections && collections.length > 0) {
-      await mongoose.connection.db?.dropCollection('rankings');
-      console.log('✅ Dropped deprecated collection: rankings');
-    } else {
-      console.log('ℹ️ Collection rankings already gone.');
+    const collections = await mongoose.connection.db?.listCollections().toArray();
+    if (collections) {
+      for (const col of collections) {
+        if (['universities', 'rankingsystems', 'scholarships', 'rankings'].includes(col.name)) {
+          await mongoose.connection.db?.dropCollection(col.name);
+          console.log(`✅ Dropped collection: ${col.name}`);
+        }
+      }
     }
   } catch (err) {
-    console.error('⚠️ Error dropping rankings collection:', err);
-  }
-
-  // 2. Remove 'rankings' and 'scholarships' fields from University documents
-  // CRITICAL: Use .collection to bypass Mongoose strict schema validation
-  console.log('🧹 Cleaning University documents (unsetting legacy fields directly)...');
-  
-  const res = await University.collection.updateMany(
-    {}, 
-    // @ts-ignore
-    { $unset: { rankings: '', scholarships: '', stats: '' } } 
-  );
-  
-  // 3. Verification
-  // Check if any document still has these fields
-  const check = await University.collection.findOne({ 
-      $or: [
-          { rankings: { $exists: true } }, 
-          { scholarships: { $exists: true } },
-          { stats: { $exists: true } }
-      ] 
-  });
-  
-  if (check) {
-      console.warn('⚠️ WARNING: Found document that still has legacy fields:', check._id);
-  } else {
-      console.log('✨ VERIFIED: No documents have rankings/scholarships/stats fields in the database.');
+    console.error('⚠️ Error dropping collections:', err);
   }
 
   console.log('🎉 Cleanup Finished!');

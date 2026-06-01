@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "lint": "turbo lint"
+    "lint": "turbo lint",
+    "db:reset": "DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/cleanup-mongo.ts && DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/scrape_universities.ts && DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/import_universities.ts && DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/scrape_forwardpathway.ts && DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/update_rankings_from_fp.ts",
+    "update-rankings": "DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/scrape_forwardpathway.ts && DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/update_rankings_from_fp.ts"
   },
   "devDependencies": {
     "@types/puppeteer": "^5.4.7",
