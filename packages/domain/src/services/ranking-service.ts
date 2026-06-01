@@ -59,7 +59,7 @@ export async function getGlobalRankingMeta(): Promise<{
           
           const translatedList = subjectKeys.map(slug => {
               // @ts-ignore
-              const labelObj = sys.subject_labels ? sys.subject_labels[slug] : null;
+              const labelObj: any = sys.subject_labels ? sys.subject_labels[slug] : null;
               return {
                   value: slug,
                   label: labelObj ? (labelObj.en || slug) : slug
@@ -285,7 +285,11 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     nameEn: u.name?.en,
     country: countryName,
     region: 'Global',
-    locationCoords: u.location?.coordinates || [],
+    locationCoords: (u.location?.coordinates && u.location.coordinates.length > 0) 
+      ? u.location.coordinates 
+      : (u.rich_data?.lat && u.rich_data?.long 
+          ? [{ label: getLoc(u.name), lat: parseFloat(u.rich_data.lat), lng: parseFloat(u.rich_data.long) }] 
+          : []),
     logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
     websiteUrl: u.assets?.website,
     
@@ -306,6 +310,7 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0,
     ranks: ranks,
     rankingHistory: history,
+    rich_data: u.rich_data,
     badges: [],
   };
 }

@@ -46,3 +46,53 @@ curl 'https://www.forwardpathway.com/wp-admin/admin-ajax.php?action=get_wdtable&
 curl 'https://www.forwardpathway.com/d3v7/dataphp/worldranking/world_ranks4_20251010.php?wID=1107' \
   -H 'Referer: https://www.forwardpathway.com/worldranking'
 ```
+
+## Comprehensive University Details Scraping
+
+We have established a robust pipeline to scrape all rich data for universities directly into MongoDB, preparing the infrastructure for future cron-based auto-updates.
+
+**Data Source Endpoints (Internal FP APIs):**
+- `overview_all_{date}.php?name={fp_id}`
+- `crime_yearly_{date}.php?name={fp_id}`
+- `degree_all_{date}.php?name={fp_id}`
+- `ranking_admin_{date}.php?name={fp_id}`
+- `score10_{date}.php?name={fp_id}`
+- `student_comp_{date}.php?name={fp_id}`
+- `age_mf_{date}.php?name={fp_id}`
+- `international_students_{date}.php?name={fp_id}`
+- `school_nearby_{date}.php?name={fp_id}`
+- `student_all_{date}.php?name={fp_id}`
+
+### Scraping Flow
+
+To scrape the detailed rich data for universities:
+
+**1. Seed MongoDB with FP IDs (One-time setup)**
+```bash
+DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/seed_fp_ids.ts
+```
+*Note: This script uses `us_universities_details.json` and `forwardpathway_data.json` to assign `fp_id` and `fp_wid` properties to existing Mongoose University documents. This is required for the scraper to know which ID to fetch.*
+
+**2. Run the Comprehensive Scraper**
+To scrape ALL universities with a known `fp_id`:
+```bash
+DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/scrape_all_details.ts
+```
+
+To scrape a **single** university for testing (e.g. MIT):
+```bash
+DOTENV_CONFIG_PATH=.env.local npx tsx -r dotenv/config scripts/scrape_all_details.ts massachusetts-institute-of-technology
+```
+
+### Cron Job Integration
+
+Because the Next.js UI (`UsUniTemplate.tsx`) natively reads `university.rich_data` from MongoDB via `getUniversity()`, you can safely set up a CRON job on your server to run `scripts/scrape_all_details.ts` periodically (e.g. weekly).
+The script uses Puppeteer stealth to bypass Cloudflare, fetches all endpoints concurrently inside the browser context, and patches the new results seamlessly into `rich_data` without destroying any existing unrelated data.
+
+## Other Utility Scripts
+
+- `cleanup-mongo.ts`: Drops the entire MongoDB database (Universities, Rankings, etc.) to allow for a clean import from scratch. Use with caution!
+- `scrape_universities.ts`: Legacy script used to scrape basic university metadata (descriptions, logos, websites) from third-party sites using a `links.csv` file. Outputs to `scraped_universities.json`.
+- `import_universities.ts`: Imports the `scraped_universities.json` output into MongoDB. This is part of the initial DB seeding process.
+- `update_rankings_from_fp.ts`: Lightweight script that only updates the ranking numbers in MongoDB based on `forwardpathway_data.json` without fully rebuilding the database.
+- `populate-db-meta.ts`: Legacy script for fuzzy-matching university logos and populating metadata fields.

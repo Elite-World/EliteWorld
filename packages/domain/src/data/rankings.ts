@@ -45,6 +45,7 @@ export interface UniversityRanking {
   
   ranks?: Record<string, number | string>; // Map of source code to rank (e.g. { qs: 1, the: 5 })
   rankingHistory?: RankingHistoryItem[];
+  rich_data?: any;
 }
 
 export interface RankingData {

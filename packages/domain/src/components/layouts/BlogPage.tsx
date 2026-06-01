@@ -122,7 +122,7 @@ export function BlogPage({
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.9, opacity: 0 }}
                 className={cn(
-                  'w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-[2rem] p-8 shadow-2xl border relative',
+                  'w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-4xl p-8 shadow-2xl border relative',
                   isDark
                     ? 'bg-[#121212] border-white/10'
                     : 'bg-white border-white',

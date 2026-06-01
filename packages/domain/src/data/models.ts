@@ -42,6 +42,8 @@ export interface IStatContent {
 
 export interface IUniversity extends Document {
   slug: string;
+  fp_id?: string;
+  fp_wid?: string;
   
   name: Localized<string>;
   
@@ -67,6 +69,8 @@ export interface IUniversity extends Document {
     stat: IStatContent[];
   };
 
+  rich_data?: any;
+
   lastUpdated: Date;
 }
 
@@ -83,7 +87,9 @@ const StatContentSchema = new Schema<IStatContent>({
 
 const UniversitySchema = new Schema<IUniversity>({
   slug: { type: String, required: true, unique: true, index: true },
-  
+  fp_id: String,
+  fp_wid: String,
+
   name: {
     en: { type: String, required: true },
     cn: { type: String }
@@ -111,6 +117,8 @@ const UniversitySchema = new Schema<IUniversity>({
     stat: [StatContentSchema]
   },
 
+  rich_data: { type: Schema.Types.Mixed },
+
   lastUpdated: { type: Date, default: Date.now }
 });
 
@@ -131,6 +139,8 @@ export interface IRankingSystem extends Document {
   
   // The Bucket Split (Schema v3.1)
   general: Record<string, IRankingEntry[]>; // Year -> Entries
+  subjects?: Record<string, Record<string, IRankingEntry[]>>;
+  subject_labels?: Record<string, string>;
 }
 
 const RankingEntrySchema = new Schema<IRankingEntry>({
@@ -147,6 +157,14 @@ const RankingSystemSchema = new Schema<IRankingSystem>({
     type: Map,
     of: [RankingEntrySchema],
     default: {}
+  },
+  subjects: {
+    type: Map,
+    of: { type: Map, of: [RankingEntrySchema] }
+  },
+  subject_labels: {
+    type: Map,
+    of: String
   }
 });
 

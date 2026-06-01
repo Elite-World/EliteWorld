@@ -1,0 +1,124 @@
+[
+  {
+    "name": "bush",
+    "year": 2004,
+    "month": 11,
+    "icon": "geaorge_bush.png",
+    "title": "美国总统选举在2004年11月举行",
+    "des": "小布什在2005年1月20日正式宣誓就职"
+  },
+  {
+    "name": "iphone",
+    "year": 2007,
+    "month": 1,
+    "icon": "iphone.svg",
+    "title": "第一代iPhone在2007年1月9日发布",
+    "des": "开启了手机的一个新时代"
+  },
+  {
+    "name": "house_crisis",
+    "year": 2008,
+    "month": 0,
+    "icon": "house_crisis.png",
+    "title": "美国次贷危机引发金融危机，政府缩减教育预算",
+    "des": "美国大学招收国际留学生意愿增强"
+  },
+  {
+    "name": "obama1",
+    "year": 2009,
+    "month": 1,
+    "icon": "obama.png",
+    "title": "奥巴马于2008年11月4日当选美国总统",
+    "des": "2009年1月正式就职",
+    "link": "67549"
+  },
+  {
+    "name": "growth",
+    "year": 2010,
+    "month": 11,
+    "icon": "growth.png",
+    "title": "根据Opendoors报告中国赴美留学人数接近13万人",
+    "des": "中国超越印度成为美国第一大留学生源国",
+    "link": "16600"
+  },
+  {
+    "name": "obama2",
+    "year": 2012,
+    "month": 11,
+    "icon": "obama.png",
+    "title": "奥巴马于2012年11月6日成功连任",
+    "des": "执政期间留学政策偏好",
+    "link": "67549"
+  },
+  {
+    "name": "visa",
+    "year": 2014,
+    "month": 11,
+    "icon": "visa.png",
+    "title": "赴美学生签证延长至5年",
+    "des": "签证费用和签证手续维持不变",
+    "link": "13987"
+  },
+  {
+    "name": "STEM",
+    "year": 2016,
+    "month": 3,
+    "icon": "STEM.png",
+    "title": "移民局通过延期法案，STEM专业毕业生OPT延长至3年",
+    "des": "非STEM专业毕业生OPT时间依然为12个月",
+    "link": "23997"
+  },
+  {
+    "name": "trump1",
+    "year": 2017,
+    "month": 1,
+    "icon": "trump.png",
+    "title": "川普于2016年11月8日当选美国总统",
+    "des": "2017年1月正式就职",
+    "link": "72380"
+  },
+  {
+    "name": "trade_war",
+    "year": 2018,
+    "month": 3,
+    "icon": "trade_war.png",
+    "title": "川普打响对中国的贸易战",
+    "des": "中美两国关系趋紧，留学生也受到不同程度的影响"
+  },
+  {
+    "name": "covid",
+    "year": 2020,
+    "month": 3,
+    "icon": "covid.png",
+    "title": "新冠疫情在美国全面爆发",
+    "des": "大部分美国大学开展网课",
+    "link": "81723"
+  },
+  {
+    "name": "biden",
+    "year": 2021,
+    "month": 1,
+    "icon": "biden.png",
+    "title": "拜登于2020年11月7日当选美国总统",
+    "des": "2021年1月正式就职",
+    "link": "80587"
+  },
+  {
+    "name": "board",
+    "year": 2023,
+    "month": 1,
+    "icon": "board.png",
+    "title": "中国于2023年1月8日起取消入境强制隔离措施",
+    "des": "留学生出入境终于趋于正常化",
+    "link": "98277"
+  },
+  {
+    "name": "trump2",
+    "year": 2024,
+    "month": 11,
+    "icon": "trump.png",
+    "title": "川普于2024年11月7日再次胜选美国总统",
+    "des": "将于2025年1月正式就职",
+    "link": "72380"
+  }
+]
