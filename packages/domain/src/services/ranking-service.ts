@@ -144,8 +144,8 @@ export async function getRankingList(
 
   // 3. Extract Uni IDs and Fetch Profile Data
   const uniIds = entries.map((e: any) => e.uni_id);
-  const universities = await University.find({ _id: { $in: uniIds } })
-      .populate({ path: 'location.country_id', strictPopulate: false })
+  const universities = await University.find({ _id: { $in: uniIds } }, 'slug name location assets description details')
+      .populate({ path: 'location.country_id', strictPopulate: false, select: 'name' })
       .lean();
 
   const uniMap = new Map<string, any>();
@@ -313,4 +313,35 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     rich_data: u.rich_data,
     badges: [],
   };
+}
+
+export async function getAllUniversitiesDirectory(): Promise<any[]> {
+  await dbConnect();
+  
+  const unis = await University.find({}, 'slug name location assets')
+    .populate({ path: 'location.country_id', strictPopulate: false })
+    .lean() as any[];
+    
+  return unis.map((u: any) => {
+    let countryName = 'Global';
+    if (u.location?.country_id?.name?.en) {
+        countryName = u.location.country_id.name.en;
+    } else if (u.location?.country) {
+        countryName = u.location.country;
+    }
+
+    const getLoc = (obj: any) => {
+        if (!obj) return '';
+        if (typeof obj === 'string') return obj;
+        return obj.en || obj.zh || '';
+    };
+
+    return {
+      id: u.slug,
+      name: getLoc(u.name),
+      nameEn: u.name?.en,
+      country: countryName,
+      logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+    };
+  }).filter(u => u.name && u.id); // ensure valid
 }

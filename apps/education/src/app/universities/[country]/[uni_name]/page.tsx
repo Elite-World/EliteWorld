@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 import { UsUniTemplate } from '@/components/university/UsUniTemplate';
 import { GlobalUniTemplate } from '@/components/university/GlobalUniTemplate';
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 3600; // Cache this page for 1 hour (ISR)
 
 type PageProps = {
   params: Promise<{ country: string; uni_name: string }>;

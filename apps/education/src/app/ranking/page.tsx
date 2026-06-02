@@ -4,10 +4,7 @@ import RankingList from '@/components/ranking/RankingList';
 import { HeroSection } from '@repo/ui';
 import RankingMap from '@/components/ranking/RankingMap';
 // import { UniversityRanking } from '@repo/domain';
-import {
-  getRankingList,
-  getGlobalRankingMeta,
-} from '@repo/domain/services/ranking-service';
+import { fetchRankings, fetchMeta } from './actions';
 
 export const metadata: Metadata = {
   title: 'Global University Rankings | Elite World Education',
@@ -32,8 +29,8 @@ export default async function RankingPage({
   const selectedYear = yearParam ? parseInt(yearParam, 10) : undefined;
 
   const [universities, meta] = await Promise.all([
-    getRankingList(selectedYear, sourceParam, rankTypeParam, subjectParam),
-    getGlobalRankingMeta(),
+    fetchRankings(selectedYear, sourceParam, rankTypeParam, subjectParam as string | undefined),
+    fetchMeta(),
   ]);
 
   // Flatten generic years to find a default if needed

@@ -180,6 +180,7 @@ export function GlobalUniTemplate({ university }: { university: any }) {
   const LocationTab = (
     <UniversityLocationTab
       name={university.name}
+      slug={university.id}
       country={university.country}
       locations={university.locationCoords}
     />
@@ -213,9 +214,14 @@ export function GlobalUniTemplate({ university }: { university: any }) {
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="w-24 h-24 md:w-32 md:h-32 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-100 dark:border-zinc-700 p-3 flex items-center justify-center shrink-0">
-              {university.logoUrl ? (
+              {university.logoUrl || university.id ? (
                 <div className="relative w-full h-full">
-                  <Image src={university.logoUrl} alt={university.name} fill className="object-contain" />
+                  <Image 
+                    src={university.logoUrl || `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/${university.id}.png`} 
+                    alt={university.name} 
+                    fill 
+                    className="object-contain" 
+                  />
                 </div>
               ) : (
                 <span className="text-3xl font-bold text-gray-300">{initials}</span>

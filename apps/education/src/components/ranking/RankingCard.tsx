@@ -28,7 +28,8 @@ const RankingCard: React.FC<RankingCardProps> = ({
   href,
 }) => {
   const [logoError, setLogoError] = useState(false);
-  const logoUrl = university.logoUrl;
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2';
+  const logoUrl = university.logoUrl || `https://res.cloudinary.com/${cloudName}/image/upload/${university.id}.png`;
   // Determine rank to display
   const displayRank =
     selectedSource && university.ranks && university.ranks[selectedSource]

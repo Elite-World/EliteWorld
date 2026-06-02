@@ -6,13 +6,16 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
 // Use a DivIcon for the main university
-const createMainIcon = (slug?: string) =>
-  L.divIcon({
+const createMainIcon = (slug?: string) => {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2';
+  const logoSrc = slug ? `https://res.cloudinary.com/${cloudName}/image/upload/${slug}.png` : '';
+  
+  return L.divIcon({
     className: 'bg-transparent',
     html: `
       <div class="relative flex items-center justify-center">
         <div class="w-14 h-14 bg-white dark:bg-zinc-800 rounded-full border-4 border-red-600 shadow-xl overflow-hidden flex items-center justify-center z-50">
-          <img src="/logos/${slug}.png" alt="logo" class="w-10 h-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=${slug}&background=random'" />
+          <img src="${logoSrc}" alt="logo" class="w-10 h-10 object-contain" onerror="this.src='https://ui-avatars.com/api/?name=${slug}&background=random'" />
         </div>
       </div>
     `,
@@ -20,15 +23,19 @@ const createMainIcon = (slug?: string) =>
     iconAnchor: [28, 28],
     popupAnchor: [0, -28],
   });
+};
 
 // Use a DivIcon for neighboring universities
 const createNeighborIcon = (titleE: string) => {
   const slug = titleE.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2';
+  const logoSrc = `https://res.cloudinary.com/${cloudName}/image/upload/${slug}.png`;
+
   return L.divIcon({
     className: 'bg-transparent',
     html: `
       <div class="w-10 h-10 bg-white/90 dark:bg-zinc-800/90 rounded-full border-2 border-gray-300 dark:border-gray-600 shadow-md overflow-hidden flex items-center justify-center hover:scale-110 transition-transform">
-        <img src="/logos/${slug}.png" alt="logo" class="w-7 h-7 object-contain opacity-90" onerror="this.style.display='none'" />
+        <img src="${logoSrc}" alt="logo" class="w-7 h-7 object-contain opacity-90" onerror="this.style.display='none'" />
       </div>
     `,
     iconSize: [40, 40],

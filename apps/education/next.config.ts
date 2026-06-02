@@ -76,6 +76,16 @@ const nextConfig: NextConfig = {
         hostname: '**.faiusr.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'ui-avatars.com',
+        pathname: '/**',
+      },
     ],
     // Optional: Add image size presets for better optimization
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -90,7 +100,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              img-src 'self' data: blob: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://*.amazonaws.com https://*.notion.so https://*.googleusercontent.com https://*.openstreetmap.org https://*.basemaps.cartocdn.com https://*.faiusr.com https://31786002.s21i.faiusr.com https://unpkg.com;
+              img-src 'self' data: blob: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://*.amazonaws.com https://*.notion.so https://*.googleusercontent.com https://*.openstreetmap.org https://*.basemaps.cartocdn.com https://*.faiusr.com https://31786002.s21i.faiusr.com https://unpkg.com https://res.cloudinary.com https://ui-avatars.com;
               script-src 'self' 'unsafe-inline';
               style-src 'self' 'unsafe-inline';
               font-src 'self'; 
