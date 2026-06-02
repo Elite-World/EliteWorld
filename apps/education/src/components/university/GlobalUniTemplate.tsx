@@ -16,6 +16,7 @@ import { RankingSourceCard } from '@/components/ranking/RankingSourceCard';
 import Image from 'next/image';
 import { Tabs as UiTabs } from '@repo/ui';
 import { UniversityLocationTab } from '@/components/university/UniversityLocationTab';
+import { ExpandableDescription } from '@/components/university/ExpandableDescription';
 
 export function GlobalUniTemplate({ university }: { university: any }) {
   // Helper to get initials
@@ -242,13 +243,7 @@ export function GlobalUniTemplate({ university }: { university: any }) {
                   </a>
                 )}
               </div>
-              <p className="mt-6 text-gray-600 dark:text-gray-300 max-w-2xl leading-relaxed text-lg">
-                {university.description
-                  ? university.description.length > 200
-                    ? university.description.slice(0, 200) + '...'
-                    : university.description
-                  : 'No description available.'}
-              </p>
+              <ExpandableDescription text={university.description} />
             </div>
           </div>
         </div>

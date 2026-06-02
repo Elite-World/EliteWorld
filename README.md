@@ -143,3 +143,6 @@ _Built with ❤️ by the EliteWorld Team_
 ## Data Management & Scraping
 
 If you need to update the ranking data or interact with the scraping architecture, please see the dedicated documentation in [scripts/README.md](./scripts/README.md) for full instructions, API endpoints, and cURL examples.
+
+### AI-Generated Profiles
+> **Note for Future Maintainers:** The `description` and `details.overall` fields for the top 801 globally ranked universities were procedurally generated using **Google Gemini 2.5 Flash** (via the Google Generative Language API) in June 2026. The data was generated using a strict, fact-only prompt to ensure high-quality historical and academic accuracy without generic marketing fluff. The generation and upload scripts are preserved in the `scripts/` directory (`generate_descriptions.ts` and `upload_descriptions.ts`) should you ever need to resume or regenerate profiles for the remaining universities.

@@ -9,7 +9,7 @@ const getCachedRankingList = unstable_cache(
   async (year: number | undefined, source: string, rankType: 'General' | 'Subject', subject?: string) => {
     return await getRankingListService(year, source, rankType, subject);
   },
-  ['rankings-list'],
+  ['rankings-list-v3'],
   { revalidate: 3600 }
 );
 

@@ -5,9 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UniversityRanking } from '@repo/domain';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
-import RankingDetailModal from './RankingDetailModal';
 import { fetchRankings } from '@/app/ranking/actions';
-// import { useRouter, useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 interface RankingListProps {
@@ -58,10 +56,7 @@ const RankingList: React.FC<RankingListProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(50);
 
-  // Modal State
-  const [selectedUniversity, setSelectedUniversity] =
-    useState<UniversityRanking | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   // Derived Data
   const currentSources =
@@ -206,14 +201,8 @@ const RankingList: React.FC<RankingListProps> = ({
     updateData(currentYear, selectedSource, rankType, selectedSubject, country);
   };
 
-  const handleUniversityClick = (uni: UniversityRanking) => {
-    setSelectedUniversity(uni);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setTimeout(() => setSelectedUniversity(null), 300);
+  const handleUniversityClick = (uni: UniversityRanking, profileUrl: string) => {
+    router.push(profileUrl);
   };
 
   const countries = useMemo(() => {
@@ -337,7 +326,7 @@ const RankingList: React.FC<RankingListProps> = ({
                 key={uni.id}
                 index={index}
                 university={uni}
-                onClick={handleUniversityClick}
+                onClick={(uni) => handleUniversityClick(uni, profileUrl)}
                 selectedSource={selectedSource}
                 onRankClick={handleSourceChange}
                 hideFooterRanks={rankType === 'Subject'}
@@ -359,11 +348,6 @@ const RankingList: React.FC<RankingListProps> = ({
         </div>
       )}
 
-      <RankingDetailModal
-        university={selectedUniversity}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
     </div>
   );
 };

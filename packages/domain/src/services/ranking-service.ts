@@ -144,7 +144,7 @@ export async function getRankingList(
 
   // 3. Extract Uni IDs and Fetch Profile Data
   const uniIds = entries.map((e: any) => e.uni_id);
-  const universities = await University.find({ _id: { $in: uniIds } }, 'slug name location assets description details')
+  const universities = await University.find({ _id: { $in: uniIds } }, 'slug name location assets description details.stat')
       .populate({ path: 'location.country_id', strictPopulate: false, select: 'name' })
       .lean();
 
@@ -196,7 +196,6 @@ export async function getRankingList(
           logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
           websiteUrl: u.assets?.website,
           description: u.description,
-          details: u.details || {},
           stats: u.details?.stat || [],
           ranks: crossRanks.get(uid) || { [source]: entry.rank }
       };
