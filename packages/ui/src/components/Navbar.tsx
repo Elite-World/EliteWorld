@@ -51,7 +51,7 @@ function IconButton({
       className={cn(
         'p-2.5 rounded-xl transition-all duration-300',
         isTransparent
-          ? 'text-gray-500 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-blue-400 dark:hover:bg-white/10'
+          ? 'text-white/80 hover:text-white hover:bg-white/10'
           : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-white/5',
       )}
       aria-label={label}
@@ -106,11 +106,13 @@ function DesktopMenuItem({
     <div className="relative group">
       <Link
         href={item.href}
-        {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        {...(item.external
+          ? { target: '_blank', rel: 'noopener noreferrer' }
+          : {})}
         className={cn(
           'flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 relative text-[10px] font-black uppercase tracking-widest',
           isTransparent
-            ? 'text-gray-600 hover:text-blue-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:text-white dark:hover:bg-white/10'
+            ? 'text-white/90 hover:text-white hover:bg-white/10'
             : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-white/5',
         )}
       >
@@ -202,7 +204,7 @@ export function Navbar({
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 w-full z-[100] border-b transition-all duration-500',
+        'fixed top-0 left-0 w-full z-100 border-b transition-all duration-500',
         isScrolled
           ? 'bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-gray-100 dark:border-white/5 shadow-sm py-2'
           : 'bg-transparent border-transparent py-4',
@@ -224,7 +226,7 @@ export function Navbar({
                     'p-2.5 rounded-2xl shadow-2xl transition-all duration-500 group-hover/brand:scale-110',
                     isScrolled
                       ? 'bg-[#0a0a0a] dark:bg-white'
-                      : 'bg-[#0a0a0a] dark:bg-white',
+                      : 'bg-white',
                   )}
                 >
                   <Globe
@@ -232,7 +234,7 @@ export function Navbar({
                       'w-5 h-5',
                       isScrolled
                         ? 'text-white dark:text-black'
-                        : 'text-white dark:text-black',
+                        : 'text-black',
                     )}
                   />
                 </div>
@@ -241,7 +243,7 @@ export function Navbar({
                     'font-sans font-black text-xl tracking-tighter uppercase transition-colors',
                     isScrolled
                       ? 'text-gray-900 dark:text-white'
-                      : 'text-gray-900 dark:text-white',
+                      : 'text-white',
                   )}
                 >
                   {siteConfig.name.split(/(?=[A-Z])/).map((part, i) => (

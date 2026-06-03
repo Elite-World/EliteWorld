@@ -33,6 +33,7 @@ export * from './components/modals/UserMenuModal';
 export * from './lib/utils';
 export * from './lib/types/content';
 export * from './data/rankings';
+export * from './data/destinations';
 
 
 // Page Layouts

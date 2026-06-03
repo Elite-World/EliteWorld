@@ -11,6 +11,7 @@ import {
   HiOutlinePresentationChartLine,
   HiOutlineSparkles,
   HiOutlineUserGroup,
+  HiOutlineGlobeAlt,
 } from 'react-icons/hi2';
 import { siteConfig } from './site-config';
 
@@ -116,6 +117,12 @@ export const navigationItems: NavigationItem[] = [
         label: 'Universities',
         href: '/universities',
         icon: <HiOutlineChartBar className="w-5 h-5" />,
+      },
+      {
+        id: 'destinations',
+        label: 'Destinations',
+        href: '/destinations',
+        icon: <HiOutlineGlobeAlt className="w-5 h-5" />,
       },
     ],
   },

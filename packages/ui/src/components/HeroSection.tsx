@@ -57,7 +57,7 @@ function HeroBackground({
             onError={() => setImageError(true)}
             priority={true}
           />
-          <div className="absolute inset-0 bg-linear-to-b from-white/50 via-white/10 to-gray-50 dark:from-black/80 dark:via-black/40 dark:to-[#0a0a0a] backdrop-blur-[2px] z-0" />
+          <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-gray-50 dark:to-[#0a0a0a] z-0" />
         </>
       )}
     </>
@@ -136,8 +136,8 @@ export function HeroSection({
                       className={cn(
                         'inline-block',
                         isLast
-                          ? 'text-transparent bg-clip-text bg-linear-to-r from-blue-600 via-purple-500 to-blue-600 dark:from-blue-400 dark:via-purple-400 dark:to-blue-400 bg-size-[200%_auto] animate-gradient drop-shadow-sm'
-                          : 'text-gray-900 dark:text-white drop-shadow-md dark:drop-shadow-none',
+                          ? 'text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-purple-400 to-blue-400 bg-size-[200%_auto] animate-gradient drop-shadow-sm'
+                          : 'text-white drop-shadow-md',
                       )}
                     >
                       {word}
@@ -146,7 +146,7 @@ export function HeroSection({
                 })}
               </h1>
             ) : (
-              <h1 className="font-black text-gray-900 dark:text-white text-5xl md:text-7xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 drop-shadow-md dark:drop-shadow-none">
+              <h1 className="font-black text-white text-5xl md:text-7xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 drop-shadow-xl">
                 {title}
               </h1>
             )}
@@ -156,7 +156,7 @@ export function HeroSection({
                 as="div"
                 delay={1000} // 1s delay for subtitle
                 className={cn(
-                  'max-w-2xl mx-auto mt-8 mb-12 text-gray-700 dark:text-gray-300 font-medium tracking-tight leading-relaxed drop-shadow-xs dark:drop-shadow-none',
+                  'max-w-2xl mx-auto mt-8 mb-12 text-gray-200 font-medium tracking-tight leading-relaxed drop-shadow-md',
                   mode === 'main'
                     ? 'text-lg md:text-xl'
                     : 'text-base md:text-lg',

@@ -478,7 +478,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 rank: 3,
                 name: "University of Oxford",
                 country: "United Kingdom",
-                image: "https://images.unsplash.com/photo-1571260899304-4250b537753b?auto=format&fit=crop&q=80&w=600",
+                image: "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Radcliffe_Camera%2C_Oxford_-_Oct_2006.jpg/1280px-Radcliffe_Camera%2C_Oxford_-_Oct_2006.jpg",
                 logo: "/images/img_transparent/university-of-oxford.png",
                 score: "96.9"
               }
@@ -528,7 +528,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
             {/* Main Feature - USA */}
-            <Link href="/universities/usa" className="md:col-span-8 group relative rounded-[3rem] overflow-hidden min-h-[400px]">
+            <Link href="/destinations/usa" className="md:col-span-8 group relative rounded-[3rem] overflow-hidden min-h-[400px]">
               <Image src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=1200" alt="Study in USA" fill className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1" />
               <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
               <div className="absolute inset-0 p-12 flex flex-col justify-end">
@@ -545,7 +545,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
 
             <div className="md:col-span-4 flex flex-col gap-6">
               {/* Secondary - UK */}
-              <Link href="/universities/uk" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
+              <Link href="/destinations/uk" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
                 <Image src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=600" alt="Study in UK" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-1" />
                 <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
                 <div className="absolute inset-0 p-10 flex flex-col justify-end">
@@ -557,7 +557,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
               </Link>
               
               {/* Secondary - Australia */}
-              <Link href="/universities/australia" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
+              <Link href="/destinations/australia" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
                 <Image src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=600" alt="Study in Australia" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" />
                 <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
                 <div className="absolute inset-0 p-10 flex flex-col justify-end">

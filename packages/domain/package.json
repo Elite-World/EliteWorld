@@ -17,7 +17,8 @@
     "./services/*": "./src/services/*.ts",
     "./types/*": "./src/lib/types/*.ts",
     "./config/*": "./src/config/*",
-    "./content/*": "./src/content/*"
+    "./content/*": "./src/content/*",
+    "./data/*": "./src/data/*"
   },
   "dependencies": {
     "@repo/tooling": "*",

@@ -76,11 +76,23 @@ export function GlobalUniTemplate({ university }: { university: any }) {
   const getStatIcon = (label: string) => {
     const l = label.toLowerCase();
     if (l.includes('found') || l.includes('year')) return Calendar;
-    if (l.includes('student') || l.includes('pupil') || l.includes('enroll')) return Users;
-    if (l.includes('staff') || l.includes('faculty') || l.includes('teacher')) return Building2;
+    if (l.includes('student') || l.includes('pupil') || l.includes('enroll'))
+      return Users;
+    if (l.includes('staff') || l.includes('faculty') || l.includes('teacher'))
+      return Building2;
     if (l.includes('female') || l.includes('ratio')) return Users;
-    if (l.includes('intl') || l.includes('international') || l.includes('foreign')) return Globe;
-    if (l.includes('bachelor') || l.includes('undergrad') || l.includes('degree')) return GraduationCap;
+    if (
+      l.includes('intl') ||
+      l.includes('international') ||
+      l.includes('foreign')
+    )
+      return Globe;
+    if (
+      l.includes('bachelor') ||
+      l.includes('undergrad') ||
+      l.includes('degree')
+    )
+      return GraduationCap;
     return Trophy;
   };
 
@@ -92,12 +104,16 @@ export function GlobalUniTemplate({ university }: { university: any }) {
     return Receipt;
   };
 
-  const statsList = university.stats?.filter((s: any) => s.type === 'statistic') || [];
-  const highlightsList = university.stats?.filter((s: any) => s.type === 'highlight') || [];
+  const statsList =
+    university.stats?.filter((s: any) => s.type === 'statistic') || [];
+  const highlightsList =
+    university.stats?.filter((s: any) => s.type === 'highlight') || [];
 
   const costLabels = ['Accommodation', 'Food', 'Transport', 'Utilities'];
   const costStats = statsList.filter((s: any) => costLabels.includes(s.label));
-  const demographicStatsRaw = statsList.filter((s: any) => !costLabels.includes(s.label));
+  const demographicStatsRaw = statsList.filter(
+    (s: any) => !costLabels.includes(s.label),
+  );
 
   // De-duplicate by case-insensitive label to avoid showing "Total students" and "Total Students"
   const demographicStatsMap = new Map();
@@ -117,7 +133,9 @@ export function GlobalUniTemplate({ university }: { university: any }) {
             <div className="space-y-6">
               <div className="flex items-center gap-2 mb-2">
                 <Users className="w-5 h-5 text-blue-500" />
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Student Demographics</h3>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                  Student Demographics
+                </h3>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                 {demographicStats.map((stat: any, idx: number) => {
@@ -148,9 +166,13 @@ export function GlobalUniTemplate({ university }: { university: any }) {
               <div className="flex items-center justify-between border-b border-gray-100 dark:border-zinc-800 pb-4">
                 <div className="flex items-center gap-2">
                   <Receipt className="w-5 h-5 text-emerald-500" />
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">Estimated Cost of Living</h3>
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                    Estimated Cost of Living
+                  </h3>
                 </div>
-                <span className="text-sm text-gray-500 bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-full">Monthly Average</span>
+                <span className="text-sm text-gray-500 bg-gray-100 dark:bg-zinc-800 px-3 py-1 rounded-full">
+                  Monthly Average
+                </span>
               </div>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {costStats.map((stat: any, idx: number) => {
@@ -158,13 +180,15 @@ export function GlobalUniTemplate({ university }: { university: any }) {
                   return (
                     <div
                       key={idx}
-                      className="bg-gradient-to-br from-emerald-50 to-white dark:from-zinc-800 dark:to-zinc-900 p-5 rounded-2xl border border-emerald-100/50 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300"
+                      className="bg-linear-to-br from-emerald-50 to-white dark:from-zinc-800 dark:to-zinc-900 p-5 rounded-2xl border border-emerald-100/50 dark:border-zinc-800 hover:-translate-y-1 transition-transform duration-300"
                     >
                       <div className="flex items-center gap-3 mb-3">
                         <div className="p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg text-emerald-600 dark:text-emerald-400">
                           <Icon className="w-5 h-5" />
                         </div>
-                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">{stat.label}</span>
+                        <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                          {stat.label}
+                        </span>
                       </div>
                       <div className="text-2xl font-bold text-gray-900 dark:text-white">
                         {stat.content}
@@ -179,7 +203,9 @@ export function GlobalUniTemplate({ university }: { university: any }) {
       ) : (
         <div className="p-12 flex flex-col items-center justify-center bg-gray-50 dark:bg-zinc-800/30 rounded-3xl border border-dashed border-gray-200 dark:border-zinc-700">
           <Clock className="w-12 h-12 text-gray-300 dark:text-zinc-600 mb-4" />
-          <p className="text-lg font-medium text-gray-500 dark:text-gray-400">Statistic data is currently being updated.</p>
+          <p className="text-lg font-medium text-gray-500 dark:text-gray-400">
+            Statistic data is currently being updated.
+          </p>
         </div>
       )}
 
@@ -188,7 +214,11 @@ export function GlobalUniTemplate({ university }: { university: any }) {
           {highlightsList.map((highlight: any, idx: number) => (
             <div
               key={idx}
-              className={idx > 0 ? 'pt-8 border-t border-gray-100 dark:border-zinc-800' : ''}
+              className={
+                idx > 0
+                  ? 'pt-8 border-t border-gray-100 dark:border-zinc-800'
+                  : ''
+              }
             >
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Award className="w-5 h-5 text-orange-500" />
@@ -208,20 +238,24 @@ export function GlobalUniTemplate({ university }: { university: any }) {
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="space-y-6">
         {university.ranks &&
-          Object.entries(university.ranks).map(([source, rank]: [string, any]) => (
-            <RankingSourceCard
-              key={source}
-              source={source}
-              currentRank={rank}
-              history={university.rankingHistory || []}
-            />
-          ))}
+          Object.entries(university.ranks).map(
+            ([source, rank]: [string, any]) => (
+              <RankingSourceCard
+                key={source}
+                source={source}
+                currentRank={rank}
+                history={university.rankingHistory || []}
+              />
+            ),
+          )}
       </div>
     </div>
   );
 
-  const uniScholarships = university.scholarships?.filter((s: any) => s.scope === 'university') || [];
-  const countryScholarships = university.scholarships?.filter((s: any) => s.scope === 'country') || [];
+  const uniScholarships =
+    university.scholarships?.filter((s: any) => s.scope === 'university') || [];
+  const countryScholarships =
+    university.scholarships?.filter((s: any) => s.scope === 'country') || [];
 
   const renderScholarshipCard = (sch: any, idx: number, badgeColor: string) => (
     <div
@@ -230,8 +264,12 @@ export function GlobalUniTemplate({ university }: { university: any }) {
     >
       <div>
         <div className="flex items-center gap-3 mb-2">
-          <h4 className="text-lg font-bold text-gray-900 dark:text-white">{sch.name}</h4>
-          <span className={`px-2 py-0.5 text-xs font-bold rounded-md ${badgeColor}`}>
+          <h4 className="text-lg font-bold text-gray-900 dark:text-white">
+            {sch.name}
+          </h4>
+          <span
+            className={`px-2 py-0.5 text-xs font-bold rounded-md ${badgeColor}`}
+          >
             {sch.scope === 'country' ? 'Country-Wide' : 'University'}
           </span>
         </div>
@@ -253,13 +291,15 @@ export function GlobalUniTemplate({ university }: { university: any }) {
 
   const ScholarshipTab = (
     <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      {(!university.scholarships || university.scholarships.length === 0) ? (
+      {!university.scholarships || university.scholarships.length === 0 ? (
         <div className="p-12 text-center bg-gray-50 dark:bg-zinc-800/30 rounded-3xl border border-dashed border-gray-200 dark:border-zinc-700">
           <Award className="w-12 h-12 text-gray-300 dark:text-zinc-600 mb-4 mx-auto" />
           <p className="text-lg font-medium text-gray-500 dark:text-gray-400">
             No scholarship data available at the moment.
           </p>
-          <p className="text-sm text-gray-400 mt-2">Check back later or contact the admissions office directly.</p>
+          <p className="text-sm text-gray-400 mt-2">
+            Check back later or contact the admissions office directly.
+          </p>
         </div>
       ) : (
         <>
@@ -270,7 +310,13 @@ export function GlobalUniTemplate({ university }: { university: any }) {
                 University Scholarships
               </h3>
               <div className="space-y-3">
-                {uniScholarships.map((sch: any, idx: number) => renderScholarshipCard(sch, idx, 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400'))}
+                {uniScholarships.map((sch: any, idx: number) =>
+                  renderScholarshipCard(
+                    sch,
+                    idx,
+                    'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+                  ),
+                )}
               </div>
             </div>
           )}
@@ -282,7 +328,13 @@ export function GlobalUniTemplate({ university }: { university: any }) {
                 National & International Scholarships
               </h3>
               <div className="space-y-3">
-                {countryScholarships.map((sch: any, idx: number) => renderScholarshipCard(sch, idx, 'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400'))}
+                {countryScholarships.map((sch: any, idx: number) =>
+                  renderScholarshipCard(
+                    sch,
+                    idx,
+                    'bg-purple-50 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400',
+                  ),
+                )}
               </div>
             </div>
           )}
@@ -304,20 +356,57 @@ export function GlobalUniTemplate({ university }: { university: any }) {
 
   const SHOW_SECTIONS = {
     overview: !!university.description,
-    stats: !!university.rich_data || (university.student_demographics && university.student_demographics.length > 0) || (university.cost_of_living && university.cost_of_living.length > 0),
+    stats:
+      !!university.rich_data ||
+      (university.student_demographics &&
+        university.student_demographics.length > 0) ||
+      (university.cost_of_living && university.cost_of_living.length > 0),
     ranking: !!university.ranks && Object.keys(university.ranks).length > 0,
-    scholarship: !!university.scholarships && university.scholarships.length > 0,
-    location: !!(university.locationCoords && university.locationCoords.length > 0),
+    scholarship:
+      !!university.scholarships && university.scholarships.length > 0,
+    location: !!(
+      university.locationCoords && university.locationCoords.length > 0
+    ),
     programs: false, // Hidden for now as we don't have program data
   };
 
   const tabs = [
-    { id: 'overview', label: 'Overview', content: OverviewTab, visible: SHOW_SECTIONS.overview },
-    { id: 'stats', label: 'Key Statistics', content: StatsTab, visible: SHOW_SECTIONS.stats },
-    { id: 'ranking', label: 'Rankings', content: RankingTab, visible: SHOW_SECTIONS.ranking },
-    { id: 'scholarship', label: 'Scholarships', content: ScholarshipTab, visible: SHOW_SECTIONS.scholarship },
-    { id: 'location', label: 'Location', content: LocationTab, visible: SHOW_SECTIONS.location },
-    { id: 'programs', label: 'Programs', content: ProgramsTab, visible: SHOW_SECTIONS.programs },
+    {
+      id: 'overview',
+      label: 'Overview',
+      content: OverviewTab,
+      visible: SHOW_SECTIONS.overview,
+    },
+    {
+      id: 'stats',
+      label: 'Key Statistics',
+      content: StatsTab,
+      visible: SHOW_SECTIONS.stats,
+    },
+    {
+      id: 'ranking',
+      label: 'Rankings',
+      content: RankingTab,
+      visible: SHOW_SECTIONS.ranking,
+    },
+    {
+      id: 'scholarship',
+      label: 'Scholarships',
+      content: ScholarshipTab,
+      visible: SHOW_SECTIONS.scholarship,
+    },
+    {
+      id: 'location',
+      label: 'Location',
+      content: LocationTab,
+      visible: SHOW_SECTIONS.location,
+    },
+    {
+      id: 'programs',
+      label: 'Programs',
+      content: ProgramsTab,
+      visible: SHOW_SECTIONS.programs,
+    },
   ];
 
   return (
@@ -333,15 +422,20 @@ export function GlobalUniTemplate({ university }: { university: any }) {
             <div className="w-24 h-24 md:w-32 md:h-32 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-100 dark:border-zinc-700 p-3 flex items-center justify-center shrink-0">
               {university.logoUrl || university.id ? (
                 <div className="relative w-full h-full">
-                  <Image 
-                    src={university.logoUrl || `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/${university.id}.png`} 
-                    alt={university.name} 
-                    fill 
-                    className="object-contain" 
+                  <Image
+                    src={
+                      university.logoUrl ||
+                      `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/${university.id}.png`
+                    }
+                    alt={university.name}
+                    fill
+                    className="object-contain"
                   />
                 </div>
               ) : (
-                <span className="text-3xl font-bold text-gray-300">{initials}</span>
+                <span className="text-3xl font-bold text-gray-300">
+                  {initials}
+                </span>
               )}
             </div>
 
@@ -354,8 +448,14 @@ export function GlobalUniTemplate({ university }: { university: any }) {
                   <MapPin className="w-4 h-4" /> {university.country}
                 </div>
                 {university.websiteUrl && (
-                  <a href={university.websiteUrl} target="_blank" rel="noopener" className="flex items-center gap-2 hover:text-blue-600 transition-colors">
-                    <Globe className="w-4 h-4" /> Official Website <ExternalLink className="w-3 h-3" />
+                  <a
+                    href={university.websiteUrl}
+                    target="_blank"
+                    rel="noopener"
+                    className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+                  >
+                    <Globe className="w-4 h-4" /> Official Website{' '}
+                    <ExternalLink className="w-3 h-3" />
                   </a>
                 )}
               </div>
@@ -372,9 +472,12 @@ export function GlobalUniTemplate({ university }: { university: any }) {
           <div className="grid md:grid-cols-3 gap-8 mb-20 animate-in fade-in slide-in-from-bottom-8 duration-700 delay-200">
             <div className="md:col-span-1 bg-linear-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white relative overflow-hidden group">
               <div className="relative z-10">
-                <h3 className="text-2xl font-bold mb-4">Take a Free Practice Test</h3>
+                <h3 className="text-2xl font-bold mb-4">
+                  Take a Free Practice Test
+                </h3>
                 <p className="text-blue-100 mb-8">
-                  Not sure if you qualify? Take our 5-minute assessment to see your admission chances.
+                  Not sure if you qualify? Take our 5-minute assessment to see
+                  your admission chances.
                 </p>
                 <button className="bg-white text-blue-700 px-6 py-3 rounded-xl font-bold hover:bg-blue-50 transition-colors w-full">
                   Start Test Now
@@ -385,7 +488,9 @@ export function GlobalUniTemplate({ university }: { university: any }) {
 
             <div className="md:col-span-2 bg-white dark:bg-zinc-900 rounded-3xl p-8 border border-gray-100 dark:border-zinc-800 shadow-sm">
               <div className="flex items-center justify-between mb-8">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Available Programs</h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Available Programs
+                </h3>
                 <button className="text-blue-600 hover:text-blue-700 font-semibold flex items-center gap-2">
                   View All Programs <ArrowRight className="w-4 h-4" />
                 </button>
@@ -393,17 +498,37 @@ export function GlobalUniTemplate({ university }: { university: any }) {
 
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                 {[
-                  { label: 'Short Courses', count: university.courseShortCount || 45, color: 'bg-orange-50 text-orange-600' },
-                  { label: 'Bachelors', count: university.courseBachelorCount || 120, color: 'bg-blue-50 text-blue-600' },
-                  { label: 'Masters', count: university.courseMasterCount || 85, color: 'bg-purple-50 text-purple-600' },
-                  { label: 'PhDs', count: university.coursePhdCount || 40, color: 'bg-pink-50 text-pink-600' },
+                  {
+                    label: 'Short Courses',
+                    count: university.courseShortCount || 45,
+                    color: 'bg-orange-50 text-orange-600',
+                  },
+                  {
+                    label: 'Bachelors',
+                    count: university.courseBachelorCount || 120,
+                    color: 'bg-blue-50 text-blue-600',
+                  },
+                  {
+                    label: 'Masters',
+                    count: university.courseMasterCount || 85,
+                    color: 'bg-purple-50 text-purple-600',
+                  },
+                  {
+                    label: 'PhDs',
+                    count: university.coursePhdCount || 40,
+                    color: 'bg-pink-50 text-pink-600',
+                  },
                 ].map((prog) => (
                   <div
                     key={prog.label}
                     className={`p-4 rounded-2xl ${prog.color} dark:bg-opacity-10 dark:border dark:border-current flex flex-col items-center justify-center text-center h-32`}
                   >
-                    <span className="text-3xl font-bold mb-1">{prog.count}</span>
-                    <span className="text-sm font-medium opacity-80">{prog.label}</span>
+                    <span className="text-3xl font-bold mb-1">
+                      {prog.count}
+                    </span>
+                    <span className="text-sm font-medium opacity-80">
+                      {prog.label}
+                    </span>
                   </div>
                 ))}
               </div>

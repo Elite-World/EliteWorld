@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MapPin } from 'lucide-react';
 import DirectoryCard from './DirectoryCard';
@@ -9,11 +10,21 @@ interface UniversityDirectoryClientProps {
   initialUniversities: any[];
 }
 
-export default function UniversityDirectoryClient({
+function UniversityDirectoryContent({
   initialUniversities,
 }: UniversityDirectoryClientProps) {
+  const searchParams = useSearchParams();
+  const initialCountry = searchParams.get('country') || '';
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCountry, setSelectedCountry] = useState('');
+  const [selectedCountry, setSelectedCountry] = useState(initialCountry);
+
+  // Sync state if URL changes (e.g. back navigation)
+  useEffect(() => {
+    const countryParam = searchParams.get('country');
+    if (countryParam !== null && countryParam !== selectedCountry) {
+      setSelectedCountry(countryParam);
+    }
+  }, [searchParams]);
   const [visibleCount, setVisibleCount] = useState(50);
 
   const countries = useMemo(() => {
@@ -117,5 +128,13 @@ export default function UniversityDirectoryClient({
         </div>
       )}
     </div>
+  );
+}
+
+export default function UniversityDirectoryClient(props: UniversityDirectoryClientProps) {
+  return (
+    <Suspense fallback={<div className="p-8 text-center">Loading directory...</div>}>
+      <UniversityDirectoryContent {...props} />
+    </Suspense>
   );
 }
