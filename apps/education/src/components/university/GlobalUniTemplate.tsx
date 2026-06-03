@@ -16,7 +16,6 @@ import {
   Bus,
   Zap,
   Receipt,
-  UserCheck
 } from 'lucide-react';
 import { RankingSourceCard } from '@/components/ranking/RankingSourceCard';
 import Image from 'next/image';

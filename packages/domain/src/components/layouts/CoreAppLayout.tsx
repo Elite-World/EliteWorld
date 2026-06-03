@@ -70,18 +70,16 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
         <ScrollProgress />
       </div>
 
-      <div className="sticky top-0 z-40">
-        <Navbar
-          navigation={navigation}
-          siteConfig={siteConfig}
-          navGateway={navGateway}
-          isDark={mounted ? isDark : false}
-          mode={mounted ? mode : 'system'} // Pass correct mode here, matching server initially
-          onToggleTheme={toggleTheme}
-          onOpenSearch={() => openModal('search')}
-          onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig })}
-        />
-      </div>
+      <Navbar
+        navigation={navigation}
+        siteConfig={siteConfig}
+        navGateway={navGateway}
+        isDark={mounted ? isDark : false}
+        mode={mounted ? mode : 'system'} // Pass correct mode here, matching server initially
+        onToggleTheme={toggleTheme}
+        onOpenSearch={() => openModal('search')}
+        onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig })}
+      />
 
       {/* Main content */}
       <div className="relative">{children}</div>

@@ -1,7 +1,7 @@
 'use client';
 
-import { Article, Category } from '@repo/domain';
-import { useThemeStore } from '@repo/domain';
+import { Article } from '@repo/domain';
+import { useThemeStore, useDevStore } from '@repo/domain';
 import { ArticleCard } from '@repo/domain';
 
 import { cn } from '@repo/domain';
@@ -14,12 +14,11 @@ import {
   Instagram,
   Facebook,
   MapPin,
-  Phone,
-  Mail,
   ArrowRight,
+  Trophy,
+  Building2,
 } from 'lucide-react';
 import Link from 'next/link';
-import { QRCode } from '@repo/domain';
 
 import { navGateway } from '@repo/apps-config/education/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
@@ -101,13 +100,6 @@ interface HomePageProps {
   tips?: Article[];
 }
 
-// Define the social media links with proper icon types
-const socialLinks = [
-  { icon: Linkedin, href: siteConfig.social.linkedin },
-  { icon: Twitter, href: siteConfig.social.twitter },
-  { icon: Instagram, href: '#' },
-  { icon: Facebook, href: '#' },
-] as const;
 
 // Add skeleton loading states
 // function ArticleListSkeleton() {
@@ -125,6 +117,7 @@ const socialLinks = [
 
 export function HomePage({ articles, tips = [] }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const showHiddenElements = useDevStore((state) => state.showHiddenElements);
 
   // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
@@ -349,196 +342,231 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
       )}
 
       {/* Team Section */}
-      <section id="team" className="py-24">
-        <div className="container mx-auto px-4">
-          <h2
-            className={cn(
-              'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
-            )}
-          >
-            Meet Our Education Experts
-          </h2>
-          <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
-          <p
-            className={cn(
-              'text-center max-w-2xl mx-auto mb-16',
-              isDark ? 'text-gray-400' : 'text-gray-600',
-            )}
-          >
-            Our experienced consultants are dedicated to guiding you through
-            every step of your educational journey
-          </p>
+      {showHiddenElements && (
+        <section id="team" className="py-24">
+          <div className="container mx-auto px-4">
+            <h2
+              className={cn(
+                'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
+              )}
+            >
+              Meet Our Education Experts
+            </h2>
+            <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
+            <p
+              className={cn(
+                'text-center max-w-2xl mx-auto mb-16',
+                isDark ? 'text-gray-400' : 'text-gray-600',
+              )}
+            >
+              Our experienced consultants are dedicated to guiding you through
+              every step of your educational journey
+            </p>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                {
+                  name: 'Dr. Evelyn Vance',
+                  role: 'Academic Director',
+                  image: '/images/team/evelyn-vance.png',
+                  speciality: 'Strategic Planning & Research',
+                },
+                {
+                  name: 'James Miller',
+                  role: 'Admissions Specialist',
+                  image: '/images/team/james-miller.png',
+                  speciality: 'Ivy League & Oxbridge',
+                },
+                {
+                  name: 'Grace Tan',
+                  role: 'Writing Consultant',
+                  image: '/images/team/grace-tan.png',
+                  speciality: 'Personal Statements & Essays',
+                },
+              ].map((member, index) => (
+                <div
+                  key={index}
+                  className={cn(
+                    'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
+                    'hover:transform hover:-translate-y-1',
+                    isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
+                    'h-full',
+                  )}
+                >
+                  <div className="relative h-64 w-full">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      className="object-cover rounded-t-2xl"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
+                    <p
+                      className={cn(
+                        'text-sm mb-2 font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400',
+                      )}
+                    >
+                      {member.role}
+                    </p>
+                    <p
+                      className={cn(
+                        'text-sm',
+                        isDark ? 'text-gray-400' : 'text-gray-500',
+                      )}
+                    >
+                      {member.speciality}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Top Universities Showcase */}
+      <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Trophy className="w-5 h-5 text-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">Global Elite</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                Top Ranked <br />
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Institutions</span>
+              </h2>
+            </div>
+            <Link
+              href="/ranking"
+              className={cn(
+                "group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all",
+                isDark ? "bg-white/5 hover:bg-white/10 text-white" : "bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm"
+              )}
+            >
+              View Full Rankings
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Dr. Evelyn Vance',
-                role: 'Academic Director',
-                image: '/images/team/evelyn-vance.png',
-                speciality: 'Strategic Planning & Research',
+                rank: 1,
+                name: "Massachusetts Institute of Technology (MIT)",
+                country: "USA",
+                image: "https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&q=80&w=600",
+                logo: "/images/img_transparent/massachusetts-institute-of-technology.png",
+                score: "100.0"
               },
               {
-                name: 'James Miller',
-                role: 'Admissions Specialist',
-                image: '/images/team/james-miller.png',
-                speciality: 'Ivy League & Oxbridge',
+                rank: 2,
+                name: "Imperial College London",
+                country: "United Kingdom",
+                image: "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&q=80&w=600",
+                logo: "/images/img_transparent/imperial-college-london.png",
+                score: "98.5"
               },
               {
-                name: 'Grace Tan',
-                role: 'Writing Consultant',
-                image: '/images/team/grace-tan.png',
-                speciality: 'Personal Statements & Essays',
-              },
-            ].map((member, index) => (
-              <div
-                key={index}
-                className={cn(
-                  'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
-                  'hover:transform hover:-translate-y-1',
-                  isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
-                  'h-full',
-                )}
-              >
-                <div className="relative h-64 w-full">
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="object-cover rounded-t-2xl"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
+                rank: 3,
+                name: "University of Oxford",
+                country: "United Kingdom",
+                image: "https://images.unsplash.com/photo-1571260899304-4250b537753b?auto=format&fit=crop&q=80&w=600",
+                logo: "/images/img_transparent/university-of-oxford.png",
+                score: "96.9"
+              }
+            ].map((uni, idx) => (
+              <Link key={idx} href={`/universities/${uni.country.toLowerCase().replace(/ /g, '-')}/${uni.name.toLowerCase().replace(/ /g, '-')}`} className="group relative flex flex-col h-full rounded-[2.5rem] overflow-hidden bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl">
+                <div className="relative h-56 shrink-0 w-full overflow-hidden">
+                  <Image src={uni.image} alt={uni.name} fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" />
+                  <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/80 via-[#0a0a0a]/20 to-transparent" />
+                  <div className="absolute top-6 left-6 w-12 h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
+                    <span className="text-white font-black text-sm">#{uni.rank}</span>
+                  </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-1">{member.name}</h3>
-                  <p
-                    className={cn(
-                      'text-sm mb-2 font-semibold uppercase tracking-wider text-blue-600 dark:text-blue-400',
-                    )}
-                  >
-                    {member.role}
-                  </p>
-                  <p
-                    className={cn(
-                      'text-sm',
-                      isDark ? 'text-gray-400' : 'text-gray-500',
-                    )}
-                  >
-                    {member.speciality}
-                  </p>
+                <div className="p-8 relative flex-1 flex flex-col">
+                  <div className="absolute -top-12 right-8 w-20 h-20 bg-white dark:bg-[#0a0a0a] rounded-[1.5rem] p-3 shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1">
+                    <Image src={uni.logo} alt="Logo" width={60} height={60} className="object-contain transition-transform duration-500" />
+                  </div>
+                  <div className="flex items-center gap-2 mb-4 mt-2">
+                    <MapPin className="w-4 h-4 text-blue-600" />
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">{uni.country}</span>
+                  </div>
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6 line-clamp-2 leading-tight">{uni.name}</h3>
+                  <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-100 dark:border-white/10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
+                      <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Score {uni.score}</span>
+                    </div>
+                    <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors group-hover:translate-x-1" />
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-linear-to-r from-blue-500 to-purple-500">
-        <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Start Your Journey?
-          </h2>
-          <p className="text-xl mb-12 max-w-2xl mx-auto">
-            Book a free consultation with our experts and take the first step
-            towards your international education goals
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-blue-500 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-              Schedule Consultation
-            </button>
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-              Download Brochure
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact Section */}
-      <section id="contact" className="py-24">
+      {/* Browse by Destination */}
+      <section className="py-32 bg-white dark:bg-[#0a0a0a]">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2
-                className={cn(
-                  'text-4xl font-bold mb-6',
-                  isDark ? 'text-gray-100' : 'text-gray-800',
-                )}
-              >
-                Get in Touch
-              </h2>
-              <p
-                className={cn(
-                  'text-lg mb-8',
-                  isDark ? 'text-gray-400' : 'text-gray-600',
-                )}
-              >
-                Have questions? Connect with us through any of these channels:
-              </p>
-              <div className="space-y-6 mb-12">
-                {[
-                  { icon: MapPin, label: siteConfig.contact.address },
-                  { icon: Phone, label: siteConfig.contact.phone },
-                  { icon: Mail, label: siteConfig.contact.email },
-                ].map((contact, index) => {
-                  const Icon = contact.icon;
-                  return (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span
-                        className={cn(
-                          'text-sm leading-relaxed',
-                          isDark ? 'text-gray-300' : 'text-gray-600',
-                        )}
-                      >
-                        {contact.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
+              Explore by <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Destination</span>
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
+              Find your perfect academic home in the world&apos;s leading educational hubs.
+            </p>
+          </div>
 
-              {/* Social Media Links */}
-              <div className="flex items-center space-x-6 mb-8">
-                {socialLinks.map((social, index) => {
-                  const IconComponent = social.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'text-2xl transition-colors',
-                        isDark
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-blue-500',
-                      )}
-                    >
-                      <IconComponent className="w-6 h-6" />
-                    </a>
-                  );
-                })}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
+            {/* Main Feature - USA */}
+            <Link href="/universities/usa" className="md:col-span-8 group relative rounded-[3rem] overflow-hidden min-h-[400px]">
+              <Image src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&q=80&w=1200" alt="Study in USA" fill className="object-cover transition-transform duration-700 group-hover:scale-105 group-hover:rotate-1" />
+              <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
+              <div className="absolute inset-0 p-12 flex flex-col justify-end">
+                <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center mb-8 border border-white/20 group-hover:scale-110 transition-transform duration-500">
+                  <Building2 className="w-8 h-8 text-white" />
+                </div>
+                <h3 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-4">United States</h3>
+                <p className="text-base font-medium text-gray-300 max-w-md mb-8 leading-relaxed">Home to the Ivy League and the world&apos;s most innovative research institutions.</p>
+                <div className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 group-hover:text-blue-300 transition-colors">
+                  Explore 50+ Institutions <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                </div>
               </div>
-            </div>
+            </Link>
 
-            {/* QR Codes */}
-            <div className="grid grid-cols-2 gap-8">
-              <QRCode
-                src={siteConfig.contact.whatsapp.qr || '/qr/whatsapp-qr.png'}
-                alt="WhatsApp QR Code"
-                title="WhatsApp"
-                description={`Scan to chat on WhatsApp`}
-                isDark={isDark}
-              />
-              <QRCode
-                src={siteConfig.contact.wechat.qr || '/qr/wechat-qr.png'}
-                alt="WeChat QR Code"
-                title="WeChat"
-                description={`Scan to connect: ${siteConfig.contact.wechat.label}`}
-                isDark={isDark}
-              />
+            <div className="md:col-span-4 flex flex-col gap-6">
+              {/* Secondary - UK */}
+              <Link href="/universities/uk" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
+                <Image src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=600" alt="Study in UK" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-1" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
+                <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">United Kingdom</h3>
+                  <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover:text-blue-300 transition-colors">
+                    Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
+              
+              {/* Secondary - Australia */}
+              <Link href="/universities/australia" className="flex-1 group relative rounded-[3rem] overflow-hidden min-h-[280px]">
+                <Image src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=600" alt="Study in Australia" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" />
+                <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
+                <div className="absolute inset-0 p-10 flex flex-col justify-end">
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Australia</h3>
+                  <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover:text-blue-300 transition-colors">
+                    Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </div>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
