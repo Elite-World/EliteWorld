@@ -8,6 +8,9 @@ import {
 } from 'react-icons/hi2';
 import { siteConfig } from './site-config';
 
+const IS_DEV = process.env.NODE_ENV === 'development';
+const LANDING_URL = IS_DEV ? 'http://localhost:3000' : 'https://www.eliteworld.top';
+
 export const navGateway = {
   ...(siteConfig.features.landing
     ? {
@@ -81,7 +84,8 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'contact',
     label: 'Contact Us',
-    href: 'https://www.eliteworld.top/#contact',
+    href: `${LANDING_URL}/?source=immigration#contact`,
+    external: true,
     icon: <HiOutlineEnvelope className="w-5 h-5" />,
   },
   {

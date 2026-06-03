@@ -3,6 +3,7 @@ export interface NavigationItem {
   label: string;
   href: string;
   icon?: React.ReactNode;
+  external?: boolean;
   children?: NavigationItem[];
 }
 

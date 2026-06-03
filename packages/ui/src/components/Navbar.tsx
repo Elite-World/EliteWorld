@@ -106,6 +106,7 @@ function DesktopMenuItem({
     <div className="relative group">
       <Link
         href={item.href}
+        {...(item.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
         className={cn(
           'flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 relative text-[10px] font-black uppercase tracking-widest',
           isTransparent
