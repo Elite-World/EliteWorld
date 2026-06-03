@@ -6,6 +6,7 @@ import { GlobalRibbon } from '../shared/GlobalRibbon';
 import { Navbar, Footer, NavigationData } from '@repo/ui';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
+import { DevToolsToggle } from '../shared/DevToolsToggle';
 
 export interface CoreAppLayoutProps {
   children: React.ReactNode;
@@ -90,6 +91,9 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
 
       {/* Global Side Ribbon */}
       <GlobalRibbon />
+
+      {/* Dev Tools Toggle (Only renders in dev mode) */}
+      <DevToolsToggle />
     </div>
   );
 }

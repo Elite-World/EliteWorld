@@ -6,6 +6,7 @@ import { scaleQuantile } from 'd3-scale';
 import { Tooltip } from 'react-tooltip';
 import 'react-tooltip/dist/react-tooltip.css';
 import { UniversityRanking, useThemeStore } from '@repo/domain';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 // TopoJSON URL (Standard World Map)
 import geoUrl from '../../data/world-countries.json';
@@ -16,6 +17,8 @@ interface RankingMapProps {
 
 const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
   const isDark = useThemeStore((state) => state.isDark);
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   // Aggregate university counts by country
   const countryCounts = useMemo(() => {
@@ -92,21 +95,45 @@ const RankingMap: React.FC<RankingMapProps> = ({ universities }) => {
               const count = countryCounts[countryName] || 0;
               const tooltipText = `${countryName}: ${count} ${
                 count === 1 ? 'University' : 'Universities'
-              }`;
+              }${count > 0 ? ' (Click to filter)' : ''}`;
+
+              const handleCountryClick = () => {
+                if (count === 0) return;
+                // Only enable click filter for large screens
+                if (typeof window !== 'undefined' && window.innerWidth >= 1024) {
+                  const params = new URLSearchParams(searchParams.toString());
+                  if (params.get('country') === countryName) {
+                    params.delete('country');
+                  } else {
+                    params.set('country', countryName);
+                  }
+                  router.push(`?${params.toString()}`, { scroll: false });
+                }
+              };
+
+              const activeCountry = searchParams.get('country');
+              const isSelected = activeCountry === countryName;
+              const isOtherSelected = activeCountry && !isSelected;
+
+              let fillColor = isDark ? '#3f3f46' : '#e4e4e7';
+              if (count > 0) {
+                if (isSelected) {
+                  fillColor = '#f59e0b'; // Amber for selected
+                } else if (isOtherSelected) {
+                  fillColor = isDark ? '#27272a' : '#f4f4f5'; // Faint gray for others
+                } else {
+                  fillColor = colorScale(count); // Normal scale
+                }
+              }
 
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  onClick={handleCountryClick}
                   data-tooltip-id="map-tooltip"
                   data-tooltip-content={tooltipText}
-                  fill={
-                    count > 0
-                      ? colorScale(count)
-                      : isDark
-                        ? '#3f3f46'
-                        : '#e4e4e7'
-                  }
+                  fill={fillColor}
                   stroke={isDark ? '#18181b' : '#fff'}
                   strokeWidth={0.5}
                   style={{

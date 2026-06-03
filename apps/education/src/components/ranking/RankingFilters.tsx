@@ -15,6 +15,7 @@ import {
   Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDevStore } from '@repo/domain';
 
 interface RankingFiltersProps {
   searchQuery: string;
@@ -66,6 +67,8 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
   setSelectedSubject,
   subjects,
 }) => {
+  const showHiddenElements = useDevStore((state) => state.showHiddenElements);
+
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mobileView, setMobileView] = useState<
     'main' | 'country' | 'source' | 'subject'
@@ -96,22 +99,24 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
   return (
     <>
       {/* Mobile Trigger */}
-      <div className="md:hidden flex items-center justify-between mb-6">
-        <div className="flex gap-2 p-1 bg-gray-100 dark:bg-zinc-800 rounded-lg">
-          {['General', 'Subject'].map((type) => (
-            <button
-              key={type}
-              onClick={() => setRankType(type as 'General' | 'Subject')}
-              className={`px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
-                rankType === type
-                  ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                  : 'text-gray-500 dark:text-gray-400'
-              }`}
-            >
-              {type}
-            </button>
-          ))}
-        </div>
+      <div className={`md:hidden flex items-center ${showHiddenElements ? 'justify-between' : 'justify-end'} mb-6`}>
+        {showHiddenElements && (
+          <div className="flex gap-2 p-1 bg-gray-100 dark:bg-zinc-800 rounded-lg">
+            {['General', 'Subject'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setRankType(type as 'General' | 'Subject')}
+                className={`px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
+                  rankType === type
+                    ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                    : 'text-gray-500 dark:text-gray-400'
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
+        )}
         <button
           onClick={() => setIsMobileOpen(true)}
           className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-all"
@@ -175,23 +180,25 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                         />
                       </div>
 
-                      <div className="flex p-1 bg-gray-100 dark:bg-zinc-800 rounded-xl">
-                        {['General', 'Subject'].map((type) => (
-                          <button
-                            key={type}
-                            onClick={() =>
-                              setRankType(type as 'General' | 'Subject')
-                            }
-                            className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
-                              rankType === type
-                                ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
-                                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
-                            }`}
-                          >
-                            {type} Ranking
-                          </button>
-                        ))}
-                      </div>
+                      {showHiddenElements && (
+                        <div className="flex p-1 bg-gray-100 dark:bg-zinc-800 rounded-xl">
+                          {['General', 'Subject'].map((type) => (
+                            <button
+                              key={type}
+                              onClick={() =>
+                                setRankType(type as 'General' | 'Subject')
+                              }
+                              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+                                rankType === type
+                                  ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
+                                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                              }`}
+                            >
+                              {type} Ranking
+                            </button>
+                          ))}
+                        </div>
+                      )}
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
@@ -389,21 +396,23 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
       {/* Desktop Controls */}
       <div className="hidden md:flex flex-col gap-6 mb-8">
         {/* Tier 1 Tabs */}
-        <div className="flex gap-8 border-b border-gray-200 dark:border-zinc-800">
-          {['General', 'Subject'].map((type) => (
-            <button
-              key={type}
-              onClick={() => setRankType(type as 'General' | 'Subject')}
-              className={`pb-4 text-sm font-medium border-b-2 transition-colors ${
-                rankType === type
-                  ? 'border-blue-600 text-blue-600 dark:text-blue-400'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
-              }`}
-            >
-              {type} Ranking
-            </button>
-          ))}
-        </div>
+        {showHiddenElements && (
+          <div className="flex gap-8 border-b border-gray-200 dark:border-zinc-800">
+            {['General', 'Subject'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setRankType(type as 'General' | 'Subject')}
+                className={`pb-4 text-sm font-medium border-b-2 transition-colors ${
+                  rankType === type
+                    ? 'border-blue-600 text-blue-600 dark:text-blue-400'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                }`}
+              >
+                {type} Ranking
+              </button>
+            ))}
+          </div>
+        )}
 
         {/* Tier 2 & Filters */}
         <div className="flex flex-col gap-4">

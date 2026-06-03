@@ -23,7 +23,8 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
   return (
     <div className={cn('w-full', className)}>
       {/* Tab Headers */}
-      <div className="flex overflow-x-auto border-b border-gray-100 dark:border-white/5 scrollbar-hide mb-8">
+      {tabs.length > 1 && (
+        <div className="flex overflow-x-auto border-b border-gray-100 dark:border-white/5 scrollbar-hide mb-8">
         <div className="flex gap-8 min-w-full px-1">
           {tabs.map((tab) => (
             <button
@@ -66,7 +67,8 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
             </button>
           ))}
         </div>
-      </div>
+        </div>
+      )}
 
       {/* Tab Content */}
       <div className="relative">

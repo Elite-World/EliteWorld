@@ -33,9 +33,10 @@ export default async function UniversityPage({ params }: PageProps) {
     notFound();
   }
 
-  // If the university has detailed rich_data (e.g. scraped from US US universities), 
+  // If the university has detailed US rich_data (e.g. historical_scores), 
   // render the immersive US template. Otherwise, fall back to the global overview template.
-  if (university.rich_data) {
+  // We check for historical_scores because the global scraper now adds qs_id to rich_data
+  if (university.rich_data && university.rich_data.historical_scores) {
     return <UsUniTemplate university={university} />;
   }
 

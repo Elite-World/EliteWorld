@@ -56,6 +56,11 @@ const RankingList: React.FC<RankingListProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [visibleCount, setVisibleCount] = useState(50);
 
+  // Sync external URL changes (e.g., from map clicks) into local state
+  useEffect(() => {
+    setSelectedCountry(initialCountry || '');
+  }, [initialCountry]);
+
 
 
   // Derived Data

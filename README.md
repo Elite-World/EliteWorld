@@ -146,3 +146,20 @@ If you need to update the ranking data or interact with the scraping architectur
 
 ### AI-Generated Profiles
 > **Note for Future Maintainers:** The `description` and `details.overall` fields for the top 801 globally ranked universities were procedurally generated using **Google Gemini 2.5 Flash** (via the Google Generative Language API) in June 2026. The data was generated using a strict, fact-only prompt to ensure high-quality historical and academic accuracy without generic marketing fluff. The generation and upload scripts are preserved in the `scripts/` directory (`generate_descriptions.ts` and `upload_descriptions.ts`) should you ever need to resume or regenerate profiles for the remaining universities.
+
+### University Analytics Data Sources & Mining Tools
+The application implements a bifurcated data strategy for university analytics, utilizing distinct sources and custom data mining pipelines for US vs. Non-US universities. 
+
+*   **US Universities:** Data is sourced from the **Forward Pathway** database (using internal `fp_id` mapping). This provides deep, historical admission scores, demographics, and trends specific to the highly standardized US college system. This data is rendered via the specialized `UsUniTemplate`.
+*   **Non-US (Global) Universities:** Key statistics (e.g., student demographics, cost of living, faculty size) are dynamically mined from the live **QS World University Rankings** portal. The data is rendered via the unified `GlobalUniTemplate`.
+
+**Data Mining Stack:**
+To bypass aggressive Cloudflare anti-bot protections and ensure data freshness, we employ a custom, heavy-duty scraping pipeline rather than off-the-shelf APIs:
+*   **Puppeteer Extra + Stealth Plugin:** Used to orchestrate headless Chrome instances that successfully masquerade as legitimate user traffic.
+*   **Cheerio:** Used for highly robust, resilient HTML parsing and element extraction (capable of handling localized DOM mutations).
+*   The primary mining script is located at `scripts/scrape_analytics.ts`.
+
+### Scholarships Strategy
+Scholarships data is sourced via an open dataset (Kaggle strategy) to populate historical and international scholarship information. 
+*   **Data Structure:** To maintain normalization and scalability, scholarships are *not* parked inside the University document. Instead, they exist in a dedicated `Scholarship` table (Mongoose collection) that is relationally linked to either a specific University (`scope: 'university'`) or a Country (`scope: 'country'`).
+*   **Data Flexibility:** The dataset dynamically handles scholarship availability; it does not force an arbitrary minimum (e.g., 3 scholarships) for universities or countries that simply do not offer them in the dataset.

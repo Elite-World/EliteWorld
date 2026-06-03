@@ -3,6 +3,8 @@
 // Stores
 export * from './lib/stores/useThemeStore';
 export * from './lib/stores/useModalStore';
+export * from './lib/stores/useDevStore';
+export * from './components/shared/DevToolsToggle';
 
 // Hooks
 export * from './lib/hooks/useUnsplashImage';

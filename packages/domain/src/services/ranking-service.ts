@@ -183,7 +183,7 @@ export async function getRankingList(
       const u = uniMap.get(entry.uni_id.toString());
       if (!u) return null;
 
-      const countryName = u.location?.country_id?.name?.en || 'Unknown';
+      const countryName = getLoc(u.location?.country_id?.name) || 'Unknown';
       const uid = entry.uni_id.toString();
 
       return {
@@ -276,7 +276,7 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
 
 //   const detailsOverall = overview.map((d: any) => d.content).join('\n\n');
   
-  const countryName = u.location?.country_id?.name?.en || 'Unknown';
+  const countryName = getLoc(u.location?.country_id?.name) || 'Unknown';
 
   return {
     id: u.slug, // Use slug
@@ -303,7 +303,8 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     scholarships: allScholarships.map((s: any) => ({
         name: getLoc(s.name),
         amount: getLoc(s.amount),
-        type: s.type
+        type: s.type,
+        scope: s.scope
     })),
 
     rank: (ranks['qs'] as number) || (ranks['the'] as number) || 0,
