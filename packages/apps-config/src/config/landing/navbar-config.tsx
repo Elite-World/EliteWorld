@@ -8,6 +8,8 @@ import {
 } from 'react-icons/hi2';
 import { siteConfig } from './site-config';
 
+const IS_DEV = process.env.NODE_ENV === 'development';
+
 export const navGateway = {
   ...(siteConfig.features.landing
     ? {
@@ -15,7 +17,7 @@ export const navGateway = {
           id: 'main',
           name: 'ELITE',
           label: 'ELITE',
-          href: 'https://www.eliteworld.top',
+          href: IS_DEV ? 'http://localhost:3000' : 'https://www.eliteworld.top',
         },
       }
     : {}),
@@ -25,7 +27,7 @@ export const navGateway = {
           id: 'immi',
           name: 'ELITE IMMI',
           label: 'IMMIGRATION',
-          href: 'https://immi.eliteworld.top',
+          href: IS_DEV ? 'http://localhost:3001' : 'https://immi.eliteworld.top',
         },
       }
     : {}),
@@ -35,7 +37,7 @@ export const navGateway = {
           id: 'edu',
           name: 'ELITE EDU',
           label: 'EDUCATION',
-          href: 'https://edu.eliteworld.top',
+          href: IS_DEV ? 'http://localhost:3002' : 'https://edu.eliteworld.top',
         },
       }
     : {}),
@@ -45,7 +47,7 @@ export const navGateway = {
           id: 'coursehub',
           name: 'CourseHub',
           label: 'COURSEHUB',
-          href: 'https://coursehub.eliteworld.top',
+          href: IS_DEV ? 'http://localhost:3003' : 'https://coursehub.eliteworld.top',
         },
       }
     : {}),

@@ -6,6 +6,7 @@ export interface Article {
   date: string;
   category?: string;
   tags?: string[];
+  solutionIds?: string[];
   image?: string;
   readTime?: number;
   slug: string;

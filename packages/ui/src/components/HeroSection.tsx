@@ -41,25 +41,25 @@ function HeroBackground({
       {/* Fallback gradient */}
       <div
         className={cn(
-          'absolute inset-0 z-0 bg-linear-to-br from-gray-50 via-gray-100 to-gray-50 dark:from-[#0a0a0a] dark:via-[#1A1A1A] dark:to-[#0a0a0a]',
+          'absolute inset-0 z-0 bg-linear-to-br from-gray-900 via-gray-800 to-gray-900 dark:from-[#0a0a0a] dark:via-[#1A1A1A] dark:to-[#0a0a0a]',
         )}
       />
 
       {showImage && (
-        <>
-          <Image
-            src={bgSrc}
-            alt="Background"
-            fill
-            className={cn(
-              'object-cover object-center z-0 transition-all duration-1000 scale-105 opacity-80 grayscale-[0.2]',
-            )}
-            onError={() => setImageError(true)}
-            priority={true}
-          />
-          <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-gray-50 dark:to-[#0a0a0a] z-0" />
-        </>
+        <Image
+          src={bgSrc}
+          alt="Background"
+          fill
+          className={cn(
+            'object-cover object-center z-0 transition-all duration-1000 scale-105 opacity-80 grayscale-[0.2]',
+          )}
+          onError={() => setImageError(true)}
+          priority={true}
+        />
       )}
+      
+      {/* Always render dark overlay so the white Navbar is visible */}
+      <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-gray-50 dark:to-[#0a0a0a] z-0" />
     </>
   );
 }
@@ -101,7 +101,7 @@ export function HeroSection({
     <section
       id="hero-section"
       className={cn(
-        'relative bg-gray-50 dark:bg-[#0a0a0a] overflow-hidden',
+        'relative bg-gray-50 dark:bg-[#0a0a0a] overflow-hidden flex flex-col',
         mode === 'main'
           ? 'min-h-[80vh] md:min-h-[calc(100vh-5.5rem)]'
           : 'min-h-[40vh] md:min-h-[calc(60vh-5.5rem)]',
@@ -110,7 +110,7 @@ export function HeroSection({
     >
       <HeroBackground mode={mode} backgroundImage={backgroundImage} />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 pb-20 z-10">
+      <div className="relative flex-1 flex flex-col items-center justify-center text-center px-4 py-20 z-10 w-full mt-16 md:mt-0">
         <div className="container mx-auto max-w-5xl">
           <div className="animate-slide-up">
             {mode === 'main' && (
@@ -125,7 +125,7 @@ export function HeroSection({
             )}
 
             {mode === 'main' ? (
-              <h1 className="font-black text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 flex flex-wrap justify-center gap-4">
+              <h1 className="font-black text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 flex flex-wrap justify-center gap-2 md:gap-4 text-balance">
                 {title.split(' ').map((word, i) => {
                   const isLast = i === title.split(' ').length - 1;
                   return (
@@ -146,7 +146,7 @@ export function HeroSection({
                 })}
               </h1>
             ) : (
-              <h1 className="font-black text-white text-5xl md:text-7xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 drop-shadow-xl">
+              <h1 className="font-black text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[1.1] md:leading-[0.9] uppercase transition-all duration-700 select-none pb-4 drop-shadow-xl text-balance">
                 {title}
               </h1>
             )}

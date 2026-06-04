@@ -65,15 +65,31 @@ export function BlogPage({
   useEffect(() => {
     const filterButtonId = 'blog-filter-trigger';
 
+    const updateVisibility = () => {
+      const isScrolled = window.scrollY > 300;
+      
+      useRibbonStore.getState().updateButton(filterButtonId, { 
+         visible: isScrolled 
+      });
+    };
+
     registerButton({
       id: filterButtonId,
       icon: HiFunnel,
       label: 'Filter',
       onClick: () => setIsFilterOpen(true),
       priority: 10, // Higher than ScrollToTop (-100)
+      visible: typeof window !== 'undefined' ? window.scrollY > 300 : false
     });
 
-    return () => unregisterButton(filterButtonId);
+    window.addEventListener('scroll', updateVisibility);
+    window.addEventListener('resize', updateVisibility);
+
+    return () => {
+      window.removeEventListener('scroll', updateVisibility);
+      window.removeEventListener('resize', updateVisibility);
+      unregisterButton(filterButtonId);
+    };
   }, [registerButton, unregisterButton]);
 
   const handleCategoryChange = (category: string) => {
@@ -89,25 +105,7 @@ export function BlogPage({
         backgroundImage={backgroundImage}
       />
       <div className="container mx-auto px-4 pt-8 md:pt-12 mb-16">
-        {/* Inline Category Tags Bar */}
-        <div className="flex overflow-x-auto hide-scrollbar gap-3 pb-4 mb-8 -mx-4 px-4 md:mx-0 md:px-0">
-          {allCategories.map((category) => (
-            <button
-              key={`inline-${category.id}`}
-              onClick={() => handleCategoryChange(category.title)}
-              className={cn(
-                'flex-none px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300',
-                selectedCategory === category.title
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                  : isDark
-                    ? 'bg-white/5 text-gray-400 hover:bg-white/10 border border-white/10 hover:border-white/30 hover:text-white'
-                    : 'bg-gray-100 text-gray-500 hover:bg-gray-200 border border-transparent hover:text-gray-900',
-              )}
-            >
-              {category.title}
-            </button>
-          ))}
-        </div>
+        {/* Inline Category Tags Bar Removed - Using Ribbon Filter Instead */}
         <AnimatePresence>
           {isFilterOpen && (
             <motion.div

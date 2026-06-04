@@ -279,6 +279,7 @@ export class NotionProvider implements ContentProvider {
         const excerpt = props[P.SUMMARY]?.rich_text?.[0]?.plain_text || '';
         const category = props[P.CATEGORY]?.select?.name || undefined;
         const tags = props[P.TAGS]?.multi_select?.map((t: any) => t.name) || [];
+        const solutionIds = props['MongoDB ID']?.multi_select?.map((t: any) => t.name) || [];
         
         let image = '/images/placeholder.jpg';
         
@@ -303,6 +304,7 @@ export class NotionProvider implements ContentProvider {
             excerpt,
             category,
             tags,
+            solutionIds,
             image,
             readTime: 5, 
             content: '' 

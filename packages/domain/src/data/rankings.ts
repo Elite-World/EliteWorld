@@ -20,6 +20,7 @@ export interface UniversityRanking {
   country: string;
   region: string;
   logoUrl?: string; // URL to logo image
+  coverUrl?: string; // URL to cover image
   description?: string;
   subjects?: RankingSubject[];
   badges?: string[]; // e.g. "Top 10", "Best Research"

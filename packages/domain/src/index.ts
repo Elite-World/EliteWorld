@@ -34,10 +34,16 @@ export * from './lib/utils';
 export * from './lib/types/content';
 export * from './data/rankings';
 export * from './data/destinations';
-
+export type { ICountry, IJurisdictionProfile, IMobilitySolution } from './data/models';
 
 // Page Layouts
 export * from './components/layouts/CoreAppLayout';
 export * from './components/layouts/BlogPage';
 export * from './components/layouts/ArticlePage';
 export * from './components/layouts/ArticlePageX';
+export * from './components/tables/CompareSolutionsTable';
+export * from './components/shared/SolutionCard';
+export * from './components/shared/CountryFlag';
+export * from './components/forms/ConsultationBooking';
+export * from './lib/stores/useNavbarStore';
+export * from './components/shared/DevOnlyBlock';

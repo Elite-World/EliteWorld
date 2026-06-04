@@ -108,18 +108,15 @@ export function SearchModal() {
             )}
           </div>
 
-          {/* Mobile Close Button */}
+          {/* Unified Close Button */}
           <button
             onClick={close}
-            className="md:hidden text-sm font-semibold text-gray-500 dark:text-gray-400 px-2"
+            className="flex items-center gap-2 px-3 py-2 md:py-1.5 rounded-xl border border-transparent md:border-gray-200 dark:md:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm md:text-xs font-semibold md:font-bold text-gray-500 transition-colors cursor-pointer"
           >
-            Cancel
+            <span className="md:hidden">Cancel</span>
+            <span className="hidden md:inline-block uppercase tracking-widest text-[10px]">Close</span>
+            <div className="hidden md:flex items-center justify-center px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-[9px] shadow-sm text-gray-400">ESC</div>
           </button>
-
-          {/* Desktop ESC Hint */}
-          <div className="hidden md:flex items-center gap-1 px-2 py-1 rounded border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-[10px] uppercase font-bold text-gray-400 select-none">
-            ESC
-          </div>
         </div>
 
         {/* Search Content */}

@@ -200,3 +200,86 @@ const ScholarshipSchema = new Schema<IScholarship>({
 
 export const Scholarship: Model<IScholarship> = 
   mongoose.models.Scholarship || mongoose.model<IScholarship>('Scholarship', ScholarshipSchema);
+
+// --- Global Mobility & Immigration Models ---
+
+export interface IJurisdictionProfile extends Document {
+  country_id: mongoose.Types.ObjectId; // Reference to Country
+  isActive: boolean;
+  
+  tax_profile: {
+    corporate_tax: string;
+    personal_tax: string;
+    capital_gains: string;
+    crypto_tax?: string;
+  };
+
+  passport_power: {
+    visa_free_score: number;
+    access_to_schengen: boolean;
+    access_to_us: boolean;
+    access_to_uk: boolean;
+    access_to_china: boolean;
+  };
+}
+
+const JurisdictionProfileSchema = new Schema<IJurisdictionProfile>({
+  country_id: { type: Schema.Types.ObjectId, ref: 'Country', required: true, index: true },
+  isActive: { type: Boolean, default: false, index: true },
+
+  tax_profile: {
+    corporate_tax: String,
+    personal_tax: String,
+    capital_gains: String,
+    crypto_tax: String,
+  },
+
+  passport_power: {
+    visa_free_score: Number,
+    access_to_schengen: Boolean,
+    access_to_us: Boolean,
+    access_to_uk: Boolean,
+    access_to_china: Boolean,
+  }
+});
+
+export const JurisdictionProfile: Model<IJurisdictionProfile> = 
+  mongoose.models.JurisdictionProfile || mongoose.model<IJurisdictionProfile>('JurisdictionProfile', JurisdictionProfileSchema);
+
+export interface IMobilitySolution extends Document {
+  country_id: mongoose.Types.ObjectId; // Reference to Country
+  isActive: boolean;
+  
+  category: 'residency' | 'citizenship' | 'long_term_visa' | 'corporate';
+  name: Localized<string>;
+  
+  requirements: {
+    investment_amount?: string;
+    timeframe?: string;
+    physical_presence?: string;
+  };
+  
+  description: string;
+}
+
+const MobilitySolutionSchema = new Schema<IMobilitySolution>({
+  country_id: { type: Schema.Types.ObjectId, ref: 'Country', required: true, index: true },
+  isActive: { type: Boolean, default: false, index: true },
+  
+  category: { type: String, enum: ['residency', 'citizenship', 'long_term_visa', 'corporate'], required: true },
+  name: {
+    en: { type: String, required: true },
+    cn: String
+  },
+
+  requirements: {
+    investment_amount: String,
+    timeframe: String,
+    physical_presence: String,
+  },
+
+  description: String
+});
+
+export const MobilitySolution: Model<IMobilitySolution> = 
+  mongoose.models.MobilitySolution || mongoose.model<IMobilitySolution>('MobilitySolution', MobilitySolutionSchema);

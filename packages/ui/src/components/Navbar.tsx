@@ -32,6 +32,7 @@ export interface NavbarProps {
   onToggleTheme?: () => void;
   onOpenSearch?: () => void;
   onOpenMenu?: (items: NavigationItem[]) => void;
+  forceSolid?: boolean;
 }
 
 function IconButton({
@@ -196,9 +197,10 @@ export function Navbar({
   onToggleTheme,
   onOpenSearch,
   onOpenMenu,
+  forceSolid = false,
 }: NavbarProps) {
   const { scrollY, isHeroVisible, isScrollingUp } = useScrollPosition();
-  const isScrolled = scrollY > 20;
+  const isScrolled = scrollY > 20 || forceSolid;
   const [isDomainOpen, setIsDomainOpen] = useState(false);
 
   return (
@@ -208,7 +210,7 @@ export function Navbar({
         isScrolled
           ? 'bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-gray-100 dark:border-white/5 shadow-sm py-2'
           : 'bg-transparent border-transparent py-4',
-        !isScrollingUp && isScrolled ? '-translate-y-full' : 'translate-y-0',
+        !isScrollingUp && scrollY > 20 ? '-translate-y-full' : 'translate-y-0',
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -224,26 +226,20 @@ export function Navbar({
                 <div
                   className={cn(
                     'p-2.5 rounded-2xl shadow-2xl transition-all duration-500 group-hover/brand:scale-110',
-                    isScrolled
-                      ? 'bg-[#0a0a0a] dark:bg-white'
-                      : 'bg-white',
+                    isScrolled ? 'bg-[#0a0a0a] dark:bg-white' : 'bg-white',
                   )}
                 >
                   <Globe
                     className={cn(
                       'w-5 h-5',
-                      isScrolled
-                        ? 'text-white dark:text-black'
-                        : 'text-black',
+                      isScrolled ? 'text-white dark:text-black' : 'text-black',
                     )}
                   />
                 </div>
                 <span
                   className={cn(
                     'font-sans font-black text-xl tracking-tighter uppercase transition-colors',
-                    isScrolled
-                      ? 'text-gray-900 dark:text-white'
-                      : 'text-white',
+                    isScrolled ? 'text-gray-900 dark:text-white' : 'text-white',
                   )}
                 >
                   {siteConfig.name.split(/(?=[A-Z])/).map((part, i) => (

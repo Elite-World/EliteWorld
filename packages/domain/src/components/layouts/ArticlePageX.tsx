@@ -227,12 +227,12 @@ export function ArticlePageX({
 
         {/* Navigation: Prev / Next */}
         {(prevArticle || nextArticle) && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
+          <div className="grid grid-cols-2 gap-4 md:gap-6 mt-16">
             {prevArticle ? (
               <Link
                 href={`${basePath}/${prevArticle.slug}`}
                 className={cn(
-                  'group block p-6 rounded-2xl transition-all relative overflow-hidden',
+                  'group block p-4 md:p-6 rounded-2xl transition-all relative overflow-hidden',
                   isDark
                     ? 'bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-md'
                     : 'bg-white hover:shadow-xl hover:-translate-y-1 border border-gray-100',
@@ -268,7 +268,7 @@ export function ArticlePageX({
               <Link
                 href={`${basePath}/${nextArticle.slug}`}
                 className={cn(
-                  'group block p-6 rounded-2xl transition-all text-right relative overflow-hidden',
+                  'group block p-4 md:p-6 rounded-2xl transition-all text-right relative overflow-hidden',
                   isDark
                     ? 'bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 backdrop-blur-md'
                     : 'bg-white hover:shadow-xl hover:-translate-y-1 border border-gray-100',

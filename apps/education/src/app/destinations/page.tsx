@@ -32,11 +32,11 @@ export default function DestinationsHubPage() {
               <Link 
                 href={`/destinations/${dest.id}`} 
                 key={dest.id}
-                className="group relative rounded-[2rem] overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition-all duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5"
+                className="group relative rounded-4xl overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition-all duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
-                  <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/60 to-transparent z-10" />
+                  <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/80 rounded-4xl group-hover:to-black/90 transition-colors" />
                   <img 
                     src={dest.heroImage} 
                     alt={dest.name} 

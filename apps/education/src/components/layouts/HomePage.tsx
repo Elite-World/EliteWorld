@@ -492,7 +492,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                   </div>
                 </div>
                 <div className="p-8 relative flex-1 flex flex-col">
-                  <div className="absolute -top-12 right-8 w-20 h-20 bg-white dark:bg-[#0a0a0a] rounded-[1.5rem] p-3 shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1">
+                  <div className="absolute -top-12 right-8 w-20 h-20 bg-white dark:bg-[#0a0a0a] rounded-3xl p-3 shadow-xl border border-gray-100 dark:border-white/10 flex items-center justify-center transition-transform duration-500 group-hover:scale-110 group-hover:-translate-y-1">
                     <Image src={uni.logo} alt="Logo" width={60} height={60} className="object-contain transition-transform duration-500" />
                   </div>
                   <div className="flex items-center gap-2 mb-4 mt-2">

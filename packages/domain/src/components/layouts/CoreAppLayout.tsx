@@ -7,6 +7,7 @@ import { Navbar, Footer, NavigationData } from '@repo/ui';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { useDevStore } from '../../lib/stores/useDevStore';
+import { useNavbarStore } from '../../lib/stores/useNavbarStore';
 import { DevToolsToggle } from '../shared/DevToolsToggle';
 
 export interface CoreAppLayoutProps {
@@ -24,6 +25,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
   const setIsDark = useThemeStore((state) => state.setIsDark);
   const openModal = useModalStore((state) => state.open);
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
+  const forceSolidNavbar = useNavbarStore((state) => state.forceSolid);
 
   // Hydration fix / Initial load
   const [mounted, setMounted] = useState(false);
@@ -81,6 +83,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
         onToggleTheme={toggleTheme}
         onOpenSearch={() => openModal('search')}
         onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig })}
+        forceSolid={forceSolidNavbar}
       />
 
       {/* Main content */}

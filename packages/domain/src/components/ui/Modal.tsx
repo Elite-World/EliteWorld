@@ -81,9 +81,9 @@ export function Modal({
 
   const wrapperClasses = cn(
     variant === 'popup' &&
-      'fixed inset-0 z-50 flex items-center justify-center p-4',
-    variant === 'side' && 'fixed inset-0 z-50 flex justify-end',
-    variant === 'bottom' && 'fixed inset-0 z-50 flex items-end',
+      'fixed inset-0 flex items-center justify-center p-4',
+    variant === 'side' && 'fixed inset-0 flex justify-end',
+    variant === 'bottom' && 'fixed inset-0 flex items-end',
   );
 
   const contentClasses = cn(
@@ -98,10 +98,10 @@ export function Modal({
   );
 
   return (
-    <div className="relative z-50">
+    <div className="relative" style={{ zIndex: 9999 }}>
       {/* Backdrop */}
       <motion.div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm"
         initial="hidden"
         animate="visible"
         exit="exit"

@@ -15,11 +15,13 @@ import {
   Twitter,
   Instagram,
   Facebook,
-  MapPin,
-  Phone,
-  Mail,
+  Globe2,
+  ArrowRight,
+  Building2,
+  ShieldCheck,
+  Landmark,
 } from 'lucide-react';
-import { QRCode } from '@repo/domain';
+import Link from 'next/link';
 
 import { navGateway } from '@repo/apps-config/immigration/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
@@ -102,12 +104,6 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 // }
 
 // Define the social media links with proper icon types
-const socialLinks = [
-  { icon: Linkedin, href: siteConfig.social.linkedin },
-  { icon: Twitter, href: siteConfig.social.twitter },
-  { icon: Instagram, href: '#' },
-  { icon: Facebook, href: '#' },
-] as const;
 
 // Add skeleton loading states
 // function ArticleListSkeleton() {
@@ -123,8 +119,11 @@ const socialLinks = [
 //   );
 // }
 
-// export function HomePage({ categories, articles }: HomePageProps) {
-export function HomePage() {
+interface HomePageProps {
+  recentArticles?: any[];
+}
+
+export function HomePage({ recentArticles = [] }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
 
   // const [isLoading, setIsLoading] = useState(false);
@@ -152,8 +151,7 @@ export function HomePage() {
         title={siteConfig.name}
         subtitle={
           <em>
-            <strong>Dream Big</strong> | Expert Guidance for Study and
-            Immigration
+            <strong>Elite Mobility</strong> | Premium Pathways for Global Citizens
           </em>
         }
       >
@@ -205,24 +203,24 @@ export function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             {[
               {
-                number: '1000+',
-                label: 'Success Stories',
-                description: 'Students placed in top institutions worldwide',
+                number: '1,000+',
+                label: 'Successful Relocations',
+                description: 'Families and high-net-worth individuals securely relocated',
               },
               {
-                number: '50+',
-                label: 'Partner Universities',
-                description: 'Direct partnerships with leading institutions',
+                number: '20+',
+                label: 'Jurisdictions',
+                description: 'Premium pathways across Europe, Americas, and Oceania',
               },
               {
-                number: '98%',
-                label: 'Success Rate',
-                description: 'Visa and admission application success',
+                number: '100%',
+                label: 'Confidentiality',
+                description: 'Absolute discretion in wealth and mobility structuring',
               },
               {
-                number: '10+',
+                number: '15+',
                 label: 'Years Experience',
-                description: 'Decade of excellence in education consulting',
+                description: 'Decade of excellence in global immigration strategy',
               },
             ].map((stat, index) => (
               <div
@@ -270,8 +268,7 @@ export function HomePage() {
               isDark ? 'text-gray-400' : 'text-gray-600',
             )}
           >
-            Our experienced consultants are dedicated to guiding you through
-            every step of your educational journey
+            Our experienced counsel are dedicated to architecting bespoke strategies for your family&apos;s global mobility and wealth preservation.
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -337,113 +334,244 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 bg-linear-to-r from-blue-500 to-purple-500">
-        <div className="container mx-auto px-4 text-center text-white">
-          <h2 className="text-4xl font-bold mb-6">
-            Ready to Start Your Journey?
-          </h2>
-          <p className="text-xl mb-12 max-w-2xl mx-auto">
-            Book a free consultation with our experts and take the first step
-            towards your international education goals
-          </p>
-          <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <button className="px-8 py-4 bg-white text-blue-500 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-              Schedule Consultation
-            </button>
-            <button className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white/10 transition-colors">
-              Download Brochure
-            </button>
+      {/* Global Destinations Showcase */}
+      <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Globe2 className="w-5 h-5 text-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                  Global Mobility
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                Premium <br />
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                  Destinations
+                </span>
+              </h2>
+            </div>
+            <Link
+              href="/destinations"
+              className={cn(
+                'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+                isDark
+                  ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
+                  : 'bg-black/5 hover:bg-black/10 text-black border border-black/10',
+              )}
+            >
+              Explore All Programs
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              {
+                country: 'United States',
+                program: 'EB-5 Investor Visa',
+                image:
+                  'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800',
+                timeframe: '24-36 Months',
+                investment: 'From $800,000',
+              },
+              {
+                country: 'United Kingdom',
+                program: 'Innovator Founder Visa',
+                image:
+                  'https://images.unsplash.com/photo-1513635269975-59693e2d8400?auto=format&fit=crop&q=80&w=800',
+                timeframe: '3-6 Months',
+                investment: 'Business Plan Based',
+              },
+              {
+                country: 'Australia',
+                program: 'Business Innovation (188)',
+                image:
+                  'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=800',
+                timeframe: '12-18 Months',
+                investment: 'From AUD 1.25M',
+              },
+            ].map((dest, idx) => (
+              <div
+                key={idx}
+                className={cn(
+                  'group relative overflow-hidden rounded-3xl aspect-4/5 cursor-pointer',
+                  'border border-white/10',
+                )}
+              >
+                <Image
+                  src={dest.image}
+                  alt={dest.country}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+
+                <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                  <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">
+                      {dest.country}
+                    </h3>
+                    <p className="text-blue-400 font-bold text-sm tracking-widest uppercase mb-6">
+                      {dest.program}
+                    </p>
+
+                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 flex gap-4">
+                      <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
+                        <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
+                          Timeframe
+                        </p>
+                        <p className="text-xs text-white font-bold">
+                          {dest.timeframe}
+                        </p>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
+                        <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
+                          Investment
+                        </p>
+                        <p className="text-xs text-white font-bold">
+                          {dest.investment}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24">
+      {/* Pathways by Goal Section */}
+      <section className="py-24 bg-white dark:bg-[#111]">
         <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12">
-            <div>
-              <h2
-                className={cn(
-                  'text-4xl font-bold mb-6',
-                  isDark ? 'text-gray-100' : 'text-gray-800',
-                )}
-              >
-                Get in Touch
-              </h2>
-              <p
-                className={cn(
-                  'text-lg mb-8',
-                  isDark ? 'text-gray-400' : 'text-gray-600',
-                )}
-              >
-                Have questions? Connect with us through any of these channels:
-              </p>
-              <div className="space-y-6 mb-12">
-                {[
-                  { icon: MapPin, label: siteConfig.contact.address },
-                  { icon: Phone, label: siteConfig.contact.phone },
-                  { icon: Mail, label: siteConfig.contact.email },
-                ].map((contact, index) => {
-                  const Icon = contact.icon;
-                  return (
-                    <div key={index} className="flex items-start space-x-4">
-                      <div className="p-2 rounded-lg bg-blue-500/10 text-blue-500">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span
-                        className={cn(
-                          'text-sm leading-relaxed',
-                          isDark ? 'text-gray-300' : 'text-gray-600',
-                        )}
-                      >
-                        {contact.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
+              Pathways by <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Goal</span>
+            </h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+              Select your primary objective to explore tailored immigration and wealth structuring strategies.
+            </p>
+          </div>
 
-              {/* Social Media Links */}
-              <div className="flex items-center space-x-6 mb-8">
-                {socialLinks.map((social, index) => {
-                  const IconComponent = social.icon;
-                  return (
-                    <a
-                      key={index}
-                      href={social.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={cn(
-                        'text-2xl transition-colors',
-                        isDark
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-blue-500',
-                      )}
-                    >
-                      <IconComponent className="w-6 h-6" />
-                    </a>
-                  );
-                })}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <Link href="/solutions/residency" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Globe2 className="w-6 h-6" />
               </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Residency by Investment</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Secure golden visas and permanent residency rights in prime jurisdictions.</p>
+            </Link>
+            <Link href="/solutions/citizenship" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors">
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <ShieldCheck className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Second Citizenship (CBI)</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Obtain direct citizenship and powerful passports within months.</p>
+            </Link>
+            <Link href="/solutions/wealth-structuring" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-colors">
+              <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <Landmark className="w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Wealth Structuring</h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Optimize tax frameworks and protect your family&apos;s legacy globally.</p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Latest Intelligence Section */}
+      {recentArticles.length > 0 && (
+        <section className="py-24 bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/5">
+          <div className="container mx-auto px-4">
+            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+              <div>
+                <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
+                  Global Mobility <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Intelligence</span>
+                </h2>
+                <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+                  Expert insights, policy updates, and breaking news on global citizenship and residency.
+                </p>
+              </div>
+              <Link
+                href="/insights"
+                className={cn(
+                  'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+                  isDark
+                    ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
+                    : 'bg-black/5 hover:bg-black/10 text-black border border-black/10',
+                )}
+              >
+                View All Intelligence
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
-            {/* QR Codes */}
-            <div className="grid grid-cols-2 gap-8">
-              <QRCode
-                src={siteConfig.contact.whatsapp.qr || '/qr/whatsapp-qr.png'}
-                alt="WhatsApp QR Code"
-                title="WhatsApp"
-                description={`Scan to chat on WhatsApp`}
-                isDark={isDark}
-              />
-              <QRCode
-                src={siteConfig.contact.wechat.qr || '/qr/wechat-qr.png'}
-                alt="WeChat QR Code"
-                title="WeChat"
-                description={`Scan to connect: ${siteConfig.contact.wechat.label}`}
-                isDark={isDark}
-              />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {recentArticles.map((article) => (
+                <Link key={article.id} href={`/insights/${article.slug}`} className="group block">
+                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-gray-200 dark:bg-white/5">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
+                      src={article.image || '/images/placeholder.jpg'} 
+                      alt={article.title}
+                      className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
+                        {article.category || 'News'}
+                      </span>
+                      <span className="text-gray-400 dark:text-gray-600 text-xs">•</span>
+                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                        {article.date}
+                      </span>
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                      {article.excerpt}
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Premium Private Consultation CTA */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute inset-0 bg-blue-900" />
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565153995831-29e2f4a4bc3b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-20 mix-blend-overlay" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl">
+            <Building2 className="w-12 h-12 text-blue-400 mx-auto mb-8" />
+            <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
+              Establish Your <br /> Global Presence
+            </h2>
+            <p className="text-gray-300 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-12">
+              Speak with our senior immigration counsel to architect a bespoke
+              strategy for your family&apos;s global mobility and wealth
+              preservation.
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+              <Link
+                href="/book-consultation"
+                className="px-8 py-5 bg-white text-black text-xs font-black uppercase tracking-[0.2em] rounded-full hover:scale-105 transition-transform w-full sm:w-auto"
+              >
+                Schedule Private Consultation
+              </Link>
             </div>
           </div>
         </div>
