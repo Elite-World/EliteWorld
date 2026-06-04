@@ -9,7 +9,12 @@ import { motion } from 'framer-motion';
 
 export interface PopulatedSolution {
   _id: string | any;
-  category: 'residency' | 'citizenship' | 'long_term_visa' | 'corporate' | string;
+  category:
+    | 'residency'
+    | 'citizenship'
+    | 'long_term_visa'
+    | 'corporate'
+    | string;
   name: { en: string; cn?: string };
   requirements?: {
     investment_amount?: string;
@@ -35,22 +40,27 @@ interface SolutionCardProps {
   className?: string;
 }
 
-export function SolutionCard({ 
-  solution, 
-  mode = 'explore', 
-  isSelected = false, 
+export function SolutionCard({
+  solution,
+  mode = 'explore',
+  isSelected = false,
   onSelectToggle,
-  className 
+  className,
 }: SolutionCardProps) {
   const isDark = useThemeStore((state) => state.isDark);
 
   const getCategoryLabel = (cat: string) => {
     switch (cat) {
-      case 'residency': return 'Residency';
-      case 'citizenship': return 'Citizenship';
-      case 'long_term_visa': return 'Long-Term Visa';
-      case 'corporate': return 'Corporate Setup';
-      default: return 'Solution';
+      case 'residency':
+        return 'Residency';
+      case 'citizenship':
+        return 'Citizenship';
+      case 'long_term_visa':
+        return 'Long-Term Visa';
+      case 'corporate':
+        return 'Corporate Setup';
+      default:
+        return 'Solution';
     }
   };
 
@@ -64,11 +74,18 @@ export function SolutionCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-[2.5rem] border transition-all h-full flex flex-col",
-        isDark ? "bg-white/5 border-white/10 hover:border-white/20" : "bg-white border-gray-100 hover:border-gray-200",
-        isSelected && (isDark ? "ring-2 ring-blue-500 border-transparent bg-white/10" : "ring-2 ring-blue-600 border-transparent bg-blue-50/30"),
-        mode === 'explore' ? "hover:shadow-2xl hover:-translate-y-1" : "hover:shadow-2xl",
-        className
+        'group relative overflow-hidden rounded-[2.5rem] border transition-all h-full flex flex-col',
+        isDark
+          ? 'bg-white/5 border-white/10 hover:border-white/20'
+          : 'bg-white border-gray-100 hover:border-gray-200',
+        isSelected &&
+          (isDark
+            ? 'ring-2 ring-blue-500 border-transparent bg-white/10'
+            : 'ring-2 ring-blue-600 border-transparent bg-blue-50/30'),
+        mode === 'explore'
+          ? 'hover:shadow-2xl hover:-translate-y-1'
+          : 'hover:shadow-2xl',
+        className,
       )}
     >
       {/* Background Glows */}
@@ -79,12 +96,15 @@ export function SolutionCard({
         </>
       )}
 
-      <div className="p-6 md:p-8 flex-grow flex flex-col relative z-10">
+      <div className="p-6 md:p-8 grow flex flex-col relative z-10">
         {/* Header: Country + Badges */}
         <div className="flex justify-between items-start mb-8">
-          <Link href={`/destinations/${solution.country_id?.slug}`} className="flex items-center gap-4 group/country">
+          <Link
+            href={`/destinations/${solution.country_id?.slug}`}
+            className="flex items-center gap-4 group/country"
+          >
             <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-100 dark:bg-zinc-800 shrink-0 border border-black/5 dark:border-white/5 shadow-inner relative">
-              <CountryFlag 
+              <CountryFlag
                 countrySlug={solution.country_id?.slug}
                 countryCode={solution.country_id?.code}
                 countryName={solution.country_id?.name?.en}
@@ -92,64 +112,126 @@ export function SolutionCard({
               />
             </div>
             <div>
-              <h3 className={cn(
-                "text-xl font-bold transition-colors",
-                isDark ? "text-white group-hover/country:text-blue-400" : "text-gray-900 group-hover/country:text-blue-600"
-              )}>
+              <h3
+                className={cn(
+                  'text-xl font-bold transition-colors',
+                  isDark
+                    ? 'text-white group-hover/country:text-blue-400'
+                    : 'text-gray-900 group-hover/country:text-blue-600',
+                )}
+              >
                 {solution.country_id?.name?.en || 'Unknown'}
               </h3>
-              <p className={cn("text-sm font-medium", isDark ? "text-gray-400" : "text-gray-500")}>
+              <p
+                className={cn(
+                  'text-sm font-medium',
+                  isDark ? 'text-gray-400' : 'text-gray-500',
+                )}
+              >
                 {solution.country_id?.region || 'Global'}
               </p>
             </div>
           </Link>
 
-          <div className={cn(
-            "px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border",
-            solution.category === 'citizenship' ? (isDark ? "bg-purple-500/10 text-purple-400 border-purple-500/20" : "bg-purple-50 text-purple-600 border-purple-100") :
-            solution.category === 'residency' ? (isDark ? "bg-blue-500/10 text-blue-400 border-blue-500/20" : "bg-blue-50 text-blue-600 border-blue-100") :
-            solution.category === 'corporate' ? (isDark ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20" : "bg-emerald-50 text-emerald-600 border-emerald-100") :
-            (isDark ? "bg-orange-500/10 text-orange-400 border-orange-500/20" : "bg-orange-50 text-orange-600 border-orange-100")
-          )}>
+          <div
+            className={cn(
+              'px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border',
+              solution.category === 'citizenship'
+                ? isDark
+                  ? 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+                  : 'bg-purple-50 text-purple-600 border-purple-100'
+                : solution.category === 'residency'
+                  ? isDark
+                    ? 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+                    : 'bg-blue-50 text-blue-600 border-blue-100'
+                  : solution.category === 'corporate'
+                    ? isDark
+                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                      : 'bg-emerald-50 text-emerald-600 border-emerald-100'
+                    : isDark
+                      ? 'bg-orange-500/10 text-orange-400 border-orange-500/20'
+                      : 'bg-orange-50 text-orange-600 border-orange-100',
+            )}
+          >
             {getCategoryLabel(solution.category)}
           </div>
         </div>
 
         {/* Solution Title & Description */}
-        <div className="mb-8 flex-grow">
-          <h4 className={cn("text-2xl font-black mb-3", isDark ? "text-gray-100" : "text-gray-900")}>
+        <div className="mb-8 grow">
+          <h4
+            className={cn(
+              'text-2xl font-black mb-3',
+              isDark ? 'text-gray-100' : 'text-gray-900',
+            )}
+          >
             {solution.name?.en}
           </h4>
           {solution.description && (
-            <p className={cn("text-sm leading-relaxed line-clamp-3", isDark ? "text-gray-400" : "text-gray-600")}>
+            <p
+              className={cn(
+                'text-sm leading-relaxed line-clamp-3',
+                isDark ? 'text-gray-400' : 'text-gray-600',
+              )}
+            >
               {solution.description}
             </p>
           )}
         </div>
 
         {/* Requirements Grid */}
-        <div className="grid grid-cols-3 gap-4 p-5 rounded-2xl bg-gray-50 dark:bg-white/[0.02] border border-gray-100 dark:border-white/5 mt-auto">
+        <div className="grid grid-cols-3 gap-4 p-5 rounded-2xl bg-gray-50 dark:bg-white/2 border border-gray-100 dark:border-white/5 mt-auto">
           <div>
-            <p className={cn("text-[10px] font-bold uppercase tracking-widest mb-1.5", isDark ? "text-gray-500" : "text-gray-400")}>
+            <p
+              className={cn(
+                'text-[10px] font-bold uppercase tracking-widest mb-1.5',
+                isDark ? 'text-gray-500' : 'text-gray-400',
+              )}
+            >
               Investment
             </p>
-            <p className={cn("text-sm font-semibold", isDark ? "text-gray-200" : "text-gray-800")}>
+            <p
+              className={cn(
+                'text-sm font-semibold',
+                isDark ? 'text-gray-200' : 'text-gray-800',
+              )}
+            >
               {solution.requirements?.investment_amount || 'N/A'}
             </p>
           </div>
           <div>
-            <p className={cn("text-[10px] font-bold uppercase tracking-widest mb-1.5", isDark ? "text-gray-500" : "text-gray-400")}>
+            <p
+              className={cn(
+                'text-[10px] font-bold uppercase tracking-widest mb-1.5',
+                isDark ? 'text-gray-500' : 'text-gray-400',
+              )}
+            >
               Timeframe
             </p>
-            <p className={cn("text-sm font-semibold", isDark ? "text-gray-200" : "text-gray-800")}>
+            <p
+              className={cn(
+                'text-sm font-semibold',
+                isDark ? 'text-gray-200' : 'text-gray-800',
+              )}
+            >
               {solution.requirements?.timeframe || 'N/A'}
             </p>
           </div>
           <div>
-            <p className={cn("text-[10px] font-bold uppercase tracking-widest mb-1.5", isDark ? "text-gray-500" : "text-gray-400")}>
+            <p
+              className={cn(
+                'text-[10px] font-bold uppercase tracking-widest mb-1.5',
+                isDark ? 'text-gray-500' : 'text-gray-400',
+              )}
+            >
               Presence
             </p>
-            <p className={cn("text-sm font-semibold", isDark ? "text-gray-200" : "text-gray-800")}>
+            <p
+              className={cn(
+                'text-sm font-semibold',
+                isDark ? 'text-gray-200' : 'text-gray-800',
+              )}
+            >
               {solution.requirements?.physical_presence || 'None'}
             </p>
           </div>
@@ -157,12 +239,18 @@ export function SolutionCard({
 
         {mode === 'explore' && (
           <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 relative z-10">
-            <Link href={`/programs/${solution.name?.en.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}-${solution._id}`} className={cn(
-              "w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors",
-              isDark 
-                ? "bg-white/5 text-white hover:bg-blue-600" 
-                : "bg-gray-50 text-gray-900 hover:bg-blue-600 hover:text-white"
-            )}>
+            <Link
+              href={`/programs/${solution.name?.en
+                .toLowerCase()
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '')}-${solution._id}`}
+              className={cn(
+                'w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-colors',
+                isDark
+                  ? 'bg-white/5 text-white hover:bg-blue-600'
+                  : 'bg-gray-50 text-gray-900 hover:bg-blue-600 hover:text-white',
+              )}
+            >
               View Program Details
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -171,13 +259,17 @@ export function SolutionCard({
 
         {mode === 'compare' && (
           <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 relative z-10">
-            <button 
+            <button
               onClick={handleToggle}
               className={cn(
-                "w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all",
+                'w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all',
                 isSelected
-                  ? (isDark ? "bg-blue-600 text-white" : "bg-blue-600 text-white shadow-lg shadow-blue-600/20")
-                  : (isDark ? "bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white" : "bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900")
+                  ? isDark
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
+                  : isDark
+                    ? 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+                    : 'bg-gray-50 text-gray-600 hover:bg-gray-100 hover:text-gray-900',
               )}
             >
               {isSelected ? (
@@ -185,7 +277,7 @@ export function SolutionCard({
                   <Check className="w-4 h-4" /> Added to Compare
                 </>
               ) : (
-                "Add to Compare"
+                'Add to Compare'
               )}
             </button>
           </div>
