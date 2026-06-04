@@ -23,6 +23,7 @@ import { UniversityLocationTab } from '@/components/university/UniversityLocatio
 import { ExpandableDescription } from '@/components/university/ExpandableDescription';
 import { DevAwareTabs } from './DevAwareTabs';
 import { DevAwareBottomCards } from './DevAwareBottomCards';
+import { HeroCoverImage } from './HeroCoverImage';
 
 export function GlobalUniTemplate({ university }: { university: any }) {
   // Helper to get initials
@@ -412,10 +413,12 @@ export function GlobalUniTemplate({ university }: { university: any }) {
   return (
     <div className="min-h-screen bg-gray-50/50 dark:bg-black/20 pb-20">
       {/* Custom Header */}
-      <div className="relative bg-white dark:bg-zinc-900 border-b border-gray-200 dark:border-zinc-800 pb-12 pt-32 md:pt-40">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-          <div className="absolute -top-[50%] -right-[10%] w-[70%] h-[150%] bg-linear-to-l from-blue-50 to-transparent dark:from-blue-900/10 rounded-full blur-3xl" />
-        </div>
+      <div className="relative border-b border-gray-200 dark:border-zinc-800 pb-12 pt-32 md:pt-40 overflow-hidden">
+        <HeroCoverImage 
+          universityId={university.id} 
+          universityName={university.name} 
+          coverUrl={university.coverUrl} 
+        />
 
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
           <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -440,19 +443,19 @@ export function GlobalUniTemplate({ university }: { university: any }) {
             </div>
 
             <div className="flex-1">
-              <h1 className="text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-4 tracking-tight leading-tight">
                 {university.name}
               </h1>
-              <div className="flex flex-wrap gap-6 text-sm md:text-base text-gray-600 dark:text-gray-400">
+              <div className="flex flex-wrap gap-6 text-sm md:text-base text-gray-200">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" /> {university.country}
+                  <MapPin className="w-4 h-4 text-gray-300" /> {university.country}
                 </div>
                 {university.websiteUrl && (
                   <a
                     href={university.websiteUrl}
                     target="_blank"
                     rel="noopener"
-                    className="flex items-center gap-2 hover:text-blue-600 transition-colors"
+                    className="flex items-center gap-2 text-blue-300 hover:text-blue-200 transition-colors"
                   >
                     <Globe className="w-4 h-4" /> Official Website{' '}
                     <ExternalLink className="w-3 h-3" />

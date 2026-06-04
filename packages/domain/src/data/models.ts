@@ -59,6 +59,7 @@ export interface IUniversity extends Document {
 
   assets: {
     logo?: string;
+    cover?: string;
     website?: string;
   };
 
@@ -107,6 +108,7 @@ const UniversitySchema = new Schema<IUniversity>({
 
   assets: {
     logo: String,
+    cover: String,
     website: String
   },
 

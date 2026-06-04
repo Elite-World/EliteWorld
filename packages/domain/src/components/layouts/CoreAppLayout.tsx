@@ -6,6 +6,7 @@ import { GlobalRibbon } from '../shared/GlobalRibbon';
 import { Navbar, Footer, NavigationData } from '@repo/ui';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
+import { useDevStore } from '../../lib/stores/useDevStore';
 import { DevToolsToggle } from '../shared/DevToolsToggle';
 
 export interface CoreAppLayoutProps {
@@ -22,6 +23,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
   const setMode = useThemeStore((state) => state.setMode);
   const setIsDark = useThemeStore((state) => state.setIsDark);
   const openModal = useModalStore((state) => state.open);
+  const showHiddenElements = useDevStore((state) => state.showHiddenElements);
 
   // Hydration fix / Initial load
   const [mounted, setMounted] = useState(false);
@@ -84,7 +86,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
       {/* Main content */}
       <div className="relative">{children}</div>
       <footer>
-        <Footer siteConfig={{ name: siteConfig.name }} />
+        <Footer siteConfig={{ name: siteConfig.name }} showHiddenElements={showHiddenElements} />
       </footer>
 
       {/* Global Side Ribbon */}

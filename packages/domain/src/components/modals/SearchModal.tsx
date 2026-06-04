@@ -8,20 +8,7 @@ import {
   HiOutlineDocumentText,
 } from 'react-icons/hi2';
 import { useState, useEffect, useTransition } from 'react';
-// import { cn } from '../../lib/utils';
-// Search currently uses action that might be app-specific?
-// Ideally actions should be passed as props or provided via context.
-// For now, let's assume actions are in @repo/web-shared/lib/actions or kept in app.
-// Wait, searchArticles is imported from @/lib/actions/search.
-// This is critical. The ACTION is in the APP.
-// We must move search action or pass it as prop.
-// For now, I will comment this out or fix import if I move action.
-// Let's assume I move action later. For now, change to relative if possible?
-// No, actions are NOT moved yet.
-// I will keep it broken but POINT to where it SHOULD be (e.g. passed as prop).
-// Actually, SearchModal SHOULD accept an `onSearch` prop.
 import { useRouter } from 'next/navigation';
-// import { searchArticles, SearchResult } from '@/lib/actions/search';
 // import { Article } from '../../lib/types/content';
 // import Link from 'next/link';
 
@@ -66,9 +53,18 @@ export function SearchModal() {
 
     const timer = setTimeout(() => {
       startTransition(async () => {
-        // const found = await searchArticles(query);
-        // setResults(found);
-        setResults([]); // Mock empty
+        try {
+          const res = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
+          if (res.ok) {
+            const found = await res.json();
+            setResults(found);
+          } else {
+            setResults([]);
+          }
+        } catch (error) {
+          console.error('Search fetch error:', error);
+          setResults([]);
+        }
       });
     }, 300);
 
@@ -145,7 +141,7 @@ export function SearchModal() {
                     onClick={() => handleSelect(article.section, article.slug)}
                     className="w-full flex items-start p-3 text-left hover:bg-gray-100 dark:hover:bg-gray-800 rounded-xl transition-colors group"
                   >
-                    <div className="flex-shrink-0 mt-1 mr-4 p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-lg group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
+                    <div className="shrink-0 mt-1 mr-4 p-2 bg-blue-50 dark:bg-blue-900/20 text-blue-500 rounded-lg group-hover:bg-blue-100 dark:group-hover:bg-blue-900/40 transition-colors">
                       <HiOutlineDocumentText className="w-5 h-5" />
                     </div>
                     <div>

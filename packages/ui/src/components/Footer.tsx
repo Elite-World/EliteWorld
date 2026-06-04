@@ -37,6 +37,7 @@ interface FooterProps {
       instagram?: string;
     };
   };
+  showHiddenElements?: boolean;
 }
 
 const defaultSections: FooterSection[] = [
@@ -76,6 +77,7 @@ export function Footer({
     description:
       "The world's most advanced platform for global intelligence and elite academic coordination.",
   },
+  showHiddenElements = false,
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
   const sections = siteConfig.sections || defaultSections;
@@ -88,8 +90,9 @@ export function Footer({
       )}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 mb-20">
-          <div className="lg:col-span-2">
+        {showHiddenElements && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 mb-20">
+            <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-4 mb-8 group">
               <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
                 <Globe className="w-5 h-5 text-white dark:text-black" />
@@ -180,6 +183,7 @@ export function Footer({
             </div>
           </div>
         </div>
+        )}
 
         <div className="pt-12 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">

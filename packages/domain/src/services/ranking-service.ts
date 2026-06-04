@@ -194,6 +194,7 @@ export async function getRankingList(
           country: countryName,
           region: countryName,
           logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+          coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,
           websiteUrl: u.assets?.website,
           description: u.description,
           stats: u.details?.stat || [],
@@ -290,6 +291,7 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
           ? [{ label: getLoc(u.name), lat: parseFloat(u.rich_data.lat), lng: parseFloat(u.rich_data.long) }] 
           : []),
     logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+    coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,
     websiteUrl: u.assets?.website,
     
     description: u.description, // Direct field now
@@ -342,6 +344,7 @@ export async function getAllUniversitiesDirectory(): Promise<any[]> {
       nameEn: u.name?.en,
       country: countryName,
       logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
+      coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,
     };
   }).filter(u => u.name && u.id); // ensure valid
 }

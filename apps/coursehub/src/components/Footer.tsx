@@ -3,11 +3,14 @@ import { BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 const Footer: React.FC = () => {
+  const showDevSections = process.env.NODE_ENV === 'development';
+
   return (
     <footer className="bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-100 dark:border-white/5 pb-12 transition-colors duration-300">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
-          <div className="lg:col-span-2 pr-0 lg:pr-12">
+        {showDevSections && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
+            <div className="lg:col-span-2 pr-0 lg:pr-12">
             <Link href="/" className="flex items-center gap-4 mb-8 group">
               <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
                 <BookOpen className="w-5 h-5 text-white dark:text-black" />
@@ -147,6 +150,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
 
         <div className="mt-24 pt-12 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
