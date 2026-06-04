@@ -61,7 +61,7 @@ export async function searchArticles(query: string): Promise<SearchResult[]> {
         title: `Study in ${dest.name}`,
         excerpt: dest.tagline || '',
         content: '',
-        publishedAt: '',
+        date: '',
         section: 'destinations',
         sectionTitle: 'Destination'
     } as SearchResult));
@@ -85,7 +85,7 @@ export async function searchArticles(query: string): Promise<SearchResult[]> {
         title: uni.name,
         excerpt: `University in ${uni.country}`,
         content: '',
-        publishedAt: '',
+        date: '',
         section: 'universities',
         sectionTitle: 'University'
       } as SearchResult;

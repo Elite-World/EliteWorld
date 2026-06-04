@@ -2,6 +2,7 @@ import React from 'react';
 import { destinations } from '@repo/domain/data/destinations';
 import { HeroSection } from '@repo/ui';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight, Globe2, Building2, Wallet } from 'lucide-react';
 
 export default function DestinationsHubPage() {
@@ -37,10 +38,12 @@ export default function DestinationsHubPage() {
                 {/* Background Image */}
                 <div className="absolute inset-0">
                   <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/80 rounded-4xl group-hover:to-black/90 transition-colors" />
-                  <img 
+                  <Image 
                     src={dest.heroImage} 
                     alt={dest.name} 
-                    className="w-full h-full object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700 ease-out"
+                    fill
+                    className="object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700 ease-out"
+                    unoptimized
                   />
                 </div>
 
