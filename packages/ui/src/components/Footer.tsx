@@ -199,10 +199,6 @@ export function Footer({
                 key={item.label}
                 href={item.href}
                 className="text-[10px] font-black text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 uppercase tracking-[0.2em] transition-colors"
-                target={item.label === 'Security' ? undefined : '_blank'}
-                rel={
-                  item.label === 'Security' ? undefined : 'noopener noreferrer'
-                }
               >
                 {item.label}
               </Link>

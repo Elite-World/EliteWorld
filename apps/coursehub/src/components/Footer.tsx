@@ -158,13 +158,17 @@ const Footer: React.FC = () => {
             International Education Group. All rights reserved.
           </p>
           <div className="flex items-center gap-10">
-            {['Privacy', 'Terms', 'Security'].map((item) => (
+            {[
+              { label: 'Privacy', href: '/privacy-policy' },
+              { label: 'Terms', href: '/terms-of-service' },
+              { label: 'Security', href: '/security' },
+            ].map((item) => (
               <Link
-                key={item}
-                href="#"
+                key={item.label}
+                href={item.href}
                 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] hover:text-blue-600 transition-colors"
               >
-                {item}
+                {item.label}
               </Link>
             ))}
           </div>
