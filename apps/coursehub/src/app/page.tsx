@@ -1,24 +1,16 @@
 'use client';
 
-import React, { useState, useMemo, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import React, { Suspense } from 'react';
 import Image from 'next/image';
 import { useAppContext } from '@/context/AppContext';
-import CourseCard from '@/components/CourseCard';
 import CourseCarousel from '@/components/CourseCarousel';
 import { CourseCategory } from '@/types';
 import { MOCK_INSTITUTIONS } from '@/data/mockData';
 import {
-  Filter,
-  SlidersHorizontal,
-  ChevronDown,
   Sparkles,
-  Globe,
   ArrowRight,
   Building2,
   Trophy,
-  X,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
@@ -30,12 +22,12 @@ function SearchContent() {
 
   return (
     <div className="bg-gray-50 dark:bg-[#0a0a0a] min-h-screen transition-colors duration-300">
-      <div className="pt-8"></div>
+      <div className="pt-4"></div>
 
       {/* Featured Courses Section */}
-      <div className="bg-gray-50 dark:bg-[#0a0a0a] pb-24 pt-8 relative z-10">
+      <div className="bg-gray-50 dark:bg-[#0a0a0a] pb-12 pt-4 relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-16">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-8">
             <div className="text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
                 <Trophy className="w-5 h-5 text-purple-600" />
@@ -45,7 +37,7 @@ function SearchContent() {
                   </span>
                 </div>
               </div>
-              <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter uppercase leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white tracking-tighter uppercase leading-tight">
                 Featured{' '}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-purple-600 to-blue-600">
                   Experiences
@@ -70,9 +62,9 @@ function SearchContent() {
       </div>
 
       {/* Top Institutions Section */}
-      <div className="bg-gray-50 dark:bg-white/2 border-t border-gray-100 dark:border-white/5 py-24 relative z-10">
+      <div className="bg-gray-50 dark:bg-white/2 border-t border-gray-100 dark:border-white/5 py-12 relative z-10">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-16">
+          <div className="flex flex-col md:flex-row justify-between items-center md:items-end gap-8 mb-8">
             <div className="text-center md:text-left">
               <div className="flex items-center justify-center md:justify-start gap-3 mb-4">
                 <Building2 className="w-5 h-5 text-blue-600" />
@@ -82,7 +74,7 @@ function SearchContent() {
                   </span>
                 </div>
               </div>
-              <h2 className="text-4xl font-black text-gray-900 dark:text-white tracking-tighter uppercase leading-tight">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white tracking-tighter uppercase leading-tight">
                 Elite{' '}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
                   Institutions
@@ -140,8 +132,17 @@ function SearchContent() {
 
       <div
         id="search-catalog"
-        className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 relative"
+        className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 relative"
       >
+        <div className="mb-12 text-center md:text-left">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 dark:text-white tracking-tighter uppercase leading-tight">
+            Explore Top Pick{' '}
+            <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+              Experiences
+            </span>
+          </h2>
+        </div>
+
         {Object.values(CourseCategory).map((category) => {
           const categoryCourses = courses.filter(
             (c) => c.category === category,
@@ -149,8 +150,8 @@ function SearchContent() {
           if (categoryCourses.length === 0) return null;
 
           return (
-            <div key={category} className="mb-20">
-              <div className="flex justify-between items-center mb-6">
+            <div key={category} className="mb-10">
+              <div className="flex justify-between items-center mb-4">
                 <div
                   className="flex items-center gap-1 group/title cursor-pointer"
                   onClick={() => {

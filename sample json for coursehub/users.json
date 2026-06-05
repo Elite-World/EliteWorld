@@ -1,0 +1,65 @@
+[
+  {
+    "id": "user1",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "avatarUrl": "/images/avatar_alice.png",
+    "globalRole": "USER",
+    "enrolledCourses": [
+      "course1",
+      "course4"
+    ],
+    "wishlist": [
+      "course2",
+      "course6"
+    ],
+    "bio": "Eager learner exploring the world of web development and design."
+  },
+  {
+    "id": "user2",
+    "name": "Dr. Angela Yu",
+    "email": "angela@example.com",
+    "avatarUrl": "/images/avatar_angela.png",
+    "globalRole": "USER",
+    "enrolledCourses": [
+      "course3"
+    ],
+    "wishlist": [
+      "course4"
+    ],
+    "bio": "Lead instructor at the App Brewery, London's leading in-person programming bootcamp."
+  },
+  {
+    "id": "user3",
+    "name": "David Lee",
+    "email": "david@example.com",
+    "avatarUrl": "/images/avatar_david.png",
+    "globalRole": "USER",
+    "enrolledCourses": [],
+    "wishlist": [
+      "course1",
+      "course2"
+    ],
+    "bio": "AI researcher and machine learning engineer from Silicon Valley."
+  },
+  {
+    "id": "user4",
+    "name": "Sarah Jenkins",
+    "email": "sarah.admin@example.com",
+    "avatarUrl": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100",
+    "globalRole": "USER",
+    "enrolledCourses": [],
+    "wishlist": [],
+    "bio": "Partner at The App Brewery."
+  },
+  {
+    "id": "user5",
+    "name": "Web Master (You)",
+    "email": "master@eliteworld.com",
+    "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
+    "globalRole": "WEB_MASTER",
+    "enrolledCourses": [],
+    "wishlist": [],
+    "bio": "Creator of the platform."
+  }
+]

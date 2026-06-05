@@ -1,0 +1,33 @@
+[
+  {
+    "sessionId": "s2-1",
+    "totalAttendees": 28,
+    "expectedAttendees": 30,
+    "averageRating": 4.8,
+    "engagementScore": 88,
+    "engagementData": [
+      60,
+      75,
+      80,
+      95,
+      90,
+      85,
+      88,
+      92,
+      85,
+      70
+    ],
+    "feedback": [
+      {
+        "authorId": "user1",
+        "rating": 5,
+        "comment": "Fantastic session! The instructor was clear and very helpful."
+      },
+      {
+        "authorId": "user2",
+        "rating": 4,
+        "comment": "Good pace, but would have loved more examples for the last topic."
+      }
+    ]
+  }
+]

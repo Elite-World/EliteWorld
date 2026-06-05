@@ -1,0 +1,48 @@
+[
+  {
+    "id": "inst1",
+    "name": "The App Brewery",
+    "description": "London's leading in-person programming bootcamp, now available globally.",
+    "logoUrl": "/images/avatar_angela.png",
+    "isVerified": true,
+    "createdAt": "2023-01-15T00:00:00Z",
+    "location": "London, United Kingdom",
+    "images": [
+      "https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1200"
+    ],
+    "amenities": [
+      "High-Speed Wi-Fi",
+      "Mac Labs",
+      "24/7 Library Access",
+      "Student Cafeteria",
+      "Career Center"
+    ]
+  },
+  {
+    "id": "inst2",
+    "name": "Silicon Valley AI Academy",
+    "description": "Premier AI education straight from the heart of the tech industry.",
+    "logoUrl": "/images/avatar_david.png",
+    "isVerified": true,
+    "createdAt": "2023-04-20T00:00:00Z",
+    "location": "San Francisco, USA",
+    "images": [
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=2000",
+      "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&q=80&w=1200",
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&q=80&w=1200"
+    ],
+    "amenities": [
+      "Gigabit Internet",
+      "VR/AR Studios",
+      "Incubator Space",
+      "On-site Gym",
+      "Executive Lounges"
+    ]
+  }
+]

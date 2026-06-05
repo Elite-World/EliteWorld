@@ -1,7 +1,15 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { Search, Building2, Plus, Minus, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  Search,
+  Building2,
+  Plus,
+  Minus,
+  Calendar,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 interface SearchBarProps {
@@ -14,17 +22,17 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
     null,
   );
   const [whenTab, setWhenTab] = useState<'dates' | 'flexible'>('dates');
-  
+
   const [adults, setAdults] = useState(0);
   const [children, setChildren] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
-  const closeSearch = () => {
+  const closeSearch = useCallback(() => {
     setIsExpanded(false);
     setActiveTab(null);
     onExpandChange?.(false);
-  };
+  }, [onExpandChange]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -48,7 +56,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
       document.removeEventListener('mousedown', handleClickOutside);
       document.removeEventListener('keydown', handleEscKey);
     };
-  }, []);
+  }, [closeSearch]);
 
   const expandSearch = (tab: 'where' | 'when' | 'who') => {
     setIsExpanded(true);
@@ -62,10 +70,12 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
       ref={containerRef}
     >
       {/* Background Overlay */}
-      <div 
+      <div
         className={`fixed top-24 inset-x-0 bottom-0 bg-black/25 transition-opacity duration-300 ease-in-out ${
-          isExpanded ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`} 
+          isExpanded
+            ? 'opacity-100 pointer-events-auto'
+            : 'opacity-0 pointer-events-none'
+        }`}
         onClick={closeSearch}
       />
 
@@ -78,42 +88,45 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
         }`}
         style={{ width: '348px', height: '48px' }}
       >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              expandSearch('where');
-            }}
-            className="flex-1 px-4 text-sm font-semibold text-gray-800 text-center truncate hover:bg-gray-50 rounded-l-full h-full"
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            expandSearch('where');
+          }}
+          className="flex-1 px-4 text-sm font-semibold text-gray-800 text-center truncate hover:bg-gray-50 rounded-l-full h-full"
+        >
+          Anywhere
+        </button>
+        <div className="w-px h-6 bg-gray-300 shrink-0" />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            expandSearch('when');
+          }}
+          className="flex-1 px-4 text-sm font-semibold text-gray-800 text-center truncate hover:bg-gray-50 h-full"
+        >
+          Any time
+        </button>
+        <div className="w-px h-6 bg-gray-300 shrink-0" />
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            expandSearch('who');
+          }}
+          className="flex-[1.2] pl-4 pr-2 text-sm text-gray-500 flex items-center justify-between gap-2 hover:bg-gray-50 rounded-r-full h-full min-w-0"
+        >
+          <span
+            className={`font-medium truncate ${adults + children > 0 ? 'text-gray-900 font-bold' : ''}`}
           >
-            Anywhere
-          </button>
-          <div className="w-px h-6 bg-gray-300 shrink-0" />
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              expandSearch('when');
-            }}
-            className="flex-1 px-4 text-sm font-semibold text-gray-800 text-center truncate hover:bg-gray-50 h-full"
-          >
-            Any time
-          </button>
-          <div className="w-px h-6 bg-gray-300 shrink-0" />
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              expandSearch('who');
-            }}
-            className="flex-[1.2] pl-4 pr-2 text-sm text-gray-500 flex items-center justify-between gap-2 hover:bg-gray-50 rounded-r-full h-full min-w-0"
-          >
-            <span className={`font-medium truncate ${adults + children > 0 ? 'text-gray-900 font-bold' : ''}`}>
-              {adults + children > 0 ? `${adults + children} guest${adults + children > 1 ? 's' : ''}` : 'Add guests'}
-            </span>
-            <div className="bg-[#FF385C] p-2 rounded-full text-white shrink-0">
-              <Search className="w-3.5 h-3.5 stroke-4" />
-            </div>
-          </button>
-        </div>
-      
+            {adults + children > 0
+              ? `${adults + children} guest${adults + children > 1 ? 's' : ''}`
+              : 'Add guests'}
+          </span>
+          <div className="bg-[#FF385C] p-2 rounded-full text-white shrink-0">
+            <Search className="w-3.5 h-3.5 stroke-4" />
+          </div>
+        </button>
+      </div>
 
       {/* EXPANDED BAR */}
       <div
@@ -147,7 +160,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
           </div>
 
           <div
-            className={`w-[1px] h-8 bg-gray-300 dark:bg-white/10 transition-opacity ${activeTab === 'where' || activeTab === 'when' ? 'opacity-0' : 'opacity-100'}`}
+            className={`w-px h-8 bg-gray-300 dark:bg-white/10 transition-opacity ${activeTab === 'where' || activeTab === 'when' ? 'opacity-0' : 'opacity-100'}`}
           />
 
           {/* When */}
@@ -171,7 +184,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
           </div>
 
           <div
-            className={`w-[1px] h-8 bg-gray-300 dark:bg-white/10 transition-opacity ${activeTab === 'when' || activeTab === 'who' ? 'opacity-0' : 'opacity-100'}`}
+            className={`w-px h-8 bg-gray-300 dark:bg-white/10 transition-opacity ${activeTab === 'when' || activeTab === 'who' ? 'opacity-0' : 'opacity-100'}`}
           />
 
           {/* Who */}
@@ -293,43 +306,71 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
                       <ChevronRight className="w-5 h-5 text-gray-900 dark:text-white" />
                     </button>
                   </div>
-                  
+
                   <div className="grid grid-cols-2 gap-12 w-full max-w-[700px] mx-auto px-4 mb-8">
                     {/* June */}
                     <div>
                       <div className="grid grid-cols-7 gap-y-4 text-center text-xs font-semibold text-gray-400 mb-2">
-                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <div key={`june-day-${i}`}>{d}</div>)}
+                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                          <div key={`june-day-${i}`}>{d}</div>
+                        ))}
                       </div>
                       <div className="grid grid-cols-7 gap-y-1 text-center text-sm font-semibold text-gray-900 dark:text-white">
-                        <div className="py-3 text-gray-300 dark:text-gray-600">31</div>
+                        <div className="py-3 text-gray-300 dark:text-gray-600">
+                          31
+                        </div>
                         {[...Array(30)].map((_, i) => (
-                          <div key={`june-${i}`} className="py-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full cursor-pointer transition-colors">
+                          <div
+                            key={`june-${i}`}
+                            className="py-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full cursor-pointer transition-colors"
+                          >
                             {i + 1}
                           </div>
                         ))}
-                        {[...Array(4)].map((_, i) => <div key={`june-empty-${i}`} />)}
+                        {[...Array(4)].map((_, i) => (
+                          <div key={`june-empty-${i}`} />
+                        ))}
                       </div>
                     </div>
                     {/* July */}
                     <div>
                       <div className="grid grid-cols-7 gap-y-4 text-center text-xs font-semibold text-gray-400 mb-2">
-                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => <div key={`july-day-${i}`}>{d}</div>)}
+                        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                          <div key={`july-day-${i}`}>{d}</div>
+                        ))}
                       </div>
                       <div className="grid grid-cols-7 gap-y-1 text-center text-sm font-semibold text-gray-900 dark:text-white">
-                        {[...Array(3)].map((_, i) => <div key={`july-empty-${i}`} />)}
+                        {[...Array(3)].map((_, i) => (
+                          <div key={`july-empty-${i}`} />
+                        ))}
                         {[...Array(31)].map((_, i) => (
-                          <div key={`july-${i}`} className="py-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full cursor-pointer transition-colors">
+                          <div
+                            key={`july-${i}`}
+                            className="py-3 hover:bg-gray-100 dark:hover:bg-white/10 rounded-full cursor-pointer transition-colors"
+                          >
                             {i + 1}
                           </div>
                         ))}
-                        <div className="py-3 text-gray-300 dark:text-gray-600">1</div>
+                        <div className="py-3 text-gray-300 dark:text-gray-600">
+                          1
+                        </div>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2 px-6">
-                    {['Exact dates', '± 1 day', '± 2 days', '± 3 days', '± 7 days', '± 14 days'].map((btn, i) => (
-                      <button key={btn} className={`px-4 py-2 rounded-full text-xs font-semibold border ${i === 0 ? 'border-gray-900 text-gray-900 dark:border-white dark:text-white' : 'border-gray-200 text-gray-500 hover:border-gray-900 dark:border-white/10 dark:text-gray-400 dark:hover:border-white transition-colors'}`}>
+                    {[
+                      'Exact dates',
+                      '± 1 day',
+                      '± 2 days',
+                      '± 3 days',
+                      '± 7 days',
+                      '± 14 days',
+                    ].map((btn, i) => (
+                      <button
+                        key={btn}
+                        className={`px-4 py-2 rounded-full text-xs font-semibold border ${i === 0 ? 'border-gray-900 text-gray-900 dark:border-white dark:text-white' : 'border-gray-200 text-gray-500 hover:border-gray-900 dark:border-white/10 dark:text-gray-400 dark:hover:border-white transition-colors'}`}
+                      >
                         {btn}
                       </button>
                     ))}
@@ -339,7 +380,9 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
 
               {whenTab === 'flexible' && (
                 <div className="w-full max-w-[650px] mx-auto text-center pb-4">
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Stay for a week</h3>
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">
+                    Stay for a week
+                  </h3>
                   <div className="flex justify-center gap-3 mb-12">
                     <button className="px-6 py-2 rounded-full border border-gray-200 dark:border-white/10 text-sm font-semibold text-gray-700 dark:text-gray-300 hover:border-gray-900 transition-colors">
                       Weekend
@@ -351,15 +394,37 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
                       Month
                     </button>
                   </div>
-                  
-                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">Go anytime</h3>
+
+                  <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-4">
+                    Go anytime
+                  </h3>
                   <div className="flex gap-4 overflow-hidden relative pr-8">
-                    {['June', 'July', 'August', 'September', 'October', 'November'].map((month, i) => (
-                      <div key={month} className={`shrink-0 w-[110px] aspect-[4/5] rounded-2xl border ${i === 0 ? 'border-gray-900 dark:border-white' : 'border-gray-200 dark:border-white/10 hover:border-gray-900 dark:hover:border-white cursor-pointer'} flex flex-col items-center justify-center gap-2 transition-colors bg-white dark:bg-[#222222]`}>
-                        <Calendar className={`w-8 h-8 stroke-1 ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`} />
+                    {[
+                      'June',
+                      'July',
+                      'August',
+                      'September',
+                      'October',
+                      'November',
+                    ].map((month, i) => (
+                      <div
+                        key={month}
+                        className={`shrink-0 w-[110px] aspect-4/5 rounded-2xl border ${i === 0 ? 'border-gray-900 dark:border-white' : 'border-gray-200 dark:border-white/10 hover:border-gray-900 dark:hover:border-white cursor-pointer'} flex flex-col items-center justify-center gap-2 transition-colors bg-white dark:bg-[#222222]`}
+                      >
+                        <Calendar
+                          className={`w-8 h-8 stroke-1 ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}
+                        />
                         <div>
-                          <div className={`text-sm font-semibold ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}>{month}</div>
-                          <div className={`text-xs ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}>2026</div>
+                          <div
+                            className={`text-sm font-semibold ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'}`}
+                          >
+                            {month}
+                          </div>
+                          <div
+                            className={`text-xs ${i === 0 ? 'text-gray-900 dark:text-white' : 'text-gray-400'}`}
+                          >
+                            2026
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -379,8 +444,12 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
                 {/* Adults */}
                 <div className="flex items-center justify-between pb-6 border-b border-gray-100 dark:border-white/10">
                   <div>
-                    <div className="font-bold text-gray-900 dark:text-white">Adults</div>
-                    <div className="text-sm text-gray-500">Ages 13 or above</div>
+                    <div className="font-bold text-gray-900 dark:text-white">
+                      Adults
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      Ages 13 or above
+                    </div>
                   </div>
                   <div className="flex items-center gap-4">
                     <button
@@ -411,7 +480,9 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
                 {/* Children */}
                 <div className="flex items-center justify-between">
                   <div>
-                    <div className="font-bold text-gray-900 dark:text-white">Children</div>
+                    <div className="font-bold text-gray-900 dark:text-white">
+                      Children
+                    </div>
                     <div className="text-sm text-gray-500">Ages 2 – 12</div>
                   </div>
                   <div className="flex items-center gap-4">

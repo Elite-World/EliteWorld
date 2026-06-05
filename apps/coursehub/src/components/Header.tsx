@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import NextImage from 'next/image';
 import { useAppContext } from '../context/AppContext';
-import LoginModal from './LoginModal';
-import { Menu, User, BookOpen, Building2, ShieldCheck } from 'lucide-react';
 import { MOCK_INSTITUTION_MEMBERS } from '../data/mockData';
 import { GlobalRole } from '../types';
 import SearchBar from './SearchBar';
+import MobileSearchModal from './MobileSearchModal';
+import { Menu, User, BookOpen, Building2, ShieldCheck, Search } from 'lucide-react';
+import { SignInButton, SignUpButton, Show, UserButton } from '@clerk/nextjs';
 
 const LogoIcon = () => (
   <div className="p-2.5 rounded-3xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
@@ -18,10 +18,24 @@ const LogoIcon = () => (
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const { currentUser, logout } = useAppContext();
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
+  const { currentUser } = useAppContext();
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const isAverageUser =
+    currentUser &&
+    !MOCK_INSTITUTION_MEMBERS.some((m) => m.userId === currentUser.id) &&
+    currentUser.globalRole !== GlobalRole.WEB_MASTER &&
+    currentUser.globalRole !== GlobalRole.PLATFORM_ADMIN;
+
+  const isInstitutionMember =
+    currentUser && MOCK_INSTITUTION_MEMBERS.some((m) => m.userId === currentUser.id);
+
+  const isAdmin =
+    currentUser &&
+    (currentUser.globalRole === GlobalRole.WEB_MASTER ||
+      currentUser.globalRole === GlobalRole.PLATFORM_ADMIN);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -36,7 +50,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 transition-all duration-300 ease-in-out ${isSearchExpanded ? 'bg-white shadow-md' : 'bg-white/80 backdrop-blur-md shadow-sm'}`}
+        className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${isSearchExpanded ? 'bg-white shadow-md' : 'bg-white/80 backdrop-blur-md shadow-sm'}`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -53,35 +67,88 @@ const Header: React.FC = () => {
               <SearchBar onExpandChange={setIsSearchExpanded} />
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* Mobile Search Bar */}
+            <div className="flex md:hidden grow px-3">
+              <button
+                onClick={() => setIsMobileSearchOpen(true)}
+                className="flex items-center gap-3 w-full bg-white dark:bg-[#222222] border border-gray-200 dark:border-white/10 rounded-full py-2 px-4 shadow-[0_2px_8px_rgba(0,0,0,0.08)]"
+              >
+                <Search className="w-4 h-4 text-gray-900 dark:text-white shrink-0 stroke-[2.5px]" />
+                <span className="text-[14px] font-semibold text-gray-900 dark:text-white tracking-tight">
+                  Start your search
+                </span>
+              </button>
+            </div>
+
+            <div className="flex items-center gap-4 shrink-0">
               <Link
                 href="/#search-catalog"
                 className="hidden md:block text-sm font-bold text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors"
               >
                 Explore
               </Link>
-              <div className="relative" ref={menuRef}>
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="flex items-center gap-2 border border-gray-200 dark:border-white/10 rounded-full px-3 py-1.5 hover:shadow-lg transition-all bg-white dark:bg-transparent"
-                >
-                  <Menu className="w-5 h-5 text-gray-500" />
-                  {currentUser ? (
-                    <NextImage
-                      src={currentUser.avatarUrl}
-                      alt={currentUser.name}
-                      width={32}
-                      height={32}
-                      className="w-8 h-8 rounded-full border border-gray-100"
-                    />
-                  ) : (
-                    <div className="p-1 rounded-full bg-gray-100 dark:bg-white/5">
-                      <User className="w-5 h-5 text-gray-500" />
-                    </div>
-                  )}
-                </button>
+              <div className="relative flex items-center" ref={menuRef}>
+                <Show when="signed-in">
+                  <div className="p-1 border border-transparent hover:border-gray-200 dark:hover:border-white/10 rounded-full transition-all">
+                    <UserButton>
+                      <UserButton.MenuItems>
+                        {isAverageUser && (
+                          <UserButton.Link
+                            label="Learner Dashboard"
+                            labelIcon={<User size={16} />}
+                            href="/dashboard"
+                          />
+                        )}
+                        {isAverageUser && (
+                          <UserButton.Link
+                            label="Become a Partner"
+                            labelIcon={<Building2 size={16} />}
+                            href="/apply-partner"
+                          />
+                        )}
+
+                        {isInstitutionMember && (
+                          <UserButton.Link
+                            label="Create Experience"
+                            labelIcon={<BookOpen size={16} />}
+                            href="/create-course"
+                          />
+                        )}
+                        {isInstitutionMember && (
+                          <UserButton.Link
+                            label="Partner Portal"
+                            labelIcon={<Building2 size={16} />}
+                            href="/partner"
+                          />
+                        )}
+
+                        {isAdmin && (
+                          <UserButton.Link
+                            label="Admin Command Center"
+                            labelIcon={<ShieldCheck size={16} />}
+                            href="/admin"
+                          />
+                        )}
+                      </UserButton.MenuItems>
+                    </UserButton>
+                  </div>
+                </Show>
+                
+                <Show when="signed-out">
+                  <div className="flex items-center gap-2 border border-gray-200 dark:border-white/10 rounded-full p-1 sm:pl-3 sm:pr-1 hover:shadow-lg transition-all bg-white dark:bg-transparent">
+                    <button
+                      onClick={() => setIsMenuOpen(!isMenuOpen)}
+                      className="flex items-center justify-center gap-2 p-1.5 w-full"
+                    >
+                      <Menu className="w-5 h-5 text-gray-500" />
+                      <div className="hidden sm:flex p-1 rounded-full bg-gray-100 dark:bg-white/5">
+                        <User className="w-5 h-5 text-gray-500" />
+                      </div>
+                    </button>
+                  </div>
+                </Show>
                 {isMenuOpen && (
-                  <div className="absolute right-0 mt-4 w-64 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl shadow-2xl py-3 overflow-hidden animate-slide-up">
+                  <div className="absolute right-0 top-[calc(100%+0.5rem)] w-64 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl shadow-2xl py-3 overflow-hidden animate-slide-up">
                     <div className="px-4 py-3 border-b border-gray-50 dark:border-white/5 mb-2">
                       <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">
                         Authenticated as
@@ -90,101 +157,36 @@ const Header: React.FC = () => {
                         {currentUser?.email || 'Global Guest'}
                       </p>
                     </div>
-                    {currentUser ? (
-                      <>
-                        {!MOCK_INSTITUTION_MEMBERS.some(
-                          (m) => m.userId === currentUser?.id,
-                        ) &&
-                          currentUser?.globalRole !== GlobalRole.WEB_MASTER &&
-                          currentUser?.globalRole !==
-                            GlobalRole.PLATFORM_ADMIN && (
-                            <Link
-                              href="/dashboard"
-                              className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition-all"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <User className="w-4 h-4" />
-                              Learner Dashboard
-                            </Link>
-                          )}
-                        {MOCK_INSTITUTION_MEMBERS.some(
-                          (m) => m.userId === currentUser?.id,
-                        ) && (
-                          <>
-                            <Link
-                              href="/create-course"
-                              className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition-all"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <BookOpen className="w-4 h-4" />
-                              Create Experience
-                            </Link>
-                            <Link
-                              href="/partner"
-                              className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-purple-600 bg-purple-50/50 dark:bg-purple-600/10 hover:bg-purple-600 hover:text-white transition-all"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <Building2 className="w-4 h-4" />
-                              Partner Portal
-                            </Link>
-                          </>
-                        )}
-                        {(currentUser?.globalRole === GlobalRole.WEB_MASTER ||
-                          currentUser?.globalRole ===
-                            GlobalRole.PLATFORM_ADMIN) && (
-                          <Link
-                            href="/admin"
-                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-red-600 bg-red-50/50 dark:bg-red-600/10 hover:bg-red-600 hover:text-white transition-all"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            <ShieldCheck className="w-4 h-4" />
-                            Admin Command Center
-                          </Link>
-                        )}
-                        <div className="mt-2 pt-2 border-t border-gray-50 dark:border-white/5">
+
+                      <Show when="signed-out">
+                        <SignInButton mode="modal">
                           <button
-                            onClick={() => {
-                              logout();
-                              setIsMenuOpen(false);
-                            }}
-                            className="flex items-center gap-3 w-full text-left px-6 py-3 text-[10px] font-black uppercase tracking-widest text-red-500 hover:bg-red-50 transition-all"
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition-all w-full text-left"
                           >
-                            Terminate Session
+                            Log in
                           </button>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <button
-                          onClick={() => {
-                            setIsLoginModalOpen(true);
-                            setIsMenuOpen(false);
-                          }}
-                          className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition-all w-full text-left"
-                        >
-                          Log in
-                        </button>
-                        <button
-                          onClick={() => {
-                            setIsLoginModalOpen(true);
-                            setIsMenuOpen(false);
-                          }}
-                          className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50/50 dark:bg-blue-600/10 hover:bg-blue-600 hover:text-white transition-all w-full text-left"
-                        >
-                          Apply for Invitation
-                        </button>
-                      </>
-                    )}
-                  </div>
-                )}
+                        </SignInButton>
+                        <SignUpButton mode="modal">
+                          <button
+                            onClick={() => setIsMenuOpen(false)}
+                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50/50 dark:bg-blue-600/10 hover:bg-blue-600 hover:text-white transition-all w-full text-left"
+                          >
+                            Apply for Invitation
+                          </button>
+                        </SignUpButton>
+                      </Show>
+                    </div>
+                  )}
               </div>
             </div>
           </div>
         </div>
       </header>
-      <LoginModal
-        isOpen={isLoginModalOpen}
-        onClose={() => setIsLoginModalOpen(false)}
+      
+      <MobileSearchModal 
+        isOpen={isMobileSearchOpen} 
+        onClose={() => setIsMobileSearchOpen(false)} 
       />
     </>
   );

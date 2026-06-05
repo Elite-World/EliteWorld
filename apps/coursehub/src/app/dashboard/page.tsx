@@ -125,8 +125,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
 
 // --- Main Dashboard Page ---
 const DashboardPage: React.FC = () => {
-  const { currentUser, courses, removeFromWishlist, getAllUsers, canManageCourse } =
-    useAppContext();
+  const { currentUser, courses, removeFromWishlist } = useAppContext();
   const [activeTab, setActiveTab] = useState('myLearning');
   const router = useRouter();
 

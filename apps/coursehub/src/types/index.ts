@@ -35,6 +35,9 @@ export interface Institution {
   isVerified: boolean;
   stripeAccountId?: string;
   createdAt: string;
+  location?: string;
+  images?: string[];
+  amenities?: string[];
 }
 
 export interface InstitutionMember {

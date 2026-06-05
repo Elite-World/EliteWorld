@@ -1,12 +1,14 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useMemo, ReactNode } from 'react';
+import { useUser, useClerk } from '@clerk/nextjs';
 import { User, Course, SessionPerformance, GlobalRole, InstitutionalRole } from '../types';
 import {
   MOCK_COURSES,
   MOCK_USERS,
   MOCK_SESSION_PERFORMANCE,
   MOCK_INSTITUTION_MEMBERS,
+  MOCK_INSTITUTIONS,
 } from '../data/mockData';
 
 interface AppContextType {
@@ -21,6 +23,9 @@ interface AppContextType {
   canManageCourse: (course: Course, user: User) => boolean;
   getAllUsers: () => User[];
   getSessionPerformance: (sessionId: string) => SessionPerformance | undefined;
+  institutions: typeof import('../data/mockData').MOCK_INSTITUTIONS;
+  getInstitution: (institutionId: string) => typeof import('../data/mockData').MOCK_INSTITUTIONS[0] | undefined;
+  getInstitutionMembers: (institutionId: string) => (typeof import('../data/mockData').MOCK_INSTITUTION_MEMBERS[0] & { user: User })[];
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -29,39 +34,75 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [courses] = useState<Course[]>(MOCK_COURSES);
-  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [sessionPerformances] = useState<SessionPerformance[]>(
     MOCK_SESSION_PERFORMANCE,
   );
+  const [institutions] = useState(MOCK_INSTITUTIONS);
 
-  const login = (userId: string) => {
-    const user = MOCK_USERS.find((u) => u.id === userId);
-    if (user) {
-      setCurrentUser(user);
-    } else {
-      // For simplicity, log in the first user if ID not found
-      setCurrentUser(MOCK_USERS[0]);
+  const { user: clerkUser, isLoaded } = useUser();
+  const { signOut } = useClerk();
+
+  // We use localOverrides to temporarily persist wishlist changes during a session
+  // since we don't have a database hooked up to Clerk yet
+  const [localOverrides, setLocalOverrides] = useState<Record<string, Partial<User>>>({});
+
+  const currentUser = useMemo(() => {
+    if (!isLoaded || !clerkUser) return null;
+    
+    const primaryEmail = clerkUser.primaryEmailAddress?.emailAddress;
+    const matchedUser = MOCK_USERS.find(u => u.email === primaryEmail);
+    const id = matchedUser ? matchedUser.id : clerkUser.id;
+    const overrides = localOverrides[id] || {};
+    
+    if (matchedUser) {
+      return {
+        ...matchedUser,
+        name: clerkUser.fullName || matchedUser.name,
+        avatarUrl: clerkUser.imageUrl || matchedUser.avatarUrl,
+        ...overrides,
+      };
     }
+    
+    return {
+      id: clerkUser.id,
+      name: clerkUser.fullName || 'New User',
+      email: primaryEmail || '',
+      avatarUrl: clerkUser.imageUrl,
+      globalRole: GlobalRole.USER,
+      enrolledCourses: [],
+      wishlist: [],
+      bio: '',
+      ...overrides,
+    } as User;
+  }, [clerkUser, isLoaded, localOverrides]);
+
+  const login = () => {
+    console.warn("Login is now handled by Clerk. Please use the Clerk UI components.");
   };
 
   const logout = () => {
-    setCurrentUser(null);
+    signOut();
+  };
+
+  const updateLocalOverrides = (updates: Partial<User>) => {
+    if (!currentUser) return;
+    setLocalOverrides((prev) => ({
+      ...prev,
+      [currentUser.id]: {
+        ...prev[currentUser.id],
+        ...updates,
+      },
+    }));
   };
 
   const addToWishlist = (courseId: string) => {
     if (!currentUser || currentUser.wishlist.includes(courseId)) return;
-    setCurrentUser({
-      ...currentUser,
-      wishlist: [...currentUser.wishlist, courseId],
-    });
+    updateLocalOverrides({ wishlist: [...currentUser.wishlist, courseId] });
   };
 
   const removeFromWishlist = (courseId: string) => {
     if (!currentUser) return;
-    setCurrentUser({
-      ...currentUser,
-      wishlist: currentUser.wishlist.filter((id) => id !== courseId),
-    });
+    updateLocalOverrides({ wishlist: currentUser.wishlist.filter((id) => id !== courseId) });
   };
 
   const isInWishlist = (courseId: string) => {
@@ -101,6 +142,20 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     return sessionPerformances.find((p) => p.sessionId === sessionId);
   };
 
+  const getInstitution = (institutionId: string) => {
+    return institutions.find((inst) => inst.id === institutionId);
+  };
+
+  const getInstitutionMembers = (institutionId: string) => {
+    return MOCK_INSTITUTION_MEMBERS
+      .filter((m) => m.institutionId === institutionId)
+      .map((m) => ({
+        ...m,
+        user: MOCK_USERS.find((u) => u.id === m.userId)!,
+      }))
+      .filter((m) => m.user !== undefined);
+  };
+
   const value = {
     courses,
     currentUser,
@@ -113,6 +168,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
     canManageCourse,
     getAllUsers,
     getSessionPerformance,
+    institutions,
+    getInstitution,
+    getInstitutionMembers,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
