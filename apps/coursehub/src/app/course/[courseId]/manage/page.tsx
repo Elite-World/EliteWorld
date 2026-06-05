@@ -60,7 +60,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
 }) => {
   const getAdminDetails = (userId: string) =>
     users.find((u) => u.id === userId);
-  const owner = users.find((u) => u.id === course.ownerId);
+  const owner = users.find((u) => u.id === course.facultyIds[0]);
 
   return (
     <div className="space-y-12">
@@ -198,11 +198,11 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                 </div>
               </li>
             )}
-            {course.admins.map((admin) => {
-              const adminUser = getAdminDetails(admin.userId);
+            {course.facultyIds.slice(1).map((facultyId) => {
+              const adminUser = getAdminDetails(facultyId);
               return (
                 <li
-                  key={admin.userId}
+                  key={facultyId}
                   className="flex items-center justify-between p-5 bg-white dark:bg-[#222] rounded-3xl border border-gray-100 dark:border-white/5 group hover:border-blue-500/30 transition-all"
                 >
                   <div className="flex items-center">
@@ -219,7 +219,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                         {adminUser?.name}
                       </p>
                       <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                        {admin.role}
+                        Faculty
                       </p>
                     </div>
                   </div>
@@ -260,8 +260,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                   {users
                     .filter(
                       (u) =>
-                        u.id !== course.ownerId &&
-                        !course.admins.some((a) => a.userId === u.id),
+                        !course.facultyIds.includes(u.id),
                     )
                     .map((user) => (
                       <option key={user.id} value={user.id}>
@@ -561,9 +560,7 @@ const AmendSessionModal: React.FC<{
                     <input
                       type="checkbox"
                       className="w-5 h-5 rounded-lg border-2 border-gray-200 dark:border-white/10 text-blue-600 focus:ring-blue-500/20 bg-transparent transition-all"
-                      defaultChecked={(
-                        session.assignedPersonnel || course.admins
-                      ).some((a) => a.userId === user.id)}
+                      defaultChecked={course.facultyIds.includes(user.id)}
                     />
                     <div className="flex items-center gap-3">
                       <div className="relative w-8 h-8 rounded-lg overflow-hidden border border-gray-100 dark:border-white/10 shadow-sm">

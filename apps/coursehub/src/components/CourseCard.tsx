@@ -55,88 +55,79 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
   return (
     <Link
       href={`/course/${course.id}`}
-      className={`group block bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_24px_48px_rgba(0,0,0,0.1)] hover:-translate-y-2 ${className}`}
+      className={`group block cursor-pointer ${className}`}
     >
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-gray-50 dark:bg-white/2 shadow-inner">
+      <div className="relative aspect-20/19 w-full overflow-hidden rounded-xl bg-gray-200 dark:bg-[#222222]">
         <NextImage
           src={course.images[currentImageIndex]}
           alt={course.title}
           fill
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
 
-        {/* Navigation Arrows (Glassmorphism) */}
+        {/* Navigation Arrows */}
         {course.images.length > 1 && (
           <>
             <button
               onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/30"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 border border-black/5 text-black rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-sm hover:scale-105"
             >
               <ChevronLeft size={16} />
             </button>
             <button
               onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white/30"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 border border-black/5 text-black rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-sm hover:scale-105"
             >
               <ChevronRight size={16} />
             </button>
           </>
         )}
 
-        {/* Wishlist Button (Glassmorphism) */}
+        {/* Wishlist Button */}
         {currentUser && (
           <button
             onClick={handleWishlistToggle}
-            className={`absolute top-3 right-3 p-2 rounded-full backdrop-blur-md border transition-all duration-300 ${
-              inWishlist
-                ? 'bg-red-500/10 border-red-500/20 text-red-500'
-                : 'bg-black/20 border-white/20 text-white hover:bg-white hover:text-red-500'
-            }`}
+            className={`absolute top-3 right-3 p-0 transition-transform active:scale-90`}
             aria-label="Save to wishlist"
           >
-            <Heart size={18} fill={inWishlist ? 'currentColor' : 'none'} />
+            <Heart
+              size={24}
+              className={
+                inWishlist
+                  ? 'fill-[#FF385C] text-[#FF385C]'
+                  : 'fill-black/50 text-white'
+              }
+              strokeWidth={inWishlist ? 0 : 2}
+            />
           </button>
         )}
       </div>
 
-      <div className="mt-4 px-1">
-        <div className="flex justify-between items-start gap-4">
-          <h3 className="font-sans font-black text-lg text-gray-900 dark:text-white leading-tight line-clamp-2 group-hover:text-blue-600 transition-colors uppercase tracking-tight">
-            {course.title}
-          </h3>
-          <div className="flex items-center gap-1.5 shrink-0 bg-yellow-500/10 border border-yellow-500/20 px-2.5 py-1.5 rounded-xl">
-            <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
-            <span className="text-yellow-700 dark:text-yellow-500 text-[10px] font-black">
-              {course.rating.toFixed(1)}
-            </span>
-          </div>
+      <div className="mt-3 flex justify-between items-start">
+        <h3 className="font-semibold text-[14px] text-[#222222] dark:text-white leading-5 line-clamp-1 pr-4">
+          {course.title}
+        </h3>
+        <div className="flex items-center gap-1 shrink-0 mt-px">
+          <Star className="w-3 h-3 text-[#222222] dark:text-white fill-current" />
+          <span className="text-[#222222] dark:text-white text-[13px] font-light">
+            {course.rating.toFixed(2)}
+          </span>
         </div>
+      </div>
 
-        <div className="flex items-center gap-2 mt-3">
-          <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-          <p className="text-[10px] text-gray-400 font-black uppercase tracking-widest">
-            {owner?.name || 'Grand Architect'}
-          </p>
-        </div>
+      <p className="text-[13px] text-[#717171] leading-5 truncate mt-0.5">
+        Designed by {owner?.name || 'Grand Architect'}
+      </p>
 
-        <div className="mt-6 flex items-center justify-between pt-4 border-t border-gray-50 dark:border-white/5">
-          <div className="flex flex-col">
-            <span className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">
-              Tuition Fee
-            </span>
-            <p className="font-black text-2xl text-gray-900 dark:text-white tracking-tighter">
-              ${course.price}
-            </p>
-          </div>
-          <div className="px-3 py-1.5 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-xl">
-            <span className="text-[9px] text-gray-500 dark:text-gray-400 font-black uppercase tracking-widest">
-              {course.duration.split(' ')[0]}{' '}
-              <span className="text-blue-600">
-                {course.duration.split(' ')[1]}
-              </span>
-            </span>
-          </div>
-        </div>
+      <div className="flex items-center gap-1 text-[13px] text-[#717171] leading-5 truncate">
+        {course.duration.split(' ')[0]} {course.duration.split(' ')[1]}
+      </div>
+
+      <div className="mt-1.5 flex items-center gap-1 text-[14px]">
+        <span className="font-semibold text-[#222222] dark:text-white">
+          ${course.price}
+        </span>
+        <span className="text-[#222222] dark:text-white font-light text-[13px]">total</span>
       </div>
     </Link>
   );

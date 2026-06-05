@@ -1,11 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { User, Course, SessionPerformance } from '../types';
+import { User, Course, SessionPerformance, GlobalRole, InstitutionalRole } from '../types';
 import {
   MOCK_COURSES,
   MOCK_USERS,
   MOCK_SESSION_PERFORMANCE,
+  MOCK_INSTITUTION_MEMBERS,
 } from '../data/mockData';
 
 interface AppContextType {
@@ -68,17 +69,26 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   const getCourseOwner = (course: Course): User | undefined => {
-    return MOCK_USERS.find((user) => user.id === course.ownerId);
+    return MOCK_USERS.find((user) => user.id === course.facultyIds[0]);
   };
 
   const canManageCourse = (course: Course, user: User): boolean => {
     if (!course || !user) return false;
-    // The owner always has management authority.
-    if (course.ownerId === user.id) {
-      return true;
-    }
-    // Check if the user is listed as an admin.
-    return course.admins.some((admin) => admin.userId === user.id);
+    
+    // Global admins can manage everything
+    if (user.globalRole === GlobalRole.WEB_MASTER || user.globalRole === GlobalRole.PLATFORM_ADMIN) return true;
+
+    // Is the user part of this course's institution?
+    const member = MOCK_INSTITUTION_MEMBERS.find(m => m.userId === user.id && m.institutionId === course.institutionId);
+    if (!member) return false;
+    
+    // Institutional Partners and Admins can manage all courses in their institution
+    if (member.role === InstitutionalRole.PARTNER || member.role === InstitutionalRole.ADMIN) return true;
+    
+    // Faculty can only manage if they are assigned to this specific course
+    if (member.role === InstitutionalRole.FACULTY && course.facultyIds.includes(user.id)) return true;
+
+    return false;
   };
 
   const getAllUsers = (): User[] => {

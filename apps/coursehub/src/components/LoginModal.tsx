@@ -4,6 +4,9 @@ import React from 'react';
 import { useAppContext } from '../context/AppContext';
 import { X, ShieldCheck, Sparkles, UserCheck } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { MOCK_INSTITUTION_MEMBERS } from '../data/mockData';
+import { GlobalRole } from '../types';
 
 interface LoginModalProps {
   isOpen: boolean;
@@ -11,13 +14,25 @@ interface LoginModalProps {
 }
 
 const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
-  const { login } = useAppContext();
+  const { login, getAllUsers } = useAppContext();
+  const users = getAllUsers();
+  const router = useRouter();
 
   if (!isOpen) return null;
 
   const handleLogin = (userId: string) => {
     login(userId);
     onClose();
+
+    // Smart Routing
+    const user = users.find(u => u.id === userId);
+    if (user?.globalRole === GlobalRole.WEB_MASTER || user?.globalRole === GlobalRole.PLATFORM_ADMIN) {
+       router.push('/admin');
+    } else if (MOCK_INSTITUTION_MEMBERS.some(m => m.userId === userId)) {
+       router.push('/partner');
+    } else {
+       router.push('/search');
+    }
   };
 
   return (
@@ -26,7 +41,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white dark:bg-[#1A1A1A] rounded-[3rem] shadow-[0_32px_128px_rgba(0,0,0,0.5)] w-full max-w-lg overflow-hidden border border-white/10 relative group"
+        className="bg-white dark:bg-[#1A1A1A] rounded-4xl shadow-[0_32px_128px_rgba(0,0,0,0.5)] w-full max-w-lg overflow-hidden border border-white/10 relative group"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] -mr-32 -mt-32" />
@@ -61,43 +76,18 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
               membership status will be validated upon entry.
             </p>
 
-            {[
-              {
-                id: 'user1',
-                name: 'Alice',
-                role: 'Global Administrator',
-                avatar:
-                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100',
-                color: 'blue',
-              },
-              {
-                id: 'user2',
-                name: 'Dr. Angela Yu',
-                role: 'Distinguished Faculty',
-                avatar:
-                  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100',
-                color: 'purple',
-              },
-              {
-                id: 'user3',
-                name: 'David Lee',
-                role: 'Institutional Partner',
-                avatar:
-                  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=100',
-                color: 'blue',
-              },
-            ].map((user) => (
+            {users.map((user, index) => (
               <button
                 key={user.id}
                 onClick={() => handleLogin(user.id)}
-                className="w-full group/card relative p-6 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-3xl hover:border-blue-500/50 transition-all hover:shadow-2xl text-left flex items-center gap-5 overflow-hidden"
+                className="w-full group/card relative p-6 bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl hover:border-blue-500/50 transition-all hover:shadow-2xl text-left flex items-center gap-5 overflow-hidden"
               >
                 <div
-                  className={`absolute top-0 left-0 w-1.5 h-full opacity-0 group-hover/card:opacity-100 transition-opacity ${user.color === 'blue' ? 'bg-blue-600' : 'bg-purple-600'}`}
+                  className={`absolute top-0 left-0 w-1.5 h-full opacity-0 group-hover/card:opacity-100 transition-opacity ${index % 2 === 0 ? 'bg-blue-600' : 'bg-purple-600'}`}
                 />
-                <div className="relative w-14 h-14 rounded-2xl overflow-hidden shadow-xl shrink-0 border border-white/20">
+                <div className="relative w-14 h-14 rounded-3xl overflow-hidden shadow-xl shrink-0 border border-white/20">
                   <Image
-                    src={user.avatar}
+                    src={user.avatarUrl}
                     alt={user.name}
                     fill
                     className="object-cover group-hover/card:scale-110 transition-transform duration-500"
@@ -108,7 +98,7 @@ const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose }) => {
                     {user.name}
                   </h4>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mt-1 group-hover/card:text-blue-600 transition-colors">
-                    {user.role}
+                    {user.globalRole.replace('_', ' ')}
                   </p>
                 </div>
                 <UserCheck className="w-5 h-5 text-gray-300 group-hover/card:text-blue-600 group-hover/card:translate-x-1 transition-all" />

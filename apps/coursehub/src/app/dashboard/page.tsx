@@ -16,6 +16,8 @@ import {
   ChevronRight,
   TrendingUp,
 } from 'lucide-react';
+import { MOCK_INSTITUTION_MEMBERS } from '@/data/mockData';
+import { GlobalRole } from '@/types';
 import { cn } from '@repo/domain';
 
 // --- Reusable Dashboard Course Card ---
@@ -123,7 +125,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
 
 // --- Main Dashboard Page ---
 const DashboardPage: React.FC = () => {
-  const { currentUser, courses, removeFromWishlist, getAllUsers } =
+  const { currentUser, courses, removeFromWishlist, getAllUsers, canManageCourse } =
     useAppContext();
   const [activeTab, setActiveTab] = useState('myLearning');
   const router = useRouter();
@@ -131,6 +133,18 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     if (!currentUser) {
       router.push('/');
+      return;
+    }
+
+    if (currentUser.globalRole === GlobalRole.WEB_MASTER || currentUser.globalRole === GlobalRole.PLATFORM_ADMIN) {
+      router.push('/admin');
+      return;
+    }
+
+    const member = MOCK_INSTITUTION_MEMBERS.find((m) => m.userId === currentUser.id);
+    if (member) {
+      router.push('/partner');
+      return;
     }
   }, [currentUser, router]);
 
@@ -138,10 +152,6 @@ const DashboardPage: React.FC = () => {
 
   const enrolledCourses = courses.filter((c) =>
     currentUser.enrolledCourses.includes(c.id),
-  );
-  const myCourses = courses.filter((c) => c.ownerId === currentUser.id);
-  const managedCourses = courses.filter((c) =>
-    c.admins.some((admin) => admin.userId === currentUser.id),
   );
   const wishlistedCourses = courses.filter((c) =>
     currentUser.wishlist.includes(c.id),
@@ -165,108 +175,6 @@ const DashboardPage: React.FC = () => {
   );
 
   const renderContent = () => {
-    if (activeTab === 'myCollaborators') {
-      const myOwnedCourses = courses.filter(
-        (c) => c.ownerId === currentUser.id,
-      );
-      const allUsers = getAllUsers();
-
-      const collaboratorsMap = new Map();
-      myOwnedCourses.forEach((course) => {
-        course.admins.forEach((admin) => {
-          if (!collaboratorsMap.has(admin.userId)) {
-            const user = allUsers.find((u) => u.id === admin.userId);
-            if (user) {
-              collaboratorsMap.set(admin.userId, {
-                user: user,
-                managedCourses: [],
-              });
-            }
-          }
-          if (collaboratorsMap.has(admin.userId)) {
-            collaboratorsMap.get(admin.userId).managedCourses.push({
-              id: course.id,
-              title: course.title,
-              role: admin.role,
-            });
-          }
-        });
-      });
-      const collaborators = Array.from(collaboratorsMap.values());
-
-      return (
-        <div className="space-y-6">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="p-2 rounded-xl bg-purple-600/10">
-              <Users className="w-5 h-5 text-purple-600" />
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-              Active Collaborators
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {collaborators.length > 0 ? (
-              collaborators.map(({ user, managedCourses }: any) => (
-                <div
-                  key={user.id}
-                  className="bg-white dark:bg-[#1A1A1A] p-6 rounded-3xl border border-gray-100 dark:border-white/5 shadow-xl flex flex-col gap-6"
-                >
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-white dark:border-[#2A2A2A] shadow-lg">
-                      <Image
-                        src={user.avatarUrl}
-                        alt={user.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <p className="font-bold text-gray-900 dark:text-white text-lg">
-                        {user.name}
-                      </p>
-                      <p className="text-xs font-medium text-gray-500">
-                        {user.email}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-gray-100 dark:border-white/5 pt-6">
-                    <div className="flex items-center gap-2 mb-4">
-                      <GraduationCap className="w-4 h-4 text-blue-600" />
-                      <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                        Assigned Responsibilities
-                      </p>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {managedCourses.map((c: any) => (
-                        <Link
-                          key={c.id}
-                          href={`/course/${c.id}`}
-                          className="px-3 py-1.5 bg-gray-50 dark:bg-white/5 rounded-lg border border-gray-100 dark:border-white/10 text-[10px] font-bold text-gray-600 dark:text-gray-300 hover:text-blue-600 hover:border-blue-500/30 transition-all flex items-center gap-2 group"
-                        >
-                          {c.title}
-                          <span className="px-1.5 py-0.5 bg-blue-600/10 text-blue-600 rounded text-[8px]">
-                            {c.role}
-                          </span>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="col-span-2 p-12 text-center bg-gray-50 dark:bg-white/5 rounded-[2.5rem] border-2 border-dashed border-gray-200 dark:border-white/10">
-                <Users className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500 font-medium">
-                  No external collaborators assigned yet.
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      );
-    }
 
     let list: Course[] = [];
     let type: DashboardCourseCardProps['cardType'] = 'learning';
@@ -279,18 +187,6 @@ const DashboardPage: React.FC = () => {
         type = 'learning';
         title = 'Courses you&apos;re learning';
         emptyText = 'You haven&apos;t enrolled in any courses yet.';
-        break;
-      case 'myCourses':
-        list = myCourses;
-        type = 'owned';
-        title = 'Courses I Own';
-        emptyText = 'You haven&apos;t created any courses yet.';
-        break;
-      case 'managedCourses':
-        list = managedCourses;
-        type = 'managed';
-        title = 'Courses you manage';
-        emptyText = 'You are not an admin for any courses.';
         break;
       case 'myWishlist':
         list = wishlistedCourses;
@@ -389,9 +285,6 @@ const DashboardPage: React.FC = () => {
         <div className="flex items-center justify-between mb-12 bg-white dark:bg-[#1A1A1A] p-2 rounded-2xl border border-gray-100 dark:border-white/5 shadow-sm overflow-x-auto">
           <div className="flex space-x-2 min-w-max">
             <TabButton tabName="myLearning" label="My Learning" />
-            <TabButton tabName="myCourses" label="Catalog" />
-            <TabButton tabName="myCollaborators" label="Team" />
-            <TabButton tabName="managedCourses" label="Management" />
             <TabButton tabName="myWishlist" label="Aspirations" />
           </div>
           <div className="px-6 hidden lg:flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-gray-400">

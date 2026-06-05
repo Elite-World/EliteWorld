@@ -1,4 +1,3 @@
-
 export enum CourseCategory {
   SUMMER_CAMP = 'Summer Camp',
   LANGUAGE = 'Language',
@@ -8,25 +7,68 @@ export enum CourseCategory {
   BUSINESS = 'Business',
 }
 
+export enum GlobalRole {
+  USER = 'USER',
+  PLATFORM_ADMIN = 'PLATFORM_ADMIN',
+  PLATFORM_FINANCE = 'PLATFORM_FINANCE',
+  WEB_MASTER = 'WEB_MASTER',
+}
+
+export enum InstitutionalRole {
+  PARTNER = 'PARTNER',
+  ADMIN = 'ADMIN',
+  FINANCE = 'FINANCE',
+  FACULTY = 'FACULTY',
+}
+
+export enum CourseStatus {
+  DRAFT = 'DRAFT',
+  PENDING_REVIEW = 'PENDING_REVIEW',
+  PUBLISHED = 'PUBLISHED',
+}
+
+export interface Institution {
+  id: string;
+  name: string;
+  description: string;
+  logoUrl: string;
+  isVerified: boolean;
+  stripeAccountId?: string;
+  createdAt: string;
+}
+
+export interface InstitutionMember {
+  userId: string;
+  institutionId: string;
+  role: InstitutionalRole;
+  title?: string; // e.g., "Lead Math Professor"
+}
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  avatarUrl: string;
+  globalRole: GlobalRole;
+  enrolledCourses: string[]; // Still tracks what they are learning as a student
+  wishlist: string[];
+  bio?: string;
+}
+
 export interface Session {
   id: string;
   title: string;
   date: string;
   time: string;
-  location: string; // e.g., 'Online', 'Zoom', or a physical address
+  location: string;
   status: 'Upcoming' | 'In Progress' | 'Completed';
   price?: number;
-  assignedPersonnel?: CourseAdmin[];
-}
-
-export interface CourseAdmin {
-  userId: string;
-  role: string;
 }
 
 export interface Review {
   id: string;
-  authorName: string;
+  authorId: string; // Changed from authorName/AvatarUrl to reference the User ID
+  authorName: string; // Kept for easy display without join
   authorAvatarUrl: string;
   rating: number;
   comment: string;
@@ -34,15 +76,26 @@ export interface Review {
 }
 
 export interface Course {
-  id:string;
+  id: string;
   title: string;
   tagline: string;
   category: CourseCategory;
-  ownerId: string;
+  institutionId: string; // Replaced ownerId
+  status: CourseStatus; // Added status
+  facultyIds: string[]; // Replaced admins/owner, references InstitutionMembers with FACULTY role
   price: number;
+  priceUnit: 'Total' | 'Per Week' | 'Per Month';
   rating: number;
   reviewCount: number;
+  startDate: string;
+  endDate: string;
   duration: string;
+  location: string;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
+  mode: 'Full Day' | 'Half Day' | 'Weekend' | 'Evening';
   level: 'Beginner' | 'Intermediate' | 'Advanced';
   images: string[];
   description: string;
@@ -52,25 +105,12 @@ export interface Course {
     description: string;
   }[];
   reviews: Review[];
-  admins: CourseAdmin[];
   sessions: Session[];
-}
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  avatarUrl: string;
-  enrolledCourses: string[];
-  wishlist: string[];
-  bio?: string;
-  rating?: number;
-  reviewCount?: number;
 }
 
 export interface SessionFeedback {
   authorId: string;
-  rating: number; // 1-5
+  rating: number;
   comment: string;
 }
 
@@ -79,7 +119,7 @@ export interface SessionPerformance {
   totalAttendees: number;
   expectedAttendees: number;
   averageRating: number;
-  engagementScore: number; // 0-100
-  engagementData: number[]; // Array of engagement scores over time
+  engagementScore: number;
+  engagementData: number[];
   feedback: SessionFeedback[];
 }

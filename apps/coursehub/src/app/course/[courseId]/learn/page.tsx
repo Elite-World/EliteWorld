@@ -13,7 +13,6 @@ import {
   Clock,
   Trophy,
   BookOpen,
-  ChevronRight,
   ShieldCheck,
   Star,
   Layout,

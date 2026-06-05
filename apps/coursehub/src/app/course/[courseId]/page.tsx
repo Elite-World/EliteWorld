@@ -284,7 +284,7 @@ const CourseDetailPage: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <StarIcon />
                       <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
-                        {owner.rating?.toFixed(1) || 'N/A'} Expert Rating
+                        {course.rating.toFixed(1)} Expert Rating
                       </span>
                     </div>
                   </div>
