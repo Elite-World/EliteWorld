@@ -1,22 +1,23 @@
 import { AdmissionsConsultingContent } from '@/components/layouts/AdmissionsConsulting';
 import {
-  diyPackages,
-  highEndPackages,
-  mentorTeams,
-  serviceProcess,
+  getDiyPackages,
+  getHighEndPackages,
+  getMentorTeams,
+  getServiceProcess,
 } from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   return (
     <AdmissionsConsultingContent
-      mentorTeams={mentorTeams}
-      serviceProcess={serviceProcess}
-      highEndPackages={highEndPackages}
-      diyPackages={diyPackages}
+      mentorTeams={getMentorTeams(locale)}
+      serviceProcess={getServiceProcess(locale)}
+      highEndPackages={getHighEndPackages(locale)}
+      diyPackages={getDiyPackages(locale)}
     />
   );
 }

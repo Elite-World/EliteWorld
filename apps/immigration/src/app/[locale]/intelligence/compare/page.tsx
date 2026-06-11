@@ -7,20 +7,21 @@ export const metadata = {
   description: 'Compare residency, citizenship, and corporate structuring solutions worldwide.',
 };
 
-export default async function CompareSolutionsPage() {
+export default async function CompareSolutionsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const solutions = await getAllSolutions();
 
   return (
     <div className="min-h-screen">
       <HeroSection
         mode="page"
-        title="Compare Solutions"
-        subtitle="Evaluate and compare top-tier residency, citizenship, and wealth structuring programs globally."
+        title={locale === 'zh' ? '比较全球项目' : 'Compare Solutions'}
+        subtitle={locale === 'zh' ? '评估并比较全球顶级的居留、公民身份和财富规划项目。' : 'Evaluate and compare top-tier residency, citizenship, and wealth structuring programs globally.'}
         backgroundImage="/images/blog-1.jpg" // We'll use a placeholder or let HeroSection fallback gradient
       />
       
       <div className="-mt-20 relative z-10">
-        <CompareSolutionsTable solutions={solutions} />
+        <CompareSolutionsTable solutions={solutions} locale={locale} />
       </div>
     </div>
   );

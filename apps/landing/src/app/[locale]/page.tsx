@@ -4,6 +4,7 @@ export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
-export default function Home() {
-  return <HomePage />;
+export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  return <HomePage locale={locale} />;
 }

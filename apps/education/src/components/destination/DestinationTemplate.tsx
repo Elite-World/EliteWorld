@@ -18,12 +18,12 @@ const iconMap = {
   Globe
 };
 
-export function DestinationTemplate({ data }: { data: DestinationInfo }) {
+export function DestinationTemplate({ data, locale = 'en' }: { data: DestinationInfo; locale?: string }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">
       {/* Hero Section */}
       <HeroSection 
-        title={`Study in ${data.name}`}
+        title={locale === 'zh' ? `在 ${data.name} 留学` : `Study in ${data.name}`}
         subtitle={data.tagline}
         backgroundImage={data.heroImage}
         mode="page"
@@ -33,10 +33,10 @@ export function DestinationTemplate({ data }: { data: DestinationInfo }) {
       <div className="relative -mt-16 z-20 container mx-auto px-4 max-w-6xl">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-white/80 dark:bg-[#1A1A1A]/80 backdrop-blur-2xl rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl">
           {[
-            { icon: Building2, label: 'Universities', value: data.stats.universities },
-            { icon: Users, label: 'Intl. Students', value: data.stats.internationalStudents },
-            { icon: Wallet, label: 'Avg. Tuition', value: data.stats.avgTuition },
-            { icon: Briefcase, label: 'Post-Study Work', value: data.stats.postStudyWork },
+            { icon: Building2, label: locale === 'zh' ? '大学' : 'Universities', value: data.stats.universities },
+            { icon: Users, label: locale === 'zh' ? '国际学生' : 'Intl. Students', value: data.stats.internationalStudents },
+            { icon: Wallet, label: locale === 'zh' ? '平均学费' : 'Avg. Tuition', value: data.stats.avgTuition },
+            { icon: Briefcase, label: locale === 'zh' ? '毕业后工作' : 'Post-Study Work', value: data.stats.postStudyWork },
           ].map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center justify-center p-6 text-center rounded-2xl bg-gray-50 dark:bg-white/5 border border-transparent dark:hover:border-white/10 transition-colors">
               <stat.icon className="w-6 h-6 text-blue-600 dark:text-blue-400 mb-3" />
@@ -53,7 +53,7 @@ export function DestinationTemplate({ data }: { data: DestinationInfo }) {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
-              What to Expect in <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{data.name}</span>
+              {locale === 'zh' ? '在这里' : 'What to Expect in'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{data.name}</span> {locale === 'zh' ? '有什么期待？' : ''}
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed">
               {data.description}
@@ -93,13 +93,13 @@ export function DestinationTemplate({ data }: { data: DestinationInfo }) {
             <div className="mt-32">
               <div className="text-center max-w-3xl mx-auto mb-16">
                 <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
-                  Why Study in <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-emerald-500">{data.name}</span>?
+                  {locale === 'zh' ? '为什么选择在' : 'Why Study in'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-emerald-500">{data.name}</span> {locale === 'zh' ? '留学？' : '?'}
                 </h2>
                 <div className="h-1 w-20 bg-linear-to-r from-blue-600 to-emerald-500 mx-auto rounded-full" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {data.whyStudyHere.map((item, idx) => {
+                {data.whyStudyHere.map((item) => {
                   const Icon = iconMap[item.iconName as keyof typeof iconMap] || Trophy;
                   return (
                     <div 
@@ -132,7 +132,7 @@ export function DestinationTemplate({ data }: { data: DestinationInfo }) {
                 className="flex items-center gap-4 px-8 py-4 rounded-full bg-white dark:bg-[#0a0a0a] hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 group"
               >
                 <span className="font-black text-gray-900 dark:text-white group-hover:text-white uppercase tracking-widest text-sm">
-                  Explore Universities in {data.name}
+                  {locale === 'zh' ? `探索 ${data.name} 的大学` : `Explore Universities in ${data.name}`}
                 </span>
                 <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors">
                   <ArrowRight className="w-4 h-4 text-gray-900 dark:text-white" />

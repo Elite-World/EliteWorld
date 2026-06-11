@@ -8,7 +8,11 @@ import { ArrowRight, Globe2, Briefcase, Landmark } from 'lucide-react';
 interface JurisdictionCardData {
   country: {
     slug: string;
-    name: { en: string };
+    name?: { en: string; cn?: string };
+    translations?: {
+      en?: { name: string };
+      cn?: { name: string };
+    };
   };
   profile: {
     tax_profile: { corporate_tax: string };
@@ -19,15 +23,20 @@ interface JurisdictionCardData {
 
 interface DestinationsGridProps {
   jurisdictions: JurisdictionCardData[];
+  locale: string;
 }
 
-function DestinationCard({ data }: { data: JurisdictionCardData }) {
+function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale: string }) {
   const [imgError, setImgError] = useState(false);
   
   // Try to use a static image based on slug if we eventually add them to public folder,
   // or a cloudinary image. For now, we will try a cloudinary generic url.
   // We can use the same Cloudinary setup as Education if we upload images there.
   const src = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/elite-world/destinations/${data.country.slug}.jpg`;
+  
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
+  // @ts-ignore
+  const countryName = data.country.translations?.[dbLocale]?.name || data.country.name?.[dbLocale] || data.country.name?.en || 'Unknown';
 
   return (
     <Link 
@@ -48,7 +57,7 @@ function DestinationCard({ data }: { data: JurisdictionCardData }) {
         ) : (
           <Image 
             src={src} 
-            alt={data.country.name.en}
+            alt={countryName}
             fill
             className="object-cover group-hover:scale-110 group-hover:rotate-1 transition-transform duration-700 ease-out"
             onError={() => setImgError(true)}
@@ -63,40 +72,40 @@ function DestinationCard({ data }: { data: JurisdictionCardData }) {
         <div className="mb-auto">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold mb-4">
             <Globe2 className="w-3.5 h-3.5" />
-            Jurisdiction Profile
+            {locale === 'zh' ? '司法管辖区简介' : 'Jurisdiction Profile'}
           </div>
         </div>
 
         <div>
           <h3 className="text-3xl font-black uppercase tracking-tight mb-6">
-            {data.country.name.en}
+            {countryName}
           </h3>
           
           <div className="grid grid-cols-2 gap-4 mb-8">
             <div className="flex flex-col gap-1">
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                <Landmark className="w-3 h-3" /> Corp Tax
+                <Landmark className="w-3 h-3" /> {locale === 'zh' ? '企业税' : 'Corp Tax'}
               </span>
               <span className="font-bold text-lg text-white">{data.profile.tax_profile.corporate_tax}</span>
             </div>
             
             <div className="flex flex-col gap-1">
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                <Globe2 className="w-3 h-3" /> Passport Score
+                <Globe2 className="w-3 h-3" /> {locale === 'zh' ? '护照分数' : 'Passport Score'}
               </span>
               <span className="font-bold text-lg text-emerald-400">{data.profile.passport_power.visa_free_score}</span>
             </div>
 
             <div className="flex flex-col gap-1 col-span-2">
               <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                <Briefcase className="w-3 h-3" /> Active Pathways
+                <Briefcase className="w-3 h-3" /> {locale === 'zh' ? '有效途径' : 'Active Pathways'}
               </span>
-              <span className="font-bold text-sm text-gray-200">{data.solutionCount} Mobility Solutions</span>
+              <span className="font-bold text-sm text-gray-200">{data.solutionCount} {locale === 'zh' ? '种移民方案' : 'Mobility Solutions'}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest group-hover:text-blue-400 transition-colors">
-            View Profile <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            {locale === 'zh' ? '查看简介' : 'View Profile'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </div>
         </div>
       </div>
@@ -104,11 +113,11 @@ function DestinationCard({ data }: { data: JurisdictionCardData }) {
   );
 }
 
-export function DestinationsGrid({ jurisdictions }: DestinationsGridProps) {
+export function DestinationsGrid({ jurisdictions, locale }: DestinationsGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {jurisdictions.map((j) => (
-        <DestinationCard key={j.country.slug} data={j} />
+        <DestinationCard key={j.country.slug} data={j} locale={locale} />
       ))}
     </div>
   );

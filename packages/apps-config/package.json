@@ -9,6 +9,7 @@
     "./education/*": "./src/config/education/*",
     "./immigration/*": "./src/config/immigration/*",
     "./landing/*": "./src/config/landing/*",
+    "./base/*": "./src/config/base/*",
     "./country/*": "./src/config/country/*",
     "./content/*": "./src/content/*"
   },

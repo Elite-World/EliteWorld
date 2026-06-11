@@ -14,6 +14,8 @@ import {
   ArrowUpRight,
 } from 'lucide-react';
 
+import { useLanguageStore } from '@repo/domain';
+
 interface FooterLink {
   label: string;
   href: string;
@@ -40,47 +42,51 @@ interface FooterProps {
   showHiddenElements?: boolean;
 }
 
-const defaultSections: FooterSection[] = [
-  {
-    title: 'Platform',
-    links: [
-      { label: 'Intelligence', href: '#' },
-      { label: 'Global Registry', href: '#' },
-      { label: 'Security Protocols', href: '#' },
-      { label: 'API Access', href: '#' },
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      { label: 'Documentation', href: '#' },
-      { label: 'Help Center', href: '#' },
-      { label: 'Community', href: '#' },
-      { label: 'Status', href: '#' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About', href: '#' },
-      { label: 'Careers', href: '#' },
-      { label: 'Press', href: '#' },
-      { label: 'Contact', href: '#' },
-    ],
-  },
-];
-
 export function Footer({
   className,
   siteConfig = {
     name: 'EliteWorld',
-    description:
-      "The world's most advanced platform for global intelligence and elite academic coordination.",
   },
   showHiddenElements = false,
 }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
+
+  const defaultSections: FooterSection[] = [
+    {
+      title: isZh ? '平台服务' : 'Platform',
+      links: [
+        { label: isZh ? '深度解析' : 'Intelligence', href: '#' },
+        { label: isZh ? '全球名校录' : 'Global Registry', href: '#' },
+        { label: isZh ? '安全保障协议' : 'Security Protocols', href: '#' },
+        { label: isZh ? 'API 接口对接' : 'API Access', href: '#' },
+      ],
+    },
+    {
+      title: isZh ? '服务资源' : 'Resources',
+      links: [
+        { label: isZh ? '说明文档' : 'Documentation', href: '#' },
+        { label: isZh ? '帮助中心' : 'Help Center', href: '#' },
+        { label: isZh ? '交流社区' : 'Community', href: '#' },
+        { label: isZh ? '服务状态' : 'Status', href: '#' },
+      ],
+    },
+    {
+      title: isZh ? '关于我们' : 'Company',
+      links: [
+        { label: isZh ? '关于寰宇精英' : 'About', href: '#' },
+        { label: isZh ? '加入我们' : 'Careers', href: '#' },
+        { label: isZh ? '媒体报道' : 'Press', href: '#' },
+        { label: isZh ? '联系我们' : 'Contact', href: '#' },
+      ],
+    },
+  ];
+
   const sections = siteConfig.sections || defaultSections;
+  const description = siteConfig.description || (isZh
+    ? '寰宇精英拥有全球前沿的高等教育与海外规划信息，提供专业、高效的名校申请及全球身份协调解决方案。'
+    : "The world's most advanced platform for global intelligence and elite academic coordination.");
 
   return (
     <footer
@@ -111,7 +117,7 @@ export function Footer({
               </span>
             </Link>
             <p className="text-gray-500 dark:text-gray-400 text-sm font-medium leading-relaxed max-w-sm">
-              {siteConfig.description}
+              {description}
             </p>
 
             <div className="flex items-center gap-4 mt-8">
@@ -165,19 +171,19 @@ export function Footer({
 
           <div className="lg:col-span-1">
             <h3 className="font-black text-gray-900 dark:text-white uppercase tracking-[0.2em] text-[10px] mb-8">
-              Accreditations
+              {isZh ? '权威资质' : 'Accreditations'}
             </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-600/5 dark:bg-blue-500/10 border border-blue-600/10 dark:border-blue-500/20">
                 <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-500" />
                 <span className="text-[10px] font-black text-blue-600 dark:text-blue-500 uppercase tracking-widest">
-                  Licensed Agent
+                  {isZh ? '官方持牌顾问' : 'Licensed Agent'}
                 </span>
               </div>
               <div className="flex items-center gap-3 p-3 rounded-2xl bg-purple-600/5 dark:bg-purple-500/10 border border-purple-600/10 dark:border-purple-500/20">
                 <Zap className="w-4 h-4 text-purple-600 dark:text-purple-500" />
                 <span className="text-[10px] font-black text-purple-600 dark:text-purple-500 uppercase tracking-widest">
-                  Global Partner
+                  {isZh ? '全球战略合作伙伴' : 'Global Partner'}
                 </span>
               </div>
             </div>
@@ -187,16 +193,16 @@ export function Footer({
 
         <div className="pt-12 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
-            © {currentYear} {siteConfig.name} | ALL RIGHTS RESERVED.
+            © {currentYear} {siteConfig.name} | {isZh ? '版权所有' : 'ALL RIGHTS RESERVED.'}
           </p>
           <div className="flex gap-10">
             {[
-              { label: 'Privacy', href: '/privacy-policy' },
-              { label: 'Terms', href: '/terms-of-service' },
-              { label: 'Security', href: '/security' },
+              { label: isZh ? '隐私政策' : 'Privacy', href: '/privacy-policy' },
+              { label: isZh ? '服务条款' : 'Terms', href: '/terms-of-service' },
+              { label: isZh ? '安全中心' : 'Security', href: '/security' },
             ].map((item) => (
               <Link
-                key={item.label}
+                key={item.href}
                 href={item.href}
                 className="text-[10px] font-black text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 uppercase tracking-[0.2em] transition-colors"
               >

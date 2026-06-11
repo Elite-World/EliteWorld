@@ -2,6 +2,7 @@
 
 import { Modal } from '../../components/ui/Modal';
 import { useModalStore } from '../../lib/stores/useModalStore';
+import { useLanguageStore } from '../../lib/stores/useLanguageStore';
 import {
   HiOutlineMagnifyingGlass,
   HiOutlineXMark,
@@ -27,6 +28,9 @@ export function SearchModal() {
   const [results, setResults] = useState<any[]>([]); // setResults<SearchResult[]>
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   // Focus input on open
   useEffect(() => {
@@ -91,7 +95,7 @@ export function SearchModal() {
             <input
               id="search-input"
               type="text"
-              placeholder="Search..."
+              placeholder={isZh ? '搜索...' : 'Search...'}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="w-full pl-11 pr-10 py-3 bg-gray-100 dark:bg-gray-800/50 rounded-xl text-base outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
@@ -113,8 +117,8 @@ export function SearchModal() {
             onClick={close}
             className="flex items-center gap-2 px-3 py-2 md:py-1.5 rounded-xl border border-transparent md:border-gray-200 dark:md:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm md:text-xs font-semibold md:font-bold text-gray-500 transition-colors cursor-pointer"
           >
-            <span className="md:hidden">Cancel</span>
-            <span className="hidden md:inline-block uppercase tracking-widest text-[10px]">Close</span>
+            <span className="md:hidden">{isZh ? '取消' : 'Cancel'}</span>
+            <span className="hidden md:inline-block uppercase tracking-widest text-[10px]">{isZh ? '关闭' : 'Close'}</span>
             <div className="hidden md:flex items-center justify-center px-1.5 py-0.5 rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-[9px] shadow-sm text-gray-400">ESC</div>
           </button>
         </div>
@@ -124,13 +128,13 @@ export function SearchModal() {
           {isPending ? (
             <div className="flex flex-col items-center justify-center h-40 text-gray-400 animate-pulse">
               <HiOutlineMagnifyingGlass className="w-8 h-8 mb-2 opacity-50" />
-              <span className="text-sm">Searching...</span>
+              <span className="text-sm">{isZh ? '正在搜索...' : 'Searching...'}</span>
             </div>
           ) : query ? (
             results.length > 0 ? (
               <div className="space-y-1">
                 <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2 mt-2 px-4">
-                  Results
+                  {isZh ? '搜索结果' : 'Results'}
                 </h3>
                 {results.map((article) => (
                   <button
@@ -157,16 +161,16 @@ export function SearchModal() {
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-40 text-gray-500">
-                <p>No results found for "{query}"</p>
+                <p>{isZh ? `未找到与 "${query}" 相关的结果` : `No results found for "${query}"`}</p>
               </div>
             )
           ) : (
             <div className="p-2">
               <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3 px-2">
-                Suggested
+                {isZh ? '推荐搜索' : 'Suggested'}
               </h3>
               <div className="space-y-1">
-                {SUGGESTIONS.map((suggestion) => (
+                {(isZh ? ['英国留学', '签证要求', '顶尖大学', '奖学金申请'] : SUGGESTIONS).map((suggestion) => (
                   <button
                     key={suggestion}
                     onClick={() => setQuery(suggestion)}
@@ -183,11 +187,11 @@ export function SearchModal() {
 
         {/* Footer */}
         <div className="p-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 text-xs text-center text-gray-500">
-          Press{' '}
+          {isZh ? '按' : 'Press'}{' '}
           <kbd className="font-sans px-1 rounded bg-gray-200 dark:bg-gray-700">
             ↵
           </kbd>{' '}
-          to select
+          {isZh ? '进行选择' : 'to select'}
         </div>
       </div>
     </Modal>

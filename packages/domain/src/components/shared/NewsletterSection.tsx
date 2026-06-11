@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { cn } from '../../lib/utils';
 import { Loader2 } from 'lucide-react';
+import { useLanguageStore } from '../../lib/stores/useLanguageStore';
 
 interface NewsletterSectionProps {
   title?: string;
@@ -12,8 +13,8 @@ interface NewsletterSectionProps {
 }
 
 export function NewsletterSection({
-  title = 'Stay in the Loop',
-  description = 'Subscribe to our newsletter for exclusive guides and news.',
+  title,
+  description,
   onSubmit,
   className,
 }: NewsletterSectionProps) {
@@ -21,6 +22,16 @@ export function NewsletterSection({
   const [status, setStatus] = useState<
     'idle' | 'loading' | 'success' | 'error'
   >('idle');
+
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
+
+  const displayTitle = title || (isZh ? '订阅最新资讯' : 'Stay in the Loop');
+  const displayDescription =
+    description ||
+    (isZh
+      ? '订阅我们的电子报，获取独家指南和行业最新动态。'
+      : 'Subscribe to our newsletter for exclusive guides and news.');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,23 +58,25 @@ export function NewsletterSection({
   return (
     <section
       className={cn(
-        'w-full py-16 px-6 md:px-12 rounded-[2rem] text-center relative overflow-hidden',
+        'w-full py-16 px-6 md:px-12 rounded-4xl text-center relative overflow-hidden',
         // Vibrant Blue-Purple Gradient
-        'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-2xl',
+        'bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-2xl',
         className,
       )}
     >
       <div className="relative z-10 max-w-2xl mx-auto flex flex-col items-center">
         <h3 className="text-2xl md:text-3xl font-bold mb-3 tracking-tight">
-          {title}
+          {displayTitle}
         </h3>
         <p className="mb-8 text-white/90 text-sm md:text-base font-medium">
-          {description}
+          {displayDescription}
         </p>
 
         {status === 'success' ? (
           <div className="flex items-center justify-center h-[52px] w-full max-w-md bg-white/20 backdrop-blur-md rounded-xl border border-white/30 text-white font-medium animate-in fade-in zoom-in duration-300">
-            ✨ You&apos;re all set! Check your inbox soon.
+            {isZh
+              ? '✨ 订阅成功！请留意您的邮箱。'
+              : "✨ You're all set! Check your inbox soon."}
           </div>
         ) : (
           <form
@@ -75,7 +88,7 @@ export function NewsletterSection({
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={isZh ? '请输入您的电子邮箱' : 'Enter your email'}
               disabled={status === 'loading'}
               className="flex-1 px-5 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium disabled:opacity-70"
             />
@@ -86,6 +99,8 @@ export function NewsletterSection({
             >
               {status === 'loading' ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
+              ) : isZh ? (
+                '立即订阅'
               ) : (
                 'Subscribe'
               )}

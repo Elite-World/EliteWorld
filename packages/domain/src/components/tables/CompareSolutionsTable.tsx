@@ -10,18 +10,20 @@ import { CountryFlag } from '../shared/CountryFlag';
 
 interface CompareSolutionsTableProps {
   solutions: PopulatedSolution[];
+  locale: string;
 }
 
-const CATEGORIES = [
-  { id: 'all', label: 'All Solutions' },
-  { id: 'residency', label: 'Residency' },
-  { id: 'citizenship', label: 'Citizenship' },
-  { id: 'long_term_visa', label: 'Long-Term Visas' },
-  { id: 'corporate', label: 'Corporate' },
+const getCategories = (locale: string) => [
+  { id: 'all', label: locale === 'zh' ? '所有项目' : 'All Solutions' },
+  { id: 'residency', label: locale === 'zh' ? '居留权' : 'Residency' },
+  { id: 'citizenship', label: locale === 'zh' ? '公民身份' : 'Citizenship' },
+  { id: 'long_term_visa', label: locale === 'zh' ? '长期签证' : 'Long-Term Visas' },
+  { id: 'corporate', label: locale === 'zh' ? '企业方案' : 'Corporate' },
 ];
 
-export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps) {
+export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTableProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
   
   // State
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -35,9 +37,12 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
       if (activeCategory !== 'all' && sol.category !== activeCategory) return false;
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        const countryName = sol.country_id?.name?.en?.toLowerCase() || '';
-        const solName = sol.name?.en?.toLowerCase() || '';
-        if (!countryName.includes(query) && !solName.includes(query)) return false;
+        // @ts-ignore
+        const cName = sol.country_id?.translations?.[dbLocale]?.name || sol.country_id?.name?.[dbLocale] || sol.country_id?.name?.en || '';
+        // @ts-ignore
+        const sNameRaw = sol.translations?.[dbLocale]?.name || sol.name;
+        const sName = typeof sNameRaw === 'string' ? sNameRaw : (sNameRaw?.[dbLocale] || sNameRaw?.en || '');
+        if (!cName.toLowerCase().includes(query) && !sName.toLowerCase().includes(query)) return false;
       }
       return true;
     });
@@ -76,7 +81,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
       <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 pb-32">
         <div className="flex justify-between items-center mb-8">
           <h2 className={cn("text-3xl font-black uppercase tracking-tighter", isDark ? "text-white" : "text-gray-900")}>
-            Side-by-Side Comparison
+            {locale === 'zh' ? '并排对比' : 'Side-by-Side Comparison'}
           </h2>
           <button 
             onClick={() => setIsComparing(false)}
@@ -85,7 +90,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
               isDark ? "bg-white/10 text-white hover:bg-white/20" : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             )}
           >
-            Back to Selection
+            {locale === 'zh' ? '返回选择' : 'Back to Selection'}
           </button>
         </div>
 
@@ -98,7 +103,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
             <thead>
               <tr>
                 <th className="p-6 border-b border-r w-48 sticky left-0 z-20 backdrop-blur-md bg-inherit font-bold uppercase tracking-widest text-xs text-gray-500">
-                  Features
+                  {locale === 'zh' ? '特性' : 'Features'}
                 </th>
                 {selectedSolutions.map(sol => (
                   <th key={sol._id} className="p-6 border-b min-w-[280px] w-1/3 relative">
@@ -118,11 +123,13 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
                         />
                       </div>
                       <span className={cn("font-bold text-lg", isDark ? "text-white" : "text-black")}>
-                        {sol.country_id?.name?.en}
+                        {/* @ts-ignore */}
+                        {sol.country_id?.translations?.[dbLocale]?.name || sol.country_id?.name?.[dbLocale] || sol.country_id?.name?.en}
                       </span>
                     </div>
                     <h3 className={cn("font-black text-xl leading-tight", isDark ? "text-gray-300" : "text-gray-800")}>
-                      {sol.name?.en}
+                      {/* @ts-ignore */}
+                      {sol.translations?.[dbLocale]?.name || sol.name?.[dbLocale] || sol.name?.en}
                     </h3>
                   </th>
                 ))}
@@ -133,7 +140,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
               {/* Category */}
               <tr>
                 <td className="p-6 border-r font-bold uppercase tracking-widest text-xs text-gray-500 sticky left-0 z-10 bg-inherit backdrop-blur-md">
-                  Category
+                  {locale === 'zh' ? '类别' : 'Category'}
                 </td>
                 {selectedSolutions.map(sol => (
                   <td key={sol._id} className="p-6 font-semibold uppercase text-xs tracking-wider text-blue-500">
@@ -145,49 +152,62 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
               {/* Investment */}
               <tr>
                 <td className="p-6 border-r font-bold uppercase tracking-widest text-xs text-gray-500 sticky left-0 z-10 bg-inherit backdrop-blur-md">
-                  Min. Investment
+                  {locale === 'zh' ? '最低投资额' : 'Min. Investment'}
                 </td>
-                {selectedSolutions.map(sol => (
+                {selectedSolutions.map(sol => {
+                  // @ts-ignore
+                  const req = sol.translations?.[dbLocale]?.requirements || sol.requirements || {};
+                  return (
                   <td key={sol._id} className={cn("p-6 font-bold text-lg", isDark ? "text-white" : "text-gray-900")}>
-                    {sol.requirements?.investment_amount || 'N/A'}
+                    {req.investment_amount || (locale === 'zh' ? '无数据' : 'N/A')}
                   </td>
-                ))}
+                )})}
               </tr>
 
               {/* Timeframe */}
               <tr>
                 <td className="p-6 border-r font-bold uppercase tracking-widest text-xs text-gray-500 sticky left-0 z-10 bg-inherit backdrop-blur-md">
-                  Timeframe
+                  {locale === 'zh' ? '办理时间' : 'Timeframe'}
                 </td>
-                {selectedSolutions.map(sol => (
+                {selectedSolutions.map(sol => {
+                  // @ts-ignore
+                  const req = sol.translations?.[dbLocale]?.requirements || sol.requirements || {};
+                  return (
                   <td key={sol._id} className={cn("p-6 font-medium", isDark ? "text-gray-300" : "text-gray-800")}>
-                    {sol.requirements?.timeframe || 'N/A'}
+                    {req.timeframe || (locale === 'zh' ? '无数据' : 'N/A')}
                   </td>
-                ))}
+                )})}
               </tr>
 
               {/* Physical Presence */}
               <tr>
                 <td className="p-6 border-r font-bold uppercase tracking-widest text-xs text-gray-500 sticky left-0 z-10 bg-inherit backdrop-blur-md">
-                  Physical Presence
+                  {locale === 'zh' ? '居住要求' : 'Physical Presence'}
                 </td>
-                {selectedSolutions.map(sol => (
+                {selectedSolutions.map(sol => {
+                  // @ts-ignore
+                  const req = sol.translations?.[dbLocale]?.requirements || sol.requirements || {};
+                  return (
                   <td key={sol._id} className={cn("p-6 font-medium", isDark ? "text-gray-300" : "text-gray-800")}>
-                    {sol.requirements?.physical_presence || 'None required'}
+                    {req.physical_presence || (locale === 'zh' ? '无要求' : 'None required')}
                   </td>
-                ))}
+                )})}
               </tr>
 
               {/* Description */}
               <tr>
                 <td className="p-6 border-r font-bold uppercase tracking-widest text-xs text-gray-500 sticky left-0 z-10 bg-inherit backdrop-blur-md align-top">
-                  Overview
+                  {locale === 'zh' ? '概览' : 'Overview'}
                 </td>
-                {selectedSolutions.map(sol => (
+                {selectedSolutions.map(sol => {
+                  // @ts-ignore
+                  const descRaw = sol.translations?.[dbLocale]?.description || sol.description;
+                  const desc = typeof descRaw === 'string' ? descRaw : (descRaw?.[dbLocale] || descRaw?.en || (locale === 'zh' ? '暂无描述。' : 'No description available.'));
+                  return (
                   <td key={sol._id} className={cn("p-6 font-medium leading-relaxed align-top", isDark ? "text-gray-400" : "text-gray-600")}>
-                    {sol.description || 'No description available.'}
+                    {desc}
                   </td>
-                ))}
+                )})}
               </tr>
 
             </tbody>
@@ -203,12 +223,12 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
       
       {/* Controls Container (Search + Category Filter) */}
       <div className={cn(
-        "sticky top-20 z-40 backdrop-blur-xl mb-12 p-4 md:p-6 rounded-[2rem] border shadow-2xl transition-all",
+        "sticky top-20 z-40 backdrop-blur-xl mb-12 p-4 md:p-6 rounded-4xl border shadow-2xl transition-all",
         isDark ? "bg-[#0a0a0a]/80 border-white/10" : "bg-white/80 border-gray-100"
       )}>
         <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
           <div className="flex overflow-x-auto w-full md:w-auto hide-scrollbar gap-2 pb-2 md:pb-0">
-            {CATEGORIES.map((cat) => {
+            {getCategories(locale).map((cat) => {
               const isActive = activeCategory === cat.id;
               return (
                 <button
@@ -233,7 +253,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
             </div>
             <input
               type="text"
-              placeholder="Search country or solution..."
+              placeholder={locale === 'zh' ? '搜索国家或项目...' : 'Search country or solution...'}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
@@ -261,6 +281,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
             >
               <SolutionCard 
                 solution={sol} 
+                locale={locale}
                 mode="compare"
                 isSelected={selectedIds.includes(sol._id.toString())}
                 onSelectToggle={toggleSelection}
@@ -271,8 +292,8 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
         
         {filteredSolutions.length === 0 && (
           <div className="col-span-full py-32 text-center">
-            <h3 className={cn("text-2xl font-black mb-2", isDark ? "text-white" : "text-gray-900")}>No solutions found</h3>
-            <p className={cn(isDark ? "text-gray-400" : "text-gray-500")}>Try adjusting your search or category filters.</p>
+            <h3 className={cn("text-2xl font-black mb-2", isDark ? "text-white" : "text-gray-900")}>{locale === 'zh' ? '未找到项目' : 'No solutions found'}</h3>
+            <p className={cn(isDark ? "text-gray-400" : "text-gray-500")}>{locale === 'zh' ? '尝试调整您的搜索或类别过滤器。' : 'Try adjusting your search or category filters.'}</p>
           </div>
         )}
       </div>
@@ -291,11 +312,15 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
           >
             <div>
               <p className={cn("text-xs font-bold uppercase tracking-widest mb-1", isDark ? "text-gray-400" : "text-gray-500")}>
-                {selectedIds.length} / 3 Selected
+                {selectedIds.length} / 3 {locale === 'zh' ? '已选择' : 'Selected'}
               </p>
               <div className="flex -space-x-2">
-                {selectedSolutions.map(s => (
-                  <div key={s._id} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#111] overflow-hidden bg-gray-200 relative shrink-0" title={s.name.en}>
+                {selectedSolutions.map(s => {
+                  // @ts-ignore
+                  const sNameRaw = s.translations?.[dbLocale]?.name || s.name;
+                  const sName = typeof sNameRaw === 'string' ? sNameRaw : (sNameRaw?.[dbLocale] || sNameRaw?.en || 'Unknown');
+                  return (
+                  <div key={s._id} className="w-8 h-8 rounded-full border-2 border-white dark:border-[#111] overflow-hidden bg-gray-200 relative shrink-0" title={sName}>
                     <CountryFlag 
                       countrySlug={s.country_id?.slug}
                       countryCode={s.country_id?.code}
@@ -303,7 +328,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
                       fallbackUrl={s.country_id?.flag}
                     />
                   </div>
-                ))}
+                )})}
               </div>
             </div>
             
@@ -317,7 +342,7 @@ export function CompareSolutionsTable({ solutions }: CompareSolutionsTableProps)
                   : "bg-gray-200 dark:bg-white/10 text-gray-400 cursor-not-allowed"
               )}
             >
-              {selectedIds.length >= 2 ? "Compare Now" : "Select 1 More"}
+              {selectedIds.length >= 2 ? (locale === 'zh' ? '立即比较' : 'Compare Now') : (locale === 'zh' ? '再选 1 个' : 'Select 1 More')}
             </button>
           </motion.div>
         )}

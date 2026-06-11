@@ -31,7 +31,11 @@ export function AdmissionsConsultingContent({
       <HeroSection
         mode="page"
         title={isZh ? '升学指导' : 'Admissions Consulting'}
-        subtitle={isZh ? '精英导师团队提供端到端指导' : 'End-to-end guidance from elite mentor teams'}
+        subtitle={
+          isZh
+            ? '精英导师团队提供端到端指导'
+            : 'End-to-end guidance from elite mentor teams'
+        }
       />
 
       {/* Mentor Team Section */}
@@ -86,7 +90,7 @@ export function AdmissionsConsultingContent({
                         {team.stats.served}
                       </div>
                       <div className="text-xs text-gray-400 dark:text-gray-500">
-                        Served
+                        {isZh ? '已服务人数' : 'Served'}
                       </div>
                     </div>
                     <div className="w-px h-8 bg-gray-200 dark:bg-white/10" />
@@ -95,7 +99,7 @@ export function AdmissionsConsultingContent({
                         {team.stats.score}
                       </div>
                       <div className="text-xs text-gray-400 dark:text-gray-500">
-                        Score
+                        {isZh ? '录取率' : 'Score'}
                       </div>
                     </div>
                   </div>
@@ -113,7 +117,9 @@ export function AdmissionsConsultingContent({
             {isZh ? '服务流程' : 'Service Process'}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            {isZh ? '我们的“5对1”专属服务模式确保从头脑风暴到入学的每一步都有精准指导。' : 'Our "5v1" exclusive service model ensures precision guidance at every step, from brainstorming to enrollment.'}
+            {isZh
+              ? '我们的“5对1”专属服务模式确保从头脑风暴到入学的每一步都有精准指导。'
+              : 'Our "5v1" exclusive service model ensures precision guidance at every step, from brainstorming to enrollment.'}
           </p>
         </div>
 
@@ -144,7 +150,9 @@ export function AdmissionsConsultingContent({
               {isZh ? '高端申请服务' : 'High-End Applications'}
             </h2>
             <p className="text-gray-500 dark:text-gray-400">
-              {isZh ? '为精英录取提供的高端定制服务' : 'Premium bespoke services for elite admissions'}
+              {isZh
+                ? '为精英录取提供的高端定制服务'
+                : 'Premium bespoke services for elite admissions'}
             </p>
           </div>
 
@@ -170,7 +178,7 @@ export function AdmissionsConsultingContent({
                 <div className="space-y-4">
                   <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-3">
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      Region
+                      {isZh ? '地区' : 'Region'}
                     </span>
                     <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">
                       {pkg.region}
@@ -178,7 +186,7 @@ export function AdmissionsConsultingContent({
                   </div>
                   <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-3">
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      Schools
+                      {isZh ? '学校' : 'Schools'}
                     </span>
                     <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">
                       {pkg.schoolCount}
@@ -186,7 +194,7 @@ export function AdmissionsConsultingContent({
                   </div>
                   <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-3">
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      Extra School
+                      {isZh ? '额外学校' : 'Extra School'}
                     </span>
                     <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">
                       {pkg.extraPrice}
@@ -194,7 +202,7 @@ export function AdmissionsConsultingContent({
                   </div>
                   <div className="flex justify-between border-b border-gray-100 dark:border-white/5 pb-3">
                     <span className="text-gray-500 dark:text-gray-400 text-sm">
-                      Validity
+                      {isZh ? '服务周期' : 'Validity'}
                     </span>
                     <span className="font-medium text-gray-800 dark:text-gray-200 text-sm">
                       {pkg.validity}
@@ -203,7 +211,7 @@ export function AdmissionsConsultingContent({
                 </div>
 
                 <button className="w-full mt-8 bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
-                  Book Now
+                  {isZh ? '立即预订' : 'Book Now'}
                 </button>
               </div>
             ))}
@@ -239,7 +247,7 @@ export function AdmissionsConsultingContent({
                   {pkg.price}
                 </div>
                 <button className="px-6 py-2 bg-linear-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95">
-                  Select
+                  {isZh ? '选择' : 'Select'}
                 </button>
               </div>
             </div>

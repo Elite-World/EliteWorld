@@ -1,9 +1,6 @@
 'use client';
 
-import { Article as ArticleType } from '@/lib/types/content';
-import { useThemeStore } from '@/lib/stores/useThemeStore';
-import { cn } from '@/lib/utils';
-import { ImageWithFallback } from '@/components/ui/ImageWithFallback';
+import { Article as ArticleType, useThemeStore, useLanguageStore, cn, ImageWithFallback } from '@repo/domain';
 import Link from 'next/link';
 
 interface ArticleProps {
@@ -18,6 +15,8 @@ export function ArticleCard({
   basePath,
 }: ArticleProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   if (!article) return null;
 
@@ -55,7 +54,7 @@ export function ArticleCard({
         </div>
 
         {/* Content Container */}
-        <div className="p-6 flex flex-col flex-grow">
+        <div className="p-6 flex flex-col grow">
           <div className="flex items-center gap-3 text-sm mb-3">
             <span
               className={cn(
@@ -89,7 +88,7 @@ export function ArticleCard({
           </p>
 
           <div className="mt-auto pt-4 flex items-center text-blue-500 font-medium text-sm">
-            Read Article
+            {isZh ? '阅读文章' : 'Read Article'}
             <svg
               className="w-4 h-4 ml-1 transition-transform group-hover:translate-x-1"
               fill="none"

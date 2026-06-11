@@ -7,9 +7,14 @@ import { useModalStore } from '../../lib/stores/useModalStore';
 import { cn } from '../../lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
-import { ArrowUp, Search, Sun, Moon, Monitor } from 'lucide-react';
+import { ArrowUp, Search, Sun, Moon, Monitor, User } from 'lucide-react';
+import { userMenuItems } from './UserMenu';
 
-export function GlobalRibbon() {
+export interface GlobalRibbonProps {
+  siteConfig?: any;
+}
+
+export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
   const buttons = useRibbonStore((state) => state.buttons);
   const registerButton = useRibbonStore((state) => state.registerButton);
   const updateButton = useRibbonStore((state) => state.updateButton);
@@ -37,9 +42,10 @@ export function GlobalRibbon() {
       const isScrolled = window.scrollY > 300;
 
       updateButton('scroll-to-top', { visible: isScrolled });
-      updateButton('search-ribbon', { visible: isScrolled });
-      updateButton('language-ribbon', { visible: isScrolled });
-      updateButton('theme-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.search !== false) updateButton('search-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.language !== false) updateButton('language-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.mode !== false) updateButton('theme-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.user !== false) updateButton('user-ribbon', { visible: isScrolled });
     };
 
     window.addEventListener('scroll', updateVisibility);
@@ -67,18 +73,34 @@ export function GlobalRibbon() {
     });
 
     // 2. Search
-    registerButton({
-      id: 'search-ribbon',
-      priority: 50, // Above scroll-to-top
-      visible: false, // Updated by listener
-      label: 'Search',
-      icon: Search,
-      onClick: () => openModal('search'),
-    });
-  }, [registerButton, openModal]);
+    if (siteConfig?.features?.search !== false) {
+      registerButton({
+        id: 'search-ribbon',
+        priority: 50, // Above scroll-to-top
+        visible: false, // Updated by listener
+        label: 'Search',
+        icon: Search,
+        onClick: () => openModal('search'),
+      });
+    }
 
-  // 3. Theme Toggle (Needs separate effect because mode changes)
+    // 3. User
+    if (siteConfig?.features?.user !== false) {
+      registerButton({
+        id: 'user-ribbon',
+        priority: 60, // Above Search
+        visible: false, // Updated by listener
+        label: 'Account',
+        icon: User,
+        onClick: () => openModal('userMenu', { items: userMenuItems.map((item) => ({ ...item })) }),
+      });
+    }
+  }, [registerButton, openModal, siteConfig]);
+
+  // 4. Theme Toggle (Needs separate effect because mode changes)
   useEffect(() => {
+    if (siteConfig?.features?.mode === false) return;
+
     const ThemeIcon = mode === 'light' ? Sun : mode === 'dark' ? Moon : Monitor;
     const handleThemeToggle = () => {
       if (mode === 'system') setMode('light');
@@ -100,10 +122,12 @@ export function GlobalRibbon() {
       icon: ThemeIcon,
       onClick: handleThemeToggle,
     });
-  }, [registerButton, updateButton, mode, setMode]);
+  }, [registerButton, updateButton, mode, setMode, siteConfig]);
 
-  // 4. Language Toggle
+  // 5. Language Toggle
   useEffect(() => {
+    if (siteConfig?.features?.language === false) return;
+
     const handleLangToggle = () => toggleLanguage();
 
     registerButton({
@@ -127,7 +151,7 @@ export function GlobalRibbon() {
       ),
       onClick: handleLangToggle,
     });
-  }, [registerButton, updateButton, language, toggleLanguage]);
+  }, [registerButton, updateButton, language, toggleLanguage, siteConfig]);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -205,15 +229,17 @@ export function GlobalRibbon() {
                     // Individual ribbon hover expansion (desktop only)
                     'md:translate-x-[calc(100%-8px)] hover:md:translate-x-0',
                     // Colors
-                    button.id === 'search-ribbon'
-                      ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-400 dark:text-gray-900 dark:hover:bg-blue-300'
-                      : button.id === 'language-ribbon'
-                        ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-400 dark:text-gray-900 dark:hover:bg-purple-300'
-                        : button.id === 'theme-ribbon'
-                          ? 'bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-400 dark:text-gray-900 dark:hover:bg-indigo-300'
-                          : button.id === 'scroll-to-top'
-                            ? 'bg-gray-900 text-white hover:bg-black dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
-                            : 'bg-gray-500 text-white hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600',
+                    button.id === 'user-ribbon'
+                      ? 'bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:text-gray-900 dark:hover:bg-emerald-400'
+                      : button.id === 'search-ribbon'
+                        ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-400 dark:text-gray-900 dark:hover:bg-blue-300'
+                        : button.id === 'language-ribbon'
+                          ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-400 dark:text-gray-900 dark:hover:bg-purple-300'
+                          : button.id === 'theme-ribbon'
+                            ? 'bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-400 dark:text-gray-900 dark:hover:bg-indigo-300'
+                            : button.id === 'scroll-to-top'
+                              ? 'bg-gray-900 text-white hover:bg-black dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
+                              : 'bg-gray-500 text-white hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600',
                   )}
                   title={button.label}
                 >

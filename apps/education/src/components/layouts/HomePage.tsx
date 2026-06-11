@@ -1,7 +1,7 @@
 'use client';
 
 import { Article } from '@repo/domain';
-import { useThemeStore, useDevStore, useLanguageStore } from '@repo/domain';
+import { useThemeStore, useDevStore } from '@repo/domain';
 import { ArticleCard } from '@repo/domain';
 
 import { cn } from '@repo/domain';
@@ -9,10 +9,7 @@ import { siteConfig } from '@repo/apps-config/education/site-config';
 import Image from 'next/image';
 // import { useUnsplashImage } from '@repo/domain';
 import {
-  Linkedin,
-  Twitter,
-  Instagram,
-  Facebook,
+
   MapPin,
   ArrowRight,
   Trophy,
@@ -20,7 +17,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-import { navGateway } from '@repo/apps-config/education/navbar-config';
+import { getNavGateway } from '@repo/apps-config/education/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
 
 // Add subdomain config at the top of the file
@@ -96,8 +93,9 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 // }
 
 interface HomePageProps {
-  articles: Article[];
+  articles?: Article[];
   tips?: Article[];
+  locale?: string;
 }
 
 
@@ -115,11 +113,12 @@ interface HomePageProps {
 //   );
 // }
 
-export function HomePage({ articles, tips = [] }: HomePageProps) {
+export function HomePage({ articles, tips = [], locale }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
-  const language = useLanguageStore((state) => state.language);
-  const isZh = language === 'zh';
+  // The language from store isn't reliable for server-side props passing, prefer locale prop
+  const isZh = locale === 'zh';
+  const navGateway = getNavGateway(locale);
 
   // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
@@ -151,7 +150,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
         }
       >
         {Object.values(navGateway)
-          .filter((item) => item !== navGateway.main)
+          .filter((item) => item.name !== siteConfig.name)
           .map((button: NavigationItem, index: number) => (
             <a
               key={index}
@@ -173,6 +172,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 // Subtle shadow
                 'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
                 'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
+                'w-48'
               )}
             >
               {button.label}
@@ -199,23 +199,23 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
             {[
               {
                 number: '1000+',
-                label: 'Success Stories',
-                description: 'Students placed in top institutions worldwide',
+                label: isZh ? '成功案例' : 'Success Stories',
+                description: isZh ? '帮助学生进入全球顶尖学府' : 'Students placed in top institutions worldwide',
               },
               {
                 number: '50+',
-                label: 'Partner Universities',
-                description: 'Direct partnerships with leading institutions',
+                label: isZh ? '合作大学' : 'Partner Universities',
+                description: isZh ? '与领先院校直接建立合作关系' : 'Direct partnerships with leading institutions',
               },
               {
                 number: '98%',
-                label: 'Success Rate',
-                description: 'Visa and admission application success',
+                label: isZh ? '成功率' : 'Success Rate',
+                description: isZh ? '签证和入学申请的成功保证' : 'Visa and admission application success',
               },
               {
                 number: '10+',
-                label: 'Years Experience',
-                description: 'Decade of excellence in education consulting',
+                label: isZh ? '年经验' : 'Years Experience',
+                description: isZh ? '十余年卓越教育咨询经验' : 'Decade of excellence in education consulting',
               },
             ].map((stat, index) => (
               <div
@@ -276,13 +276,13 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 'transition-colors'
               )}
             >
-              <span>View all articles</span>
+              <span>{isZh ? '查看所有文章' : 'View all articles'}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.slice(0, 3).map((article) => (
+            {articles?.slice(0, 3).map((article) => (
               <ArticleCard
                 key={article.id}
                 article={article}
@@ -324,7 +324,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                   'transition-colors'
                 )}
               >
-                <span>View all tips</span>
+                <span>{isZh ? '查看所有干货' : 'View all tips'}</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -367,21 +367,21 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
               {[
                 {
                   name: 'Dr. Evelyn Vance',
-                  role: 'Academic Director',
+                  role: isZh ? '学术总监' : 'Academic Director',
                   image: '/images/team/evelyn-vance.png',
-                  speciality: 'Strategic Planning & Research',
+                  speciality: isZh ? '战略规划与研究' : 'Strategic Planning & Research',
                 },
                 {
                   name: 'James Miller',
-                  role: 'Admissions Specialist',
+                  role: isZh ? '招生专家' : 'Admissions Specialist',
                   image: '/images/team/james-miller.png',
-                  speciality: 'Ivy League & Oxbridge',
+                  speciality: isZh ? '常春藤盟校与牛剑' : 'Ivy League & Oxbridge',
                 },
                 {
                   name: 'Grace Tan',
-                  role: 'Writing Consultant',
+                  role: isZh ? '写作顾问' : 'Writing Consultant',
                   image: '/images/team/grace-tan.png',
-                  speciality: 'Personal Statements & Essays',
+                  speciality: isZh ? '个人陈述与文书' : 'Personal Statements & Essays',
                 },
               ].map((member, index) => (
                 <div
@@ -437,11 +437,11 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Trophy className="w-5 h-5 text-blue-600" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">Global Elite</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">{isZh ? '全球精英' : 'Global Elite'}</span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-                Top Ranked <br />
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Institutions</span>
+                {isZh ? '顶尖排名' : 'Top Ranked'} <br />
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{isZh ? '学府' : 'Institutions'}</span>
               </h2>
             </div>
             <Link
@@ -451,7 +451,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 isDark ? "bg-white/5 hover:bg-white/10 text-white" : "bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm"
               )}
             >
-              View Full Rankings
+              {isZh ? '查看完整排名' : 'View Full Rankings'}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -497,13 +497,13 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                   </div>
                   <div className="flex items-center gap-2 mb-4 mt-2">
                     <MapPin className="w-4 h-4 text-blue-600" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">{uni.country}</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-500">{isZh ? (uni.country === 'USA' ? '美国' : uni.country === 'United Kingdom' ? '英国' : uni.country) : uni.country}</span>
                   </div>
-                  <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6 line-clamp-2 leading-tight">{uni.name}</h3>
+                  <h3 className="text-xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6 line-clamp-2 leading-tight">{isZh ? (uni.name === 'Massachusetts Institute of Technology (MIT)' ? '麻省理工学院 (MIT)' : uni.name === 'Imperial College London' ? '伦敦帝国学院' : uni.name === 'University of Oxford' ? '牛津大学' : uni.name) : uni.name}</h3>
                   <div className="mt-auto flex items-center justify-between pt-6 border-t border-gray-100 dark:border-white/10">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                      <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">Score {uni.score}</span>
+                      <span className="text-[10px] font-black text-gray-500 uppercase tracking-[0.2em]">{isZh ? '得分' : 'Score'} {uni.score}</span>
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors group-hover:translate-x-1" />
                   </div>
@@ -519,10 +519,10 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
-              Explore by <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Destination</span>
+              {isZh ? '按' : 'Explore by'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{isZh ? '目的地' : 'Destination'}</span>{isZh ? '探索' : ''}
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
-              Find your perfect academic home in the world&apos;s leading educational hubs.
+              {isZh ? '在全球领先的教育中心找到您完美的学术家园。' : 'Find your perfect academic home in the world\'s leading educational hubs.'}
             </p>
           </div>
 
@@ -535,10 +535,10 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 <div className="w-16 h-16 bg-white/10 backdrop-blur-md rounded-3xl flex items-center justify-center mb-8 border border-white/20 group-hover:scale-110 transition-transform duration-500">
                   <Building2 className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-4">United States</h3>
-                <p className="text-base font-medium text-gray-300 max-w-md mb-8 leading-relaxed">Home to the Ivy League and the world&apos;s most innovative research institutions.</p>
+                <h3 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-4">{isZh ? '美国' : 'United States'}</h3>
+                <p className="text-base font-medium text-gray-300 max-w-md mb-8 leading-relaxed">{isZh ? '常春藤盟校和全球最具创新力研究机构的所在地。' : 'Home to the Ivy League and the world\'s most innovative research institutions.'}</p>
                 <div className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-blue-400 group-hover:text-blue-300 transition-colors">
-                  Explore 50+ Institutions <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
+                  {isZh ? '探索 50+ 所院校' : 'Explore 50+ Institutions'} <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform" />
                 </div>
               </div>
             </Link>
@@ -549,9 +549,9 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 <Image src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=600" alt="Study in UK" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:-rotate-1" />
                 <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
                 <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">United Kingdom</h3>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">{isZh ? '英国' : 'United Kingdom'}</h3>
                   <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover:text-blue-300 transition-colors">
-                    Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {isZh ? '探索' : 'Explore'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </Link>
@@ -561,9 +561,9 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 <Image src="https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=600" alt="Study in Australia" fill className="object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" />
                 <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/90 via-[#0a0a0a]/40 to-transparent" />
                 <div className="absolute inset-0 p-10 flex flex-col justify-end">
-                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">Australia</h3>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-4">{isZh ? '澳大利亚' : 'Australia'}</h3>
                   <div className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.2em] text-blue-400 group-hover:text-blue-300 transition-colors">
-                    Explore <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    {isZh ? '探索' : 'Explore'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </Link>

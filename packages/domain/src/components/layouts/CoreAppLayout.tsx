@@ -100,7 +100,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
       </footer>
 
       {/* Global Side Ribbon */}
-      <GlobalRibbon />
+      <GlobalRibbon siteConfig={siteConfig} />
 
       {/* Dev Tools Toggle (Only renders in dev mode) */}
       <DevToolsToggle />

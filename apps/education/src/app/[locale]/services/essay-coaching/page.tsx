@@ -1,18 +1,19 @@
 import { EssayCoachingContent } from '@/components/layouts/EssayCoaching';
 import {
-  documentTypes,
-  pricingPackages,
+  getDocumentTypes,
+  getPricingPackages,
 } from '@repo/apps-config/content/education/pricing/essayCoaching';
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
-export default function Page() {
+export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   return (
     <EssayCoachingContent
-      documentTypes={documentTypes}
-      packages={pricingPackages}
+      documentTypes={getDocumentTypes(locale)}
+      packages={getPricingPackages(locale)}
     />
   );
 }

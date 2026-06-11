@@ -121,12 +121,15 @@ function DesktopMenuItem({
   item,
   isTransparent,
   isDark,
+  language = 'en',
 }: {
   item: NavigationItem;
   isTransparent?: boolean;
   isDark?: boolean;
+  language?: 'en' | 'zh';
 }) {
   const hasChildren = item.children && item.children.length > 0;
+  const isZh = language === 'zh';
 
   return (
     <div className="relative group">
@@ -164,7 +167,7 @@ function DesktopMenuItem({
         >
           <div className="px-4 py-2 mb-2 border-b border-gray-50 dark:border-white/5">
             <span className="text-[8px] font-black uppercase tracking-widest text-gray-400">
-              Navigation
+              {isZh ? '快捷导航' : 'Navigation'}
             </span>
           </div>
           {item.children?.map((child: NavigationItem) => (
@@ -229,6 +232,7 @@ export function Navbar({
   const { scrollY, isHeroVisible, isScrollingUp } = useScrollPosition();
   const isScrolled = scrollY > 20 || forceSolid;
   const [isDomainOpen, setIsDomainOpen] = useState(false);
+  const isZh = language === 'zh';
 
   return (
     <nav
@@ -310,7 +314,7 @@ export function Navbar({
                 >
                   <div className="px-4 py-3 border-b border-gray-50 dark:border-white/5 mb-2">
                     <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">
-                      Top-Level Domains
+                      {isZh ? '关联服务站点' : 'Top-Level Domains'}
                     </p>
                   </div>
                   <div className="space-y-1">
@@ -362,6 +366,7 @@ export function Navbar({
                   item={item}
                   isTransparent={!isScrolled}
                   isDark={isDark}
+                  language={language}
                 />
               ))}
             </div>

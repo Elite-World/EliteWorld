@@ -9,12 +9,7 @@ import { cn } from '@repo/domain';
 // import { useEffect, useState } from 'react';
 import { siteConfig } from '@repo/apps-config/immigration/site-config';
 import Image from 'next/image';
-import { useLanguageStore } from '@repo/domain';
 import {
-  Linkedin,
-  Twitter,
-  Instagram,
-  Facebook,
   Globe2,
   ArrowRight,
   Building2,
@@ -23,7 +18,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 
-import { navGateway } from '@repo/apps-config/immigration/navbar-config';
+import { getNavGateway } from '@repo/apps-config/immigration/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
 
 // Add subdomain config at the top of the file
@@ -121,12 +116,14 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 
 interface HomePageProps {
   recentArticles?: any[];
+  locale?: string;
 }
 
-export function HomePage({ recentArticles = [] }: HomePageProps) {
+export function HomePage({ recentArticles = [], locale }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
-  const language = useLanguageStore((state) => state.language);
-  const isZh = language === 'zh';
+  // The language from store isn't reliable for server-side props passing, prefer locale prop
+  const isZh = locale === 'zh';
+  const navGateway = getNavGateway(locale);
 
   // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
@@ -153,12 +150,13 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
         title={siteConfig.name}
         subtitle={
           <em>
-            <strong>Elite Mobility</strong> | {isZh ? '全球公民的尊贵之路' : 'Premium Pathways for Global Citizens'}
+            <strong>{isZh ? 'Elite 环球移居 ' : 'Elite Mobility'}</strong> |{' '}
+            {isZh ? '智选全球卓越之路' : 'Premium Pathways for Global Citizens'}
           </em>
         }
       >
         {Object.values(navGateway)
-          .filter((item) => item !== navGateway.main)
+          .filter((item) => item.name !== siteConfig.name)
           .map((button: NavigationItem, index: number) => (
             <a
               key={index}
@@ -180,6 +178,7 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
                 // Subtle shadow
                 'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
                 'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
+                'w-48',
               )}
             >
               {button.label}
@@ -207,22 +206,30 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
               {
                 number: '1,000+',
                 label: isZh ? '成功移民' : 'Successful Relocations',
-                description: isZh ? '安全协助家庭与高净值人士完成搬迁' : 'Families and high-net-worth individuals securely relocated',
+                description: isZh
+                  ? '安全协助家庭与高净值人士完成搬迁'
+                  : 'Families and high-net-worth individuals securely relocated',
               },
               {
                 number: '20+',
                 label: isZh ? '覆盖地区' : 'Jurisdictions',
-                description: isZh ? '遍布欧洲、美洲和全球的尊贵移民通道' : 'Premium pathways across Europe, Americas, and Oceania',
+                description: isZh
+                  ? '遍布欧洲、美洲和全球的尊贵移民通道'
+                  : 'Premium pathways across Europe, Americas, and Oceania',
               },
               {
                 number: '100%',
                 label: isZh ? '隐私保密' : 'Confidentiality',
-                description: isZh ? '在财富和身份规划方面保持绝对的保密性' : 'Absolute discretion in wealth and mobility structuring',
+                description: isZh
+                  ? '在财富和身份规划方面保持绝对的保密性'
+                  : 'Absolute discretion in wealth and mobility structuring',
               },
               {
                 number: '15+',
                 label: isZh ? '年经验' : 'Years Experience',
-                description: isZh ? '十余年全球移民战略规划的卓越经验' : 'Decade of excellence in global immigration strategy',
+                description: isZh
+                  ? '十余年全球移民战略规划的卓越经验'
+                  : 'Decade of excellence in global immigration strategy',
               },
             ].map((stat, index) => (
               <div
@@ -270,7 +277,9 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
               isDark ? 'text-gray-400' : 'text-gray-600',
             )}
           >
-            {isZh ? '我们经验丰富的顾问团队致力于为您家庭的全球流动性和财富保值制定量身定制的策略。' : 'Our experienced counsel are dedicated to architecting bespoke strategies for your family\'s global mobility and wealth preservation.'}
+            {isZh
+              ? '我们经验丰富的顾问团队致力于为您家庭的全球流动性和财富保值制定量身定制的策略。'
+              : "Our experienced counsel are dedicated to architecting bespoke strategies for your family's global mobility and wealth preservation."}
           </p>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -279,13 +288,17 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
                 name: 'David Lim',
                 role: isZh ? '高级顾问' : 'Senior Consultant',
                 image: '/images/team/david-lim.png',
-                speciality: isZh ? '投资与技术移民' : 'Investor & Skilled Migration',
+                speciality: isZh
+                  ? '投资与技术移民'
+                  : 'Investor & Skilled Migration',
               },
               {
                 name: 'Linda Wu',
                 role: isZh ? '移民律师' : 'Immigration Lawyer',
                 image: '/images/team/linda-wu.png',
-                speciality: isZh ? '签证合规与申诉' : 'Visa Compliance & Appeals',
+                speciality: isZh
+                  ? '签证合规与申诉'
+                  : 'Visa Compliance & Appeals',
               },
               {
                 name: 'Robert Ng',
@@ -351,9 +364,10 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
                 </span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-                {isZh ? '尊贵' : 'Premium'} <br />
+                {isZh ? '首选' : 'Premium'}
+                {/* <br /> */}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                  {isZh ? '目的地' : 'Destinations'}
+                  {isZh ? '目的地' : ' Destinations'}
                 </span>
               </h2>
             </div>
@@ -391,7 +405,9 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
               },
               {
                 country: isZh ? '澳大利亚' : 'Australia',
-                program: isZh ? '商业创新签证 (188)' : 'Business Innovation (188)',
+                program: isZh
+                  ? '商业创新签证 (188)'
+                  : 'Business Innovation (188)',
                 image:
                   'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=800',
                 timeframe: isZh ? '12-18 个月' : '12-18 Months',
@@ -453,34 +469,66 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
-              {isZh ? '按目标' : 'Pathways by'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{isZh ? '规划路径' : 'Goal'}</span>
+              {isZh ? '按目标' : 'Pathways by'}{' '}
+              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                {isZh ? '规划路径' : 'Goal'}
+              </span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              {isZh ? '选择您的主要目标，探索为您量身定制的移民和财富结构策略。' : 'Select your primary objective to explore tailored immigration and wealth structuring strategies.'}
+              {isZh
+                ? '选择您的主要目标，探索为您量身定制的移民和财富结构策略。'
+                : 'Select your primary objective to explore tailored immigration and wealth structuring strategies.'}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link href="/solutions/residency" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors">
+            <Link
+              href="/solutions/residency"
+              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors"
+            >
               <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Globe2 className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{isZh ? '投资居留' : 'Residency by Investment'}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{isZh ? '在优质司法管辖区获得黄金签证和永久居留权。' : 'Secure golden visas and permanent residency rights in prime jurisdictions.'}</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {isZh ? '投资居留' : 'Residency by Investment'}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {isZh
+                  ? '在优质司法管辖区获得黄金签证和永久居留权。'
+                  : 'Secure golden visas and permanent residency rights in prime jurisdictions.'}
+              </p>
             </Link>
-            <Link href="/solutions/citizenship" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors">
+            <Link
+              href="/solutions/citizenship"
+              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
+            >
               <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <ShieldCheck className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{isZh ? '第二公民身份 (CBI)' : 'Second Citizenship (CBI)'}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{isZh ? '在数月内直接获得公民身份和强大的护照。' : 'Obtain direct citizenship and powerful passports within months.'}</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {isZh ? '第二公民身份 (CBI)' : 'Second Citizenship (CBI)'}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {isZh
+                  ? '在数月内直接获得公民身份和强大的护照。'
+                  : 'Obtain direct citizenship and powerful passports within months.'}
+              </p>
             </Link>
-            <Link href="/solutions/wealth-structuring" className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-colors">
+            <Link
+              href="/solutions/wealth-structuring"
+              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-colors"
+            >
               <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                 <Landmark className="w-6 h-6" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{isZh ? '财富架构' : 'Wealth Structuring'}</h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{isZh ? '优化税务框架并在全球范围内保护您家族的财富。' : 'Optimize tax frameworks and protect your family\'s legacy globally.'}</p>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {isZh ? '财富架构' : 'Wealth Structuring'}
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                {isZh
+                  ? '优化税务框架并在全球范围内保护您家族的财富。'
+                  : "Optimize tax frameworks and protect your family's legacy globally."}
+              </p>
             </Link>
           </div>
         </div>
@@ -493,10 +541,15 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
             <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
               <div>
                 <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
-                  {isZh ? '全球流动性' : 'Global Mobility'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{isZh ? '智库' : 'Intelligence'}</span>
+                  {isZh ? '全球流动性' : 'Global Mobility'}{' '}
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                    {isZh ? '智库' : 'Intelligence'}
+                  </span>
                 </h2>
                 <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
-                  {isZh ? '关于全球公民和居住权的专家见解、政策更新和突发新闻。' : 'Expert insights, policy updates, and breaking news on global citizenship and residency.'}
+                  {isZh
+                    ? '关于全球公民和居住权的专家见解、政策更新和突发新闻。'
+                    : 'Expert insights, policy updates, and breaking news on global citizenship and residency.'}
                 </p>
               </div>
               <Link
@@ -515,11 +568,15 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {recentArticles.map((article) => (
-                <Link key={article.id} href={`/insights/${article.slug}`} className="group block">
+                <Link
+                  key={article.id}
+                  href={`/insights/${article.slug}`}
+                  className="group block"
+                >
                   <div className="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-gray-200 dark:bg-white/5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src={article.image || '/images/placeholder.jpg'} 
+                    <img
+                      src={article.image || '/images/placeholder.jpg'}
                       alt={article.title}
                       className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                     />
@@ -528,11 +585,22 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
                   <div className="space-y-3">
                     <div className="flex items-center gap-3">
                       <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                        {article.category || 'News'}
+                        {article.category || (isZh ? '新闻' : 'News')}
                       </span>
-                      <span className="text-gray-400 dark:text-gray-600 text-xs">•</span>
+                      <span className="text-gray-400 dark:text-gray-600 text-xs">
+                        •
+                      </span>
                       <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                        {article.date}
+                        {article.date
+                          ? new Date(article.date).toLocaleDateString(
+                              isZh ? 'zh-CN' : 'en-US',
+                              {
+                                month: 'long',
+                                day: 'numeric',
+                                year: 'numeric',
+                              },
+                            )
+                          : ''}
                       </span>
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
@@ -559,10 +627,13 @@ export function HomePage({ recentArticles = [] }: HomePageProps) {
           <div className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl">
             <Building2 className="w-12 h-12 text-blue-400 mx-auto mb-8" />
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
-              {isZh ? '建立您的' : 'Establish Your'} <br /> {isZh ? '全球存在' : 'Global Presence'}
+              {isZh ? '点亮全球足迹' : 'Establish Your'} <br />{' '}
+              {isZh ? '拓展国际格局' : 'Global Presence'}
             </h2>
             <p className="text-gray-300 text-lg md:text-xl font-medium leading-relaxed max-w-2xl mx-auto mb-12">
-              {isZh ? '与我们的高级移民顾问交谈，为您的家庭的全球流动性和财富保值规划专属战略。' : 'Speak with our senior immigration counsel to architect a bespoke strategy for your family\'s global mobility and wealth preservation.'}
+              {isZh
+                ? '与我们的移民顾问交谈，为您的家庭的全球流动性和财富保值规划专属战略。'
+                : "Speak with our senior immigration counsel to architect a bespoke strategy for your family's global mobility and wealth preservation."}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

@@ -21,5 +21,5 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
     }
   }
 
-  return <HomePage recentArticles={latestArticles} />;
+  return <HomePage recentArticles={latestArticles} locale={locale} />;
 }

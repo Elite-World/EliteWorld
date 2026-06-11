@@ -16,6 +16,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const tipsProvider = getProviderForSection('tips', locale);
   const tips = tipsProvider ? await tipsProvider.getArticles() : [];
 
-  return <HomePage articles={articles} tips={tips} />;
+  return <HomePage articles={articles} tips={tips} locale={locale} />;
 }
 

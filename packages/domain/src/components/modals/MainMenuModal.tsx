@@ -42,6 +42,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
   const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
   const { handleToggle: toggleLanguage } = useLanguageSwitcher();
   const { close } = useModalStore();
 
@@ -124,7 +125,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     <input
                       id="drawer-search-input"
                       type="text"
-                      placeholder="Search..."
+                      placeholder={isZh ? '搜索...' : 'Search...'}
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
                       className={cn(
@@ -167,15 +168,15 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     </div>
                   ) : (
                     <p className="text-center text-gray-500 py-8 text-sm">
-                      No results found.
+                      {isZh ? '未找到相关结果。' : 'No results found.'}
                     </p>
                   )
                 ) : (
                   <div className="space-y-1">
                     <p className="px-2 py-2 text-xs font-bold uppercase tracking-wider text-gray-400">
-                      Suggestions
+                      {isZh ? '搜索建议' : 'Suggestions'}
                     </p>
-                    {SUGGESTIONS.map((suggestion) => (
+                    {(isZh ? ['英国留学', '签证要求', '顶尖大学', '奖学金申请'] : SUGGESTIONS).map((suggestion) => (
                       <button
                         key={suggestion}
                         onClick={() => setQuery(suggestion)}
@@ -211,7 +212,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     isDark ? 'text-gray-400' : 'text-gray-500',
                   )}
                 >
-                  Navigation
+                  {isZh ? '快捷导航' : 'Navigation'}
                 </span>
                 <button
                   onClick={close}
@@ -277,7 +278,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                             <path d="m21 21-4.3-4.3" />
                           </svg>
                         </span>
-                        Search Registry
+                        {isZh ? '搜索全球名校录' : 'Search Registry'}
                       </span>
                     </button>
                   </div>
@@ -349,7 +350,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >
-                        Language
+                        {isZh ? '选择语言' : 'Language'}
                       </span>
                       <NavbarLanguageToggle
                         isTransparent={false}
@@ -367,7 +368,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >
-                        Appearance
+                        {isZh ? '外观主题' : 'Appearance'}
                       </span>
                       <NavbarModeToggle
                         isTransparent={false}
@@ -385,7 +386,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >
-                        Account
+                        {isZh ? '账户设置' : 'Account'}
                       </span>
                       <UserMenu isTransparent={false} />
                     </div>

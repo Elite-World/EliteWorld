@@ -10,6 +10,7 @@ interface BlogPageProps {
   categories: Category[];
   basePath?: string;
   title?: string;
+  locale?: string;
 }
 
 export function BlogPage(props: BlogPageProps) {
@@ -19,6 +20,7 @@ export function BlogPage(props: BlogPageProps) {
       title={props.title || 'Education Insights'}
       backgroundImage={siteConfig.ogImage}
       NewsletterComponent={NewsletterForm}
+      locale={props.locale}
     />
   );
 }

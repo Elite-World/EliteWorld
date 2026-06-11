@@ -5,7 +5,6 @@ import { cn } from '../../lib/utils';
 import { CountryFlag } from './CountryFlag';
 import Link from 'next/link';
 import { ArrowRight, Check } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export interface PopulatedSolution {
   _id: string | any;
@@ -38,6 +37,7 @@ interface SolutionCardProps {
   isSelected?: boolean;
   onSelectToggle?: (solution: PopulatedSolution) => void;
   className?: string;
+  locale: string;
 }
 
 export function SolutionCard({
@@ -46,8 +46,20 @@ export function SolutionCard({
   isSelected = false,
   onSelectToggle,
   className,
+  locale,
 }: SolutionCardProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
+  // @ts-ignore
+  const cName = solution.country_id?.translations?.[dbLocale]?.name || solution.country_id?.name?.[dbLocale] || solution.country_id?.name?.en || 'Unknown';
+  // @ts-ignore
+  const sNameRaw = solution.translations?.[dbLocale]?.name || solution.name;
+  const sName = typeof sNameRaw === 'string' ? sNameRaw : (sNameRaw?.[dbLocale] || sNameRaw?.en || 'Unknown');
+  // @ts-ignore
+  const sDescRaw = solution.translations?.[dbLocale]?.description || solution.description;
+  const sDesc = typeof sDescRaw === 'string' ? sDescRaw : (sDescRaw?.[dbLocale] || sDescRaw?.en || '');
+  // @ts-ignore
+  const sReq = solution.translations?.[dbLocale]?.requirements || solution.requirements || {};
 
   const getCategoryLabel = (cat: string) => {
     switch (cat) {
@@ -120,7 +132,7 @@ export function SolutionCard({
                     : 'text-gray-900 group-hover/country:text-blue-600',
                 )}
               >
-                {solution.country_id?.name?.en || 'Unknown'}
+                {cName}
               </h3>
               <p
                 className={cn(
@@ -165,16 +177,16 @@ export function SolutionCard({
               isDark ? 'text-gray-100' : 'text-gray-900',
             )}
           >
-            {solution.name?.en}
+            {sName}
           </h4>
-          {solution.description && (
+          {sDesc && (
             <p
               className={cn(
                 'text-sm leading-relaxed line-clamp-3',
                 isDark ? 'text-gray-400' : 'text-gray-600',
               )}
             >
-              {solution.description}
+              {sDesc}
             </p>
           )}
         </div>
@@ -196,7 +208,7 @@ export function SolutionCard({
                 isDark ? 'text-gray-200' : 'text-gray-800',
               )}
             >
-              {solution.requirements?.investment_amount || 'N/A'}
+              {sReq.investment_amount || 'N/A'}
             </p>
           </div>
           <div>
@@ -214,7 +226,7 @@ export function SolutionCard({
                 isDark ? 'text-gray-200' : 'text-gray-800',
               )}
             >
-              {solution.requirements?.timeframe || 'N/A'}
+              {sReq.timeframe || 'N/A'}
             </p>
           </div>
           <div>
@@ -232,7 +244,7 @@ export function SolutionCard({
                 isDark ? 'text-gray-200' : 'text-gray-800',
               )}
             >
-              {solution.requirements?.physical_presence || 'None'}
+              {sReq.physical_presence || 'None'}
             </p>
           </div>
         </div>
@@ -240,7 +252,7 @@ export function SolutionCard({
         {mode === 'explore' && (
           <div className="mt-6 pt-4 border-t border-gray-100 dark:border-white/10 relative z-10">
             <Link
-              href={`/programs/${solution.name?.en
+              href={`/programs/${(solution.name?.en || sName)
                 .toLowerCase()
                 .replace(/[^a-z0-9]+/g, '-')
                 .replace(/(^-|-$)/g, '')}-${solution._id}`}

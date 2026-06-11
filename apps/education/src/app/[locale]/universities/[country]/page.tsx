@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 
 export async function generateStaticParams() {
-  const { destinations } = await import('@repo/domain/data/destinations');
+  const { destinations } = await import('@repo/apps-config/content/education/destinations');
   const params: any[] = [];
   destinations.forEach((dest) => {
     params.push({ locale: 'en', country: dest.id });

@@ -20,6 +20,7 @@ interface BlogPageProps {
   title?: string;
   backgroundImage?: string;
   NewsletterComponent?: React.ComponentType;
+  locale?: string;
 }
 
 export function BlogPage({
@@ -28,6 +29,7 @@ export function BlogPage({
   basePath,
   title = 'Insights & Updates',
   backgroundImage = '/images/blog-hero.jpg', // Default fallback
+  locale,
   // NewsletterComponent,
 }: BlogPageProps) {
   const isDarkStore = useThemeStore((state) => state.isDark);
@@ -39,17 +41,17 @@ export function BlogPage({
 
   const isDark = isMounted ? isDarkStore : false;
 
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>(locale === 'zh' ? '全部' : 'All');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [visibleCount, setVisibleCount] = useState<number>(6); // Start with 6 grid items (+1 featured)
 
   const allCategories = [
-    { id: 'all', title: 'All', slug: 'all', items: [] },
+    { id: 'all', title: locale === 'zh' ? '全部' : 'All', slug: 'all', items: [] },
     ...categories,
   ];
 
   const filteredArticles =
-    selectedCategory === 'All'
+    selectedCategory === (locale === 'zh' ? '全部' : 'All')
       ? articles
       : articles.filter((article) => article.category === selectedCategory);
 
@@ -76,7 +78,7 @@ export function BlogPage({
     registerButton({
       id: filterButtonId,
       icon: HiFunnel,
-      label: 'Filter',
+      label: locale === 'zh' ? '筛选' : 'Filter',
       onClick: () => setIsFilterOpen(true),
       priority: 10, // Higher than ScrollToTop (-100)
       visible: typeof window !== 'undefined' ? window.scrollY > 300 : false
@@ -134,7 +136,7 @@ export function BlogPage({
                       isDark ? 'text-white' : 'text-gray-900',
                     )}
                   >
-                    Filter by Topic
+                    {locale === 'zh' ? '按主题筛选' : 'Filter by Topic'}
                   </h3>
                   <button
                     onClick={() => setIsFilterOpen(false)}
@@ -176,9 +178,9 @@ export function BlogPage({
             <div className="flex items-center gap-2 mb-8">
               <div className="w-8 h-px bg-blue-600" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-                {selectedCategory === 'All'
-                  ? 'Editor Pick'
-                  : `Top in ${selectedCategory}`}
+                {selectedCategory === (locale === 'zh' ? '全部' : 'All')
+                  ? (locale === 'zh' ? '编辑推荐' : 'Editor Pick')
+                  : (locale === 'zh' ? `${selectedCategory} 热门` : `Top in ${selectedCategory}`)}
               </span>
             </div>
             <h2
@@ -187,9 +189,9 @@ export function BlogPage({
                 isDark ? 'text-white' : 'text-gray-900',
               )}
             >
-              {selectedCategory === 'All'
-                ? 'Featured'
-                : `Latest in ${selectedCategory}`}
+              {selectedCategory === (locale === 'zh' ? '全部' : 'All')
+                ? (locale === 'zh' ? '精选文章' : 'Featured')
+                : (locale === 'zh' ? `${selectedCategory} 最新文章` : `Latest in ${selectedCategory}`)}
             </h2>
             <motion.div
               key={featuredArticle.id}
@@ -213,7 +215,7 @@ export function BlogPage({
               <div className="flex items-center gap-2 mb-4">
                 <div className="w-8 h-px bg-purple-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-purple-600">
-                  Daily Brief
+                  {locale === 'zh' ? '每日简报' : 'Daily Brief'}
                 </span>
               </div>
               <h2
@@ -222,7 +224,7 @@ export function BlogPage({
                   isDark ? 'text-white' : 'text-gray-900',
                 )}
               >
-                Recent Posts
+                {locale === 'zh' ? '最近发布' : 'Recent Posts'}
               </h2>
             </div>
           )}
@@ -251,13 +253,13 @@ export function BlogPage({
                     : 'bg-white text-gray-900 border-gray-200 hover:border-gray-900 shadow-md hover:shadow-xl',
                 )}
               >
-                Load More Articles
+                {locale === 'zh' ? '加载更多文章' : 'Load More Articles'}
               </button>
             </div>
           )}
           {filteredArticles.length === 0 && (
             <div className="text-center py-20 text-gray-500">
-              No articles found in this category.
+              {locale === 'zh' ? '该分类下没有文章。' : 'No articles found in this category.'}
             </div>
           )}
         </section>

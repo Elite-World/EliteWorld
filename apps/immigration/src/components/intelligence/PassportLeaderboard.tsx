@@ -3,8 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ICountry } from '@repo/domain';
-import { ArrowRight, CheckCircle2, XCircle } from 'lucide-react';
-import { cn } from '@repo/domain';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 interface PassportRankData {
   rank: number;
@@ -20,6 +19,7 @@ interface PassportRankData {
 
 interface PassportLeaderboardProps {
   data: PassportRankData[];
+  locale: string;
 }
 
 function AccessBadge({ label, hasAccess }: { label: string, hasAccess?: boolean }) {
@@ -39,20 +39,21 @@ function AccessBadge({ label, hasAccess }: { label: string, hasAccess?: boolean 
   );
 }
 
-export function PassportLeaderboard({ data }: PassportLeaderboardProps) {
+export function PassportLeaderboard({ data, locale }: PassportLeaderboardProps) {
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
   return (
     <div className="bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-3xl overflow-hidden shadow-2xl">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-gray-50 dark:bg-zinc-900 border-b border-gray-200 dark:border-white/10">
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">Rank</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest min-w-[200px]">Jurisdiction</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest">Visa-Free Score</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">US Access</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">UK Access</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">Schengen</th>
-              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">China</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest whitespace-nowrap">{locale === 'zh' ? '排名' : 'Rank'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest min-w-[200px]">{locale === 'zh' ? '目的地' : 'Jurisdiction'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest">{locale === 'zh' ? '免签得分' : 'Visa-Free Score'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">{locale === 'zh' ? '美国准入' : 'US Access'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">{locale === 'zh' ? '英国准入' : 'UK Access'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">{locale === 'zh' ? '申根准入' : 'Schengen'}</th>
+              <th className="py-6 px-8 text-xs font-black text-gray-400 uppercase tracking-widest text-center whitespace-nowrap">{locale === 'zh' ? '中国准入' : 'China'}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100 dark:divide-white/5">
@@ -65,7 +66,8 @@ export function PassportLeaderboard({ data }: PassportLeaderboardProps) {
                 </td>
                 <td className="py-6 px-8">
                   <Link href={`/destinations/${row.country.slug}`} className="text-xl font-black text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors uppercase tracking-tight block w-full">
-                    {row.country.name.en}
+                    {/* @ts-ignore */}
+                    {row.country.translations?.[dbLocale]?.name || row.country.name?.[dbLocale] || row.country.name?.en}
                   </Link>
                 </td>
                 <td className="py-6 px-8">

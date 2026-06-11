@@ -4,10 +4,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Plane, Building2, ShieldCheck, Briefcase } from 'lucide-react';
 
-export const metadata = {
-  title: 'Global Mobility Solutions | EliteWorld Immigration',
-  description: 'Explore our portfolio of residency, citizenship, and corporate structuring solutions worldwide.',
-};
+import type { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const isZh = locale === 'zh';
+  return {
+    title: isZh ? '全球身份规划方案 | EliteWorld 移民' : 'Global Mobility Solutions | EliteWorld Immigration',
+    description: isZh ? '探索我们面向全球的投资居留、第二公民身份以及公司架构规划方案组合。' : 'Explore our portfolio of residency, citizenship, and corporate structuring solutions worldwide.',
+  };
+}
 
 const CATEGORIES = [
   {

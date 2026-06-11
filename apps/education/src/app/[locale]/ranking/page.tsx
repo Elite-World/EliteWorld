@@ -6,11 +6,20 @@ import RankingMap from '@/components/ranking/RankingMap';
 // import { UniversityRanking } from '@repo/domain';
 import { fetchRankings, fetchMeta } from './actions';
 
-export const metadata: Metadata = {
-  title: 'Global University Rankings | Elite World Education',
-  description:
-    'Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject.',
+type Props = {
+  params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const isZh = locale === 'zh';
+  return {
+    title: isZh ? '全球大学排名 | 寰宇精英教育' : 'Global University Rankings | Elite World Education',
+    description: isZh
+      ? '探索由 QS 和泰晤士高等教育 (THE) 指标排名的全球顶尖大学。支持按国家和专业进行筛选。'
+      : 'Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject.',
+  };
+}
 
 export const dynamic = 'force-dynamic'; // Ensure fresh data if DB changes
 
@@ -19,16 +28,20 @@ export async function generateStaticParams() {
 }
 
 export default async function RankingPage({
+  params,
   searchParams,
 }: {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const params = await searchParams;
-  const yearParam = params.year as string | undefined;
-  const sourceParam = (params.source as string) || 'qs';
-  const rankTypeParam = (params.rankType as 'General' | 'Subject') || 'General';
-  const subjectParam = params.subject as string | undefined;
-  const countryParam = params.country as string | undefined;
+  const [{ locale }, urlParams] = await Promise.all([params, searchParams]);
+  const isZh = locale === 'zh';
+
+  const yearParam = urlParams.year as string | undefined;
+  const sourceParam = (urlParams.source as string) || 'qs';
+  const rankTypeParam = (urlParams.rankType as 'General' | 'Subject') || 'General';
+  const subjectParam = urlParams.subject as string | undefined;
+  const countryParam = urlParams.country as string | undefined;
 
   const selectedYear = yearParam ? parseInt(yearParam, 10) : undefined;
 
@@ -48,8 +61,8 @@ export default async function RankingPage({
     <div className="min-h-screen bg-gray-50/50 dark:bg-black/20 pb-20">
       <HeroSection
         mode="page"
-        title="Global University Rankings"
-        // subtitle="Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject."
+        title={isZh ? '全球大学排名' : 'Global University Rankings'}
+        // subtitle={isZh ? '探索由 QS 和泰晤士高等教育 (THE) 指标排名的全球顶尖大学。' : 'Explore top universities worldwide ranked by QS and THE metrics.'}
         className=""
       />
 

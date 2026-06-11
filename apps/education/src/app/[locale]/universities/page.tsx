@@ -23,20 +23,21 @@ export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
-export default async function UniversitiesPage() {
+export default async function UniversitiesPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const universities = await getCachedUniversities();
 
   return (
     <div className="min-h-screen bg-gray-50/50 dark:bg-black/20 pb-20">
       <HeroSection
         mode="page"
-        title="Global Universities Directory"
+        title={locale === 'zh' ? '全球大学名录' : 'Global Universities Directory'}
         className=""
       />
 
       {/* Main Content */}
       <div className="container mx-auto px-4 max-w-7xl -mt-24 relative z-10">
-        <UniversityDirectoryClient initialUniversities={universities} />
+        <UniversityDirectoryClient initialUniversities={universities} locale={locale} />
       </div>
     </div>
   );

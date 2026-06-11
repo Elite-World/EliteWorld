@@ -5,7 +5,7 @@ import { contentSections } from '@repo/apps-config/education/content-sources';
 import { Article } from '@/lib/types/content';
 
 import { getAllUniversitiesDirectory } from '@repo/domain/services/ranking-service';
-import { destinations } from '@repo/domain/data/destinations';
+import { destinations } from '@repo/apps-config/content/education/destinations';
 
 export interface SearchResult extends Article {
     section: string;

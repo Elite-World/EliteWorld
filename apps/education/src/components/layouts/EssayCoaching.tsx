@@ -109,13 +109,13 @@ export function EssayCoachingContent({
                     <div className="bg-white/50 dark:bg-white/5 p-4 rounded-xl border border-transparent dark:border-white/5 min-h-[100px] flex flex-col justify-center">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-[#4c5cec] rounded-full" />
-                        Price
+                        {isZh ? '服务价格' : 'Price'}
                       </h3>
                       <div className="text-xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500 mb-1">
                         {pkg.price}
                       </div>
                       <p className="text-[10px] text-gray-500 dark:text-gray-400 leading-tight">
-                        * Price may vary based on document type
+                        {isZh ? '* 价格可能因文书类型及服务项目有所浮动' : '* Price may vary based on document type'}
                       </p>
                     </div>
 
@@ -123,7 +123,7 @@ export function EssayCoachingContent({
                     <div className="bg-white/50 dark:bg-white/5 p-4 rounded-xl border border-transparent dark:border-white/5 min-h-[100px] flex flex-col justify-center">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-[#4c5cec] rounded-full" />
-                        Service
+                        {isZh ? '服务类别' : 'Service'}
                       </h3>
                       <div className="space-y-1.5">
                         {pkg.features
@@ -145,7 +145,7 @@ export function EssayCoachingContent({
                     <div className="bg-white/50 dark:bg-white/5 p-4 rounded-xl border border-transparent dark:border-white/5 min-h-[100px] flex flex-col justify-center">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2 flex items-center gap-2">
                         <span className="w-1 h-4 bg-[#4c5cec] rounded-full" />
-                        Validity
+                        {isZh ? '服务有效期' : 'Validity'}
                       </h3>
                       <div className="flex items-center gap-2 text-gray-800 dark:text-gray-200 font-bold text-xl">
                         <div className="w-1.5 h-1.5 rotate-45 bg-linear-to-br from-blue-500 to-purple-500 rounded-[0.5px]" />
@@ -163,7 +163,7 @@ export function EssayCoachingContent({
                   <div className="lg:w-1/3 flex flex-col justify-between gap-4">
                     <div className="bg-white/60 dark:bg-white/5 p-4 rounded-xl grow border border-transparent dark:border-white/5">
                       <h3 className="font-bold text-[#010022] dark:text-white text-sm mb-2">
-                        Service Description
+                        {isZh ? '服务描述' : 'Service Description'}
                       </h3>
                       <div className="flex items-start gap-2 text-gray-700 dark:text-gray-300">
                         <div className="w-1.5 h-1.5 rotate-45 bg-[#a3b1ff] rounded-[0.5px] mt-1.5 shrink-0" />
@@ -174,7 +174,7 @@ export function EssayCoachingContent({
                     </div>
 
                     <button className="w-full bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
-                      Order Now
+                      {isZh ? '立即咨询' : 'Order Now'}
                     </button>
                   </div>
                 </div>

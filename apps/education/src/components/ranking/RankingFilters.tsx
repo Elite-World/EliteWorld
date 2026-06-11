@@ -15,7 +15,7 @@ import {
   Check,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useDevStore } from '@repo/domain';
+import { useDevStore, useLanguageStore } from '@repo/domain';
 
 interface RankingFiltersProps {
   searchQuery: string;
@@ -68,6 +68,8 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
   subjects,
 }) => {
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [mobileView, setMobileView] = useState<
@@ -122,7 +124,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
           className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-all"
         >
           <SlidersHorizontal className="w-4 h-4" />
-          Filters
+          {isZh ? '筛选' : 'Filters'}
         </button>
       </div>
 
@@ -147,7 +149,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                 <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-zinc-800 shrink-0">
                   {mobileView === 'main' ? (
                     <span className="font-semibold text-lg text-gray-900 dark:text-white">
-                      Filters
+                      {isZh ? '筛选' : 'Filters'}
                     </span>
                   ) : (
                     <button
@@ -155,7 +157,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                       className="flex items-center gap-1 text-blue-600 font-medium"
                     >
                       <ArrowLeft className="w-5 h-5" />
-                      Back
+                      {isZh ? '返回' : 'Back'}
                     </button>
                   )}
                   <button
@@ -173,7 +175,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <input
                           type="text"
-                          placeholder="Search university..."
+                          placeholder={isZh ? '搜索大学...' : 'Search university...'}
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
                           className="w-full pl-10 pr-4 py-3 bg-gray-50 dark:bg-zinc-800 border-none rounded-xl focus:ring-2 focus:ring-blue-500/20 text-base"
@@ -202,7 +204,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                          <Globe className="w-4 h-4" /> Country
+                          <Globe className="w-4 h-4" /> {isZh ? '国家/地区' : 'Country'}
                         </label>
                         <button
                           onClick={() => setMobileView('country')}
@@ -215,7 +217,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                                 : 'text-gray-500'
                             }
                           >
-                            {selectedCountry || 'All Countries'}
+                            {selectedCountry || (isZh ? '所有国家' : 'All Countries')}
                           </span>
                           <ArrowDownUp className="w-4 h-4 text-gray-400" />
                         </button>
@@ -223,7 +225,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                          <ListOrdered className="w-4 h-4" /> Ranking Source
+                          <ListOrdered className="w-4 h-4" /> {isZh ? '排名数据源' : 'Ranking Source'}
                         </label>
                         <button
                           onClick={() => setMobileView('source')}
@@ -241,7 +243,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                       {rankType === 'Subject' && subjects && (
                         <div className="space-y-2">
                           <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                            <BookOpen className="w-4 h-4" /> Subject
+                            <BookOpen className="w-4 h-4" /> {isZh ? '专业领域' : 'Subject'}
                           </label>
                           <button
                             onClick={() => setMobileView('subject')}
@@ -259,7 +261,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                                     .flat()
                                     .find((s) => s.value === selectedSubject)
                                     ?.label || selectedSubject
-                                : 'Select Subject'}
+                                : (isZh ? '选择专业' : 'Select Subject')}
                             </span>
                             <ArrowDownUp className="w-4 h-4 text-gray-400" />
                           </button>
@@ -268,7 +270,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
 
                       <div className="space-y-2">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                          <Calendar className="w-4 h-4" /> Year
+                          <Calendar className="w-4 h-4" /> {isZh ? '年份' : 'Year'}
                         </label>
                         <div className="grid grid-cols-4 gap-2">
                           {availableYears.map((year) => (
@@ -302,7 +304,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                             : 'text-gray-700 dark:text-gray-300'
                         }`}
                       >
-                        All Countries
+                        {isZh ? '所有国家/地区' : 'All Countries'}
                       </button>
                       {countries.map((c) => (
                         <button
@@ -383,7 +385,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                       onClick={() => setIsMobileOpen(false)}
                       className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl active:scale-[0.98] transition-all"
                     >
-                      View Returns
+                      {isZh ? '显示结果' : 'View Returns'}
                     </button>
                   </div>
                 )}
@@ -422,7 +424,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search university..."
+                placeholder={isZh ? '搜索大学...' : 'Search university...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-9 pr-4 py-2.5 text-sm bg-gray-50 dark:bg-zinc-800 border-none rounded-xl focus:ring-2 focus:ring-blue-500/20 outline-none"
@@ -436,7 +438,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                 onChange={(e) => setSelectedCountry(e.target.value)}
                 className="w-full pl-9 pr-8 py-2.5 text-sm bg-gray-50 dark:bg-zinc-800 border-none rounded-xl focus:ring-2 focus:ring-blue-500/20 appearance-none outline-none cursor-pointer"
               >
-                <option value="">All Countries</option>
+                <option value="">{isZh ? '所有国家/地区' : 'All Countries'}</option>
                 {countries.map((c) => (
                   <option key={c} value={c}>
                     {c}
@@ -502,7 +504,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                             .flat()
                             .find((s) => s.value === selectedSubject)?.label ||
                           selectedSubject
-                        : 'Select Subject'}
+                        : (isZh ? '选择学科专业' : 'Select Subject')}
                     </span>
                     <ChevronDown
                       className={`w-4 h-4 text-gray-400 shrink-0 transition-transform ${
@@ -530,7 +532,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                           <input
                             autoFocus
                             type="text"
-                            placeholder="Find a subject..."
+                            placeholder={isZh ? '寻找专业...' : 'Find a subject...'}
                             value={subjectSearch}
                             onChange={(e) => setSubjectSearch(e.target.value)}
                             onClick={(e) => e.stopPropagation()}
@@ -583,7 +585,6 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                             </div>
                           );
                         })}
-                        {/* Empty State */}
                         {Object.values(subjects)
                           .flat()
                           .filter((s) =>
@@ -592,8 +593,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                               .includes(subjectSearch.toLowerCase()),
                           ).length === 0 && (
                           <div className="p-8 text-center text-gray-500 text-sm">
-                            No subjects found matching &quot;{subjectSearch}
-                            &quot;
+                            {isZh ? `未找到匹配 "${subjectSearch}" 的专业` : `No subjects found matching "${subjectSearch}"`}
                           </div>
                         )}
                       </div>
@@ -605,7 +605,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
 
             <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar ml-auto">
               <span className="text-sm font-medium text-gray-500 dark:text-gray-400 whitespace-nowrap">
-                Year:
+                {isZh ? '年份:' : 'Year:'}
               </span>
               {availableYears.map((year) => (
                 <button

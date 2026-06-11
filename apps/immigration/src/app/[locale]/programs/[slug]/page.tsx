@@ -1,13 +1,12 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
 import dbConnect from '@repo/domain/lib/mongoose';
-import { MobilitySolution, Country } from '@repo/domain/data/models';
+import { MobilitySolution } from '@repo/domain/data/models';
 
 import { getProviderForSection } from '@/lib/services/content';
-import { cn } from '@repo/domain/lib/utils';
 import { DevOnlyBlock } from '@repo/domain';
 import Link from 'next/link';
-import { ArrowRight, Clock, MapPin, Landmark } from 'lucide-react';
+import { Clock, MapPin, Landmark } from 'lucide-react';
 import Image from 'next/image';
 
 interface ProgramPageProps {
@@ -47,6 +46,17 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
   }
 
   const country = solution.country_id;
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
+  // @ts-ignore
+  const countryName = country.translations?.[dbLocale]?.name || country.name?.[dbLocale] || country.name?.en || 'Unknown';
+  // @ts-ignore
+  const solNameRaw = solution.translations?.[dbLocale]?.name || solution.name;
+  const solName = typeof solNameRaw === 'string' ? solNameRaw : (solNameRaw?.[dbLocale] || solNameRaw?.en || 'Unknown');
+  // @ts-ignore
+  const solDescRaw = solution.translations?.[dbLocale]?.description || solution.description;
+  const solDesc = typeof solDescRaw === 'string' ? solDescRaw : (solDescRaw?.[dbLocale] || solDescRaw?.en || '');
+  // @ts-ignore
+  const solReq = solution.translations?.[dbLocale]?.requirements || solution.requirements || {};
 
   // Fetch Notion News related to this solution ID
   const provider = getProviderForSection('insights', locale);
@@ -84,14 +94,14 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
                 {solution.category.replace('_', ' ')}
               </span>
               <span className="px-3 py-1 rounded-full bg-blue-500/20 backdrop-blur-md border border-blue-500/30 text-blue-300 text-[10px] font-black uppercase tracking-widest">
-                {country.name.en}
+                {countryName}
               </span>
             </div>
             <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-tighter mb-4">
-              {solution.name.en}
+              {solName}
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 font-medium max-w-2xl">
-              {solution.description}
+              {solDesc}
             </p>
           </div>
         </div>
@@ -106,9 +116,9 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
               <div className="w-12 h-12 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6">
                 <Landmark className="w-6 h-6" />
               </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Minimum Investment</p>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">{locale === 'zh' ? '最低投资额' : 'Minimum Investment'}</p>
               <p className="text-2xl font-black text-gray-900 dark:text-white">
-                {solution.requirements?.investment_amount || 'Varies'}
+                {solReq.investment_amount || (locale === 'zh' ? '视情况而定' : 'Varies')}
               </p>
             </div>
 
@@ -116,9 +126,9 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
               <div className="w-12 h-12 bg-purple-50 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6">
                 <Clock className="w-6 h-6" />
               </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Timeframe</p>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">{locale === 'zh' ? '办理时间' : 'Timeframe'}</p>
               <p className="text-2xl font-black text-gray-900 dark:text-white">
-                {solution.requirements?.timeframe || 'Varies'}
+                {solReq.timeframe || (locale === 'zh' ? '视情况而定' : 'Varies')}
               </p>
             </div>
 
@@ -126,9 +136,9 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
               <div className="w-12 h-12 bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6">
                 <MapPin className="w-6 h-6" />
               </div>
-              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Physical Presence</p>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">{locale === 'zh' ? '居住要求' : 'Physical Presence'}</p>
               <p className="text-2xl font-black text-gray-900 dark:text-white">
-                {solution.requirements?.physical_presence || 'None required'}
+                {solReq.physical_presence || (locale === 'zh' ? '无要求' : 'None required')}
               </p>
             </div>
 
@@ -137,13 +147,13 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
           <DevOnlyBlock>
             <div className="mt-12 max-w-4xl">
               <h2 className="text-2xl font-black text-gray-900 dark:text-white mb-6 uppercase tracking-tighter">
-                Program ID
+                {locale === 'zh' ? '项目 ID' : 'Program ID'}
               </h2>
               <div className="p-4 bg-gray-100 dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 font-mono text-sm text-gray-600 dark:text-gray-300 select-all">
                 {solution._id.toString()}
               </div>
               <p className="text-sm text-gray-500 mt-3">
-                * Add this exact ID as a tag in your Notion database to automatically display news articles related to this program here.
+                {locale === 'zh' ? '* 在您的 Notion 数据库中将此确切 ID 添加为标签，以自动在此处显示与此项目相关的新闻文章。' : '* Add this exact ID as a tag in your Notion database to automatically display news articles related to this program here.'}
               </p>
             </div>
           </DevOnlyBlock>
@@ -155,7 +165,7 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-12">
             <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-              Program <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">News & Updates</span>
+              {locale === 'zh' ? '项目' : 'Program'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{locale === 'zh' ? '新闻与动态' : 'News & Updates'}</span>
             </h2>
             <div className="w-16 h-1 bg-linear-to-r from-blue-600 to-purple-600 mt-4" />
           </div>
@@ -182,7 +192,7 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
                   
                   <div className="space-y-3">
                     <p className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                      {new Date(article.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      {new Date(article.date).toLocaleDateString(locale === 'zh' ? 'zh-CN' : 'en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
                     </p>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
                       {article.title}
@@ -197,7 +207,7 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
           ) : (
             <div className="p-12 border border-dashed border-gray-300 dark:border-white/20 rounded-3xl text-center max-w-2xl mx-auto bg-gray-50 dark:bg-white/5">
               <p className="text-gray-500 dark:text-gray-400 font-medium">
-                No recent news or policy updates published for this program yet.
+                {locale === 'zh' ? '该项目暂无最近的新闻或政策更新。' : 'No recent news or policy updates published for this program yet.'}
               </p>
             </div>
           )}

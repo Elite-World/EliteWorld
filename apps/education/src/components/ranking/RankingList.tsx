@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UniversityRanking } from '@repo/domain';
+import { UniversityRanking, useLanguageStore } from '@repo/domain';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
 import { fetchRankings } from '@/app/[locale]/ranking/actions';
@@ -40,6 +40,8 @@ const RankingList: React.FC<RankingListProps> = ({
 }) => {
   const router = useRouter();
   // const searchParams = useSearchParams();
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   // State
   const [universities, setUniversities] =
@@ -105,84 +107,60 @@ const RankingList: React.FC<RankingListProps> = ({
 
   // Handlers
   const handleRankTypeChange = (type: 'General' | 'Subject') => {
-    // Reset/Default logics
-    let newSource = selectedSource;
-    let newSubject = selectedSubject;
-    let newYear = currentYear;
-
-    const validSources =
-      type === 'General' ? meta.generalSources : meta.subjectSources;
-    if (!validSources.find((s) => s.value === newSource)) {
-      newSource = validSources[0]?.value || 'qs';
-    }
-
-    if (type === 'Subject') {
-      if (!newSubject) {
-        const cats = meta.subjects[newSource];
-        if (cats) {
-          const firstCat = Object.keys(cats)[0];
-          if (firstCat && cats[firstCat].length > 0) {
-            newSubject = cats[firstCat][0].value;
-          }
-        }
-      }
-    } else {
-      newSubject = '';
-    }
-
-    const newYearsMap =
-      type === 'General' ? meta.years.general : meta.years.subject;
-    const newYears = newYearsMap[newSource] || [];
-    if (!newYears.includes(newYear) && newYears.length > 0) {
-      newYear = newYears[0];
-    }
-
     setRankType(type);
-    setSelectedSource(newSource);
-    setSelectedSubject(newSubject);
-    setCurrentYear(newYear);
 
-    updateData(newYear, newSource, type, newSubject, selectedCountry);
+    const isGeneral = type === 'General';
+    const activeSources = isGeneral ? meta.generalSources : meta.subjectSources;
+    const defaultSource = activeSources[0]?.value || 'qs';
+
+    setSelectedSource(defaultSource);
+
+    const sourceYears = isGeneral ? meta.years.general[defaultSource] : meta.years.subject[defaultSource];
+    const defaultYear = sourceYears ? sourceYears[0] : currentYear;
+
+    setCurrentYear(defaultYear);
+
+    let defaultSubject = undefined;
+    if (!isGeneral && meta.subjects[defaultSource]) {
+      const allSubjects = Object.values(meta.subjects[defaultSource]).flat();
+      defaultSubject = allSubjects[0]?.value || '';
+      setSelectedSubject(defaultSubject);
+    }
+
+    updateData(
+      defaultYear,
+      defaultSource,
+      type,
+      defaultSubject,
+      selectedCountry,
+    );
   };
 
   const handleSourceChange = (source: string) => {
-    let newYear = currentYear;
-    let newSubject = selectedSubject;
-
-    // The logic below was checking yearsBySource[source] but relying on closure variable `yearsBySource` which depends on rankType.
-    // Correct logic:
-    const yearsMap =
-      rankType === 'General' ? meta.years.general : meta.years.subject;
-    const sourceYears = yearsMap[source] || [];
-
-    if (!sourceYears.includes(newYear) && sourceYears.length > 0) {
-      newYear = sourceYears[0];
-    }
-
-    if (rankType === 'Subject') {
-      const cats = meta.subjects[source] || {};
-      // Just pick first available subject if current one is invalid for new source?
-      // Checking validity across all categories
-      let valid = false;
-      for (const cat in cats) {
-        if (cats[cat].some((s) => s.value === newSubject)) valid = true;
-      }
-
-      if (!valid) {
-        const firstCat = Object.keys(cats)[0];
-        if (firstCat && cats[firstCat].length > 0) {
-          newSubject = cats[firstCat][0].value;
-        } else {
-          newSubject = '';
-        }
-      }
-    }
-
     setSelectedSource(source);
-    setCurrentYear(newYear);
-    setSelectedSubject(newSubject);
 
-    updateData(newYear, source, rankType, newSubject, selectedCountry);
+    // If changing source, select default year/subject from new metadata structures
+    const isGeneral = rankType === 'General';
+    const sourceYears = isGeneral ? meta.years.general[source] : meta.years.subject[source];
+    const sourceDefaultYear = sourceYears ? sourceYears[0] : currentYear;
+
+    setCurrentYear(sourceDefaultYear);
+
+    // Pick first subject if we switch source in Subject mode
+    let defaultSubject = selectedSubject;
+    if (!isGeneral && meta.subjects[source]) {
+      const allSubjects = Object.values(meta.subjects[source]).flat();
+      defaultSubject = allSubjects[0]?.value || '';
+      setSelectedSubject(defaultSubject);
+    }
+
+    updateData(
+      sourceDefaultYear,
+      source,
+      rankType,
+      isGeneral ? undefined : defaultSubject,
+      selectedCountry,
+    );
   };
 
   const handleYearChange = (year: number) => {
@@ -298,12 +276,20 @@ const RankingList: React.FC<RankingListProps> = ({
 
       <div className="mb-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-1">
         <span>
-          Showing {filteredUniversities.length} universities from{' '}
-          {selectedSourceLabel}{' '}
-          {rankType === 'Subject' ? `- ${selectedSubject} ` : ''}({currentYear})
+          {isZh ? (
+            <>
+              正在从 {selectedSourceLabel} {rankType === 'Subject' ? `- ${selectedSubject} ` : ''}({currentYear}) 显示 {filteredUniversities.length} 所大学
+            </>
+          ) : (
+            <>
+              Showing {filteredUniversities.length} universities from{' '}
+              {selectedSourceLabel}{' '}
+              {rankType === 'Subject' ? `- ${selectedSubject} ` : ''}({currentYear})
+            </>
+          )}
         </span>
         {isLoading && (
-          <span className="text-blue-500 animate-pulse">Updating...</span>
+          <span className="text-blue-500 animate-pulse">{isZh ? '更新中...' : 'Updating...'}</span>
         )}
       </div>
 
@@ -348,7 +334,7 @@ const RankingList: React.FC<RankingListProps> = ({
             onClick={handleShowMore}
             className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition-all active:scale-95"
           >
-            Show More Universities
+            {isZh ? '加载更多大学' : 'Show More Universities'}
           </button>
         </div>
       )}

@@ -8,10 +8,12 @@ import DirectoryCard from './DirectoryCard';
 
 interface UniversityDirectoryClientProps {
   initialUniversities: any[];
+  locale?: string;
 }
 
 function UniversityDirectoryContent({
   initialUniversities,
+  locale,
 }: UniversityDirectoryClientProps) {
   const searchParams = useSearchParams();
   const initialCountry = searchParams.get('country') || '';
@@ -24,7 +26,7 @@ function UniversityDirectoryContent({
     if (countryParam !== null && countryParam !== selectedCountry) {
       setSelectedCountry(countryParam);
     }
-  }, [searchParams]);
+  }, [searchParams, selectedCountry]);
   const [visibleCount, setVisibleCount] = useState(50);
 
   const countries = useMemo(() => {
@@ -63,7 +65,7 @@ function UniversityDirectoryContent({
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder="Search universities by name..."
+              placeholder={locale === 'zh' ? '按名称搜索大学...' : 'Search universities by name...'}
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -83,7 +85,7 @@ function UniversityDirectoryContent({
               }}
               className="w-full pl-12 pr-10 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl appearance-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition-all outline-none"
             >
-              <option value="">All Countries</option>
+              <option value="">{locale === 'zh' ? '所有国家' : 'All Countries'}</option>
               {countries.map((country) => (
                 <option key={country} value={country}>
                   {country}
@@ -97,7 +99,7 @@ function UniversityDirectoryContent({
       {/* Header info */}
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-2">
         <span>
-          Showing {displayedUniversities.length} of {filteredUniversities.length} universities
+          {locale === 'zh' ? `显示 ${displayedUniversities.length} / ${filteredUniversities.length} 所大学` : `Showing ${displayedUniversities.length} of ${filteredUniversities.length} universities`}
         </span>
       </div>
 
@@ -123,7 +125,7 @@ function UniversityDirectoryContent({
             onClick={() => setVisibleCount((prev) => prev + 50)}
             className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition-all active:scale-95"
           >
-            Load More Universities
+            {locale === 'zh' ? '加载更多大学' : 'Load More Universities'}
           </button>
         </div>
       )}
@@ -133,7 +135,7 @@ function UniversityDirectoryContent({
 
 export default function UniversityDirectoryClient(props: UniversityDirectoryClientProps) {
   return (
-    <Suspense fallback={<div className="p-8 text-center">Loading directory...</div>}>
+    <Suspense fallback={<div className="p-8 text-center">{props.locale === 'zh' ? '正在加载目录...' : 'Loading directory...'}</div>}>
       <UniversityDirectoryContent {...props} />
     </Suspense>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { cn } from '@repo/domain';
+import { cn, useLanguageStore } from '@repo/domain';
 import { Loader2 } from 'lucide-react';
 
 export function NewsletterForm() {
@@ -9,6 +9,9 @@ export function NewsletterForm() {
   const [status, setStatus] = useState<
     'idle' | 'loading' | 'success' | 'error'
   >('idle');
+
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,14 +39,16 @@ export function NewsletterForm() {
       )}
     >
       <div className="relative z-10">
-        <h3 className="text-2xl font-bold mb-4">Stay in the Loop</h3>
+        <h3 className="text-2xl font-bold mb-4">
+          {isZh ? '订阅最新资讯' : 'Stay in the Loop'}
+        </h3>
         <p className="mb-8 opacity-90">
-          Subscribe to our newsletter for exclusive guides and news.
+          {isZh ? '订阅我们的电子报，获取独家指南和行业最新动态。' : 'Subscribe to our newsletter for exclusive guides and news.'}
         </p>
 
         {status === 'success' ? (
           <div className="flex items-center justify-center h-[52px] bg-white/20 backdrop-blur-sm rounded-lg border border-white/30 text-white font-medium animate-in fade-in zoom-in duration-300">
-            ✨ You&apos;re all set! Check your inbox soon.
+            {isZh ? '✨ 订阅成功！请留意您的邮箱。' : "✨ You're all set! Check your inbox soon."}
           </div>
         ) : (
           <form
@@ -56,7 +61,7 @@ export function NewsletterForm() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
+              placeholder={isZh ? '请输入您的电子邮箱' : 'Enter your email'}
               disabled={status === 'loading'}
               className="flex-1 px-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white disabled:opacity-70 disabled:cursor-not-allowed placeholder:text-gray-500"
             />
@@ -68,7 +73,7 @@ export function NewsletterForm() {
               {status === 'loading' ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
-                'Subscribe'
+                isZh ? '立即订阅' : 'Subscribe'
               )}
             </button>
           </form>

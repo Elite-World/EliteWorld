@@ -5,6 +5,7 @@ import Link from 'next/link';
 // import { formatDate } from '../../lib/utils';
 import { Article as ArticleType } from '../../lib/types/content';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
+import { useLanguageStore } from '../../lib/stores/useLanguageStore';
 import { cn } from '../../lib/utils';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
 
@@ -20,6 +21,8 @@ export function ArticleCard({
   basePath,
 }: ArticleProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   if (!article) return null;
 
@@ -147,7 +150,7 @@ export function ArticleCard({
             )}
           >
             <span className="group-hover:mr-2 transition-all duration-300">
-              Read Article
+              {isZh ? '阅读文章' : 'Read Article'}
             </span>
             <svg
               className={cn(

@@ -10,14 +10,15 @@ export const metadata = {
   description: 'The authoritative ranking of global passports based on visa-free mobility and strategic global access.',
 };
 
-export default async function PassportIndexPage() {
+export default async function PassportIndexPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
   const data = await getPassportIndex();
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">
       <HeroSection 
-        title="Global Passport Index"
-        subtitle="The authoritative ranking of global passports based on visa-free mobility and strategic access to key global economic hubs."
+        title={locale === 'zh' ? "全球护照指数" : "Global Passport Index"}
+        subtitle={locale === 'zh' ? "基于免签流动性和对关键全球经济中心的战略准入的权威全球护照排名。" : "The authoritative ranking of global passports based on visa-free mobility and strategic access to key global economic hubs."}
         backgroundImage="https://images.unsplash.com/photo-1578894381163-e72c17f2d45f?auto=format&fit=crop&q=80&w=2400"
         mode="page"
       />
@@ -28,17 +29,17 @@ export default async function PassportIndexPage() {
           <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
               <h2 className="text-3xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-                Official <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Rankings</span>
+                {locale === 'zh' ? '官方' : 'Official'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{locale === 'zh' ? '排名' : 'Rankings'}</span>
               </h2>
               <div className="w-16 h-1 bg-linear-to-r from-blue-600 to-purple-600 mt-4" />
             </div>
             
             <p className="text-sm font-medium text-gray-500 max-w-md md:text-right">
-              Scores are calculated based on absolute visa-free destinations, with special weight given to strategic access zones (US, UK, Schengen, China).
+              {locale === 'zh' ? '评分基于绝对的免签目的地数量，并对战略准入区域（美国、英国、申根、中国）赋予特殊权重。' : 'Scores are calculated based on absolute visa-free destinations, with special weight given to strategic access zones (US, UK, Schengen, China).'}
             </p>
           </div>
 
-          <PassportLeaderboard data={data} />
+          <PassportLeaderboard data={data} locale={locale} />
 
         </div>
 

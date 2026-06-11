@@ -41,6 +41,13 @@ export default async function SectionListPage({ params }: PageProps) {
     provider.getCategories(),
   ]);
 
+  // Translate titles dynamically based on locale
+  let displayTitle = sectionConfig.title;
+  if (locale === 'zh') {
+    if (section === 'insights') displayTitle = '深度解析';
+    if (section === 'tips') displayTitle = '干货分享';
+  }
+
   // 3. Render Generic Layout
   // passing section as basePath so links become /[locale]/blog/slug or /[locale]/insights/slug
   return (
@@ -48,7 +55,8 @@ export default async function SectionListPage({ params }: PageProps) {
       articles={articles}
       categories={categories}
       basePath={`/${locale}/${section}`}
-      title={sectionConfig.title}
+      title={displayTitle}
+      locale={locale}
     />
   );
 }

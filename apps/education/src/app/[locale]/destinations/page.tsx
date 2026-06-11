@@ -1,5 +1,5 @@
 import React from 'react';
-import { destinations } from '@repo/domain/data/destinations';
+import { getDestinations } from '@repo/apps-config/content/education/destinations';
 import { HeroSection } from '@repo/ui';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -9,13 +9,16 @@ export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
 }
 
-export default function DestinationsHubPage() {
+export default async function DestinationsHubPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const destinationsList = getDestinations(locale);
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">
       {/* Hero Section */}
       <HeroSection 
-        title="Discover Your Global Campus"
-        subtitle="Explore top-ranked study destinations around the world. Find the perfect environment to launch your academic journey and global career."
+        title={locale === 'zh' ? '探索你的全球校园' : 'Discover Your Global Campus'}
+        subtitle={locale === 'zh' ? '探索全球排名靠前的留学目的地。寻找开启您的学术之旅和全球职业生涯的完美环境。' : 'Explore top-ranked study destinations around the world. Find the perfect environment to launch your academic journey and global career.'}
         backgroundImage="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=2400"
         mode="page"
       />
@@ -25,15 +28,15 @@ export default function DestinationsHubPage() {
           
           <div className="text-center max-w-3xl mx-auto mb-20">
             <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
-              Popular <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">Destinations</span>
+              {locale === 'zh' ? '热门' : 'Popular'} <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">{locale === 'zh' ? '目的地' : 'Destinations'}</span>
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 font-medium">
-              Click on a destination to uncover its top universities, cost of living, visa requirements, and cultural highlights.
+              {locale === 'zh' ? '点击目的地以了解其顶尖大学、生活成本、签证要求和文化亮点。' : 'Click on a destination to uncover its top universities, cost of living, visa requirements, and cultural highlights.'}
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {destinations.map((dest) => (
+            {destinationsList.map((dest) => (
               <Link 
                 href={`/destinations/${dest.id}`} 
                 key={dest.id}
@@ -57,7 +60,7 @@ export default function DestinationsHubPage() {
                   <div className="mb-auto">
                     <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/20 text-xs font-bold mb-4">
                       <Globe2 className="w-3.5 h-3.5" />
-                      {dest.stats.internationalStudents} Intl. Students
+                      {dest.stats.internationalStudents} {locale === 'zh' ? '国际学生' : 'Intl. Students'}
                     </div>
                   </div>
 
@@ -72,16 +75,16 @@ export default function DestinationsHubPage() {
                     <div className="grid grid-cols-2 gap-4 mb-8">
                       <div className="flex items-center gap-2 text-sm text-gray-200">
                         <Building2 className="w-4 h-4 text-blue-400" />
-                        <span className="font-semibold">{dest.stats.universities} Unis</span>
+                        <span className="font-semibold">{dest.stats.universities} {locale === 'zh' ? '所大学' : 'Unis'}</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm text-gray-200">
                         <Wallet className="w-4 h-4 text-emerald-400" />
-                        <span className="font-semibold text-xs truncate">{dest.stats.postStudyWork} Work</span>
+                        <span className="font-semibold text-xs truncate">{dest.stats.postStudyWork} {locale === 'zh' ? '工作签证' : 'Work'}</span>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm font-bold text-white uppercase tracking-widest group-hover:text-blue-400 transition-colors">
-                      View Guide <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                      {locale === 'zh' ? '查看指南' : 'View Guide'} <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
-import { getDestinationById } from '@repo/domain/data/destinations';
+import { getDestinationById } from '@repo/apps-config/content/education/destinations';
 import { DestinationTemplate } from '@/components/destination/DestinationTemplate';
 import { notFound } from 'next/navigation';
 
 export async function generateStaticParams() {
-  const { destinations } = await import('@repo/domain/data/destinations');
+  const { destinations } = await import('@repo/apps-config/content/education/destinations');
   const params: any[] = [];
   destinations.forEach((dest) => {
     params.push({ locale: 'en', country: dest.id });
@@ -12,13 +12,13 @@ export async function generateStaticParams() {
   return params;
 }
 
-export default async function DestinationPage({ params }: { params: Promise<{ locale: string, country: string }> }) {
-  const { locale, country } = await params;
-  const data = getDestinationById(country);
+export default async function DestinationPage({ params }: { params: Promise<{ country: string; locale: string }> }) {
+  const { country, locale } = await params;
+  const data = getDestinationById(country, locale);
 
   if (!data) {
     notFound();
   }
 
-  return <DestinationTemplate data={data} />;
+  return <DestinationTemplate data={data} locale={locale} />;
 }

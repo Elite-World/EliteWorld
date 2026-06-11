@@ -3,12 +3,28 @@ import dbConnect from '../lib/mongoose';
 import { UniversityRanking, RankingHistoryItem } from '../data/rankings';
 import 'server-only';
 
-// Helper to get localized string (default to en)
-function getLoc(field: any, lang: 'en' | 'cn' = 'en'): string {
+// Helper to get localized string from document (default to en)
+function getDocTrans(doc: any, fieldName: string, lang: 'en' | 'cn' = 'en'): string {
+  if (!doc) return '';
+  if (doc.translations?.[lang]?.[fieldName]) return doc.translations[lang][fieldName];
+  if (doc.translations?.en?.[fieldName]) return doc.translations.en[fieldName];
+  
+  // Legacy fallback
+  const field = doc[fieldName];
   if (!field) return '';
   if (typeof field === 'string') return field;
   return field[lang] || field['en'] || '';
 }
+
+function getDetailsLoc(doc: any, type: 'overall' | 'stat', lang: 'en' | 'cn' = 'en'): any[] {
+  if (!doc) return [];
+  if (doc.translations?.[lang]?.details?.[type]) return doc.translations[lang].details[type];
+  if (doc.translations?.en?.details?.[type]) return doc.translations.en.details[type];
+  
+  // Legacy fallback
+  return doc.details?.[type] || [];
+}
+
 
 export async function getGlobalRankingMeta(): Promise<{
   generalSources: { value: string; label: string }[];
@@ -183,21 +199,21 @@ export async function getRankingList(
       const u = uniMap.get(entry.uni_id.toString());
       if (!u) return null;
 
-      const countryName = getLoc(u.location?.country_id?.name) || 'Unknown';
+      const countryName = getDocTrans(u.location?.country_id, 'name') || 'Unknown';
       const uid = entry.uni_id.toString();
 
       return {
           id: u.slug, 
           rank: entry.rank,
-          name: getLoc(u.name),
-          nameEn: u.name?.en,
+          name: getDocTrans(u, 'name'),
+          nameEn: getDocTrans(u, 'name', 'en'),
           country: countryName,
           region: countryName,
           logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
           coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,
           websiteUrl: u.assets?.website,
-          description: u.description,
-          stats: u.details?.stat || [],
+          description: getDocTrans(u, 'description'),
+          stats: getDetailsLoc(u, 'stat'),
           ranks: crossRanks.get(uid) || { [source]: entry.rank }
       };
   }).filter(Boolean) as UniversityRanking[];
@@ -264,37 +280,37 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
   history.sort((a, b) => b.year - a.year);
 
   // Map Details
-  const overview = (u.details?.overall || []).map((d: any) => ({
-      label: getLoc(d.label),
-      content: getLoc(d.content)
+  const overview = getDetailsLoc(u, 'overall').map((d: any) => ({
+      label: d.label, // Labels are currently not localized in the new schema (only strings)
+      content: d.content
   }));
   
-  const stats = (u.details?.stat || []).map((s: any) => ({
-      label: getLoc(s.label),
-      content: getLoc(s.content),
+  const stats = getDetailsLoc(u, 'stat').map((s: any) => ({
+      label: s.label,
+      content: s.content,
       type: s.type || 'statistic'
   }));
 
 //   const detailsOverall = overview.map((d: any) => d.content).join('\n\n');
   
-  const countryName = getLoc(u.location?.country_id?.name) || 'Unknown';
+  const countryName = getDocTrans(u.location?.country_id, 'name') || 'Unknown';
 
   return {
     id: u.slug, // Use slug
-    name: getLoc(u.name),
-    nameEn: u.name?.en,
+    name: getDocTrans(u, 'name'),
+    nameEn: getDocTrans(u, 'name', 'en'),
     country: countryName,
     region: 'Global',
     locationCoords: (u.location?.coordinates && u.location.coordinates.length > 0) 
       ? u.location.coordinates 
       : (u.rich_data?.lat && u.rich_data?.long 
-          ? [{ label: getLoc(u.name), lat: parseFloat(u.rich_data.lat), lng: parseFloat(u.rich_data.long) }] 
+          ? [{ label: getDocTrans(u, 'name'), lat: parseFloat(u.rich_data.lat), lng: parseFloat(u.rich_data.long) }] 
           : []),
     logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
     coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,
     websiteUrl: u.assets?.website,
     
-    description: u.description, // Direct field now
+    description: getDocTrans(u, 'description'), // Direct field now
     // Fallback mapping for old interface fields if needed, or use specific new fields
     // For now mapping back to the interface expected by frontend
     overview, // New dynamic field 
@@ -303,8 +319,8 @@ export async function getUniversity(slug: string): Promise<UniversityRanking | n
     // Legacy stats mapping removed
      
     scholarships: allScholarships.map((s: any) => ({
-        name: getLoc(s.name),
-        amount: getLoc(s.amount),
+        name: getDocTrans(s, 'name'),
+        amount: getDocTrans(s, 'amount'),
         type: s.type,
         scope: s.scope
     })),
@@ -332,16 +348,11 @@ export async function getAllUniversitiesDirectory(): Promise<any[]> {
         countryName = u.location.country;
     }
 
-    const getLoc = (obj: any) => {
-        if (!obj) return '';
-        if (typeof obj === 'string') return obj;
-        return obj.en || obj.zh || '';
-    };
 
     return {
       id: u.slug,
-      name: getLoc(u.name),
-      nameEn: u.name?.en,
+      name: getDocTrans(u, 'name'),
+      nameEn: getDocTrans(u, 'name', 'en'),
       country: countryName,
       logoUrl: u.assets?.logo ? `/logos/${u.assets.logo}` : undefined,
       coverUrl: u.assets?.cover ? `/covers/${u.assets.cover}` : undefined,

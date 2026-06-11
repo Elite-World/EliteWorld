@@ -20,7 +20,9 @@ export async function generateMetadata({ params }: DestinationPageProps) {
     };
   }
 
-  const countryName = locale === 'zh' && data.country.name.cn ? data.country.name.cn : data.country.name.en;
+  const dbLocale = locale === 'zh' ? 'cn' : 'en';
+  // @ts-ignore
+  const countryName = data.country.translations?.[dbLocale]?.name || data.country.name?.[dbLocale] || data.country.name?.en || 'Unknown';
 
   return {
     title: locale === 'zh' ? `${countryName} 移民与流动性 | EliteWorld` : `${countryName} Immigration & Mobility | EliteWorld`,
@@ -64,6 +66,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
       profile={data.profile as any}
       solutions={data.solutions as any[]}
       relatedNews={relatedNews}
+      locale={locale}
     />
   );
 }

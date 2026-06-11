@@ -1,7 +1,7 @@
 'use client';
 
 // import { Article, Category } from '@repo/domain';
-import { useThemeStore, useLanguageStore } from '@repo/domain';
+import { useThemeStore, cn } from '@repo/domain';
 // import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
 // Card is in web-shared/ui/Card.tsx as seen in file listing.
 // import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
@@ -26,8 +26,7 @@ import {
 } from 'lucide-react';
 import { QRCode } from '@repo/domain';
 import { useState, useEffect } from 'react';
-
-import { navGateway } from '@repo/apps-config/landing/navbar-config';
+import { getNavGateway } from '@repo/apps-config/landing/navbar-config';
 import { HeroSection, NavigationItem, Button } from '@repo/ui';
 
 // Add subdomain config at the top of the file
@@ -130,12 +129,12 @@ const socialLinks = [
 // }
 
 // export function HomePage({ categories, articles }: HomePageProps) {
-export function HomePage() {
+export function HomePage({ locale }: { locale?: string }) {
   const [mounted, setMounted] = useState(false);
   const _isDark = useThemeStore((state) => state.isDark);
   const isDark = mounted ? _isDark : false;
-  const language = useLanguageStore((state) => state.language);
-  const isZh = language === 'zh';
+  const navGateway = getNavGateway(locale);
+  const isZh = locale === 'zh';
 
   useEffect(() => {
     setMounted(true);
@@ -172,18 +171,33 @@ export function HomePage() {
         }
       >
         {Object.values(navGateway)
-          .filter((item) => item !== navGateway.main)
+          .filter((item) => item.name !== siteConfig.name)
           .map((button: NavigationItem, index: number) => (
-            <Button
+            <a
               key={index}
               href={button.href}
-              variant="hero-outline"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-3 text-lg" // Override size to match original look if needed, or rely on variant defaults
+              className={cn(
+                // Base styles
+                'px-8 py-3 rounded-lg text-lg font-medium text-center',
+                'text-white border-2 border-white/30',
+                // Glass effect
+                'backdrop-blur-sm bg-white/5',
+                // Hover effects
+                'hover:bg-white/15 hover:border-white/50',
+                // Transitions
+                'transition-all duration-300',
+                // Transform on hover
+                'hover:scale-105',
+                // Subtle shadow
+                'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
+                'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
+                'w-48'
+              )}
             >
               {button.label}
-            </Button>
+            </a>
           ))}
       </HeroSection>
 
