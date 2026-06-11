@@ -5,28 +5,31 @@ import { getProviderForSection } from '@/lib/services/content';
 
 interface DestinationPageProps {
   params: Promise<{
+    locale: string;
     slug: string;
   }>;
 }
 
 export async function generateMetadata({ params }: DestinationPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const data = await getJurisdictionData(slug);
   
   if (!data) {
     return {
-      title: 'Destination Not Found | EliteWorld',
+      title: locale === 'zh' ? '未找到目的地 | EliteWorld' : 'Destination Not Found | EliteWorld',
     };
   }
 
+  const countryName = locale === 'zh' && data.country.name.cn ? data.country.name.cn : data.country.name.en;
+
   return {
-    title: `${data.country.name.en} Immigration & Mobility | EliteWorld`,
-    description: `Explore residency, citizenship, and tax optimization pathways in ${data.country.name.en}.`,
+    title: locale === 'zh' ? `${countryName} 移民与流动性 | EliteWorld` : `${countryName} Immigration & Mobility | EliteWorld`,
+    description: locale === 'zh' ? `探索在 ${countryName} 的居留、公民身份和税务优化途径。` : `Explore residency, citizenship, and tax optimization pathways in ${countryName}.`,
   };
 }
 
 export default async function DestinationPage({ params }: DestinationPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   
   // 1. Fetch Data
   const data = await getJurisdictionData(slug);
@@ -38,7 +41,7 @@ export default async function DestinationPage({ params }: DestinationPageProps) 
 
   // 3. Fetch Related News using the Slug as a Tag
   let relatedNews: any[] = [];
-  const provider = getProviderForSection('insights');
+  const provider = getProviderForSection('insights', locale);
   if (provider) {
     try {
       const allArticles = await provider.getArticles();

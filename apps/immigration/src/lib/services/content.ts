@@ -4,7 +4,7 @@ import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } fr
 import { contentSections, ContentSection, getSectionConfig } from '@repo/apps-config/immigration/content-sources';
 
 // Factory to create provider from config
-export function getProviderForSection(sectionSlug: string): ContentProvider | null {
+export function getProviderForSection(sectionSlug: string, locale: string = 'en'): ContentProvider | null {
   const config = getSectionConfig(sectionSlug);
   if (!config) return null;
 
@@ -13,9 +13,9 @@ export function getProviderForSection(sectionSlug: string): ContentProvider | nu
       if (!config.config.folderPath) throw new Error(`Section ${sectionSlug} is missing folderPath configuration`);
       return new MarkdownProvider({ folderPath: config.config.folderPath });
     case 'notion':
-      return new NotionProvider({ databaseId: config.config.databaseId });
+      return new NotionProvider({ databaseId: config.config.databaseId, locale });
     case 'notion-x':
-      return new NotionXProvider({ databaseId: config.config.databaseId });
+      return new NotionXProvider({ databaseId: config.config.databaseId, locale });
     default:
       return null;
   }

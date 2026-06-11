@@ -99,7 +99,7 @@ export class NotionProvider implements ContentProvider {
   async getArticles(): Promise<Article[]> {
     if (!this.checkConfig()) return [];
 
-    console.log(`[NotionProvider] Fetching articles from Database ID: ${this.databaseId}`);
+    console.log(`[NotionProvider] Fetching articles from Database ID: ${this.databaseId} with Locale: ${this.locale}`);
 
     try {
       const response = await fetchWithRetry(`https://api.notion.com/v1/databases/${this.databaseId}/query`, {
@@ -109,7 +109,7 @@ export class NotionProvider implements ContentProvider {
           'Notion-Version': '2022-06-28',
           'Content-Type': 'application/json',
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: process.env.NODE_ENV === 'development' ? 10 : 3600 },
         body: JSON.stringify({
           filter: {
             and: [
@@ -149,6 +149,7 @@ export class NotionProvider implements ContentProvider {
       }
 
       const data = await response.json();
+      console.log(`[NotionProvider] Found ${(data as any).results?.length} articles for Locale: ${this.locale}`);
 
       const articles: Article[] = await Promise.all(
         (data as any).results.map(async (page: any) => {
@@ -174,7 +175,7 @@ export class NotionProvider implements ContentProvider {
           'Notion-Version': '2022-06-28',
           'Content-Type': 'application/json',
         },
-        next: { revalidate: 3600 },
+        next: { revalidate: process.env.NODE_ENV === 'development' ? 10 : 3600 },
         body: JSON.stringify({
           filter: {
             and: [
@@ -249,7 +250,7 @@ export class NotionProvider implements ContentProvider {
                 'Notion-Version': '2022-06-28',
                 'Content-Type': 'application/json',
             },
-            next: { revalidate: 3600 },
+            next: { revalidate: process.env.NODE_ENV === 'development' ? 10 : 3600 },
             body: JSON.stringify({
                 filter: {
                     and: [

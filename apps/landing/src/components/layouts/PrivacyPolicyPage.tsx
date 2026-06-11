@@ -1,7 +1,7 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { cn } from '@repo/domain';
+import { cn, useLanguageStore } from '@repo/domain';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -11,13 +11,15 @@ interface PrivacyPolicyPageProps {
 }
 
 export function PrivacyPolicyPage({ content }: PrivacyPolicyPageProps) {
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   return (
     <div className="min-h-screen">
       <HeroSection
         mode="page"
-        title="Privacy Policy"
-        subtitle="Last updated: December 16, 2025"
+        title={isZh ? "隐私政策" : "Privacy Policy"}
+        subtitle={isZh ? "最后更新：2025年12月16日" : "Last updated: December 16, 2025"}
       />
 
       <div className="container mx-auto px-4 py-12 md:py-24 relative">

@@ -11,6 +11,7 @@ export const revalidate = 3600;
 
 // Improve types for caching
 interface SectionParams {
+  locale: string;
   section: string;
   slug: string;
 }
@@ -19,15 +20,19 @@ export async function generateStaticParams() {
   const params: SectionParams[] = [];
 
   for (const section of contentSections) {
-    const provider = getProviderForSection(section.slug);
-    if (provider) {
-      const articles = await provider.getArticles();
-      articles.forEach((article) => {
-        params.push({
-          section: section.slug,
-          slug: article.slug,
+    // Generate for both locales
+    for (const locale of ['en', 'zh']) {
+      const provider = getProviderForSection(section.slug, locale);
+      if (provider) {
+        const articles = await provider.getArticles();
+        articles.forEach((article) => {
+          params.push({
+            locale,
+            section: section.slug,
+            slug: article.slug,
+          });
         });
-      });
+      }
     }
   }
 
@@ -36,15 +41,16 @@ export async function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{
+    locale: string;
     section: string;
     slug: string;
   }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { section, slug } = await params;
+  const { locale, section, slug } = await params;
 
-  const provider = getProviderForSection(section);
+  const provider = getProviderForSection(section, locale);
   if (!provider) return {};
 
   const article = await provider.getArticleById(slug);
@@ -77,11 +83,11 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function SectionArticlePage({ params }: PageProps) {
-  const { section, slug } = await params;
+  const { locale, section, slug } = await params;
 
   // 1. Get Config & Provider
   const sectionConfig = getSectionConfig(section);
-  const provider = getProviderForSection(section);
+  const provider = getProviderForSection(section, locale);
 
   if (!sectionConfig || !provider) {
     notFound();

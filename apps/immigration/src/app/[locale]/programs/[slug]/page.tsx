@@ -12,12 +12,13 @@ import Image from 'next/image';
 
 interface ProgramPageProps {
   params: Promise<{
+    locale: string;
     slug: string;
   }>;
 }
 
 export default async function ProgramProfilePage({ params }: ProgramPageProps) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   
   // Extract MongoDB ID from the end of the slug (24 hex characters)
   const idMatch = slug.match(/[a-f0-9]{24}$/i);
@@ -48,7 +49,7 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
   const country = solution.country_id;
 
   // Fetch Notion News related to this solution ID
-  const provider = getProviderForSection('insights');
+  const provider = getProviderForSection('insights', locale);
   let relatedNews: any[] = [];
   
   if (provider) {
