@@ -1,7 +1,7 @@
 export const siteConfig = {
   name: 'ELITE',  // Capitalized
   description: 'Elite World',
-  url: 'https://www.eliteworld.com',
+  url: 'https://www.eliteworld.top',
 
   // Option 0: random
   // ogImage: 'https://picsum.photos/1920/1080?flight.webp', // High quality hero image
@@ -26,10 +26,10 @@ export const siteConfig = {
 
   contact: {
     address: "D-17-08, Empire Damansara, Jalan PJU 8/8, Damansara Perdana, 47820 Petaling Jaya, Selangor, Malaysia.",
-    phone: "+60(16)668 4985",
+    phone: "(+86)18715105148",
     email: "info@eliteworld.top",
-    whatsapp: {qr:"/qr/whatsapp-qr.png", link:"https://wa.me/60166684985"},
-    wechat: {qr:"/qr/wechat-qr.png", label:"bjtiew"},
+    whatsapp: {qr:"https://res.cloudinary.com/dr435quj2/image/upload/v1781140230/qr-whatsapp.webp", link:"https://wa.me/8618715105148"},
+    wechat: {qr:"https://res.cloudinary.com/dr435quj2/image/upload/v1781140228/qr-wechat.webp", label:"bjtiew"},
   },
   social: {
     twitter: 'https://twitter.com/eliteworld',

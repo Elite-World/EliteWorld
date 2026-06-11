@@ -90,7 +90,7 @@ const nextConfig: NextConfig = {
             key: 'Content-Security-Policy',
             value: `
               default-src 'self';
-              img-src 'self' data: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://prod-files-secure.s3.us-west-2.amazonaws.com https://www.notion.so;
+              img-src 'self' data: https://*.unsplash.com https://picsum.photos https://fastly.picsum.photos https://prod-files-secure.s3.us-west-2.amazonaws.com https://www.notion.so https://file.notion.so https://*.amazonaws.com https://*.googleusercontent.com https://avatar.iran.liara.run https://*.faiusr.com https://res.cloudinary.com;
               script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ""};
               style-src 'self' 'unsafe-inline';
               font-src 'self'; 
