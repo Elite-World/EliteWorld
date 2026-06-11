@@ -1,7 +1,7 @@
 'use client';
 
 // import { Article, Category } from '@repo/domain';
-import { useThemeStore } from '@repo/domain';
+import { useThemeStore, useLanguageStore } from '@repo/domain';
 // import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
 // Card is in web-shared/ui/Card.tsx as seen in file listing.
 // import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
@@ -134,6 +134,8 @@ export function HomePage() {
   const [mounted, setMounted] = useState(false);
   const _isDark = useThemeStore((state) => state.isDark);
   const isDark = mounted ? _isDark : false;
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   useEffect(() => {
     setMounted(true);
@@ -165,8 +167,7 @@ export function HomePage() {
         backgroundImage={siteConfig.ogImage}
         subtitle={
           <em>
-            <strong>Dream Big</strong> | Expert Guidance for Study and
-            Immigration
+            <strong>{isZh ? '梦想起航' : 'Dream Big'}</strong> | {isZh ? '专业的留学与移民指导' : 'Expert Guidance for Study and Immigration'}
           </em>
         }
       >
@@ -198,18 +199,17 @@ export function HomePage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-600/20 mb-6">
               <Sparkles className="w-3 h-3 text-blue-600" />
               <span className="text-[8px] font-black uppercase tracking-[0.3em] text-blue-600">
-                Institutional Excellence
+                {isZh ? '卓越机构' : 'Institutional Excellence'}
               </span>
             </div>
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
-              Our Global{' '}
+              {isZh ? '我们的全球' : 'Our Global '}{' '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                Influence
+                {isZh ? '影响力' : 'Influence'}
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
-              Setting the gold standard for international academic transition
-              and settlement.
+              {isZh ? '为您搭建国际学术过渡与定居的黄金标准。' : 'Setting the gold standard for international academic transition and settlement.'}
             </p>
           </div>
 
@@ -217,27 +217,26 @@ export function HomePage() {
             {[
               {
                 number: '5,000+',
-                label: 'Success Stories',
-                description: 'Elite placement in Tier-1 Global Institutions.',
+                label: isZh ? '成功案例' : 'Success Stories',
+                description: isZh ? '进入全球顶尖学府精英人才。' : 'Elite placement in Tier-1 Global Institutions.',
                 icon: Users,
               },
               {
                 number: '120+',
-                label: 'Partner Universities',
-                description:
-                  'Direct institutional access & priority processing.',
+                label: isZh ? '合作大学' : 'Partner Universities',
+                description: isZh ? '直接机构对接与优先处理。' : 'Direct institutional access & priority processing.',
                 icon: Globe,
               },
               {
                 number: '99%',
-                label: 'Success Rate',
-                description: 'Precision-engineered visa & admission protocols.',
+                label: isZh ? '成功率' : 'Success Rate',
+                description: isZh ? '精准签证与录取方案。' : 'Precision-engineered visa & admission protocols.',
                 icon: ShieldCheck,
               },
               {
                 number: '15+',
-                label: 'Years Excellence',
-                description: 'A legacy of high-performance consulting.',
+                label: isZh ? '年卓越经验' : 'Years Excellence',
+                description: isZh ? '高绩效咨询的优良传统。' : 'A legacy of high-performance consulting.',
                 icon: Award,
               },
             ].map((stat, index) => (
@@ -275,19 +274,18 @@ export function HomePage() {
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-blue-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-                  Consultancy Faculty
+                  {isZh ? '顾问团队' : 'Consultancy Faculty'}
                 </span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-[0.9]">
-                Meet our expert <br />{' '}
+                {isZh ? '认识我们的专业' : 'Meet our expert'} <br />{' '}
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                  Strategists
+                  {isZh ? '策略师' : 'Strategists'}
                 </span>
               </h2>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-medium max-w-xs leading-relaxed">
-              Our seasoned consultants are dedicated to architecting every phase
-              of your global transition.
+              {isZh ? '我们经验丰富的顾问致力于为您全球过渡的每个阶段进行架构。' : 'Our seasoned consultants are dedicated to architecting every phase of your global transition.'}
             </p>
           </div>
 
@@ -295,24 +293,24 @@ export function HomePage() {
             {[
               {
                 name: 'Sarah Chen',
-                role: 'Senior Academic Partner',
+                role: isZh ? '高级学术合伙人' : 'Senior Academic Partner',
                 image:
                   'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600',
-                speciality: 'Ivy League Admissions',
+                speciality: isZh ? '常春藤录取专家' : 'Ivy League Admissions',
               },
               {
                 name: 'Michael Zhang',
-                role: 'Head of Migration',
+                role: isZh ? '移民主管' : 'Head of Migration',
                 image:
                   'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600',
-                speciality: 'Tier-1 Visa Protocols',
+                speciality: isZh ? '一级签证方案专家' : 'Tier-1 Visa Protocols',
               },
               {
                 name: 'Emma Liu',
-                role: 'Strategic Advisor',
+                role: isZh ? '战略顾问' : 'Strategic Advisor',
                 image:
                   'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=600',
-                speciality: 'Global Career Planning',
+                speciality: isZh ? '全球职业规划专家' : 'Global Career Planning',
               },
             ].map((member, index) => (
               <div
@@ -356,14 +354,13 @@ export function HomePage() {
         <div className="container mx-auto px-4 relative z-10 text-center">
           <div className="mb-12">
             <h2 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-tight mb-6">
-              Ready to architect <br /> your{' '}
+              {isZh ? '准备好规划您的' : 'Ready to architect'} <br /> {isZh ? '' : 'your '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                Future?
+                {isZh ? '未来了吗？' : 'Future?'}
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-              Initiate a confidential consultation with our partner faculty.
-              Your journey to global status begins here.
+              {isZh ? '启动与我们合伙人的保密咨询。您的全球之旅由此开始。' : 'Initiate a confidential consultation with our partner faculty. Your journey to global status begins here.'}
             </p>
           </div>
 
@@ -375,13 +372,13 @@ export function HomePage() {
                 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               }
             >
-              Schedule Consultation
+              {isZh ? '预约咨询' : 'Schedule Consultation'}
             </Button>
             <Button
               variant="hero-outline"
               className="px-10 py-5 h-auto text-[10px]"
             >
-              Request Prospectus
+              {isZh ? '获取简章' : 'Request Prospectus'}
             </Button>
           </div>
         </div>
@@ -395,35 +392,34 @@ export function HomePage() {
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-blue-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
-                  Secure Channels
+                  {isZh ? '安全渠道' : 'Secure Channels'}
                 </span>
               </div>
               <h2 className="text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-8 max-w-sm">
-                Initiate <br />
+                {isZh ? '启动' : 'Initiate'} <br />
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                  Direct Contact
+                  {isZh ? '直接联系' : 'Direct Contact'}
                 </span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-base font-medium mb-12 max-w-md leading-relaxed">
-                Connect with our Global Response Team. We provide multilingual
-                support across all major academic jurisdictions.
+                {isZh ? '联系我们的全球响应团队。我们在所有主要学术管辖区提供多语言支持。' : 'Connect with our Global Response Team. We provide multilingual support across all major academic jurisdictions.'}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-10 mb-12 pb-12 border-b border-gray-100 dark:border-white/5">
                 {[
                   {
                     icon: MapPin,
-                    title: 'Global HQ',
+                    title: isZh ? '全球总部' : 'Global HQ',
                     label: siteConfig.contact.address,
                   },
                   {
                     icon: Phone,
-                    title: 'Secure Line',
+                    title: isZh ? '安全专线' : 'Secure Line',
                     label: siteConfig.contact.phone,
                   },
                   {
                     icon: Mail,
-                    title: 'Registry Email',
+                    title: isZh ? '注册邮箱' : 'Registry Email',
                     label: siteConfig.contact.email,
                   },
                 ].map((contact, index) => (
@@ -467,7 +463,7 @@ export function HomePage() {
                 <div className="flex items-center gap-2 mb-8 md:mb-10">
                   <ShieldCheck className="w-4 h-4 text-blue-600" />
                   <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-600">
-                    Instant Access QR
+                    {isZh ? '即时访问二维码' : 'Instant Access QR'}
                   </span>
                 </div>
 
@@ -487,7 +483,7 @@ export function HomePage() {
                       />
                     </div>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center">
-                      Scan to chat encrypted
+                      {isZh ? '扫码加密聊天' : 'Scan to chat encrypted'}
                     </p>
                   </div>
                   <div className="group">
@@ -504,7 +500,7 @@ export function HomePage() {
                       />
                     </div>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center">
-                      Scan for support: {siteConfig.contact.wechat.label}
+                      {isZh ? '扫码获取支持' : 'Scan for support'}: {siteConfig.contact.wechat.label}
                     </p>
                   </div>
                 </div>

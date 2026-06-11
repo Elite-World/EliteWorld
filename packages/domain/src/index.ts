@@ -2,6 +2,7 @@
 
 // Stores
 export * from './lib/stores/useThemeStore';
+export * from './lib/stores/useLanguageStore';
 export * from './lib/stores/useModalStore';
 export * from './lib/stores/useDevStore';
 export * from './components/shared/DevToolsToggle';

@@ -4,18 +4,19 @@ import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } fr
 import { contentSections, ContentSection, getSectionConfig } from '@repo/apps-config/landing/content-sources';
 
 // Factory to create provider from config
-export function getProviderForSection(sectionSlug: string): ContentProvider | null {
+export function getProviderForSection(sectionSlug: string, locale?: string): ContentProvider | null {
   const config = getSectionConfig(sectionSlug);
   if (!config) return null;
 
   switch (config.engine) {
     case 'markdown':
       if (!config.config.folderPath) throw new Error(`Section ${sectionSlug} is missing folderPath configuration`);
+      // Markdown provider could support locale later
       return new MarkdownProvider({ folderPath: config.config.folderPath });
     case 'notion':
-      return new NotionProvider({ databaseId: config.config.databaseId });
+      return new NotionProvider({ databaseId: config.config.databaseId, locale });
     case 'notion-x':
-      return new NotionXProvider({ databaseId: config.config.databaseId });
+      return new NotionXProvider({ databaseId: config.config.databaseId, locale });
     default:
       return null;
   }
@@ -29,12 +30,12 @@ export type ContentSource = 'markdown' | 'notion' | 'notion-x' | 'json';
 // defaulting to the 'markdown' strategy (or whatever we set as default).
 
 // @deprecated Legacy factory for backward compatibility
-export function getContentProvider(source: Exclude<ContentSource, 'json'> = 'markdown'): ContentProvider {
+export function getContentProvider(source: Exclude<ContentSource, 'json'> = 'markdown', locale?: string): ContentProvider {
   switch (source) {
     case 'notion':
-      return new NotionProvider(); 
+      return new NotionProvider({ locale }); 
     case 'notion-x':
-        return new NotionXProvider();
+        return new NotionXProvider({ locale });
     case 'markdown':
     default:
         const insights = contentSections.find((s: ContentSection) => s.slug === 'insights');

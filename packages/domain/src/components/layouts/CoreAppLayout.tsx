@@ -5,6 +5,7 @@ import { ScrollProgress } from '../shared/ScrollProgress';
 import { GlobalRibbon } from '../shared/GlobalRibbon';
 import { Navbar, Footer, NavigationData } from '@repo/ui';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
+import { useLanguageStore, useLanguageSwitcher } from '../../lib/stores/useLanguageStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { useDevStore } from '../../lib/stores/useDevStore';
 import { useNavbarStore } from '../../lib/stores/useNavbarStore';
@@ -23,6 +24,10 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
   const setIsDark = useThemeStore((state) => state.setIsDark);
+  
+  const { handleToggle } = useLanguageSwitcher();
+  const language = useLanguageStore((state) => state.language);
+  
   const openModal = useModalStore((state) => state.open);
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
   const forceSolidNavbar = useNavbarStore((state) => state.forceSolid);
@@ -84,6 +89,8 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
         onOpenSearch={() => openModal('search')}
         onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig })}
         forceSolid={forceSolidNavbar}
+        language={mounted ? language : 'en'}
+        onToggleLanguage={handleToggle}
       />
 
       {/* Main content */}

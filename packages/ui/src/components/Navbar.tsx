@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 export interface NavbarConfig {
-  features: { search: boolean; mode: boolean; user: boolean };
+  features: { search: boolean; mode: boolean; user: boolean; language?: boolean };
   name: string;
 }
 
@@ -33,6 +33,8 @@ export interface NavbarProps {
   onOpenSearch?: () => void;
   onOpenMenu?: (items: NavigationItem[]) => void;
   forceSolid?: boolean;
+  language?: 'en' | 'zh';
+  onToggleLanguage?: () => void;
 }
 
 function IconButton({
@@ -86,6 +88,29 @@ export function NavbarModeToggle({
     <IconButton
       icon={icon}
       label={label}
+      onClick={onClick}
+      isTransparent={isTransparent}
+    />
+  );
+}
+
+export function NavbarLanguageToggle({
+  isTransparent,
+  onClick,
+  language,
+}: {
+  isTransparent?: boolean;
+  onClick?: () => void;
+  language?: 'en' | 'zh';
+}) {
+  return (
+    <IconButton
+      icon={
+        <div className="flex items-center justify-center font-bold text-[10px] w-4 h-4 leading-none">
+          {language === 'zh' ? '中' : 'EN'}
+        </div>
+      }
+      label="Toggle Language"
       onClick={onClick}
       isTransparent={isTransparent}
     />
@@ -198,6 +223,8 @@ export function Navbar({
   onOpenSearch,
   onOpenMenu,
   forceSolid = false,
+  language = 'en',
+  onToggleLanguage,
 }: NavbarProps) {
   const { scrollY, isHeroVisible, isScrollingUp } = useScrollPosition();
   const isScrolled = scrollY > 20 || forceSolid;
@@ -353,6 +380,13 @@ export function Navbar({
                   label="Registry Search"
                   onClick={onOpenSearch}
                   isTransparent={!isScrolled}
+                />
+              )}
+              {siteConfig.features.language !== false && (
+                <NavbarLanguageToggle
+                  isTransparent={!isScrolled}
+                  onClick={onToggleLanguage}
+                  language={language}
                 />
               )}
               {siteConfig.features.mode && (

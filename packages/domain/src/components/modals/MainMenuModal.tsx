@@ -3,9 +3,10 @@
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { Modal } from '../../components/ui/Modal';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
+import { useLanguageStore, useLanguageSwitcher } from '../../lib/stores/useLanguageStore';
 import { cn } from '../../lib/utils';
 import Link from 'next/link';
-import { NavbarModeToggle } from '@repo/ui';
+import { NavbarModeToggle, NavbarLanguageToggle } from '@repo/ui';
 import { UserMenu } from '../shared/UserMenu';
 import { useState, useEffect, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
@@ -31,6 +32,7 @@ export interface MainMenuModalProps {
       search: boolean;
       mode: boolean;
       user: boolean;
+      language?: boolean;
     };
   };
 }
@@ -39,6 +41,8 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
   const isDark = useThemeStore((state) => state.isDark);
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
+  const language = useLanguageStore((state) => state.language);
+  const { handleToggle: toggleLanguage } = useLanguageSwitcher();
   const { close } = useModalStore();
 
   const [searchMode, setSearchMode] = useState(false);
@@ -337,6 +341,24 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                 )}
               >
                 <div className="space-y-4">
+                  {siteConfig?.features?.language !== false && (
+                    <div className="flex items-center justify-between">
+                      <span
+                        className={cn(
+                          'text-xs font-semibold uppercase tracking-wider',
+                          isDark ? 'text-gray-500' : 'text-gray-400',
+                        )}
+                      >
+                        Language
+                      </span>
+                      <NavbarLanguageToggle
+                        isTransparent={false}
+                        onClick={toggleLanguage}
+                        language={language}
+                      />
+                    </div>
+                  )}
+
                   {siteConfig?.features?.mode && (
                     <div className="flex items-center justify-between">
                       <span

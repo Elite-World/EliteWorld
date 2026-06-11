@@ -1,7 +1,8 @@
 'use client';
 
-import { useRibbonStore, RibbonButton } from '../../lib/stores/useRibbonStore';
+import { useRibbonStore } from '../../lib/stores/useRibbonStore';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
+import { useLanguageStore, useLanguageSwitcher } from '../../lib/stores/useLanguageStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { cn } from '../../lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,6 +18,9 @@ export function GlobalRibbon() {
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
 
+  const language = useLanguageStore((state) => state.language);
+  const { handleToggle: toggleLanguage } = useLanguageSwitcher();
+
   const openModal = useModalStore((state) => state.open);
 
   const [isMounted, setIsMounted] = useState(false);
@@ -31,10 +35,10 @@ export function GlobalRibbon() {
   useEffect(() => {
     const updateVisibility = () => {
       const isScrolled = window.scrollY > 300;
-      const isDesktop = window.innerWidth >= 768;
 
       updateButton('scroll-to-top', { visible: isScrolled });
       updateButton('search-ribbon', { visible: isScrolled });
+      updateButton('language-ribbon', { visible: isScrolled });
       updateButton('theme-ribbon', { visible: isScrolled });
     };
 
@@ -97,6 +101,34 @@ export function GlobalRibbon() {
       onClick: handleThemeToggle,
     });
   }, [registerButton, updateButton, mode, setMode]);
+
+  // 4. Language Toggle
+  useEffect(() => {
+    const handleLangToggle = () => toggleLanguage();
+
+    registerButton({
+      id: 'language-ribbon',
+      priority: 45, // Between search (50) and theme (40)
+      visible: false,
+      label: 'Toggle Language',
+      icon: ({ className }) => (
+        <div className={cn('flex items-center justify-center font-bold text-xs leading-none', className)}>
+          {language === 'zh' ? '中' : 'EN'}
+        </div>
+      ),
+      onClick: handleLangToggle,
+    });
+
+    updateButton('language-ribbon', {
+      icon: ({ className }) => (
+        <div className={cn('flex items-center justify-center font-bold text-[10px] leading-none mt-0.5', className)}>
+          {language === 'zh' ? '中' : 'EN'}
+        </div>
+      ),
+      onClick: handleLangToggle,
+    });
+  }, [registerButton, updateButton, language, toggleLanguage]);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Close mobile menu on scroll
@@ -175,11 +207,13 @@ export function GlobalRibbon() {
                     // Colors
                     button.id === 'search-ribbon'
                       ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-400 dark:text-gray-900 dark:hover:bg-blue-300'
-                      : button.id === 'theme-ribbon'
-                        ? 'bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-400 dark:text-gray-900 dark:hover:bg-indigo-300'
-                        : button.id === 'scroll-to-top'
-                          ? 'bg-gray-900 text-white hover:bg-black dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
-                          : 'bg-gray-500 text-white hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600',
+                      : button.id === 'language-ribbon'
+                        ? 'bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-400 dark:text-gray-900 dark:hover:bg-purple-300'
+                        : button.id === 'theme-ribbon'
+                          ? 'bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-400 dark:text-gray-900 dark:hover:bg-indigo-300'
+                          : button.id === 'scroll-to-top'
+                            ? 'bg-gray-900 text-white hover:bg-black dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
+                            : 'bg-gray-500 text-white hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600',
                   )}
                   title={button.label}
                 >

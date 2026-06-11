@@ -9,23 +9,32 @@ import {
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  return contentSections.map((section) => ({
-    section: section.slug,
-  }));
+  const locales = ['en', 'zh'];
+  const params: any[] = [];
+  for (const locale of locales) {
+    contentSections.forEach((section) => {
+      params.push({
+        locale,
+        section: section.slug,
+      });
+    });
+  }
+  return params;
 }
 
 interface PageProps {
   params: Promise<{
+    locale: string;
     section: string;
   }>;
 }
 
 export default async function SectionListPage({ params }: PageProps) {
-  const { section } = await params;
+  const { locale, section } = await params;
 
   // 1. Get Config & Provider
   const sectionConfig = getSectionConfig(section);
-  const provider = getProviderForSection(section);
+  const provider = getProviderForSection(section, locale);
 
   if (!sectionConfig || !provider) {
     notFound();

@@ -48,6 +48,7 @@ const DATABASE_ID = formatUuid(RAW_DATABASE_ID);
 
 interface NotionProviderOptions {
     databaseId?: string;
+    locale?: string;
 }
 
 
@@ -76,9 +77,11 @@ async function fetchWithRetry(url: string, options: RequestInit & { next?: any }
 
 export class NotionProvider implements ContentProvider {
   private databaseId: string;
+  private locale: string;
 
   constructor(options?: NotionProviderOptions) {
       this.databaseId = options?.databaseId ? formatUuid(options.databaseId) : DATABASE_ID;
+      this.locale = options?.locale || 'en';
   }
   
   private checkConfig() {
@@ -120,6 +123,12 @@ export class NotionProvider implements ContentProvider {
                 property: 'Date',
                 date: {
                   on_or_before: new Date().toISOString().split('T')[0],
+                },
+              },
+              {
+                property: 'Locale',
+                select: {
+                  equals: this.locale,
                 },
               },
             ],
@@ -168,10 +177,20 @@ export class NotionProvider implements ContentProvider {
         next: { revalidate: 3600 },
         body: JSON.stringify({
           filter: {
-            property: 'Slug',
-            rich_text: {
-              equals: id,
-            },
+            and: [
+              {
+                property: 'Slug',
+                rich_text: {
+                  equals: id,
+                },
+              },
+              {
+                property: 'Locale',
+                select: {
+                  equals: this.locale,
+                },
+              },
+            ]
           },
         }),
       });
@@ -245,6 +264,10 @@ export class NotionProvider implements ContentProvider {
                         {
                             property: 'Category',
                             select: { equals: category }
+                        },
+                        {
+                            property: 'Locale',
+                            select: { equals: this.locale }
                         }
                     ]
                 }
