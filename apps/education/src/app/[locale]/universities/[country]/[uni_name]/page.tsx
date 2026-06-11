@@ -8,8 +8,21 @@ import { GlobalUniTemplate } from '@/components/university/GlobalUniTemplate';
 
 export const revalidate = 3600; // Cache this page for 1 hour (ISR)
 
+export async function generateStaticParams() {
+  const { getAllUniversitiesDirectory } = await import('@repo/domain/services/ranking-service');
+  const universities = await getAllUniversitiesDirectory();
+  const params: any[] = [];
+  universities.forEach((uni) => {
+    if (uni.location && uni.location.country_slug) {
+      params.push({ locale: 'en', country: uni.location.country_slug, uni_name: uni.slug });
+      params.push({ locale: 'zh', country: uni.location.country_slug, uni_name: uni.slug });
+    }
+  });
+  return params;
+}
+
 type PageProps = {
-  params: Promise<{ country: string; uni_name: string }>;
+  params: Promise<{ locale: string; country: string; uni_name: string }>;
 };
 
 export async function generateMetadata({

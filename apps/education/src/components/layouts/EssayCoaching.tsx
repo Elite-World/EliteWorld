@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { HeroSection } from '@repo/ui';
+import { useLanguageStore } from '@repo/domain';
 
 import {
   PackageItem,
@@ -17,12 +18,15 @@ export function EssayCoachingContent({
   documentTypes,
   packages,
 }: EssayCoachingProps) {
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
       <HeroSection
         mode="page"
-        title="Essay Coaching"
-        subtitle="Professional guidance for your university application essays"
+        title={isZh ? '文书辅导' : 'Essay Coaching'}
+        subtitle={isZh ? '由常春藤联盟校友和招生专家制作的引人入胜的叙述' : 'Compelling narratives crafted by Ivy League alumni and admissions experts'}
       />
 
       {/* Global Documents Section */}
@@ -30,7 +34,7 @@ export function EssayCoachingContent({
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
-              Global Application Documents
+              {isZh ? '全球申请文书' : 'Global Application Documents'}
             </h2>
             <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>
@@ -64,7 +68,7 @@ export function EssayCoachingContent({
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
-              Service Packages
+              {isZh ? '服务套餐' : 'Service Packages'}
             </h2>
             <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>

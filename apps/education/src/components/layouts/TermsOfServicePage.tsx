@@ -1,8 +1,7 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/domain';
-import { cn } from '@repo/domain';
+import { useThemeStore, useLanguageStore, cn } from '@repo/domain';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -14,13 +13,15 @@ interface TermsOfServicePageProps {
 
 export function TermsOfServicePage({ content }: TermsOfServicePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   return (
     <div className="min-h-screen">
       <HeroSection
         mode="page"
-        title="Terms of Service"
-        subtitle="Last updated: December 16, 2025"
+        title={isZh ? '服务条款' : 'Terms of Service'}
+        subtitle={isZh ? '最后更新：2025年12月16日' : 'Last updated: December 16, 2025'}
       />
 
       <div className="container mx-auto px-4 py-12 relative">

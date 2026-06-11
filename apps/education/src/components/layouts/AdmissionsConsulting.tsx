@@ -2,6 +2,7 @@
 
 import { HeroSection } from '@repo/ui';
 import Image from 'next/image';
+import { useLanguageStore } from '@repo/domain';
 import {
   DIYPackage,
   HighEndPackage,
@@ -22,12 +23,15 @@ export function AdmissionsConsultingContent({
   highEndPackages,
   diyPackages,
 }: AdmissionsConsultingProps) {
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
+
   return (
     <div className="min-h-screen bg-white dark:bg-[#0a0a0a] transition-colors duration-300">
       <HeroSection
         mode="page"
-        title="Admissions Consulting"
-        subtitle="End-to-end guidance from elite mentor teams"
+        title={isZh ? '升学指导' : 'Admissions Consulting'}
+        subtitle={isZh ? '精英导师团队提供端到端指导' : 'End-to-end guidance from elite mentor teams'}
       />
 
       {/* Mentor Team Section */}
@@ -35,7 +39,7 @@ export function AdmissionsConsultingContent({
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
-              Mentor Team Introduction
+              {isZh ? '导师团队介绍' : 'Mentor Team Introduction'}
             </h2>
             <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto" />
           </div>
@@ -106,11 +110,10 @@ export function AdmissionsConsultingContent({
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-4">
-            Service Process
+            {isZh ? '服务流程' : 'Service Process'}
           </h2>
           <p className="text-gray-500 dark:text-gray-400 max-w-2xl mx-auto">
-            Our &quot;5v1&quot; exclusive service model ensures precision
-            guidance at every step, from brainstorming to enrollment.
+            {isZh ? '我们的“5对1”专属服务模式确保从头脑风暴到入学的每一步都有精准指导。' : 'Our "5v1" exclusive service model ensures precision guidance at every step, from brainstorming to enrollment.'}
           </p>
         </div>
 
@@ -138,10 +141,10 @@ export function AdmissionsConsultingContent({
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-2">
-              High-End Applications
+              {isZh ? '高端申请服务' : 'High-End Applications'}
             </h2>
             <p className="text-gray-500 dark:text-gray-400">
-              Premium bespoke services for elite admissions
+              {isZh ? '为精英录取提供的高端定制服务' : 'Premium bespoke services for elite admissions'}
             </p>
           </div>
 
@@ -212,7 +215,7 @@ export function AdmissionsConsultingContent({
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-[#010022] dark:text-white mb-2">
-            Study Abroad DIY Services
+            {isZh ? '留学 DIY 服务' : 'Study Abroad DIY Services'}
           </h2>
           <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mt-4" />
         </div>

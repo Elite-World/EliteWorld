@@ -19,6 +19,10 @@ const getCachedUniversities = unstable_cache(
   { revalidate: 3600 }
 );
 
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default async function UniversitiesPage() {
   const universities = await getCachedUniversities();
 

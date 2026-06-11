@@ -14,6 +14,10 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic'; // Ensure fresh data if DB changes
 
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default async function RankingPage({
   searchParams,
 }: {

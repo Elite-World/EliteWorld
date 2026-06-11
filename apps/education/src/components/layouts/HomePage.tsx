@@ -1,7 +1,7 @@
 'use client';
 
 import { Article } from '@repo/domain';
-import { useThemeStore, useDevStore } from '@repo/domain';
+import { useThemeStore, useDevStore, useLanguageStore } from '@repo/domain';
 import { ArticleCard } from '@repo/domain';
 
 import { cn } from '@repo/domain';
@@ -118,6 +118,8 @@ interface HomePageProps {
 export function HomePage({ articles, tips = [] }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
@@ -144,8 +146,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
         title={siteConfig.name}
         subtitle={
           <em>
-            <strong>Dream Big</strong> | Expert Guidance for Study and
-            Immigration
+            <strong>{isZh ? '敢于梦想' : 'Dream Big'}</strong> | {isZh ? '留学与移民的专业指导' : 'Expert Guidance for Study and Immigration'}
           </em>
         }
       >
@@ -191,7 +192,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
               'bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent',
             )}
           >
-            Our Global Impact
+            {isZh ? '我们的全球影响力' : 'Our Global Impact'}
           </h2>
 
           <div className="grid md:grid-cols-4 gap-8">
@@ -255,7 +256,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                   'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
                 )}
               >
-                Latest Insights
+                {isZh ? '深度解析' : 'Latest Insights'}
               </h2>
               <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
               <p
@@ -264,7 +265,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                   isDark ? 'text-gray-400' : 'text-gray-600',
                 )}
               >
-                Stay updated with the latest news, guides, and tips for your international education journey.
+                {isZh ? '获取国际教育的最新新闻、指南和提示。' : 'Stay updated with the latest news, guides, and tips for your international education journey.'}
               </p>
             </div>
             <Link
@@ -303,7 +304,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                     'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
                   )}
                 >
-                  Tips & Guides
+                  {isZh ? '干货分享' : 'Tips & Guides'}
                 </h2>
                 <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
                 <p
@@ -312,7 +313,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                     isDark ? 'text-gray-400' : 'text-gray-600',
                   )}
                 >
-                  Actionable advice to help you ace your applications and transition smoothly.
+                  {isZh ? '可操作的建议，助您顺利完成申请并轻松过渡。' : 'Actionable advice to help you ace your applications and transition smoothly.'}
                 </p>
               </div>
               <Link
@@ -350,7 +351,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
               )}
             >
-              Meet Our Education Experts
+              {isZh ? '认识我们的教育专家' : 'Meet Our Education Experts'}
             </h2>
             <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
             <p
@@ -359,8 +360,7 @@ export function HomePage({ articles, tips = [] }: HomePageProps) {
                 isDark ? 'text-gray-400' : 'text-gray-600',
               )}
             >
-              Our experienced consultants are dedicated to guiding you through
-              every step of your educational journey
+              {isZh ? '我们经验丰富的顾问致力于在您教育之旅的每一步提供指导。' : 'Our experienced consultants are dedicated to guiding you through every step of your educational journey.'}
             </p>
 
             <div className="grid md:grid-cols-3 gap-8">

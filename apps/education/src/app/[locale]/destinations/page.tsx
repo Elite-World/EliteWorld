@@ -5,6 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Globe2, Building2, Wallet } from 'lucide-react';
 
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default function DestinationsHubPage() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">

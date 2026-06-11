@@ -1,8 +1,7 @@
 'use client';
 
 import { HeroSection } from '@repo/ui';
-import { useThemeStore } from '@repo/domain';
-import { cn } from '@repo/domain';
+import { useThemeStore, useLanguageStore, cn } from '@repo/domain';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
@@ -14,13 +13,15 @@ interface SecurityPageProps {
 
 export function SecurityPage({ content }: SecurityPageProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const language = useLanguageStore((state) => state.language);
+  const isZh = language === 'zh';
 
   return (
     <div className="min-h-screen">
       <HeroSection
         mode="page"
-        title="Security & Compliance"
-        subtitle="Enterprise-grade protection for your global journey"
+        title={isZh ? '安全与合规' : 'Security & Compliance'}
+        subtitle={isZh ? '为您全球之旅提供企业级保护' : 'Enterprise-grade protection for your global journey'}
       />
 
       <div className="container mx-auto px-4 py-12 relative">

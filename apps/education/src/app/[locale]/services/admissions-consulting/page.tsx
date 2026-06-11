@@ -6,6 +6,10 @@ import {
   serviceProcess,
 } from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 
+export async function generateStaticParams() {
+  return [{ locale: 'en' }, { locale: 'zh' }];
+}
+
 export default function Page() {
   return (
     <AdmissionsConsultingContent

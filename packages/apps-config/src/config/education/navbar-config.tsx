@@ -136,8 +136,82 @@ export const navigationItems: NavigationItem[] = [
   },
 ];
 
-export async function getNavigationData(): Promise<NavigationData> {
+export const navigationItemsZh: NavigationItem[] = [
+  {
+    id: 'home',
+    label: '首页',
+    href: '/',
+    icon: <HiOutlineHome className="w-5 h-5" />,
+  },
+  {
+    id: 'services',
+    label: '服务项目',
+    href: '',
+    icon: <HiOutlineSparkles className="w-5 h-5" />,
+    children: [
+      {
+        id: 'admissions-consulting',
+        label: '升学指导',
+        href: '/services/admissions-consulting',
+        icon: <HiOutlineAcademicCap className="w-5 h-5" />,
+      },
+      {
+        id: 'essay-coaching',
+        label: '文书辅导',
+        href: '/services/essay-coaching',
+        icon: <HiOutlinePencilSquare className="w-5 h-5" />,
+      },
+    ],
+  },
+  {
+    id: 'resources',
+    label: '教育资源',
+    href: '',
+    icon: <HiOutlineBookOpen className="w-5 h-5" />,
+    children: [
+      {
+        id: 'insights',
+        label: '深度解析',
+        href: '/insights',
+        icon: <HiOutlinePresentationChartLine className="w-5 h-5" />,
+      },
+      {
+        id: 'tips',
+        label: '干货分享',
+        href: '/tips',
+        icon: <HiOutlineLightBulb className="w-5 h-5" />,
+      },
+      {
+        id: 'ranking',
+        label: '大学排名',
+        href: '/ranking',
+        icon: <HiOutlineChartBar className="w-5 h-5" />,
+      },
+      {
+        id: 'universities',
+        label: '世界名校',
+        href: '/universities',
+        icon: <HiOutlineChartBar className="w-5 h-5" />,
+      },
+      {
+        id: 'destinations',
+        label: '留学国家',
+        href: '/destinations',
+        icon: <HiOutlineGlobeAlt className="w-5 h-5" />,
+      },
+    ],
+  },
+  {
+    id: 'contact',
+    label: '联系我们',
+    href: `${LANDING_URL}/?source=education#contact`,
+    external: true,
+    icon: <HiOutlineEnvelope className="w-5 h-5" />,
+  },
+];
+
+export async function getNavigationData(locale?: string): Promise<NavigationData> {
   return {
-    items: navigationItems,
+    items: locale === 'zh' ? navigationItemsZh : navigationItems,
   };
 }

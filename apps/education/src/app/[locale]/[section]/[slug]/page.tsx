@@ -11,6 +11,7 @@ export const revalidate = 3600;
 
 // Improve types for caching
 interface SectionParams {
+  locale: string;
   section: string;
   slug: string;
 }
@@ -19,11 +20,23 @@ export async function generateStaticParams() {
   const params: SectionParams[] = [];
 
   for (const section of contentSections) {
-    const provider = getProviderForSection(section.slug);
-    if (provider) {
-      const articles = await provider.getArticles();
+    const providerEn = getProviderForSection(section.slug, 'en');
+    if (providerEn) {
+      const articles = await providerEn.getArticles();
       articles.forEach((article) => {
         params.push({
+          locale: 'en',
+          section: section.slug,
+          slug: article.slug,
+        });
+      });
+    }
+    const providerZh = getProviderForSection(section.slug, 'zh');
+    if (providerZh) {
+      const articles = await providerZh.getArticles();
+      articles.forEach((article) => {
+        params.push({
+          locale: 'zh',
           section: section.slug,
           slug: article.slug,
         });
@@ -36,15 +49,16 @@ export async function generateStaticParams() {
 
 interface PageProps {
   params: Promise<{
+    locale: string;
     section: string;
     slug: string;
   }>;
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { section, slug } = await params;
+  const { locale, section, slug } = await params;
 
-  const provider = getProviderForSection(section);
+  const provider = getProviderForSection(section, locale);
   if (!provider) return {};
 
   const article = await provider.getArticleById(slug);
@@ -77,11 +91,11 @@ export async function generateMetadata({ params }: PageProps) {
 }
 
 export default async function SectionArticlePage({ params }: PageProps) {
-  const { section, slug } = await params;
+  const { locale, section, slug } = await params;
 
   // 1. Get Config & Provider
   const sectionConfig = getSectionConfig(section);
-  const provider = getProviderForSection(section);
+  const provider = getProviderForSection(section, locale);
 
   if (!sectionConfig || !provider) {
     notFound();
@@ -114,7 +128,7 @@ export default async function SectionArticlePage({ params }: PageProps) {
     .filter((a) => a.category === article.category && a.id !== article.id)
     .slice(0, 3);
 
-  const basePath = `/${section}`;
+  const basePath = `/${locale}/${section}`;
 
   // 3. Render based on Engine
   if (sectionConfig.engine === 'notion-x') {

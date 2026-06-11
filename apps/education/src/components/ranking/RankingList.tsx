@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { UniversityRanking } from '@repo/domain';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
-import { fetchRankings } from '@/app/ranking/actions';
+import { fetchRankings } from '@/app/[locale]/ranking/actions';
 import { useRouter } from 'next/navigation';
 
 interface RankingListProps {
