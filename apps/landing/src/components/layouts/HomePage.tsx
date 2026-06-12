@@ -135,7 +135,8 @@ const HERO_BG_IMAGES = {
   main: siteConfig.ogImage,
   immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
   edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
-  coursehub: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
+  coursehub:
+    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
 } as const;
 
 export function HomePage({ locale }: { locale?: string }) {
@@ -151,7 +152,7 @@ export function HomePage({ locale }: { locale?: string }) {
   const [heroInView, setHeroInView] = useState(true);
 
   const gatewayButtons = Object.values(navGateway).filter(
-    (item) => item.name !== siteConfig.name
+    (item) => item.name !== siteConfig.name,
   );
 
   useEffect(() => {
@@ -180,7 +181,9 @@ export function HomePage({ locale }: { locale?: string }) {
 
     const interval = setInterval(() => {
       // Loop from 0 to N (0 = default background, 1..N = highlighted buttons)
-      setCarouselIndex((prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1));
+      setCarouselIndex(
+        (prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1),
+      );
     }, 5000);
 
     return () => clearInterval(interval);
@@ -189,10 +192,13 @@ export function HomePage({ locale }: { locale?: string }) {
   // Current active button ID (prioritizing active mouse hover)
   const currentButtonId = isHovered
     ? hoveredButtonId
-    : (carouselIndex === 0 ? null : gatewayButtons[carouselIndex - 1]?.id || null);
+    : carouselIndex === 0
+      ? null
+      : gatewayButtons[carouselIndex - 1]?.id || null;
 
   const activeBgImage = currentButtonId
-    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] || siteConfig.ogImage
+    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] ||
+      siteConfig.ogImage
     : siteConfig.ogImage;
 
   return (
@@ -204,7 +210,10 @@ export function HomePage({ locale }: { locale?: string }) {
         backgroundImage={activeBgImage}
         subtitle={
           <em>
-            <strong>{isZh ? '梦想起航' : 'Dream Big'}</strong> | {isZh ? '专业的留学与移民指导' : 'Expert Guidance for Study and Immigration'}
+            <strong>{isZh ? '梦想起航' : 'Dream Big'}</strong> |{' '}
+            {isZh
+              ? '专业的留学与移民指导'
+              : 'Expert Guidance for Study and Immigration'}
           </em>
         }
       >
@@ -231,7 +240,7 @@ export function HomePage({ locale }: { locale?: string }) {
                 // Highlight state matching hover preview
                 isActive
                   ? 'bg-white/20 border-white scale-105 shadow-[0_0_25px_rgba(255,255,255,0.3)]'
-                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
               )}
             >
               {button.label}
@@ -251,8 +260,8 @@ export function HomePage({ locale }: { locale?: string }) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center mb-24"
           >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-600/20 mb-6">
@@ -268,7 +277,9 @@ export function HomePage({ locale }: { locale?: string }) {
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
-              {isZh ? '为您搭建国际学术过渡与定居的黄金标准。' : 'Setting the gold standard for international academic transition and settlement.'}
+              {isZh
+                ? '为您搭建国际学术过渡与定居的黄金标准。'
+                : 'Setting the gold standard for international academic transition and settlement.'}
             </p>
           </motion.div>
 
@@ -277,25 +288,33 @@ export function HomePage({ locale }: { locale?: string }) {
               {
                 number: '5,000+',
                 label: isZh ? '成功案例' : 'Success Stories',
-                description: isZh ? '进入全球顶尖学府精英人才。' : 'Elite placement in Tier-1 Global Institutions.',
+                description: isZh
+                  ? '进入全球顶尖学府精英人才。'
+                  : 'Elite placement in Tier-1 Global Institutions.',
                 icon: Users,
               },
               {
                 number: '120+',
                 label: isZh ? '合作大学' : 'Partner Universities',
-                description: isZh ? '直接机构对接与优先处理。' : 'Direct institutional access & priority processing.',
+                description: isZh
+                  ? '直接机构对接与优先处理。'
+                  : 'Direct institutional access & priority processing.',
                 icon: Globe,
               },
               {
                 number: '99%',
                 label: isZh ? '成功率' : 'Success Rate',
-                description: isZh ? '精准签证与录取方案。' : 'Precision-engineered visa & admission protocols.',
+                description: isZh
+                  ? '精准签证与录取方案。'
+                  : 'Precision-engineered visa & admission protocols.',
                 icon: ShieldCheck,
               },
               {
                 number: '15+',
                 label: isZh ? '年卓越经验' : 'Years Excellence',
-                description: isZh ? '高绩效咨询的优良传统。' : 'A legacy of high-performance consulting.',
+                description: isZh
+                  ? '高绩效咨询的优良传统。'
+                  : 'A legacy of high-performance consulting.',
                 icon: Award,
               },
             ].map((stat, index) => (
@@ -303,8 +322,12 @@ export function HomePage({ locale }: { locale?: string }) {
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="group relative p-8 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] hover:bg-gray-50 dark:hover:bg-white/8 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-500 overflow-hidden shadow-xl dark:shadow-none"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 rounded-full blur-[60px] -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -335,8 +358,8 @@ export function HomePage({ locale }: { locale?: string }) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
           >
             <div className="max-w-2xl">
@@ -354,7 +377,9 @@ export function HomePage({ locale }: { locale?: string }) {
               </h2>
             </div>
             <p className="text-gray-600 dark:text-gray-400 text-sm font-medium max-w-xs leading-relaxed">
-              {isZh ? '我们经验丰富的顾问致力于为您全球过渡的每个阶段进行架构。' : 'Our seasoned consultants are dedicated to architecting every phase of your global transition.'}
+              {isZh
+                ? '我们经验丰富的顾问致力于为您全球过渡的每个阶段进行架构。'
+                : 'Our seasoned consultants are dedicated to architecting every phase of your global transition.'}
             </p>
           </motion.div>
 
@@ -379,15 +404,21 @@ export function HomePage({ locale }: { locale?: string }) {
                 role: isZh ? '战略顾问' : 'Strategic Advisor',
                 image:
                   'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=600',
-                speciality: isZh ? '全球职业规划专家' : 'Global Career Planning',
+                speciality: isZh
+                  ? '全球职业规划专家'
+                  : 'Global Career Planning',
               },
             ].map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500"
               >
                 <div className="relative aspect-4/5 w-full overflow-hidden">
@@ -427,19 +458,22 @@ export function HomePage({ locale }: { locale?: string }) {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
           className="container mx-auto px-4 relative z-10 text-center"
         >
           <div className="mb-12">
             <h2 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-tight mb-6">
-              {isZh ? '准备好规划您的' : 'Ready to architect'} <br /> {isZh ? '' : 'your '}
+              {isZh ? '准备好规划您的' : 'Ready to architect'} <br />{' '}
+              {isZh ? '' : 'your '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
                 {isZh ? '未来了吗？' : 'Future?'}
               </span>
             </h2>
             <p className="text-gray-600 dark:text-gray-400 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-              {isZh ? '启动与我们合伙人的保密咨询。您的全球之旅由此开始。' : 'Initiate a confidential consultation with our partner faculty. Your journey to global status begins here.'}
+              {isZh
+                ? '启动与我们合伙人的保密咨询。您的全球之旅由此开始。'
+                : 'Initiate a confidential consultation with our partner faculty. Your journey to global status begins here.'}
             </p>
           </div>
 
@@ -470,7 +504,7 @@ export function HomePage({ locale }: { locale?: string }) {
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="flex items-center gap-2 mb-6">
@@ -486,7 +520,9 @@ export function HomePage({ locale }: { locale?: string }) {
                 </span>
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-base font-medium mb-12 max-w-md leading-relaxed">
-                {isZh ? '联系我们的全球响应团队。我们在所有主要学术管辖区提供多语言支持。' : 'Connect with our Global Response Team. We provide multilingual support across all major academic jurisdictions.'}
+                {isZh
+                  ? '联系我们的全球响应团队。我们在所有主要学术管辖区提供多语言支持。'
+                  : 'Connect with our Global Response Team. We provide multilingual support across all major academic jurisdictions.'}
               </p>
 
               <div className="grid sm:grid-cols-2 gap-10 mb-12 pb-12 border-b border-gray-100 dark:border-white/5">
@@ -543,7 +579,7 @@ export function HomePage({ locale }: { locale?: string }) {
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden"
             >
@@ -563,7 +599,7 @@ export function HomePage({ locale }: { locale?: string }) {
                       <QRCode
                         src={
                           siteConfig.contact.whatsapp.qr ||
-                          '/qr/whatsapp-qr.png'
+                          '/qr/whatsapp-qr.webp'
                         }
                         alt="WhatsApp QR Code"
                         title="WhatsApp"
@@ -580,7 +616,7 @@ export function HomePage({ locale }: { locale?: string }) {
                     <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
                       <QRCode
                         src={
-                          siteConfig.contact.wechat.qr || '/qr/wechat-qr.png'
+                          siteConfig.contact.wechat.qr || '/qr/wechat-qr.webp'
                         }
                         alt="WeChat QR Code"
                         title="WeChat"
@@ -590,7 +626,8 @@ export function HomePage({ locale }: { locale?: string }) {
                       />
                     </div>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center">
-                      {isZh ? '扫码获取支持' : 'Scan for support'}: {siteConfig.contact.wechat.label}
+                      {isZh ? '扫码获取支持' : 'Scan for support'}:{' '}
+                      {siteConfig.contact.wechat.label}
                     </p>
                   </div>
                 </div>
