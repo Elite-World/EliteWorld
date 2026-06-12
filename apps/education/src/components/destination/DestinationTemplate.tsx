@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { HeroSection } from '@repo/ui';
-import { DestinationInfo } from '@repo/domain';
+import { DestinationInfo, MustKnowItem } from '@repo/apps-config/content/education/destinations';
 import { Landmark, Wallet, Briefcase, Heart, ArrowRight, Building2, Users, BookOpen, GraduationCap, Trophy, Rocket, Globe } from 'lucide-react';
 import Link from 'next/link';
 
@@ -61,7 +61,7 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {data.mustKnows.map((item) => {
+            {data.mustKnows.map((item: MustKnowItem) => {
               const Icon = iconMap[item.iconName as keyof typeof iconMap] || Heart;
               return (
                 <div 
@@ -99,7 +99,7 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {data.whyStudyHere.map((item) => {
+                {data.whyStudyHere.map((item: MustKnowItem) => {
                   const Icon = iconMap[item.iconName as keyof typeof iconMap] || Trophy;
                   return (
                     <div 

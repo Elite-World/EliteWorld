@@ -48,7 +48,7 @@ export function ArticlePage({
   };
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-20 overflow-x-hidden">
       {/* Hero Section */}
       <HeroSection
         mode="page"
@@ -281,42 +281,15 @@ export function ArticlePage({
             >
               You might also like
             </h3>
-            {/* Infinite Carousel Container */}
-            <style dangerouslySetInnerHTML={{__html: `
-              @keyframes marquee {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(calc(-100% - 2rem)); } /* 2rem = gap-8 */
-              }
-              .animate-marquee {
-                animation: marquee 25s linear infinite;
-              }
-              .carousel-container:hover .animate-marquee {
-                animation-play-state: paused;
-              }
-            `}} />
-            <div className="overflow-hidden w-full pb-8 relative carousel-container flex gap-8">
-              {/* Group 1 */}
-              <div className="flex gap-8 shrink-0 animate-marquee">
-                {relatedArticles.map((related) => (
-                  <div 
-                    key={related.id} 
-                    className="flex-none w-[85vw] md:w-[calc(50vw-4rem)] max-w-[420px] h-full"
-                  >
-                    <ArticleCard article={related} basePath={basePath} />
-                  </div>
-                ))}
-              </div>
-              {/* Group 2 (Duplicate for seamless loop) */}
-              <div className="flex gap-8 shrink-0 animate-marquee" aria-hidden="true">
-                {relatedArticles.map((related) => (
-                  <div 
-                    key={`${related.id}-dup`} 
-                    className="flex-none w-[85vw] md:w-[calc(50vw-4rem)] max-w-[420px] h-full"
-                  >
-                    <ArticleCard article={related} basePath={basePath} />
-                  </div>
-                ))}
-              </div>
+            <div className="flex gap-6 md:gap-8 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar w-full">
+              {relatedArticles.map((related) => (
+                <div 
+                  key={related.id} 
+                  className="flex-none w-[85vw] md:w-[calc(50vw-4rem)] max-w-[420px] h-full snap-start"
+                >
+                  <ArticleCard article={related} basePath={basePath} />
+                </div>
+              ))}
             </div>
           </div>
         )}

@@ -2,8 +2,9 @@
 
 import { cn } from '../utils';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import { useUnsplashImage } from '../hooks/useUnsplashImage';
 import { UI_CONFIG } from '@repo/tooling/ui';
 import { ShieldCheck, Sparkles } from 'lucide-react';
@@ -32,6 +33,11 @@ function HeroBackground({
   const bgSrc = backgroundImage || imageUrl;
   const showImage = !!bgSrc && !imageError;
 
+  // Scroll-linked parallax effect (only active for 'main' layout mode)
+  const { scrollY } = useScroll();
+  const yTransform = useTransform(scrollY, [0, 600], [0, 150]);
+  const scaleTransform = useTransform(scrollY, [0, 600], [1.05, 0.95]);
+
   return (
     <>
       {isLoading && (
@@ -45,19 +51,40 @@ function HeroBackground({
         )}
       />
 
-      {showImage && (
-        <Image
-          src={bgSrc}
-          alt="Background"
-          fill
-          className={cn(
-            'object-cover object-center z-0 transition-all duration-1000 scale-105 opacity-80 grayscale-[0.2]',
-          )}
-          onError={() => setImageError(true)}
-          priority={true}
-        />
-      )}
-      
+      <AnimatePresence mode="popLayout">
+        {showImage && (
+          <motion.div
+            key={bgSrc}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.8 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            className="absolute inset-0 z-0 overflow-hidden"
+          >
+            <motion.div
+              style={
+                mode === 'main'
+                  ? {
+                      y: yTransform,
+                      scale: scaleTransform,
+                    }
+                  : undefined
+              }
+              className="w-full h-full relative"
+            >
+              <Image
+                src={bgSrc}
+                alt="Background"
+                fill
+                className="object-cover object-center grayscale-[0.2]"
+                onError={() => setImageError(true)}
+                priority={true}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Always render dark overlay so the white Navbar is visible */}
       <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-gray-50 dark:to-[#0a0a0a] z-0" />
     </>

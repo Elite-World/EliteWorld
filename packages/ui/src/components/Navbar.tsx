@@ -106,7 +106,7 @@ export function NavbarLanguageToggle({
   return (
     <IconButton
       icon={
-        <div className="flex items-center justify-center font-bold text-[10px] w-4 h-4 leading-none">
+        <div className="flex items-center justify-center font-bold text-xs w-4 h-4 leading-none">
           {language === 'zh' ? '中' : 'EN'}
         </div>
       }

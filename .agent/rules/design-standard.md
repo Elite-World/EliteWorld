@@ -47,6 +47,18 @@ All UI components and pages must adhere to these specific tokens and patterns to
   - **The "Glow"**: `group-hover:opacity-100` on hidden blur layers.
   - **Icon Scale**: `group-hover:scale-110` inside containers.
 
+## 5. Scroll Reveals & Motion (Framer Motion)
+
+To elevate pages to the "Premium Aesthetic" tier, use subtle staggered scroll reveals for card grids, lists, and headers:
+
+- **Library**: Use `framer-motion` for client-side viewport animations.
+- **Scroll reveal configurations**:
+  - `initial={{ opacity: 0, y: 30 }}` (or `y: 20` for standalone titles/headers).
+  - `whileInView={{ opacity: 1, y: 0 }}`.
+  - `viewport={{ once: true, margin: "-100px" }}` (prevents double triggers and gives natural margins).
+  - **Grid Staggering**: Use `transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}` on map items, where `[0.16, 1, 0.3, 1]` is the standard premium bezier easing.
+  - **Standalone Headers**: Use `transition={{ duration: 0.8, ease: "easeOut" }}`.
+
 ## 6. Button System
 
 **Component**: Use `<Button />` from `@repo/ui`. Do not use `<a>` or `<button>` directly for primary actions.

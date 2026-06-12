@@ -7,6 +7,28 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.25rem;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.375rem;
+  /* base, lg, xl, 2xl remain unchanged */
+  /* --text-3xl: 1.75rem;
+  --text-3xl--line-height: 2.25rem;
+  --text-4xl: 2rem;
+  --text-4xl--line-height: 2.5rem;
+  --text-5xl: 2.5rem;
+  --text-5xl--line-height: 1.15;
+  --text-6xl: 3rem;
+  --text-6xl--line-height: 1.15;
+  --text-7xl: 3.5rem;
+  --text-7xl--line-height: 1.15;
+  --text-8xl: 4rem;
+  --text-8xl--line-height: 1.1;
+  --text-9xl: 4.5rem;
+  --text-9xl--line-height: 1.1; */
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -24,7 +46,23 @@
     @apply antialiased;
     color: var(--foreground);
     background: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
+    /* Premium International Font Stack - Optimized for English & Chinese readability */
+    font-family:
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      sans-serif,
+      'PingFang SC',
+      'Hiragino Sans GB',
+      'Microsoft YaHei',
+      'WenQuanYi Micro Hei',
+      'Apple Color Emoji',
+      'Segoe UI Emoji',
+      'Segoe UI Symbol';
   }
 }
 

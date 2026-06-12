@@ -6,7 +6,7 @@ import { useThemeStore } from '@repo/domain';
 // Card is in web-shared/ui/Card.tsx as seen in file listing.
 // import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
 import { cn } from '@repo/domain';
-// import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { siteConfig } from '@repo/apps-config/immigration/site-config';
 import Image from 'next/image';
 import {
@@ -17,6 +17,7 @@ import {
   Landmark,
 } from 'lucide-react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 
 import { getNavGateway } from '@repo/apps-config/immigration/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
@@ -119,11 +120,62 @@ interface HomePageProps {
   locale?: string;
 }
 
+const HERO_BG_IMAGES = {
+  main: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1920&auto=format&fit=crop',
+  immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
+  edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
+  coursehub: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
+} as const;
+
 export function HomePage({ recentArticles = [], locale }: HomePageProps) {
+  const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState<number>(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
   const isDark = useThemeStore((state) => state.isDark);
   // The language from store isn't reliable for server-side props passing, prefer locale prop
   const isZh = locale === 'zh';
   const navGateway = getNavGateway(locale);
+
+  const gatewayButtons = Object.values(navGateway).filter(
+    (item) => item.name !== siteConfig.name
+  );
+
+  // Reset hover and slideshow states on scroll to prevent stuck active backgrounds
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      if (scrolled > 100) {
+        setIsHovered(false);
+        setHoveredButtonId(null);
+        setCarouselIndex(0);
+      }
+      setHeroInView(scrolled < 600);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Autoplay slideshow for mobile and idle desktop screens (every 5 seconds)
+  useEffect(() => {
+    if (isHovered || !heroInView || gatewayButtons.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCarouselIndex((prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isHovered, heroInView, gatewayButtons.length]);
+
+  // Active button and corresponding background image selection
+  const currentButtonId = isHovered
+    ? hoveredButtonId
+    : (carouselIndex === 0 ? null : gatewayButtons[carouselIndex - 1]?.id || null);
+
+  const activeBgImage = currentButtonId
+    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] || HERO_BG_IMAGES.main
+    : HERO_BG_IMAGES.main;
 
   // const [isLoading, setIsLoading] = useState(false);
   // Disabled for SEO
@@ -148,6 +200,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
       <HeroSection
         mode="main"
         title={siteConfig.name}
+        backgroundImage={activeBgImage}
         subtitle={
           <em>
             <strong>{isZh ? 'Elite 环球移居 ' : 'Elite Mobility'}</strong> |{' '}
@@ -155,35 +208,36 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           </em>
         }
       >
-        {Object.values(navGateway)
-          .filter((item) => item.name !== siteConfig.name)
-          .map((button: NavigationItem, index: number) => (
+        {gatewayButtons.map((button: NavigationItem, index: number) => {
+          const isActive = button.id === currentButtonId;
+          return (
             <a
               key={index}
               href={button.href}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => {
+                setIsHovered(true);
+                setHoveredButtonId(button.id);
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                setHoveredButtonId(null);
+              }}
               className={cn(
                 // Base styles
                 'px-8 py-3 rounded-lg text-lg font-medium text-center',
-                'text-white border-2 border-white/30',
-                // Glass effect
-                'backdrop-blur-sm bg-white/5',
-                // Hover effects
-                'hover:bg-white/15 hover:border-white/50',
-                // Transitions
-                'transition-all duration-300',
-                // Transform on hover
-                'hover:scale-105',
-                // Subtle shadow
-                'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
-                'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
-                'w-48',
+                'text-white border-2 w-48 backdrop-blur-sm transition-all duration-300',
+                // Highlight state matching hover preview
+                isActive
+                  ? 'bg-white/20 border-white scale-105 shadow-[0_0_25px_rgba(255,255,255,0.3)]'
+                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
               )}
             >
               {button.label}
             </a>
-          ))}
+          );
+        })}
       </HeroSection>
 
       {/* Achievements Section */}
@@ -192,14 +246,21 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
         className="py-24 bg-linear-to-b from-transparent to-gray-50 dark:to-gray-900"
       >
         <div className="container mx-auto px-4">
-          <h2
-            className={cn(
-              'text-4xl font-bold text-center mb-16',
-              'bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent',
-            )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {isZh ? '我们的全球影响力' : 'Our Global Impact'}
-          </h2>
+            <h2
+              className={cn(
+                'text-4xl font-bold text-center mb-16',
+                'bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent',
+              )}
+            >
+              {isZh ? '我们的全球影响力' : 'Our Global Impact'}
+            </h2>
+          </motion.div>
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
@@ -232,8 +293,12 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                   : 'Decade of excellence in global immigration strategy',
               },
             ].map((stat, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
                   'text-center p-8 rounded-2xl transition-all duration-300 border',
                   'hover:transform hover:-translate-y-1',
@@ -254,7 +319,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 >
                   {stat.description}
                 </p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -263,24 +328,31 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
       {/* Team Section */}
       <section id="team" className="py-24">
         <div className="container mx-auto px-4">
-          <h2
-            className={cn(
-              'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
-            )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            {isZh ? '认识我们的移民专家' : 'Meet Our Immigration Experts'}
-          </h2>
-          <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
-          <p
-            className={cn(
-              'text-center max-w-2xl mx-auto mb-16',
-              isDark ? 'text-gray-400' : 'text-gray-600',
-            )}
-          >
-            {isZh
-              ? '我们经验丰富的顾问团队致力于为您家庭的全球流动性和财富保值制定量身定制的策略。'
-              : "Our experienced counsel are dedicated to architecting bespoke strategies for your family's global mobility and wealth preservation."}
-          </p>
+            <h2
+              className={cn(
+                'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
+              )}
+            >
+              {isZh ? '认识我们的移民专家' : 'Meet Our Immigration Experts'}
+            </h2>
+            <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mx-auto mb-6" />
+            <p
+              className={cn(
+                'text-center max-w-2xl mx-auto mb-16',
+                isDark ? 'text-gray-400' : 'text-gray-600',
+              )}
+            >
+              {isZh
+                ? '我们经验丰富的顾问团队致力于为您家庭的全球流动性和财富保值制定量身定制的策略。'
+                : "Our experienced counsel are dedicated to architecting bespoke strategies for your family's global mobility and wealth preservation."}
+            </p>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -307,8 +379,12 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 speciality: isZh ? '全球流动' : 'Global Mobility',
               },
             ].map((member, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
                   'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
                   'hover:transform hover:-translate-y-1',
@@ -343,7 +419,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                     {member.speciality}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -355,7 +431,13 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+          >
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <Globe2 className="w-5 h-5 text-blue-600" />
@@ -383,7 +465,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
               {isZh ? '探索所有项目' : 'Explore All Programs'}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
@@ -414,11 +496,14 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 investment: isZh ? '125万澳元起' : 'From AUD 1.25M',
               },
             ].map((dest, idx) => (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
-                  'group relative overflow-hidden rounded-3xl aspect-4/5 cursor-pointer',
-                  'border border-white/10',
+                  'group relative overflow-hidden rounded-3xl aspect-4/5 cursor-pointer border border-white/10',
                 )}
               >
                 <Image
@@ -458,7 +543,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -467,7 +552,13 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
       {/* Pathways by Goal Section */}
       <section className="py-24 bg-white dark:bg-[#111]">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-16"
+          >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
               {isZh ? '按目标' : 'Pathways by'}{' '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
@@ -479,57 +570,70 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 ? '选择您的主要目标，探索为您量身定制的移民和财富结构策略。'
                 : 'Select your primary objective to explore tailored immigration and wealth structuring strategies.'}
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Link
-              href="/solutions/residency"
-              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors"
-            >
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Globe2 className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {isZh ? '投资居留' : 'Residency by Investment'}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {isZh
+            {[
+              {
+                href: '/solutions/residency',
+                icon: Globe2,
+                colorClass: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
+                hoverClass: 'hover:bg-blue-50 dark:hover:bg-blue-900/10',
+                title: isZh ? '投资居留' : 'Residency by Investment',
+                description: isZh
                   ? '在优质司法管辖区获得黄金签证和永久居留权。'
-                  : 'Secure golden visas and permanent residency rights in prime jurisdictions.'}
-              </p>
-            </Link>
-            <Link
-              href="/solutions/citizenship"
-              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-purple-50 dark:hover:bg-purple-900/10 transition-colors"
-            >
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <ShieldCheck className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {isZh ? '第二公民身份 (CBI)' : 'Second Citizenship (CBI)'}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {isZh
+                  : 'Secure golden visas and permanent residency rights in prime jurisdictions.',
+              },
+              {
+                href: '/solutions/citizenship',
+                icon: ShieldCheck,
+                colorClass: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
+                hoverClass: 'hover:bg-purple-50 dark:hover:bg-purple-900/10',
+                title: isZh ? '第二公民身份 (CBI)' : 'Second Citizenship (CBI)',
+                description: isZh
                   ? '在数月内直接获得公民身份和强大的护照。'
-                  : 'Obtain direct citizenship and powerful passports within months.'}
-              </p>
-            </Link>
-            <Link
-              href="/solutions/wealth-structuring"
-              className="group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 hover:bg-emerald-50 dark:hover:bg-emerald-900/10 transition-colors"
-            >
-              <div className="w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                <Landmark className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                {isZh ? '财富架构' : 'Wealth Structuring'}
-              </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {isZh
+                  : 'Obtain direct citizenship and powerful passports within months.',
+              },
+              {
+                href: '/solutions/wealth-structuring',
+                icon: Landmark,
+                colorClass: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
+                hoverClass: 'hover:bg-emerald-50 dark:hover:bg-emerald-900/10',
+                title: isZh ? '财富架构' : 'Wealth Structuring',
+                description: isZh
                   ? '优化税务框架并在全球范围内保护您家族的财富。'
-                  : "Optimize tax frameworks and protect your family's legacy globally."}
-              </p>
-            </Link>
+                  : "Optimize tax frameworks and protect your family's legacy globally.",
+              },
+            ].map((pathway, index) => {
+              const Icon = pathway.icon;
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <Link
+                    href={pathway.href}
+                    className={cn(
+                      'group block bg-gray-50 dark:bg-white/5 rounded-3xl p-8 border border-gray-100 dark:border-white/10 transition-colors h-full',
+                      pathway.hoverClass,
+                    )}
+                  >
+                    <div className={cn('w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform', pathway.colorClass)}>
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                      {pathway.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      {pathway.description}
+                    </p>
+                  </Link>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -538,7 +642,13 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
       {recentArticles.length > 0 && (
         <section className="py-24 bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/5">
           <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+            >
               <div>
                 <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
                   {isZh ? '全球流动性' : 'Global Mobility'}{' '}
@@ -564,53 +674,61 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 {isZh ? '查看所有智库' : 'View All Intelligence'}
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
-            </div>
+            </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {recentArticles.map((article) => (
-                <Link
+              {recentArticles.map((article, index) => (
+                <motion.div
                   key={article.id}
-                  href={`/insights/${article.slug}`}
-                  className="group block"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 >
-                  <div className="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-gray-200 dark:bg-white/5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={article.image || '/images/placeholder.jpg'}
-                      alt={article.title}
-                      className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                  </div>
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
-                        {article.category || (isZh ? '新闻' : 'News')}
-                      </span>
-                      <span className="text-gray-400 dark:text-gray-600 text-xs">
-                        •
-                      </span>
-                      <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
-                        {article.date
-                          ? new Date(article.date).toLocaleDateString(
-                              isZh ? 'zh-CN' : 'en-US',
-                              {
-                                month: 'long',
-                                day: 'numeric',
-                                year: 'numeric',
-                              },
-                            )
-                          : ''}
-                      </span>
+                  <Link
+                    href={`/insights/${article.slug}`}
+                    className="group block"
+                  >
+                    <div className="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-gray-200 dark:bg-white/5">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={article.image || '/images/placeholder.jpg'}
+                        alt={article.title}
+                        loading="lazy"
+                        className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                     </div>
-                    <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
-                      {article.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-                      {article.excerpt}
-                    </p>
-                  </div>
-                </Link>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-blue-600 dark:text-blue-400">
+                          {article.category || (isZh ? '新闻' : 'News')}
+                        </span>
+                        <span className="text-gray-400 dark:text-gray-600 text-xs">
+                          •
+                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-widest text-gray-500 dark:text-gray-400">
+                          {article.date
+                            ? new Date(article.date).toLocaleDateString(
+                                isZh ? 'zh-CN' : 'en-US',
+                                {
+                                  month: 'long',
+                                  day: 'numeric',
+                                  year: 'numeric',
+                                },
+                              )
+                            : ''}
+                        </span>
+                      </div>
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+                        {article.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
+                        {article.excerpt}
+                      </p>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -624,7 +742,13 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
         <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl"
+          >
             <Building2 className="w-12 h-12 text-blue-400 mx-auto mb-8" />
             <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
               {isZh ? '点亮全球足迹' : 'Establish Your'} <br />{' '}
@@ -644,7 +768,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 {isZh ? '预约私人咨询' : 'Schedule Private Consultation'}
               </Link>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>

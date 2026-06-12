@@ -31,7 +31,7 @@ export function ModalProvider(): React.ReactElement | null {
   if (!mounted) return null;
 
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait" initial={false}>
       {activeModal && Component && (
         <Component key={activeModal} {...modalProps} />
       )}

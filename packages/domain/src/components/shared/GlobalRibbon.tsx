@@ -2,7 +2,10 @@
 
 import { useRibbonStore } from '../../lib/stores/useRibbonStore';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
-import { useLanguageStore, useLanguageSwitcher } from '../../lib/stores/useLanguageStore';
+import {
+  useLanguageStore,
+  useLanguageSwitcher,
+} from '../../lib/stores/useLanguageStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { cn } from '../../lib/utils';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -42,10 +45,14 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
       const isScrolled = window.scrollY > 300;
 
       updateButton('scroll-to-top', { visible: isScrolled });
-      if (siteConfig?.features?.search !== false) updateButton('search-ribbon', { visible: isScrolled });
-      if (siteConfig?.features?.language !== false) updateButton('language-ribbon', { visible: isScrolled });
-      if (siteConfig?.features?.mode !== false) updateButton('theme-ribbon', { visible: isScrolled });
-      if (siteConfig?.features?.user !== false) updateButton('user-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.search !== false)
+        updateButton('search-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.language !== false)
+        updateButton('language-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.mode !== false)
+        updateButton('theme-ribbon', { visible: isScrolled });
+      if (siteConfig?.features?.user !== false)
+        updateButton('user-ribbon', { visible: isScrolled });
     };
 
     window.addEventListener('scroll', updateVisibility);
@@ -92,7 +99,10 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
         visible: false, // Updated by listener
         label: 'Account',
         icon: User,
-        onClick: () => openModal('userMenu', { items: userMenuItems.map((item) => ({ ...item })) }),
+        onClick: () =>
+          openModal('userMenu', {
+            items: userMenuItems.map((item) => ({ ...item })),
+          }),
       });
     }
   }, [registerButton, openModal, siteConfig]);
@@ -136,7 +146,12 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
       visible: false,
       label: 'Toggle Language',
       icon: ({ className }) => (
-        <div className={cn('flex items-center justify-center font-bold text-xs leading-none', className)}>
+        <div
+          className={cn(
+            'flex items-center justify-center font-bold text-xs leading-none',
+            className,
+          )}
+        >
           {language === 'zh' ? '中' : 'EN'}
         </div>
       ),
@@ -145,7 +160,12 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
 
     updateButton('language-ribbon', {
       icon: ({ className }) => (
-        <div className={cn('flex items-center justify-center font-bold text-[10px] leading-none mt-0.5', className)}>
+        <div
+          className={cn(
+            'flex items-center justify-center font-bold text-xs leading-none',
+            className,
+          )}
+        >
           {language === 'zh' ? '中' : 'EN'}
         </div>
       ),
@@ -184,7 +204,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           isDark
             ? 'bg-white text-black hover:bg-gray-200'
             : 'bg-black text-white hover:bg-gray-800',
-          isMobileMenuOpen && 'rotate-45'
+          isMobileMenuOpen && 'rotate-45',
         )}
       >
         <svg
@@ -193,7 +213,12 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 4v16m8-8H4"
+          />
         </svg>
       </button>
 
@@ -203,7 +228,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           className={cn(
             'flex flex-col-reverse items-end gap-2 pointer-events-auto',
             'md:flex-col md:gap-2',
-            !isMobileMenuOpen && 'hidden md:flex'
+            !isMobileMenuOpen && 'hidden md:flex',
           )}
         >
           {visibleButtons.map((button) => (
@@ -217,7 +242,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
               {button.component ? (
                 button.component
               ) : (
-                  <button
+                <button
                   onClick={() => {
                     button.onClick?.();
                     setIsMobileMenuOpen(false);

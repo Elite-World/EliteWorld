@@ -110,7 +110,7 @@ export function Modal({
       />
 
       {/* Container to position the modal */}
-      <div className={wrapperClasses}>
+      <div className={wrapperClasses} onClick={onClose}>
         <motion.div
           className={contentClasses}
           initial="hidden"

@@ -214,6 +214,7 @@ export function JurisdictionTemplate({ country, profile, solutions, relatedNews 
                     <img 
                       src={article.image || '/images/placeholder.jpg'} 
                       alt={article.title}
+                      loading="lazy"
                       className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />

@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { QRCode } from '@repo/domain';
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { getNavGateway } from '@repo/apps-config/landing/navbar-config';
 import { HeroSection, NavigationItem, Button } from '@repo/ui';
 
@@ -129,6 +130,14 @@ const socialLinks = [
 // }
 
 // export function HomePage({ categories, articles }: HomePageProps) {
+// Background images for the landing hero matching the button IDs
+const HERO_BG_IMAGES = {
+  main: siteConfig.ogImage,
+  immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
+  edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
+  coursehub: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
+} as const;
+
 export function HomePage({ locale }: { locale?: string }) {
   const [mounted, setMounted] = useState(false);
   const _isDark = useThemeStore((state) => state.isDark);
@@ -136,26 +145,55 @@ export function HomePage({ locale }: { locale?: string }) {
   const navGateway = getNavGateway(locale);
   const isZh = locale === 'zh';
 
+  const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState<number>(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [heroInView, setHeroInView] = useState(true);
+
+  const gatewayButtons = Object.values(navGateway).filter(
+    (item) => item.name !== siteConfig.name
+  );
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // const [isLoading, setIsLoading] = useState(false);
-  // Disabled for SEO
-  /*
+  // Reset hover and slideshow states on scroll to prevent stuck active backgrounds
   useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      if (scrolled > 100) {
+        setIsHovered(false);
+        setHoveredButtonId(null);
+        setCarouselIndex(0);
+      }
+      setHeroInView(scrolled < 600);
+    };
 
-    return () => clearInterval(timer);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  if (isLoading) {
-    return <CompanyLoadingPage />;
-  }
-  */
+  // Autoplay slideshow for mobile and idle desktop screens (every 5 seconds)
+  useEffect(() => {
+    if (isHovered || !heroInView || gatewayButtons.length === 0) return;
+
+    const interval = setInterval(() => {
+      // Loop from 0 to N (0 = default background, 1..N = highlighted buttons)
+      setCarouselIndex((prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1));
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [isHovered, heroInView, gatewayButtons.length]);
+
+  // Current active button ID (prioritizing active mouse hover)
+  const currentButtonId = isHovered
+    ? hoveredButtonId
+    : (carouselIndex === 0 ? null : gatewayButtons[carouselIndex - 1]?.id || null);
+
+  const activeBgImage = currentButtonId
+    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] || siteConfig.ogImage
+    : siteConfig.ogImage;
 
   return (
     <div className="min-h-screen">
@@ -163,42 +201,43 @@ export function HomePage({ locale }: { locale?: string }) {
       <HeroSection
         mode="main"
         title={siteConfig.name}
-        backgroundImage={siteConfig.ogImage}
+        backgroundImage={activeBgImage}
         subtitle={
           <em>
             <strong>{isZh ? '梦想起航' : 'Dream Big'}</strong> | {isZh ? '专业的留学与移民指导' : 'Expert Guidance for Study and Immigration'}
           </em>
         }
       >
-        {Object.values(navGateway)
-          .filter((item) => item.name !== siteConfig.name)
-          .map((button: NavigationItem, index: number) => (
+        {gatewayButtons.map((button: NavigationItem, index: number) => {
+          const isActive = button.id === currentButtonId;
+          return (
             <a
               key={index}
               href={button.href}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => {
+                setIsHovered(true);
+                setHoveredButtonId(button.id);
+              }}
+              onMouseLeave={() => {
+                setIsHovered(false);
+                setHoveredButtonId(null);
+              }}
               className={cn(
                 // Base styles
                 'px-8 py-3 rounded-lg text-lg font-medium text-center',
-                'text-white border-2 border-white/30',
-                // Glass effect
-                'backdrop-blur-sm bg-white/5',
-                // Hover effects
-                'hover:bg-white/15 hover:border-white/50',
-                // Transitions
-                'transition-all duration-300',
-                // Transform on hover
-                'hover:scale-105',
-                // Subtle shadow
-                'shadow-[0_0_15px_rgba(255,255,255,0.1)]',
-                'hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
-                'w-48'
+                'text-white border-2 w-48 backdrop-blur-sm transition-all duration-300',
+                // Highlight state matching hover preview
+                isActive
+                  ? 'bg-white/20 border-white scale-105 shadow-[0_0_25px_rgba(255,255,255,0.3)]'
+                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
               )}
             >
               {button.label}
             </a>
-          ))}
+          );
+        })}
       </HeroSection>
 
       {/* Achievements Section */}
@@ -209,7 +248,13 @@ export function HomePage({ locale }: { locale?: string }) {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-px bg-linear-to-r from-transparent via-gray-200 dark:via-white/10 to-transparent" />
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center mb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="text-center mb-24"
+          >
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-600/10 border border-blue-600/20 mb-6">
               <Sparkles className="w-3 h-3 text-blue-600" />
               <span className="text-[8px] font-black uppercase tracking-[0.3em] text-blue-600">
@@ -225,7 +270,7 @@ export function HomePage({ locale }: { locale?: string }) {
             <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
               {isZh ? '为您搭建国际学术过渡与定居的黄金标准。' : 'Setting the gold standard for international academic transition and settlement.'}
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
@@ -254,8 +299,12 @@ export function HomePage({ locale }: { locale?: string }) {
                 icon: Award,
               },
             ].map((stat, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative p-8 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-[2.5rem] hover:bg-gray-50 dark:hover:bg-white/8 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-500 overflow-hidden shadow-xl dark:shadow-none"
               >
                 <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 rounded-full blur-[60px] -mr-16 -mt-16 opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -274,7 +323,7 @@ export function HomePage({ locale }: { locale?: string }) {
                     {stat.description}
                   </p>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -283,7 +332,13 @@ export function HomePage({ locale }: { locale?: string }) {
       {/* Team Section */}
       <section id="team" className="py-32 bg-white dark:bg-[#0a0a0a]">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
+          >
             <div className="max-w-2xl">
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-blue-600" />
@@ -301,7 +356,7 @@ export function HomePage({ locale }: { locale?: string }) {
             <p className="text-gray-600 dark:text-gray-400 text-sm font-medium max-w-xs leading-relaxed">
               {isZh ? '我们经验丰富的顾问致力于为您全球过渡的每个阶段进行架构。' : 'Our seasoned consultants are dedicated to architecting every phase of your global transition.'}
             </p>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
@@ -327,8 +382,12 @@ export function HomePage({ locale }: { locale?: string }) {
                 speciality: isZh ? '全球职业规划专家' : 'Global Career Planning',
               },
             ].map((member, index) => (
-              <div
+              <motion.div
                 key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
                 className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500"
               >
                 <div className="relative aspect-4/5 w-full overflow-hidden">
@@ -354,7 +413,7 @@ export function HomePage({ locale }: { locale?: string }) {
                     {member.speciality}
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -365,7 +424,13 @@ export function HomePage({ locale }: { locale?: string }) {
         <div className="absolute inset-0 bg-linear-to-r from-blue-600/10 to-purple-600/10 dark:from-blue-600/20 dark:to-purple-600/20 opacity-50" />
         <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-gray-200 dark:via-white/10 to-transparent" />
 
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="container mx-auto px-4 relative z-10 text-center"
+        >
           <div className="mb-12">
             <h2 className="text-5xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-tight mb-6">
               {isZh ? '准备好规划您的' : 'Ready to architect'} <br /> {isZh ? '' : 'your '}
@@ -395,14 +460,19 @@ export function HomePage({ locale }: { locale?: string }) {
               {isZh ? '获取简章' : 'Request Prospectus'}
             </Button>
           </div>
-        </div>
+        </motion.div>
       </section>
 
       {/* Contact Section */}
       <section id="contact" className="py-32 bg-white dark:bg-[#0a0a0a]">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-20">
-            <div className="animate-fade-in">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            >
               <div className="flex items-center gap-2 mb-6">
                 <div className="w-8 h-px bg-blue-600" />
                 <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
@@ -467,10 +537,16 @@ export function HomePage({ locale }: { locale?: string }) {
                   </a>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Verification & Access */}
-            <div className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden">
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden"
+            >
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[100px] -mr-32 -mt-32" />
 
               <div className="relative z-10">
@@ -519,7 +595,7 @@ export function HomePage({ locale }: { locale?: string }) {
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
