@@ -3,10 +3,6 @@
 import { Client } from '@notionhq/client';
 import { Resend } from 'resend';
 
-// Initialize clients
-const notion = new Client({ auth: process.env.NOTION_API_KEY });
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const NOTION_DATABASE_ID = process.env.NOTION_DATABASE_ID_LEADS || '';
 
 export async function submitConsultationAction(formData: FormData) {
@@ -23,6 +19,7 @@ export async function submitConsultationAction(formData: FormData) {
     // 1. Send to Notion
     if (NOTION_DATABASE_ID && process.env.NOTION_API_KEY) {
       try {
+        const notion = new Client({ auth: process.env.NOTION_API_KEY });
         await notion.pages.create({
           parent: { database_id: NOTION_DATABASE_ID },
           properties: {
@@ -65,6 +62,7 @@ export async function submitConsultationAction(formData: FormData) {
     // 2. Send Email via Resend
     if (process.env.RESEND_API_KEY) {
       try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: 'Elite World Advisory <onboarding@resend.dev>', // Resend sandbox testing email
           to: 'advisory@eliteworld.top', // The user's requested email
