@@ -7,8 +7,9 @@ import { ArticleCard } from '@repo/domain';
 import { cn } from '@repo/domain';
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@repo/apps-config/education/site-config';
+import { topUniversitiesShowcase } from '@repo/apps-config/content/education/home-content';
 import Image from 'next/image';
-import { MapPin, ArrowRight, Trophy, Building2 } from 'lucide-react';
+import { MapPin, ArrowRight, Trophy, Building2, BookOpen, Lightbulb } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
@@ -223,138 +224,6 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
         </div>
       </section>
 
-      {/* Latest Insights Section */}
-      <section className="py-24">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="flex flex-col md:flex-row justify-between items-center mb-12"
-          >
-            <div>
-              <h2
-                className={cn(
-                  'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
-                )}
-              >
-                {isZh ? '深度解析' : 'Latest Insights'}
-              </h2>
-              <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
-              <p
-                className={cn(
-                  'max-w-2xl',
-                  isDark ? 'text-gray-400' : 'text-gray-600',
-                )}
-              >
-                {isZh
-                  ? '获取国际教育的最新新闻、指南和提示。'
-                  : 'Stay updated with the latest news, guides, and tips for your international education journey.'}
-              </p>
-            </div>
-            <Link
-              href="/insights"
-              className={cn(
-                'inline-flex items-center space-x-2 mt-6 md:mt-0 font-semibold',
-                isDark
-                  ? 'text-blue-400 hover:text-blue-300'
-                  : 'text-blue-600 hover:text-blue-700',
-                'transition-colors',
-              )}
-            >
-              <span>{isZh ? '查看所有文章' : 'View all articles'}</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles?.slice(0, 3).map((article, index) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-100px' }}
-                transition={{
-                  duration: 0.8,
-                  delay: index * 0.15,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <ArticleCard article={article} basePath="/insights" />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Tips & Guides Section */}
-      {tips.length > 0 && (
-        <section className="py-24 bg-linear-to-b from-gray-50 to-transparent dark:from-gray-900 dark:to-transparent">
-          <div className="container mx-auto px-4">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
-              className="flex flex-col md:flex-row justify-between items-center mb-12"
-            >
-              <div>
-                <h2
-                  className={cn(
-                    'text-4xl font-bold mb-4 text-[#010022] dark:text-white',
-                  )}
-                >
-                  {isZh ? '干货分享' : 'Tips & Guides'}
-                </h2>
-                <div className="w-20 h-1 bg-linear-to-r from-blue-500 to-purple-500 mb-6" />
-                <p
-                  className={cn(
-                    'max-w-2xl',
-                    isDark ? 'text-gray-400' : 'text-gray-600',
-                  )}
-                >
-                  {isZh
-                    ? '可操作的建议，助您顺利完成申请并轻松过渡。'
-                    : 'Actionable advice to help you ace your applications and transition smoothly.'}
-                </p>
-              </div>
-              <Link
-                href="/tips"
-                className={cn(
-                  'inline-flex items-center space-x-2 mt-6 md:mt-0 font-semibold',
-                  isDark
-                    ? 'text-blue-400 hover:text-blue-300'
-                    : 'text-blue-600 hover:text-blue-700',
-                  'transition-colors',
-                )}
-              >
-                <span>{isZh ? '查看所有干货' : 'View all tips'}</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {tips.slice(0, 3).map((article, index) => (
-                <motion.div
-                  key={article.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-100px' }}
-                  transition={{
-                    duration: 0.8,
-                    delay: index * 0.15,
-                    ease: [0.16, 1, 0.3, 1],
-                  }}
-                >
-                  <ArticleCard article={article} basePath="/tips" />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Team Section */}
       {showHiddenElements && (
         <section id="team" className="py-24">
@@ -464,7 +333,6 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           </div>
         </section>
       )}
-
       {/* Top Universities Showcase */}
       <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
@@ -486,16 +354,21 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                 </span>
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-                {isZh ? '顶尖排名' : 'Top Ranked'} <br />
+                {isZh ? '顶尖排名' : 'Top Ranked'} <br className="hidden md:block" />
                 <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
                   {isZh ? '学府' : 'Institutions'}
                 </span>
               </h2>
+              <p className="mt-4 text-sm md:text-base font-medium text-gray-500 dark:text-gray-400 max-w-2xl">
+                {isZh
+                  ? '探索全球最负盛名的学术机构，基于研究卓越性、全球声誉和毕业生就业结果进行评估。'
+                  : "Discover the world's most prestigious academic institutions, evaluated on research excellence, global reputation, and graduate outcomes."}
+              </p>
             </div>
             <Link
               href="/ranking"
               className={cn(
-                'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+                'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
                 isDark
                   ? 'bg-white/5 hover:bg-white/10 text-white'
                   : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',
@@ -507,35 +380,7 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                rank: 1,
-                name: 'Massachusetts Institute of Technology (MIT)',
-                country: 'USA',
-                image:
-                  'https://images.unsplash.com/photo-1564981797816-1043664bf78d?auto=format&fit=crop&q=80&w=600',
-                logo: '/images/img_transparent/massachusetts-institute-of-technology.png',
-                score: '100.0',
-              },
-              {
-                rank: 2,
-                name: 'Imperial College London',
-                country: 'United Kingdom',
-                image:
-                  'https://images.unsplash.com/photo-1549692520-acc6669e2f0c?auto=format&fit=crop&q=80&w=600',
-                logo: '/images/img_transparent/imperial-college-london.png',
-                score: '98.5',
-              },
-              {
-                rank: 3,
-                name: 'University of Oxford',
-                country: 'United Kingdom',
-                image:
-                  'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Radcliffe_Camera%2C_Oxford_-_Oct_2006.jpg/1280px-Radcliffe_Camera%2C_Oxford_-_Oct_2006.jpg',
-                logo: '/images/img_transparent/university-of-oxford.png',
-                score: '96.9',
-              },
-            ].map((uni, idx) => (
+            {topUniversitiesShowcase.map((uni, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
@@ -625,20 +470,39 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.8, ease: 'easeOut' }}
-            className="text-center mb-20"
+            className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
           >
-            <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
-              {isZh ? '按' : 'Explore by'}{' '}
-              <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
-                {isZh ? '目的地' : 'Destination'}
-              </span>
-              {isZh ? '探索' : ''}
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 text-sm font-bold uppercase tracking-widest max-w-lg mx-auto">
-              {isZh
-                ? '在全球领先的教育中心找到您完美的学术家园。'
-                : "Find your perfect academic home in the world's leading educational hubs."}
-            </p>
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <MapPin className="w-5 h-5 text-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                  {isZh ? '全球布局' : 'Global Access'}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                {isZh ? '按' : 'Explore by'} <br className="hidden md:block" />
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                  {isZh ? '目的地探索' : 'Destination'}
+                </span>
+              </h2>
+              <p className="mt-4 text-sm md:text-base font-medium text-gray-500 dark:text-gray-400 max-w-2xl">
+                {isZh
+                  ? '在全球领先的教育中心找到您完美的学术家园。'
+                  : "Find your perfect academic home in the world's leading educational hubs."}
+              </p>
+            </div>
+            <Link
+              href="/destinations"
+              className={cn(
+                'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
+                isDark
+                  ? 'bg-white/5 hover:bg-white/10 text-white'
+                  : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',
+              )}
+            >
+              {isZh ? '查看所有目的地' : 'View All Destinations'}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
@@ -755,6 +619,134 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           </div>
         </div>
       </section>
+
+      {/* Latest Insights Section */}
+      <section className="py-24">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
+            className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+          >
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen className="w-5 h-5 text-blue-600" />
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                  {isZh ? '知识库' : 'Knowledge Base'}
+                </span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                {isZh ? '深度' : 'Latest'} <br className="hidden md:block" />
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                  {isZh ? '解析' : 'Insights'}
+                </span>
+              </h2>
+              <p className="mt-4 text-sm md:text-base font-medium text-gray-500 dark:text-gray-400 max-w-2xl">
+                {isZh
+                  ? '获取国际教育的最新新闻、指南和提示。'
+                  : 'Stay updated with the latest news, guides, and tips for your international education journey.'}
+              </p>
+            </div>
+            <Link
+              href="/insights"
+              className={cn(
+                'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
+                isDark
+                  ? 'bg-white/5 hover:bg-white/10 text-white'
+                  : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',
+              )}
+            >
+              {isZh ? '查看所有文章' : 'View All Articles'}
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {articles?.slice(0, 3).map((article, index) => (
+              <motion.div
+                key={article.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <ArticleCard article={article} basePath="/insights" />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Tips & Guides Section */}
+      {tips.length > 0 && (
+        <section className="py-24 bg-linear-to-b from-gray-50 to-transparent dark:from-gray-900 dark:to-transparent">
+          <div className="container mx-auto px-4">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
+              className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
+            >
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <Lightbulb className="w-5 h-5 text-blue-600" />
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+                    {isZh ? '专家建议' : 'Expert Advice'}
+                  </span>
+                </div>
+                <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                  {isZh ? '干货' : 'Tips &'} <br className="hidden md:block" />
+                  <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
+                    {isZh ? '分享' : 'Guides'}
+                  </span>
+                </h2>
+                <p className="mt-4 text-sm md:text-base font-medium text-gray-500 dark:text-gray-400 max-w-2xl">
+                  {isZh
+                    ? '可操作的建议，助您顺利完成申请并轻松过渡。'
+                    : 'Actionable advice to help you ace your applications and transition smoothly.'}
+                </p>
+              </div>
+              <Link
+                href="/tips"
+                className={cn(
+                  'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
+                  isDark
+                    ? 'bg-white/5 hover:bg-white/10 text-white'
+                    : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',
+                )}
+              >
+                {isZh ? '探索资源' : 'Explore Resources'}
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {tips.slice(0, 3).map((article, index) => (
+                <motion.div
+                  key={article.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  <ArticleCard article={article} basePath="/tips" />
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { HeroSection } from '@repo/ui';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
-import { SOLUTION_CATEGORIES } from '@repo/apps-config/immigration/solutions-config';
+import { SOLUTION_CATEGORIES } from '@repo/apps-config/content/immigration/solutions-content';
 
 import type { Metadata } from 'next';
 

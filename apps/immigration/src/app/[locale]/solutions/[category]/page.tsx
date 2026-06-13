@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import { HeroSection } from '@repo/ui';
 import { getSolutionsByCategory } from '@repo/domain/services/jurisdiction-service';
 import { SolutionsGrid } from '@/components/solutions/SolutionsGrid';
-import { SOLUTION_CATEGORIES } from '@repo/apps-config/immigration/solutions-config';
+import { SOLUTION_CATEGORIES } from '@repo/apps-config/content/immigration/solutions-content';
 
 
 interface CategoryPageProps {
