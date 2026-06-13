@@ -38,6 +38,16 @@ function HeroBackground({
   const bgSrc = backgroundImage || imageUrl;
   const showImage = !!bgSrc && !imageError;
 
+  let optimizedSrc = bgSrc;
+  if (
+    optimizedSrc &&
+    typeof optimizedSrc === 'string' &&
+    optimizedSrc.includes('res.cloudinary.com') &&
+    !optimizedSrc.includes('f_auto')
+  ) {
+    optimizedSrc = optimizedSrc.replace('/image/upload/', '/image/upload/f_auto,q_auto/');
+  }
+
   // Scroll-linked parallax effect (only active for 'main' layout mode)
   const { scrollY } = useScroll();
   const yTransform = useTransform(scrollY, [0, 600], [0, 150]);
@@ -59,7 +69,7 @@ function HeroBackground({
       <AnimatePresence mode="popLayout">
         {showImage && (
           <motion.div
-            key={bgSrc}
+            key={optimizedSrc}
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.8 }}
             exit={{ opacity: 0 }}
@@ -78,12 +88,14 @@ function HeroBackground({
               className="w-full h-full relative"
             >
               <Image
-                src={bgSrc}
+                src={optimizedSrc}
                 alt="Background"
                 fill
                 className="object-cover object-center grayscale-[0.2]"
                 onError={() => setImageError(true)}
                 priority={true}
+                fetchPriority="high"
+                unoptimized={true}
               />
             </motion.div>
           </motion.div>
