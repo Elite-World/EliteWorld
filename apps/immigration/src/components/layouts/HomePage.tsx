@@ -8,12 +8,12 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 import { appOgImage } from '@repo/apps-config/base/company-info';
 import dynamic from 'next/dynamic';
 
-const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'), { ssr: false });
-const TeamSection = dynamic(() => import('../sections/TeamSection'), { ssr: false });
-const DestinationsSection = dynamic(() => import('../sections/DestinationsSection'), { ssr: false });
-const SolutionsSection = dynamic(() => import('../sections/SolutionsSection'), { ssr: false });
-const InsightsSection = dynamic(() => import('../sections/InsightsSection'), { ssr: false });
-const CTASection = dynamic(() => import('../sections/CTASection'), { ssr: false });
+const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'));
+const TeamSection = dynamic(() => import('../sections/TeamSection'));
+const DestinationsSection = dynamic(() => import('../sections/DestinationsSection'));
+const SolutionsSection = dynamic(() => import('../sections/SolutionsSection'));
+const InsightsSection = dynamic(() => import('../sections/InsightsSection'));
+const CTASection = dynamic(() => import('../sections/CTASection'));
 
 interface HomePageProps {
   recentArticles?: any[];
