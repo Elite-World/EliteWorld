@@ -33,8 +33,10 @@ function HeroBackground({
   const bgSrc = backgroundImage || imageUrl;
   const showImage = !!bgSrc && !imageError;
 
-const cloudinaryLoader = ({ src, width }: { src: string; width: number }) => {
-  if (typeof src === 'string' && src.includes('res.cloudinary.com')) {
+const heroImageLoader = ({ src, width }: { src: string; width: number }) => {
+  if (typeof src !== 'string') return src;
+  
+  if (src.includes('res.cloudinary.com')) {
     // Cloudinary URLs typically look like: https://res.cloudinary.com/cloudname/image/upload/v1234/filename
     const parts = src.split('/upload/');
     if (parts.length === 2) {
@@ -49,6 +51,20 @@ const cloudinaryLoader = ({ src, width }: { src: string; width: number }) => {
       return `${parts[0]}/upload/f_auto,q_auto,w_${width}/${path}`;
     }
   }
+
+  if (src.includes('images.unsplash.com')) {
+    try {
+      const url = new URL(src);
+      url.searchParams.set('w', width.toString());
+      url.searchParams.set('fit', 'crop');
+      url.searchParams.set('auto', 'format,compress');
+      url.searchParams.set('q', '70'); // Aggressive compression for mobile hero
+      return url.toString();
+    } catch (e) {
+      return src;
+    }
+  }
+
   return src;
 };
 
@@ -74,7 +90,7 @@ const cloudinaryLoader = ({ src, width }: { src: string; width: number }) => {
         >
           <div className="w-full h-full relative bg-gray-900">
             <Image
-              loader={cloudinaryLoader}
+              loader={heroImageLoader}
               src={bgSrc}
               alt="Background"
               fill
