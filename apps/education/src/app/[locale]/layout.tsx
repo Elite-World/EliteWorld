@@ -6,10 +6,14 @@ import { CoreAppLayout } from '@repo/domain';
 import { getNavigationData, navGateway } from '@repo/apps-config/education/navbar-config';
 import { siteConfig } from '@repo/apps-config/education/site-config';
 
-export const metadata: Metadata = {
-  title: siteConfig.name,
-  description: siteConfig.description,
-};
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+  return {
+    title: currentSiteConfig.name,
+    description: currentSiteConfig.description,
+  };
+}
 
 export async function generateStaticParams() {
   return [{ locale: 'en' }, { locale: 'zh' }];
@@ -24,11 +28,18 @@ export default async function RootLayout({
 }) {
   const { locale } = await params;
   const navigation = await getNavigationData(locale);
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
 
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
-        <CoreAppLayout navigation={navigation} siteConfig={siteConfig} navGateway={navGateway}>{children}</CoreAppLayout>
+        <CoreAppLayout
+          navigation={navigation}
+          siteConfig={{ ...currentSiteConfig, enName: siteConfig.en.name }}
+          navGateway={navGateway}
+        >
+          {children}
+        </CoreAppLayout>
         <ModalProvider />
       </body>
     </html>

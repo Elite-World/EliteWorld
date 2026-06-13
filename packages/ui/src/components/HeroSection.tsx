@@ -4,7 +4,12 @@ import { cn } from '../utils';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
 import { useUnsplashImage } from '../hooks/useUnsplashImage';
 import { UI_CONFIG } from '@repo/tooling/ui';
 import { ShieldCheck, Sparkles } from 'lucide-react';
@@ -152,7 +157,7 @@ export function HeroSection({
             )}
 
             {mode === 'main' ? (
-              <h1 className="font-black text-5xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 flex flex-wrap justify-center gap-2 md:gap-4 text-balance">
+              <h1 className="font-black text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 flex flex-wrap justify-center gap-2 md:gap-4 text-balance">
                 {title.split(' ').map((word, i) => {
                   const isLast = i === title.split(' ').length - 1;
                   return (
@@ -200,29 +205,6 @@ export function HeroSection({
                 className="flex flex-col md:flex-row flex-wrap gap-4 justify-center items-center"
               >
                 {children}
-                {/* <div className="mt-8 flex items-center gap-6 px-6 py-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                  <div className="flex -space-x-3">
-                    {[1, 2, 3].map((i) => (
-                      <div
-                        key={i}
-                        className="w-8 h-8 rounded-full border-2 border-[#1A1A1A] bg-gray-800 overflow-hidden"
-                      >
-                        <img
-                          src={`https://i.pravatar.cc/100?u=${i}`}
-                          alt="Consultant"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="text-left">
-                    <p className="text-[10px] font-black text-white uppercase tracking-widest leading-none">
-                      Accredited Consultants
-                    </p>
-                    <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mt-1">
-                      Global Partners & Vetted Institutions
-                    </p>
-                  </div>
-                </div> */}
               </RevealElement>
             )}
           </div>

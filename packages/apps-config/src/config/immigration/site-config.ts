@@ -1,27 +1,39 @@
 import { baseSiteConfig } from '../base/base-site-config';
+import { appOgImage } from '../base/company-info';
+
+const ogImage = appOgImage.immi;
+
+const contactOverride = {
+  email: 'immi@eliteworld.top',
+} as const;
 
 export const siteConfig = {
-  ...baseSiteConfig,
-  name: 'ELITE IMMI',
-  description: 'Pro immigration services for Canada, UK, and Australia.',
-  ogImage: 'https://picsum.photos/1920/1080?flight.webp',
-  contact: {
-      ...baseSiteConfig.contact,
-      email: 'tech@eliteworld.top',
-      phone: '+60 11-1234 5678',
-      whatsapp: {
-          label: '+60 11-1234 5678',
-          link: 'https://wa.me/601112345678',
-          qr: '/qr/whatsapp-qr.png',
-      },
-      wechat: {
-          label: 'eliteworld_immi',
-          qr: '/qr/wechat-qr.png',
-      },
+  en: {
+    ...baseSiteConfig.en,
+    name: 'ELITE IMMI',
+    description: 'Pro immigration services for Canada, UK, and Australia.',
+    ogImage,
+    contact: {
+      ...baseSiteConfig.en.contact,
+      ...contactOverride,
+    },
+    features: {
+      ...baseSiteConfig.en.features,
+      user: false,
+    },
   },
-  features: {
-    ...baseSiteConfig.features,
-    user: false,
-  },
-} as const; 
- 
+  zh: {
+    ...baseSiteConfig.zh,
+    name: '精英 环球移居',
+    description: '专业的加拿大、英国和澳大利亚移民服务',
+    ogImage,
+    contact: {
+      ...baseSiteConfig.zh.contact,
+      ...contactOverride,
+    },
+    features: {
+      ...baseSiteConfig.zh.features,
+      user: false,
+    },
+  }
+} as const;

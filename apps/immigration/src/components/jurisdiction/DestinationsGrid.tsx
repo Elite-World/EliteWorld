@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, Globe2, Briefcase, Landmark } from 'lucide-react';
+import { optimizeCloudinaryUrl } from '@repo/domain';
 
 interface JurisdictionCardData {
   country: {
     slug: string;
+    image?: string;
     name?: { en: string; cn?: string };
     translations?: {
       en?: { name: string };
@@ -32,7 +34,8 @@ function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale:
   // Try to use a static image based on slug if we eventually add them to public folder,
   // or a cloudinary image. For now, we will try a cloudinary generic url.
   // We can use the same Cloudinary setup as Education if we upload images there.
-  const src = `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/elite-world/destinations/${data.country.slug}.jpg`;
+  const rawSrc = data.country.image || `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/elite-world/destinations/${data.country.slug}.jpg`;
+  const src = optimizeCloudinaryUrl(rawSrc, 800);
   
   const dbLocale = locale === 'zh' ? 'cn' : 'en';
   // @ts-ignore

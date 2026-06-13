@@ -8,85 +8,13 @@ import { cn } from '@repo/domain';
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@repo/apps-config/education/site-config';
 import Image from 'next/image';
-// import { useUnsplashImage } from '@repo/domain';
 import { MapPin, ArrowRight, Trophy, Building2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { getNavGateway } from '@repo/apps-config/education/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
-
-// Add subdomain config at the top of the file
-// const subdomains = {
-//   immigration: 'https://immi.eliteworld.top',
-//   education: 'https://edu.eliteworld.top'
-// } as const;
-
-// Loading animation component
-// function LoadingAnimation() {
-//   return (
-//     <div className="relative w-24 h-24">
-//       <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
-//       <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
-//     </div>
-//   );
-// }
-
-// Company loading page
-// function CompanyLoadingPage() {
-//   const isDark = useThemeStore((state) => state.isDark);
-//   const [progress, setProgress] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setProgress((prev) => {
-//         if (prev >= 100) {
-//           clearInterval(timer);
-//           return 100;
-//         }
-//         return prev + 1;
-//       });
-//     }, 20);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div
-//       className={cn(
-//         'fixed inset-0 z-50 flex flex-col items-center justify-center',
-//         'transition-colors duration-300',
-//         isDark ? 'bg-black text-white' : 'bg-white text-black',
-//       )}
-//     >
-//       {/* Company Logo */}
-//       <div className="mb-8 text-4xl font-bold tracking-tight">
-//         {siteConfig.name}
-//       </div>
-
-//       {/* Loading Animation */}
-//       <LoadingAnimation />
-
-//       {/* Progress Bar */}
-//       <div className="w-64 h-1 mt-8 bg-gray-200 rounded-full overflow-hidden">
-//         <div
-//           className="h-full bg-blue-500 transition-all duration-300 ease-out"
-//           style={{ width: `${progress}%` }}
-//         />
-//       </div>
-
-//       {/* Loading Text */}
-//       <div
-//         className={cn(
-//           'mt-4 text-sm font-medium',
-//           isDark ? 'text-gray-400' : 'text-gray-600',
-//         )}
-//       >
-//         Loading... {progress}%
-//       </div>
-//     </div>
-//   );
-// }
+import { appOgImage } from '@repo/apps-config/base/company-info';
 
 interface HomePageProps {
   articles?: Article[];
@@ -94,25 +22,11 @@ interface HomePageProps {
   locale?: string;
 }
 
-// Add skeleton loading states
-// function ArticleListSkeleton() {
-//   return (
-//     <div className="space-y-4">
-//       {[...Array(3)].map((_, i) => (
-//         <div key={i} className="animate-pulse">
-//           <div className="h-4 bg-gray-200 rounded w-3/4" />
-//           <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
 const HERO_BG_IMAGES = {
-  main: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1920&auto=format&fit=crop',
-  immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
-  edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
-  coursehub: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
+  main: appOgImage.landing,
+  immi: appOgImage.immi,
+  edu: appOgImage.edu,
+  coursehub: appOgImage.coursehub,
 } as const;
 
 export function HomePage({ articles, tips = [], locale }: HomePageProps) {
@@ -124,10 +38,11 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
   // The language from store isn't reliable for server-side props passing, prefer locale prop
   const isZh = locale === 'zh';
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
   const navGateway = getNavGateway(locale);
 
   const gatewayButtons = Object.values(navGateway).filter(
-    (item) => item.name !== siteConfig.name
+    (item) => item.name !== siteConfig.en.name,
   );
 
   // Reset hover and slideshow states on scroll to prevent stuck active backgrounds
@@ -151,7 +66,9 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
     if (isHovered || !heroInView || gatewayButtons.length === 0) return;
 
     const interval = setInterval(() => {
-      setCarouselIndex((prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1));
+      setCarouselIndex(
+        (prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1),
+      );
     }, 5000);
 
     return () => clearInterval(interval);
@@ -160,35 +77,21 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
   // Active button and corresponding background image selection
   const currentButtonId = isHovered
     ? hoveredButtonId
-    : (carouselIndex === 0 ? null : gatewayButtons[carouselIndex - 1]?.id || null);
+    : carouselIndex === 0
+      ? null
+      : gatewayButtons[carouselIndex - 1]?.id || null;
 
   const activeBgImage = currentButtonId
-    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] || HERO_BG_IMAGES.main
-    : HERO_BG_IMAGES.main;
-
-  // const [isLoading, setIsLoading] = useState(false);
-  // Disabled for SEO
-  /*
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  if (isLoading) {
-    return <CompanyLoadingPage />;
-  }
-  */
+    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] ||
+      currentSiteConfig.ogImage
+    : currentSiteConfig.ogImage;
 
   return (
     <div className="min-h-screen">
       {/* Hero Section with Background */}
       <HeroSection
         mode="main"
-        title={siteConfig.name}
+        title={currentSiteConfig.name}
         backgroundImage={activeBgImage}
         subtitle={
           <em>
@@ -222,7 +125,7 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                 // Highlight state matching hover preview
                 isActive
                   ? 'bg-white/20 border-white scale-105 shadow-[0_0_25px_rgba(255,255,255,0.3)]'
-                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
               )}
             >
               {button.label}
@@ -240,8 +143,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <h2
               className={cn(
@@ -288,8 +191,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className={cn(
                   'text-center p-8 rounded-2xl transition-all duration-300 border',
                   'hover:transform hover:-translate-y-1',
@@ -322,8 +229,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="flex flex-col md:flex-row justify-between items-center mb-12"
           >
             <div>
@@ -367,13 +274,14 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                 key={article.id}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               >
-                <ArticleCard
-                  article={article}
-                  basePath="/insights"
-                />
+                <ArticleCard article={article} basePath="/insights" />
               </motion.div>
             ))}
           </div>
@@ -387,8 +295,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex flex-col md:flex-row justify-between items-center mb-12"
             >
               <div>
@@ -432,13 +340,14 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                   key={article.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
-                  <ArticleCard
-                    article={article}
-                    basePath="/tips"
-                  />
+                  <ArticleCard article={article} basePath="/tips" />
                 </motion.div>
               ))}
             </div>
@@ -453,8 +362,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
             >
               <h2
                 className={cn(
@@ -507,8 +416,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                   className={cn(
                     'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
                     'hover:transform hover:-translate-y-1',
@@ -561,8 +474,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
           >
             <div>
@@ -627,8 +540,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
                 key={idx}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: idx * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="h-full"
               >
                 <Link
@@ -706,8 +623,8 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center mb-20"
           >
             <h2 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-6">
@@ -729,7 +646,7 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
+              viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
               className="md:col-span-8 h-full"
             >
@@ -769,8 +686,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="flex-1"
               >
                 <Link
@@ -800,8 +721,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.3,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="flex-1"
               >
                 <Link

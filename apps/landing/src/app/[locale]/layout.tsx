@@ -1,16 +1,23 @@
 import '../globals.css';
 import { ModalProvider } from '@repo/domain';
 import { CoreAppLayout } from '@repo/domain';
-import { getNavigationData, getNavGateway } from '@repo/apps-config/landing/navbar-config';
+import {
+  getNavigationData,
+  getNavGateway,
+} from '@repo/apps-config/landing/navbar-config';
 import { siteConfig } from '@repo/apps-config/landing/site-config';
 import type { Metadata } from 'next';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
-  const isZh = locale === 'zh';
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
   return {
-    title: isZh ? 'EliteWorld 精英世界' : siteConfig.name,
-    description: isZh ? '专业的留学与移民指导' : siteConfig.description,
+    title: currentSiteConfig.name,
+    description: currentSiteConfig.description,
   };
 }
 
@@ -25,10 +32,18 @@ export default async function RootLayout({
   const navigation = await getNavigationData(locale);
   const localizedNavGateway = getNavGateway(locale);
 
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
-        <CoreAppLayout navigation={navigation} siteConfig={siteConfig} navGateway={localizedNavGateway}>{children}</CoreAppLayout>
+        <CoreAppLayout
+          navigation={navigation}
+          siteConfig={{ ...currentSiteConfig, enName: siteConfig.en.name }}
+          navGateway={localizedNavGateway}
+        >
+          {children}
+        </CoreAppLayout>
         <ModalProvider />
       </body>
     </html>

@@ -85,7 +85,7 @@ async function scrapePassportRankings() {
     try {
       await resend.emails.send({
         from: 'Elite World Automation <onboarding@resend.dev>',
-        to: 'advisory@eliteworld.top',
+        to: 'immi@eliteworld.top',
         subject: `Passport Index Update: ${updatedCount} changes detected`,
         html: emailHtml
       });

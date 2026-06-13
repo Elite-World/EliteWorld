@@ -19,8 +19,14 @@ import {
 } from 'lucide-react';
 
 export interface NavbarConfig {
-  features: { search: boolean; mode: boolean; user: boolean; language?: boolean };
+  features: {
+    search: boolean;
+    mode: boolean;
+    user: boolean;
+    language?: boolean;
+  };
   name: string;
+  enName?: string;
 }
 
 export interface NavbarProps {
@@ -273,7 +279,7 @@ export function Navbar({
                     isScrolled ? 'text-gray-900 dark:text-white' : 'text-white',
                   )}
                 >
-                  {siteConfig.name.split(/(?=[A-Z])/).map((part, i) => (
+                  {(siteConfig.enName || siteConfig.name).split(/(?=[A-Z])/).map((part, i) => (
                     <span key={i} className={i === 1 ? 'text-blue-600' : ''}>
                       {part.toUpperCase()}
                     </span>

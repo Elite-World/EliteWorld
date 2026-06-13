@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import { HeroSection } from '@repo/ui';
 import { getSolutionsByCategory } from '@repo/domain/services/jurisdiction-service';
 import { SolutionsGrid } from '@/components/solutions/SolutionsGrid';
+import { SOLUTION_CATEGORIES } from '@repo/apps-config/immigration/solutions-config';
+
 
 interface CategoryPageProps {
   params: Promise<{
@@ -13,29 +15,13 @@ interface CategoryPageProps {
 
 const getCategoryMeta = (category: string, locale: string) => {
   const isZh = locale === 'zh';
-  const meta: Record<string, { title: string, subtitle: string, img: string }> = {
-    'residency': {
-      title: isZh ? '居留权与绿卡' : 'Residency & Green Cards',
-      subtitle: isZh ? '全球范围内的黄金签证和精英投资居留项目比较。' : 'Compare Golden Visas and elite residency by investment programs globally.',
-      img: 'https://images.unsplash.com/photo-1577717903315-1691ae25ab3f?auto=format&fit=crop&q=80&w=2400'
-    },
-    'citizenship': {
-      title: isZh ? '第二国籍' : 'Second Citizenship',
-      subtitle: isZh ? '直接投资入籍（CBI）项目，实现终极全球流动性。' : 'Direct Citizenship by Investment (CBI) programs for ultimate global mobility.',
-      img: 'https://images.unsplash.com/photo-1544015759-223f66a70717?auto=format&fit=crop&q=80&w=2400'
-    },
-    'long-term-status': {
-      title: isZh ? '长期身份' : 'Long-Term Status',
-      subtitle: isZh ? '为数字游民、企业家和退休人员提供的战略性长期签证。' : 'Strategic long-term visas for digital nomads, entrepreneurs, and retirees.',
-      img: 'https://images.unsplash.com/photo-1498623116890-37e912163d5d?auto=format&fit=crop&q=80&w=2400'
-    },
-    'wealth-structuring': {
-      title: isZh ? '财富规划' : 'Wealth Structuring',
-      subtitle: isZh ? '企业设立、税务优化和离岸银行业务解决方案。' : 'Corporate formation, tax optimization, and offshore banking solutions.',
-      img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=2400'
-    }
+  const found = SOLUTION_CATEGORIES.find((c) => c.id === category);
+  if (!found) return null;
+  return {
+    title: isZh ? found.title.zh : found.title.en,
+    subtitle: isZh ? found.subtitle.zh : found.subtitle.en,
+    img: found.img,
   };
-  return meta[category];
 };
 
 export async function generateMetadata({ params }: CategoryPageProps) {

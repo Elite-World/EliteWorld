@@ -1,26 +1,39 @@
 import { baseSiteConfig } from '../base/base-site-config';
+import { appOgImage } from '../base/company-info';
+
+const ogImage = appOgImage.edu;
+
+const contactOverride = {
+  email: 'edu@eliteworld.top',
+} as const;
 
 export const siteConfig = {
-  ...baseSiteConfig,
-  name: 'ELITE EDU',
-  description: 'Premium educational consultancy for top universities.',
-  ogImage: 'https://picsum.photos/1920/1080?flight.webp',
-  contact: {
-      ...baseSiteConfig.contact,
-      email: 'edu@eliteworld.top',
-      phone: '+60 11-8765 4321',
-      whatsapp: {
-          label: '+60 11-8765 4321',
-          link: 'https://wa.me/601187654321',
-          qr: '/qr/whatsapp-edu.png',
-      },
-      wechat: {
-          label: 'eliteworld_edu',
-          qr: '/qr/wechat-edu.png',
-      },
+  en: {
+    ...baseSiteConfig.en,
+    name: 'ELITE EDU',
+    description: 'Premium educational consultancy for top universities.',
+    ogImage,
+    contact: {
+      ...baseSiteConfig.en.contact,
+      ...contactOverride,
+    },
+    features: {
+      ...baseSiteConfig.en.features,
+      user: false,
+    },
   },
-  features: {
-    ...baseSiteConfig.features,
-    user: false,
-  },
-} as const; 
+  zh: {
+    ...baseSiteConfig.zh,
+    name: '精英 海外教育',
+    description: '敢于梦想 | 留学与移民的专业指导',
+    ogImage,
+    contact: {
+      ...baseSiteConfig.zh.contact,
+      ...contactOverride,
+    },
+    features: {
+      ...baseSiteConfig.zh.features,
+      user: false,
+    },
+  }
+} as const;

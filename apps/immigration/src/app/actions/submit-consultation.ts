@@ -65,7 +65,7 @@ export async function submitConsultationAction(formData: FormData) {
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
           from: 'Elite World Advisory <onboarding@resend.dev>', // Resend sandbox testing email
-          to: 'advisory@eliteworld.top', // The user's requested email
+          to: 'immi@eliteworld.top', // The user's requested email
           subject: `New Consultation Request: ${fullName}`,
           html: `
             <h2>New Advisory Consultation Request</h2>

@@ -86,7 +86,7 @@ export async function getPassportIndex() {
   let previousScore = -1;
   let skippedRanks = 0;
 
-  const rankedProfiles = profiles.map((p, index) => {
+  const rankedProfiles = profiles.map((p) => {
     const score = p.passport_power?.visa_free_score || 0;
     
     // Standard ranking logic (ties share rank, next rank skips)
@@ -158,3 +158,26 @@ export async function getAllSolutions() {
     .lean() as any[];
   return JSON.parse(JSON.stringify(solutions));
 }
+
+export async function getHomepageDestinations(slugs: string[] = ['united-states', 'united-kingdom', 'australia']) {
+  await dbConnect();
+
+  const data = await Promise.all(
+    slugs.map(async (slug) => {
+      const country = await Country.findOne({ slug }).lean();
+      if (!country) return null;
+
+      const profile = await JurisdictionProfile.findOne({ country_id: country._id, isActive: true }).lean();
+      const solutions = await MobilitySolution.find({ country_id: country._id, isActive: true }).lean();
+
+      return {
+        country,
+        profile,
+        solutions
+      };
+    })
+  );
+
+  return JSON.parse(JSON.stringify(data.filter(Boolean)));
+}
+

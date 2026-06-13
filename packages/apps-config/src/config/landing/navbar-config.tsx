@@ -10,8 +10,11 @@ import { siteConfig } from './site-config';
 
 import { buildNavGateway } from '../base/base-nav-gateway';
 
-export const getNavGateway = (locale: string = 'en') =>
-  buildNavGateway(siteConfig.apps, locale);
+export const getNavGateway = (locale: string = 'en') => {
+  // const config = locale === 'zh' ? siteConfig.zh : siteConfig.en;
+  const config = siteConfig.en;
+  return buildNavGateway(config.apps, locale);
+};
 
 export const navGateway = getNavGateway('en');
 

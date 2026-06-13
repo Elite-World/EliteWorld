@@ -16,3 +16,14 @@ export function formatDate(input: string | number | Date): string {
   });
 }
  
+export function optimizeCloudinaryUrl(url: string | undefined | null, width?: number): string {
+  if (!url) return '';
+  if (!url.includes('res.cloudinary.com') || !url.includes('/image/upload/')) return url;
+  
+  // If it already has f_auto or q_auto, assume it's already optimized
+  if (url.includes('/f_auto') || url.includes('/q_auto')) return url;
+
+  // Insert transformations right after /image/upload/
+  const transforms = `f_auto,q_auto${width ? `,w_${width}` : ''}`;
+  return url.replace('/image/upload/', `/image/upload/${transforms}/`);
+} 

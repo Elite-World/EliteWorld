@@ -240,7 +240,7 @@ export function ConsultationBooking() {
                   ? '请填写下方表格，或直接发送电子邮件至'
                   : 'Fill out the form below or email us directly at '}{' '}
                 <span className="font-bold text-blue-500">
-                  advisory@eliteworld.top
+                  info@eliteworld.top
                 </span>
               </p>
 

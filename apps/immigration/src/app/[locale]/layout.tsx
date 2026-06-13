@@ -8,10 +8,10 @@ import { siteConfig } from '@repo/apps-config/immigration/site-config';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const isZh = locale === 'zh';
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
   return {
-    title: isZh ? 'EliteWorld 移民' : siteConfig.name,
-    description: isZh ? '专业的加拿大、英国和澳大利亚移民服务' : siteConfig.description,
+    title: currentSiteConfig.name,
+    description: currentSiteConfig.description,
   };
 }
 
@@ -25,11 +25,18 @@ export default async function RootLayout({
   const { locale } = await params;
   const navigation = await getNavigationData(locale);
   const localizedNavGateway = getNavGateway(locale);
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
 
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
-        <CoreAppLayout navigation={navigation} siteConfig={siteConfig} navGateway={localizedNavGateway}>{children}</CoreAppLayout>
+        <CoreAppLayout
+          navigation={navigation}
+          siteConfig={{ ...currentSiteConfig, enName: siteConfig.en.name }}
+          navGateway={localizedNavGateway}
+        >
+          {children}
+        </CoreAppLayout>
         <ModalProvider />
       </body>
     </html>

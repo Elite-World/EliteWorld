@@ -1,7 +1,7 @@
 import { siteConfig } from '../../../config/education/site-config';
 
 export const privacyPolicyContent = `
-At ${siteConfig.name}, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safe-guard your information when you visit our website and use our services.
+At ${siteConfig.en.name}, we are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safe-guard your information when you visit our website and use our services.
 
 ### 1. Information We Collect
 We collect information that you provide directly to us, such as when you create an account, subscribe to our newsletter, request customer support, or contact us. This may include:
@@ -33,13 +33,13 @@ You may update your account information at any time. You can also opt-out of rec
 ### 6. Contact Us
 If you have any questions about this Privacy Policy, please contact us at:
 
-**Email:** ${siteConfig.contact.email}  
-**Phone:** ${siteConfig.contact.phone}  
-**Address:** ${siteConfig.contact.address}
+**Email:** ${siteConfig.en.contact.email}  
+**Phone:** ${siteConfig.en.contact.phone}  
+**Address:** ${siteConfig.en.contact.address}
 `;
 
 export const privacyPolicyContentZh = `
-在 ${siteConfig.name}，我们致力于保护您的隐私。本隐私政策解释了当您访问我们的网站和使用我们的服务时，我们如何收集、使用和保护您的信息。
+在 ${siteConfig.zh.name}，我们致力于保护您的隐私。本隐私政策解释了当您访问我们的网站和使用我们的服务时，我们如何收集、使用和保护您的信息。
 
 ### 1. 我们收集的信息
 我们收集您直接提供给我们的信息，例如当您创建帐户、订阅我们的时事通讯、请求客户支持或联系我们时。这可能包括：
@@ -71,7 +71,7 @@ export const privacyPolicyContentZh = `
 ### 6. 联系我们
 如果您对本隐私政策有任何疑问，请通过以下方式联系我们：
 
-**电子邮件:** ${siteConfig.contact.email}  
-**电话:** ${siteConfig.contact.phone}  
-**地址:** ${siteConfig.contact.address}
+**电子邮件:** ${siteConfig.zh.contact.email}  
+**电话:** ${siteConfig.zh.contact.phone}  
+**地址:** ${siteConfig.zh.contact.address}
 `;

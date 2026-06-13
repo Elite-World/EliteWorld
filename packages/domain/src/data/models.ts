@@ -22,6 +22,7 @@ export interface ICountry extends Document {
     en: ICountryTranslations;
     cn?: ICountryTranslations;
   };
+  image?: string;
 }
 
 const CountrySchema = new Schema<ICountry>({
@@ -31,7 +32,8 @@ const CountrySchema = new Schema<ICountry>({
   translations: {
     en: { name: { type: String } },
     cn: { name: { type: String } }
-  }
+  },
+  image: { type: String }
 });
 
 export const Country: Model<ICountry> = 

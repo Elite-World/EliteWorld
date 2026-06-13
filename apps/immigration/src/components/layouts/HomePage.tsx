@@ -1,133 +1,37 @@
 'use client';
 
-// import { Article, Category } from '@repo/domain';
-import { useThemeStore } from '@repo/domain';
-// import { Card } from '../ui/Card'; // Card might stay local or go shared? Assuming shared based on prompt? Card is in web-shared but let's check.
-// Card is in web-shared/ui/Card.tsx as seen in file listing.
-// import { ArticleCard } from '@repo/domain'; // ArticleCard is shared
-import { cn } from '@repo/domain';
+import { useThemeStore, cn, optimizeCloudinaryUrl } from '@repo/domain';
 import { useState, useEffect } from 'react';
 import { siteConfig } from '@repo/apps-config/immigration/site-config';
 import Image from 'next/image';
-import {
-  Globe2,
-  ArrowRight,
-  Building2,
-  ShieldCheck,
-  Landmark,
-} from 'lucide-react';
+import { Globe2, ArrowRight, Building2 } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 
 import { getNavGateway } from '@repo/apps-config/immigration/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
-
-// Add subdomain config at the top of the file
-// const subdomains = {
-//   immigration: 'https://immi.eliteworld.top',
-//   education: 'https://edu.eliteworld.top'
-// } as const;
-
-// Loading animation component
-// function LoadingAnimation() {
-//   return (
-//     <div className="relative w-24 h-24">
-//       <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
-//       <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
-//     </div>
-//   );
-// }
-
-// Company loading page
-// function CompanyLoadingPage() {
-//   const isDark = useThemeStore((state) => state.isDark);
-//   const [progress, setProgress] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setProgress((prev) => {
-//         if (prev >= 100) {
-//           clearInterval(timer);
-//           return 100;
-//         }
-//         return prev + 1;
-//       });
-//     }, 20);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div
-//       className={cn(
-//         'fixed inset-0 z-50 flex flex-col items-center justify-center',
-//         'transition-colors duration-300',
-//         isDark ? 'bg-black text-white' : 'bg-white text-black',
-//       )}
-//     >
-//       {/* Company Logo */}
-//       <div className="mb-8 text-4xl font-bold tracking-tight">
-//         {siteConfig.name}
-//       </div>
-
-//       {/* Loading Animation */}
-//       <LoadingAnimation />
-
-//       {/* Progress Bar */}
-//       <div className="w-64 h-1 mt-8 bg-gray-200 rounded-full overflow-hidden">
-//         <div
-//           className="h-full bg-blue-500 transition-all duration-300 ease-out"
-//           style={{ width: `${progress}%` }}
-//         />
-//       </div>
-
-//       {/* Loading Text */}
-//       <div
-//         className={cn(
-//           'mt-4 text-sm font-medium',
-//           isDark ? 'text-gray-400' : 'text-gray-600',
-//         )}
-//       >
-//         Loading... {progress}%
-//       </div>
-//     </div>
-//   );
-// }
-
-// interface HomePageProps {
-//   categories: Category[];
-//   articles: Article[];
-// }
-
-// Define the social media links with proper icon types
-
-// Add skeleton loading states
-// function ArticleListSkeleton() {
-//   return (
-//     <div className="space-y-4">
-//       {[...Array(3)].map((_, i) => (
-//         <div key={i} className="animate-pulse">
-//           <div className="h-4 bg-gray-200 rounded w-3/4" />
-//           <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
+import { appOgImage } from '@repo/apps-config/base/company-info';
+import {
+  getHomeStats,
+  getHomeTeam,
+  getHomeSolutions,
+} from '@repo/apps-config/immigration/home-config';
 
 interface HomePageProps {
   recentArticles?: any[];
   locale?: string;
+  featuredDestinations?: any[];
 }
 
+
 const HERO_BG_IMAGES = {
-  main: 'https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?q=80&w=1920&auto=format&fit=crop',
-  immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
-  edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
-  coursehub: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
+  main: appOgImage.landing,
+  immi: appOgImage.immi,
+  edu: appOgImage.edu,
+  coursehub: appOgImage.coursehub,
 } as const;
 
-export function HomePage({ recentArticles = [], locale }: HomePageProps) {
+export function HomePage({ recentArticles = [], locale, featuredDestinations = [] }: HomePageProps) {
   const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
   const [isHovered, setIsHovered] = useState(false);
@@ -135,10 +39,49 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
   const isDark = useThemeStore((state) => state.isDark);
   // The language from store isn't reliable for server-side props passing, prefer locale prop
   const isZh = locale === 'zh';
+
+  const destinationsList = featuredDestinations && featuredDestinations.length > 0
+    ? featuredDestinations.map((item: any) => {
+        const solution = item.solutions?.[0];
+        const countryName = isZh
+          ? (item.country.translations?.cn?.name || item.country.name?.cn || item.country.name?.en)
+          : (item.country.translations?.en?.name || item.country.name?.en);
+
+        const programName = solution
+          ? (isZh
+              ? (solution.translations?.cn?.name || solution.name?.cn || solution.name?.en)
+              : (solution.translations?.en?.name || solution.name?.en))
+          : '';
+
+        const timeframe = solution
+          ? (isZh
+              ? (solution.translations?.cn?.requirements?.timeframe || solution.requirements?.timeframe)
+              : (solution.translations?.en?.requirements?.timeframe || solution.requirements?.timeframe))
+          : '';
+
+        const investment = solution
+          ? (isZh
+              ? (solution.translations?.cn?.requirements?.investment_amount || solution.requirements?.investment_amount)
+              : (solution.translations?.en?.requirements?.investment_amount || solution.requirements?.investment_amount))
+          : '';
+
+        return {
+          country: countryName,
+          slug: item.country.slug,
+          program: programName,
+          image: optimizeCloudinaryUrl(item.country.image, 800) || 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800',
+          timeframe,
+          investment,
+        };
+      })
+    : [];
+
+
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
   const navGateway = getNavGateway(locale);
 
   const gatewayButtons = Object.values(navGateway).filter(
-    (item) => item.name !== siteConfig.name
+    (item) => item.name !== siteConfig.en.name,
   );
 
   // Reset hover and slideshow states on scroll to prevent stuck active backgrounds
@@ -162,7 +105,9 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
     if (isHovered || !heroInView || gatewayButtons.length === 0) return;
 
     const interval = setInterval(() => {
-      setCarouselIndex((prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1));
+      setCarouselIndex(
+        (prevIndex) => (prevIndex + 1) % (gatewayButtons.length + 1),
+      );
     }, 5000);
 
     return () => clearInterval(interval);
@@ -171,39 +116,25 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
   // Active button and corresponding background image selection
   const currentButtonId = isHovered
     ? hoveredButtonId
-    : (carouselIndex === 0 ? null : gatewayButtons[carouselIndex - 1]?.id || null);
+    : carouselIndex === 0
+      ? null
+      : gatewayButtons[carouselIndex - 1]?.id || null;
 
   const activeBgImage = currentButtonId
-    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] || HERO_BG_IMAGES.main
-    : HERO_BG_IMAGES.main;
-
-  // const [isLoading, setIsLoading] = useState(false);
-  // Disabled for SEO
-  /*
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  if (isLoading) {
-    return <CompanyLoadingPage />;
-  }
-  */
+    ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] ||
+      currentSiteConfig.ogImage
+    : currentSiteConfig.ogImage;
 
   return (
     <div className="min-h-screen">
       {/* Hero Section with Background */}
       <HeroSection
         mode="main"
-        title={siteConfig.name}
+        title={currentSiteConfig.name}
         backgroundImage={activeBgImage}
         subtitle={
           <em>
-            <strong>{isZh ? 'Elite 环球移居 ' : 'Elite Mobility'}</strong> |{' '}
+            <strong>{isZh ? '环球移居 ' : 'Elite Mobility'}</strong> |{' '}
             {isZh ? '智选全球卓越之路' : 'Premium Pathways for Global Citizens'}
           </em>
         }
@@ -231,7 +162,7 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                 // Highlight state matching hover preview
                 isActive
                   ? 'bg-white/20 border-white scale-105 shadow-[0_0_25px_rgba(255,255,255,0.3)]'
-                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]'
+                  : 'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
               )}
             >
               {button.label}
@@ -249,8 +180,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <h2
               className={cn(
@@ -263,42 +194,17 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-4 gap-8">
-            {[
-              {
-                number: '1,000+',
-                label: isZh ? '成功移民' : 'Successful Relocations',
-                description: isZh
-                  ? '安全协助家庭与高净值人士完成搬迁'
-                  : 'Families and high-net-worth individuals securely relocated',
-              },
-              {
-                number: '20+',
-                label: isZh ? '覆盖地区' : 'Jurisdictions',
-                description: isZh
-                  ? '遍布欧洲、美洲和全球的尊贵移民通道'
-                  : 'Premium pathways across Europe, Americas, and Oceania',
-              },
-              {
-                number: '100%',
-                label: isZh ? '隐私保密' : 'Confidentiality',
-                description: isZh
-                  ? '在财富和身份规划方面保持绝对的保密性'
-                  : 'Absolute discretion in wealth and mobility structuring',
-              },
-              {
-                number: '15+',
-                label: isZh ? '年经验' : 'Years Experience',
-                description: isZh
-                  ? '十余年全球移民战略规划的卓越经验'
-                  : 'Decade of excellence in global immigration strategy',
-              },
-            ].map((stat, index) => (
+            {getHomeStats(isZh).map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className={cn(
                   'text-center p-8 rounded-2xl transition-all duration-300 border',
                   'hover:transform hover:-translate-y-1',
@@ -331,8 +237,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <h2
               className={cn(
@@ -355,36 +261,17 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'David Lim',
-                role: isZh ? '高级顾问' : 'Senior Consultant',
-                image: '/images/team/david-lim.png',
-                speciality: isZh
-                  ? '投资与技术移民'
-                  : 'Investor & Skilled Migration',
-              },
-              {
-                name: 'Linda Wu',
-                role: isZh ? '移民律师' : 'Immigration Lawyer',
-                image: '/images/team/linda-wu.png',
-                speciality: isZh
-                  ? '签证合规与申诉'
-                  : 'Visa Compliance & Appeals',
-              },
-              {
-                name: 'Robert Ng',
-                role: isZh ? '搬迁专家' : 'Relocation Specialist',
-                image: '/images/team/robert-ng.png',
-                speciality: isZh ? '全球流动' : 'Global Mobility',
-              },
-            ].map((member, index) => (
+            {getHomeTeam(isZh).map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: '-100px' }}
+                transition={{
+                  duration: 0.8,
+                  delay: index * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className={cn(
                   'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
                   'hover:transform hover:-translate-y-1',
@@ -434,8 +321,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
           >
             <div>
@@ -468,83 +355,75 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                country: isZh ? '美国' : 'United States',
-                program: isZh ? 'EB-5 投资移民签证' : 'EB-5 Investor Visa',
-                image:
-                  'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&q=80&w=800',
-                timeframe: isZh ? '24-36 个月' : '24-36 Months',
-                investment: isZh ? '80万美元起' : 'From $800,000',
-              },
-              {
-                country: isZh ? '英国' : 'United Kingdom',
-                program: isZh ? '创新创始人签证' : 'Innovator Founder Visa',
-                image:
-                  'https://images.unsplash.com/photo-1513635269975-59693e2d8400?auto=format&fit=crop&q=80&w=800',
-                timeframe: isZh ? '3-6 个月' : '3-6 Months',
-                investment: isZh ? '基于商业计划' : 'Business Plan Based',
-              },
-              {
-                country: isZh ? '澳大利亚' : 'Australia',
-                program: isZh
-                  ? '商业创新签证 (188)'
-                  : 'Business Innovation (188)',
-                image:
-                  'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=800',
-                timeframe: isZh ? '12-18 个月' : '12-18 Months',
-                investment: isZh ? '125万澳元起' : 'From AUD 1.25M',
-              },
-            ].map((dest, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, delay: idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
-                className={cn(
-                  'group relative overflow-hidden rounded-3xl aspect-4/5 cursor-pointer border border-white/10',
-                )}
-              >
-                <Image
-                  src={dest.image}
-                  alt={dest.country}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
+            {destinationsList.map((dest, idx) => {
+              const cardContent = (
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: idx * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                  className={cn(
+                    'group relative overflow-hidden rounded-3xl aspect-4/5 cursor-pointer border border-white/10 h-full w-full',
+                  )}
+                >
+                  <Image
+                    src={dest.image}
+                    alt={dest.country}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/40 to-transparent" />
 
-                <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                  <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">
-                      {dest.country}
-                    </h3>
-                    <p className="text-blue-400 font-bold text-sm tracking-widest uppercase mb-6">
-                      {dest.program}
-                    </p>
+                  <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                    <div className="translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                      <h3 className="text-3xl font-black text-white uppercase tracking-tighter mb-2">
+                        {dest.country}
+                      </h3>
+                      <p className="text-blue-400 font-bold text-sm tracking-widest uppercase mb-6">
+                        {dest.program}
+                      </p>
 
-                    <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 flex gap-4">
-                      <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
-                        <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
-                          {isZh ? '时间范围' : 'Timeframe'}
-                        </p>
-                        <p className="text-xs text-white font-bold">
-                          {dest.timeframe}
-                        </p>
-                      </div>
-                      <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
-                        <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
-                          {isZh ? '投资金额' : 'Investment'}
-                        </p>
-                        <p className="text-xs text-white font-bold">
-                          {dest.investment}
-                        </p>
+                      <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 flex gap-4">
+                        <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
+                          <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
+                            {isZh ? '时间范围' : 'Timeframe'}
+                          </p>
+                          <p className="text-xs text-white font-bold">
+                            {dest.timeframe}
+                          </p>
+                        </div>
+                        <div className="bg-white/10 backdrop-blur-md rounded-xl p-3 border border-white/10 flex-1">
+                          <p className="text-[9px] text-gray-400 uppercase tracking-widest mb-1">
+                            {isZh ? '投资金额' : 'Investment'}
+                          </p>
+                          <p className="text-xs text-white font-bold">
+                            {dest.investment}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
+                </motion.div>
+              );
+
+              if (dest.slug) {
+                return (
+                  <Link key={idx} href={`/destinations/${dest.slug}`} className="block h-full">
+                    {cardContent}
+                  </Link>
+                );
+              }
+
+              return (
+                <div key={idx} className="h-full">
+                  {cardContent}
                 </div>
-              </motion.div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -555,8 +434,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
@@ -573,46 +452,19 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                href: '/solutions/residency',
-                icon: Globe2,
-                colorClass: 'bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400',
-                hoverClass: 'hover:bg-blue-50 dark:hover:bg-blue-900/10',
-                title: isZh ? '投资居留' : 'Residency by Investment',
-                description: isZh
-                  ? '在优质司法管辖区获得黄金签证和永久居留权。'
-                  : 'Secure golden visas and permanent residency rights in prime jurisdictions.',
-              },
-              {
-                href: '/solutions/citizenship',
-                icon: ShieldCheck,
-                colorClass: 'bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400',
-                hoverClass: 'hover:bg-purple-50 dark:hover:bg-purple-900/10',
-                title: isZh ? '第二公民身份 (CBI)' : 'Second Citizenship (CBI)',
-                description: isZh
-                  ? '在数月内直接获得公民身份和强大的护照。'
-                  : 'Obtain direct citizenship and powerful passports within months.',
-              },
-              {
-                href: '/solutions/wealth-structuring',
-                icon: Landmark,
-                colorClass: 'bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400',
-                hoverClass: 'hover:bg-emerald-50 dark:hover:bg-emerald-900/10',
-                title: isZh ? '财富架构' : 'Wealth Structuring',
-                description: isZh
-                  ? '优化税务框架并在全球范围内保护您家族的财富。'
-                  : "Optimize tax frameworks and protect your family's legacy globally.",
-              },
-            ].map((pathway, index) => {
+            {getHomeSolutions(isZh).map((pathway, index) => {
               const Icon = pathway.icon;
               return (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   <Link
                     href={pathway.href}
@@ -621,7 +473,12 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                       pathway.hoverClass,
                     )}
                   >
-                    <div className={cn('w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform', pathway.colorClass)}>
+                    <div
+                      className={cn(
+                        'w-12 h-12 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform',
+                        pathway.colorClass,
+                      )}
+                    >
                       <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -645,8 +502,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.8, ease: 'easeOut' }}
               className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
             >
               <div>
@@ -682,8 +539,12 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
                   key={article.id}
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ duration: 0.8, delay: index * 0.15, ease: [0.16, 1, 0.3, 1] }}
+                  viewport={{ once: true, margin: '-100px' }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.15,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   <Link
                     href={`/insights/${article.slug}`}
@@ -745,8 +606,8 @@ export function HomePage({ recentArticles = [], locale }: HomePageProps) {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            viewport={{ once: true, margin: '-100px' }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl"
           >
             <Building2 className="w-12 h-12 text-blue-400 mx-auto mb-8" />

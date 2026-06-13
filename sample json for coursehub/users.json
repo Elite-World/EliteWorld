@@ -5,14 +5,8 @@
     "email": "alice@example.com",
     "avatarUrl": "/images/avatar_alice.png",
     "globalRole": "USER",
-    "enrolledCourses": [
-      "course1",
-      "course4"
-    ],
-    "wishlist": [
-      "course2",
-      "course6"
-    ],
+    "enrolledCourses": ["course1", "course4"],
+    "wishlist": ["course2", "course6"],
     "bio": "Eager learner exploring the world of web development and design."
   },
   {
@@ -21,12 +15,8 @@
     "email": "angela@example.com",
     "avatarUrl": "/images/avatar_angela.png",
     "globalRole": "USER",
-    "enrolledCourses": [
-      "course3"
-    ],
-    "wishlist": [
-      "course4"
-    ],
+    "enrolledCourses": ["course3"],
+    "wishlist": ["course4"],
     "bio": "Lead instructor at the App Brewery, London's leading in-person programming bootcamp."
   },
   {
@@ -36,10 +26,7 @@
     "avatarUrl": "/images/avatar_david.png",
     "globalRole": "USER",
     "enrolledCourses": [],
-    "wishlist": [
-      "course1",
-      "course2"
-    ],
+    "wishlist": ["course1", "course2"],
     "bio": "AI researcher and machine learning engineer from Silicon Valley."
   },
   {
@@ -55,7 +42,7 @@
   {
     "id": "user5",
     "name": "Web Master (You)",
-    "email": "master@eliteworld.com",
+    "email": "coursehub@eliteworld.com",
     "avatarUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=100",
     "globalRole": "WEB_MASTER",
     "enrolledCourses": [],

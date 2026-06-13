@@ -16,135 +16,48 @@ import {
   MapPin,
   Phone,
   Mail,
-  Users,
-  Award,
-  Globe,
   ShieldCheck,
   Zap,
   ChevronRight,
   Sparkles,
 } from 'lucide-react';
 import { QRCode } from '@repo/domain';
+import { useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { getNavGateway } from '@repo/apps-config/landing/navbar-config';
+import {
+  getHomeStats,
+  getHomeTeam,
+} from '@repo/apps-config/landing/home-config';
 import { HeroSection, NavigationItem, Button } from '@repo/ui';
+import { appOgImage } from '@repo/apps-config/base/company-info';
 
-// Add subdomain config at the top of the file
-// const subdomains = {
-//   immigration: 'https://immi.eliteworld.top',
-//   education: 'https://edu.eliteworld.top'
-// } as const;
-
-// Loading animation component
-// function LoadingAnimation() {
-//   return (
-//     <div className="relative w-24 h-24">
-//       <div className="absolute inset-0 border-4 border-blue-200 rounded-full"></div>
-//       <div className="absolute inset-0 border-4 border-blue-500 rounded-full animate-spin border-t-transparent"></div>
-//     </div>
-//   );
-// }
-
-// Company loading page
-// function CompanyLoadingPage() {
-//   const isDark = useThemeStore((state) => state.isDark);
-//   const [progress, setProgress] = useState(0);
-
-//   useEffect(() => {
-//     const timer = setInterval(() => {
-//       setProgress((prev) => {
-//         if (prev >= 100) {
-//           clearInterval(timer);
-//           return 100;
-//         }
-//         return prev + 1;
-//       });
-//     }, 20);
-
-//     return () => clearInterval(timer);
-//   }, []);
-
-//   return (
-//     <div
-//       className={cn(
-//         'fixed inset-0 z-50 flex flex-col items-center justify-center',
-//         'transition-colors duration-300',
-//         isDark ? 'bg-black text-white' : 'bg-white text-black',
-//       )}
-//     >
-//       {/* Company Logo */}
-//       <div className="mb-8 text-4xl font-bold tracking-tight">
-//         {siteConfig.name}
-//       </div>
-
-//       {/* Loading Animation */}
-//       <LoadingAnimation />
-
-//       {/* Progress Bar */}
-//       <div className="w-64 h-1 mt-8 bg-gray-200 rounded-full overflow-hidden">
-//         <div
-//           className="h-full bg-blue-500 transition-all duration-300 ease-out"
-//           style={{ width: `${progress}%` }}
-//         />
-//       </div>
-
-//       {/* Loading Text */}
-//       <div
-//         className={cn(
-//           'mt-4 text-sm font-medium',
-//           isDark ? 'text-gray-400' : 'text-gray-600',
-//         )}
-//       >
-//         Loading... {progress}%
-//       </div>
-//     </div>
-//   );
-// }
-
-// interface HomePageProps {
-//   categories: Category[];
-//   articles: Article[];
-// }
-
-// Define the social media links with proper icon types
-const socialLinks = [
-  { icon: Linkedin, href: siteConfig.social.linkedin },
-  { icon: Twitter, href: siteConfig.social.twitter },
-  { icon: Instagram, href: '#' },
-  { icon: Facebook, href: '#' },
-] as const;
-
-// Add skeleton loading states
-// function ArticleListSkeleton() {
-//   return (
-//     <div className="space-y-4">
-//       {[...Array(3)].map((_, i) => (
-//         <div key={i} className="animate-pulse">
-//           <div className="h-4 bg-gray-200 rounded w-3/4" />
-//           <div className="h-4 bg-gray-200 rounded w-1/2 mt-2" />
-//         </div>
-//       ))}
-//     </div>
-//   );
-// }
-
-// export function HomePage({ categories, articles }: HomePageProps) {
-// Background images for the landing hero matching the button IDs
-const HERO_BG_IMAGES = {
-  main: siteConfig.ogImage,
-  immi: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&q=80&w=1920',
-  edu: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80&w=1920',
-  coursehub:
-    'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1920',
-} as const;
-
-export function HomePage({ locale }: { locale?: string }) {
+export function HomePage({ locale: propsLocale }: { locale?: string }) {
   const [mounted, setMounted] = useState(false);
   const _isDark = useThemeStore((state) => state.isDark);
   const isDark = mounted ? _isDark : false;
-  const navGateway = getNavGateway(locale);
+  const { locale: paramsLocale } = useParams();
+  const locale = (propsLocale || paramsLocale || 'en') as 'en' | 'zh';
   const isZh = locale === 'zh';
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+  const navGateway = getNavGateway(locale);
+
+  // Define the social media links with proper icon types
+  const socialLinks = [
+    { icon: Linkedin, href: currentSiteConfig.social.linkedin },
+    { icon: Twitter, href: currentSiteConfig.social.twitter },
+    { icon: Instagram, href: currentSiteConfig.social.instagram },
+    { icon: Facebook, href: currentSiteConfig.social.facebook },
+  ] as const;
+
+  // Background images for the landing hero matching the button IDs
+  const HERO_BG_IMAGES = {
+    main: appOgImage.landing,
+    immi: appOgImage.immi,
+    edu: appOgImage.edu,
+    coursehub: appOgImage.coursehub,
+  } as const;
 
   const [hoveredButtonId, setHoveredButtonId] = useState<string | null>(null);
   const [carouselIndex, setCarouselIndex] = useState<number>(0);
@@ -152,7 +65,7 @@ export function HomePage({ locale }: { locale?: string }) {
   const [heroInView, setHeroInView] = useState(true);
 
   const gatewayButtons = Object.values(navGateway).filter(
-    (item) => item.name !== siteConfig.name,
+    (item) => item.name !== siteConfig.en.name,
   );
 
   useEffect(() => {
@@ -198,15 +111,15 @@ export function HomePage({ locale }: { locale?: string }) {
 
   const activeBgImage = currentButtonId
     ? HERO_BG_IMAGES[currentButtonId as keyof typeof HERO_BG_IMAGES] ||
-      siteConfig.ogImage
-    : siteConfig.ogImage;
+      currentSiteConfig.ogImage
+    : currentSiteConfig.ogImage;
 
   return (
     <div className="min-h-screen">
       {/* Hero Section with Background */}
       <HeroSection
         mode="main"
-        title={siteConfig.name}
+        title={currentSiteConfig.name}
         backgroundImage={activeBgImage}
         subtitle={
           <em>
@@ -284,40 +197,7 @@ export function HomePage({ locale }: { locale?: string }) {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                number: '5,000+',
-                label: isZh ? '成功案例' : 'Success Stories',
-                description: isZh
-                  ? '进入全球顶尖学府精英人才。'
-                  : 'Elite placement in Tier-1 Global Institutions.',
-                icon: Users,
-              },
-              {
-                number: '120+',
-                label: isZh ? '合作大学' : 'Partner Universities',
-                description: isZh
-                  ? '直接机构对接与优先处理。'
-                  : 'Direct institutional access & priority processing.',
-                icon: Globe,
-              },
-              {
-                number: '99%',
-                label: isZh ? '成功率' : 'Success Rate',
-                description: isZh
-                  ? '精准签证与录取方案。'
-                  : 'Precision-engineered visa & admission protocols.',
-                icon: ShieldCheck,
-              },
-              {
-                number: '15+',
-                label: isZh ? '年卓越经验' : 'Years Excellence',
-                description: isZh
-                  ? '高绩效咨询的优良传统。'
-                  : 'A legacy of high-performance consulting.',
-                icon: Award,
-              },
-            ].map((stat, index) => (
+            {getHomeStats(isZh).map((stat, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -384,31 +264,7 @@ export function HomePage({ locale }: { locale?: string }) {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Sarah Chen',
-                role: isZh ? '高级学术合伙人' : 'Senior Academic Partner',
-                image:
-                  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600',
-                speciality: isZh ? '常春藤录取专家' : 'Ivy League Admissions',
-              },
-              {
-                name: 'Michael Zhang',
-                role: isZh ? '移民主管' : 'Head of Migration',
-                image:
-                  'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600',
-                speciality: isZh ? '一级签证方案专家' : 'Tier-1 Visa Protocols',
-              },
-              {
-                name: 'Emma Liu',
-                role: isZh ? '战略顾问' : 'Strategic Advisor',
-                image:
-                  'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=600',
-                speciality: isZh
-                  ? '全球职业规划专家'
-                  : 'Global Career Planning',
-              },
-            ].map((member, index) => (
+            {getHomeTeam(isZh).map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -430,18 +286,18 @@ export function HomePage({ locale }: { locale?: string }) {
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a]/80 via-transparent to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
-                </div>
 
-                <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">
-                    {member.role}
-                  </p>
-                  <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-2">
-                    {member.name}
-                  </h3>
-                  <div className="flex items-center gap-2 text-[8px] font-black text-white/50 uppercase tracking-widest">
-                    <Zap className="w-3 h-3 text-blue-600" />
-                    {member.speciality}
+                  <div className="absolute bottom-0 left-0 w-full p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <p className="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-1">
+                      {member.role}
+                    </p>
+                    <h3 className="text-2xl font-black text-white uppercase tracking-tighter mb-2">
+                      {member.name}
+                    </h3>
+                    <div className="flex items-center gap-2 text-[8px] font-black text-white/50 uppercase tracking-widest">
+                      <Zap className="w-3 h-3 text-blue-600" />
+                      {member.speciality}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -530,49 +386,85 @@ export function HomePage({ locale }: { locale?: string }) {
                   {
                     icon: MapPin,
                     title: isZh ? '全球总部' : 'Global HQ',
-                    label: siteConfig.contact.address,
+                    label: currentSiteConfig.contact.address,
+                    // activate will enable the external map direction following the link click
+                    // href: isZh
+                    //   ? `https://ditu.amap.com/search?query=${encodeURIComponent(currentSiteConfig.contact.address)}`
+                    //   : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(currentSiteConfig.contact.address)}`,
+                    isExternal: true,
                   },
                   {
                     icon: Phone,
                     title: isZh ? '安全专线' : 'Secure Line',
-                    label: siteConfig.contact.phone,
+                    label: currentSiteConfig.contact.phone,
+                    href: `tel:${currentSiteConfig.contact.phone.replace(/[^0-9+]/g, '')}`,
                   },
                   {
                     icon: Mail,
                     title: isZh ? '注册邮箱' : 'Registry Email',
-                    label: siteConfig.contact.email,
+                    label: currentSiteConfig.contact.email,
+                    href: `mailto:${currentSiteConfig.contact.email}`,
                   },
-                ].map((contact, index) => (
-                  <div key={index} className="flex flex-col gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-blue-600/5 text-blue-600 flex items-center justify-center">
-                      <contact.icon className="w-5 h-5" />
+                ].map((contact, index) => {
+                  const content = (
+                    <>
+                      <div className="w-10 h-10 rounded-xl bg-blue-600/5 text-blue-600 flex items-center justify-center group-hover:bg-blue-600/10 transition-colors">
+                        <contact.icon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">
+                          {contact.title}
+                        </p>
+                        <p className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tight leading-relaxed group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                          {contact.label}
+                        </p>
+                      </div>
+                    </>
+                  );
+
+                  return contact.href ? (
+                    <a
+                      key={index}
+                      href={contact.href}
+                      target={contact.isExternal ? '_blank' : undefined}
+                      rel={
+                        contact.isExternal ? 'noopener noreferrer' : undefined
+                      }
+                      className="flex flex-col gap-4 group cursor-pointer"
+                    >
+                      {content}
+                    </a>
+                  ) : (
+                    <div key={index} className="flex flex-col gap-4">
+                      {content}
                     </div>
-                    <div>
-                      <p className="text-[8px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                        {contact.title}
-                      </p>
-                      <p className="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tight leading-relaxed">
-                        {contact.label}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Social Channels */}
-              <div className="flex items-center gap-6">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 transition-all"
-                  >
-                    <social.icon className="w-5 h-5" />
-                  </a>
-                ))}
-              </div>
+              {socialLinks.some(
+                (social) => social.href && String(social.href).trim() !== '',
+              ) && (
+                <div className="flex items-center gap-6">
+                  {socialLinks
+                    .filter(
+                      (social) =>
+                        social.href && String(social.href).trim() !== '',
+                    )
+                    .map((social, index) => (
+                      <a
+                        key={index}
+                        href={social.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 transition-all"
+                      >
+                        <social.icon className="w-5 h-5" />
+                      </a>
+                    ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Verification & Access */}
@@ -598,10 +490,10 @@ export function HomePage({ locale }: { locale?: string }) {
                     <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
                       <QRCode
                         src={
-                          siteConfig.contact.whatsapp.qr ||
+                          currentSiteConfig.contact.whatsapp.qr ||
                           '/qr/whatsapp-qr.webp'
                         }
-                        alt="WhatsApp QR Code"
+                        alt={isZh ? 'WhatsApp 二维码' : 'WhatsApp QR Code'}
                         title="WhatsApp"
                         description=""
                         isDark={isDark}
@@ -616,10 +508,11 @@ export function HomePage({ locale }: { locale?: string }) {
                     <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
                       <QRCode
                         src={
-                          siteConfig.contact.wechat.qr || '/qr/wechat-qr.webp'
+                          currentSiteConfig.contact.wechat.qr ||
+                          '/qr/wechat-qr.webp'
                         }
-                        alt="WeChat QR Code"
-                        title="WeChat"
+                        alt={isZh ? '微信二维码' : 'WeChat QR Code'}
+                        title={isZh ? '微信' : 'WeChat'}
                         description=""
                         isDark={isDark}
                         className="bg-transparent! shadow-none! p-0!"
@@ -627,7 +520,7 @@ export function HomePage({ locale }: { locale?: string }) {
                     </div>
                     <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center">
                       {isZh ? '扫码获取支持' : 'Scan for support'}:{' '}
-                      {siteConfig.contact.wechat.label}
+                      {currentSiteConfig.contact.wechat.label}
                     </p>
                   </div>
                 </div>
