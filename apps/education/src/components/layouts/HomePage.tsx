@@ -11,12 +11,12 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 import { appOgImage } from '@repo/apps-config/base/company-info';
 import dynamic from 'next/dynamic';
 
-const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'), { ssr: true });
-const TeamSection = dynamic(() => import('../sections/TeamSection'), { ssr: true });
-const TopUniversitiesSection = dynamic(() => import('../sections/TopUniversitiesSection'), { ssr: true });
-const DestinationsSection = dynamic(() => import('../sections/DestinationsSection'), { ssr: true });
-const InsightsSection = dynamic(() => import('../sections/InsightsSection'), { ssr: true });
-const TipsSection = dynamic(() => import('../sections/TipsSection'), { ssr: true });
+const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'), { ssr: false });
+const TeamSection = dynamic(() => import('../sections/TeamSection'), { ssr: false });
+const TopUniversitiesSection = dynamic(() => import('../sections/TopUniversitiesSection'), { ssr: false });
+const DestinationsSection = dynamic(() => import('../sections/DestinationsSection'), { ssr: false });
+const InsightsSection = dynamic(() => import('../sections/InsightsSection'), { ssr: false });
+const TipsSection = dynamic(() => import('../sections/TipsSection'), { ssr: false });
 
 interface HomePageProps {
   articles?: Article[];

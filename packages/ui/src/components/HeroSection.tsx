@@ -4,12 +4,7 @@ import { cn } from '../utils';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import React from 'react';
-import {
-  AnimatePresence,
-  motion,
-  useScroll,
-  useTransform,
-} from 'framer-motion';
+// Removed framer-motion for performance
 import { useUnsplashImage } from '../hooks/useUnsplashImage';
 import { UI_CONFIG } from '@repo/tooling/ui';
 import { ShieldCheck, Sparkles } from 'lucide-react';
@@ -48,10 +43,7 @@ function HeroBackground({
     optimizedSrc = optimizedSrc.replace('/image/upload/', '/image/upload/f_auto,q_auto/');
   }
 
-  // Scroll-linked parallax effect (only active for 'main' layout mode)
-  const { scrollY } = useScroll();
-  const yTransform = useTransform(scrollY, [0, 600], [0, 150]);
-  const scaleTransform = useTransform(scrollY, [0, 600], [1.05, 0.95]);
+  // Removed parallax for initial load performance
 
   return (
     <>
@@ -66,41 +58,25 @@ function HeroBackground({
         )}
       />
 
-      <AnimatePresence mode="popLayout">
-        {showImage && (
-          <motion.div
-            key={optimizedSrc}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.8 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.2, ease: 'easeInOut' }}
-            className="absolute inset-0 z-0 overflow-hidden"
-          >
-            <motion.div
-              style={
-                mode === 'main'
-                  ? {
-                      y: yTransform,
-                      scale: scaleTransform,
-                    }
-                  : undefined
-              }
-              className="w-full h-full relative"
-            >
-              <Image
-                src={optimizedSrc}
-                alt="Background"
-                fill
-                className="object-cover object-center grayscale-[0.2]"
-                onError={() => setImageError(true)}
-                priority={true}
-                fetchPriority="high"
-                unoptimized={true}
-              />
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {showImage && (
+        <div
+          key={optimizedSrc}
+          className="absolute inset-0 z-0 overflow-hidden animate-in fade-in duration-1000"
+        >
+          <div className="w-full h-full relative">
+            <Image
+              src={optimizedSrc}
+              alt="Background"
+              fill
+              className="object-cover object-center grayscale-[0.2]"
+              onError={() => setImageError(true)}
+              priority={true}
+              fetchPriority="high"
+              unoptimized={true}
+            />
+          </div>
+        </div>
+      )}
 
       {/* Always render dark overlay so the white Navbar is visible */}
       <div className="absolute inset-0 bg-linear-to-b from-black/80 via-black/40 to-gray-50 dark:to-[#0a0a0a] z-0" />

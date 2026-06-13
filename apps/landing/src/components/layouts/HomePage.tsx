@@ -22,10 +22,10 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 import { appOgImage } from '@repo/apps-config/base/company-info';
 import dynamic from 'next/dynamic';
 
-const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'), { ssr: true });
-const TeamSection = dynamic(() => import('../sections/TeamSection'), { ssr: true });
-const CTASection = dynamic(() => import('../sections/CTASection'), { ssr: true });
-const ContactSection = dynamic(() => import('../sections/ContactSection'), { ssr: true });
+const AchievementsSection = dynamic(() => import('../sections/AchievementsSection'), { ssr: false });
+const TeamSection = dynamic(() => import('../sections/TeamSection'), { ssr: false });
+const CTASection = dynamic(() => import('../sections/CTASection'), { ssr: false });
+const ContactSection = dynamic(() => import('../sections/ContactSection'), { ssr: false });
 
 export function HomePage({ locale: propsLocale }: { locale?: string }) {
   const [mounted, setMounted] = useState(false);
