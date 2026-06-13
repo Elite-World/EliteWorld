@@ -33,15 +33,24 @@ function HeroBackground({
   const bgSrc = backgroundImage || imageUrl;
   const showImage = !!bgSrc && !imageError;
 
-  let optimizedSrc = bgSrc;
-  if (
-    optimizedSrc &&
-    typeof optimizedSrc === 'string' &&
-    optimizedSrc.includes('res.cloudinary.com') &&
-    !optimizedSrc.includes('f_auto')
-  ) {
-    optimizedSrc = optimizedSrc.replace('/image/upload/', '/image/upload/f_auto,q_auto/');
+const cloudinaryLoader = ({ src, width }: { src: string; width: number }) => {
+  if (typeof src === 'string' && src.includes('res.cloudinary.com')) {
+    // Cloudinary URLs typically look like: https://res.cloudinary.com/cloudname/image/upload/v1234/filename
+    const parts = src.split('/upload/');
+    if (parts.length === 2) {
+      // Clean up any existing transformations if present
+      let path = parts[1];
+      if (path.startsWith('f_auto') || path.startsWith('q_auto')) {
+        const slashIndex = path.indexOf('/');
+        if (slashIndex !== -1) {
+          path = path.substring(slashIndex + 1);
+        }
+      }
+      return `${parts[0]}/upload/f_auto,q_auto,w_${width}/${path}`;
+    }
   }
+  return src;
+};
 
   // Removed parallax for initial load performance
 
@@ -60,19 +69,20 @@ function HeroBackground({
 
       {showImage && (
         <div
-          key={optimizedSrc}
-          className="absolute inset-0 z-0 overflow-hidden animate-in fade-in duration-1000"
+          key={bgSrc}
+          className="absolute inset-0 z-0 overflow-hidden"
         >
-          <div className="w-full h-full relative">
+          <div className="w-full h-full relative bg-gray-900">
             <Image
-              src={optimizedSrc}
+              loader={cloudinaryLoader}
+              src={bgSrc}
               alt="Background"
               fill
+              sizes="100vw"
               className="object-cover object-center grayscale-[0.2]"
               onError={() => setImageError(true)}
               priority={true}
               fetchPriority="high"
-              unoptimized={true}
             />
           </div>
         </div>

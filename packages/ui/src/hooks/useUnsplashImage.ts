@@ -6,23 +6,14 @@ const CURATED_IMAGES = {
 };
 
 export function useUnsplashImage(query: string) {
-  const [imageUrl, setImageUrl] = useState<string>('');
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    // Simulate network delay for effect or just set immediately
-    setIsLoading(true);
-    // Simple logic: check if query contains key words
-    const lowerQuery = query.toLowerCase();
-    let selectedImage = CURATED_IMAGES.default;
-    
-    if (lowerQuery.includes('global') || lowerQuery.includes('globe')) {
-      selectedImage = CURATED_IMAGES.global;
-    }
-    
-    setImageUrl(selectedImage);
-    setIsLoading(false);
-  }, [query]);
-
-  return { imageUrl, isLoading, error: null };
+  // Simple logic: check if query contains key words
+  const lowerQuery = query?.toLowerCase() || '';
+  let selectedImage = CURATED_IMAGES.default;
+  
+  if (lowerQuery.includes('global') || lowerQuery.includes('globe')) {
+    selectedImage = CURATED_IMAGES.global;
+  }
+  
+  // Return immediately for synchronous SSR injection
+  return { imageUrl: selectedImage, isLoading: false, error: null };
 }
