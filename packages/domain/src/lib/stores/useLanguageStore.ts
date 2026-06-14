@@ -38,14 +38,12 @@ export const useLanguageStore = create<LanguageState>()(
   )
 );
 
-import { useRouter, usePathname } from 'next/navigation';
-import { useCallback, useTransition, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
+import { useCallback, useEffect } from 'react';
 
 export function useLanguageSwitcher() {
-  const router = useRouter();
   const pathname = usePathname();
   const { language, setLanguage } = useLanguageStore();
-  const [isPending, startTransition] = useTransition();
 
   const segments = pathname.split('/');
   const urlLang = segments[1] === 'en' || segments[1] === 'zh' ? segments[1] : null;
@@ -61,22 +59,20 @@ export function useLanguageSwitcher() {
   const handleToggle = useCallback(() => {
     const newLang = activeLanguage === 'en' ? 'zh' : 'en';
     
-    startTransition(() => {
-      // 1. Update global state and cookie explicitly
-      setLanguage(newLang);
-      
-      // 2. Perform Next.js soft navigation
-      const searchParams = window.location.search;
-      const currentSegments = pathname.split('/');
-      if (currentSegments[1] === 'en' || currentSegments[1] === 'zh') {
-        currentSegments[1] = newLang;
-        const newPath = currentSegments.join('/') + searchParams;
-        router.push(newPath);
-      } else {
-        router.push(`/${newLang}${pathname}${searchParams}`);
-      }
-    });
-  }, [activeLanguage, setLanguage, pathname, router]);
+    // 1. Update global state and cookie explicitly
+    setLanguage(newLang);
+    
+    // 2. Perform hard navigation for clean locale switch
+    const searchParams = window.location.search;
+    const currentSegments = pathname.split('/');
+    if (currentSegments[1] === 'en' || currentSegments[1] === 'zh') {
+      currentSegments[1] = newLang;
+      const newPath = currentSegments.join('/') + searchParams;
+      window.location.href = newPath;
+    } else {
+      window.location.href = `/${newLang}${pathname}${searchParams}`;
+    }
+  }, [activeLanguage, setLanguage, pathname]);
 
-  return { language: activeLanguage, handleToggle, setLanguage, isPending };
+  return { language: activeLanguage, handleToggle, setLanguage, isPending: false };
 }

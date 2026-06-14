@@ -8,7 +8,7 @@ import { siteConfig } from '@repo/apps-config/immigration/site-config';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'] || siteConfig['en'];
   return {
     title: currentSiteConfig.name,
     description: currentSiteConfig.description,
@@ -25,7 +25,7 @@ export default async function RootLayout({
   const { locale } = await params;
   const navigation = await getNavigationData(locale);
   const localizedNavGateway = getNavGateway(locale);
-  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'] || siteConfig['en'];
 
   return (
     <html lang={locale} className="dark" suppressHydrationWarning>
