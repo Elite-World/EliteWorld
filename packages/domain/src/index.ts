@@ -23,6 +23,7 @@ export * from './components/shared/QRCode';
 export * from './components/shared/UserMenu';
 export * from './components/shared/GlobalRibbon';
 export * from './components/shared/NewsletterSection';
+export { default as ContactSection } from './components/sections/ContactSection';
 export * from './lib/stores/useRibbonStore';
 export * from './components/ui/ImageWithFallback';
 export * from './components/modals/LoginModal';

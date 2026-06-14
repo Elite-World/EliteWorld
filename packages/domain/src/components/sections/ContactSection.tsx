@@ -1,6 +1,6 @@
 'use client';;
 import { MapPin, Phone, Mail, ShieldCheck } from 'lucide-react';
-import { QRCode } from '@repo/domain';
+import { QRCode } from '../shared/QRCode';
 
 export default function ContactSection({
   isZh,
@@ -130,7 +130,12 @@ export default function ContactSection({
               </div>
 
               <div className="grid grid-cols-1 @md:grid-cols-2 gap-6 md:gap-10">
-                <div className="group">
+                <a
+                  href={currentSiteConfig.contact.whatsapp.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block"
+                >
                   <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition group-hover:-translate-y-2">
                     <QRCode
                       src={
@@ -144,10 +149,10 @@ export default function ContactSection({
                       className="bg-transparent! shadow-none! p-0!"
                     />
                   </div>
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center">
-                    {isZh ? '扫码加密聊天' : 'Scan to chat encrypted'}
+                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center group-hover:text-blue-600 transition-colors">
+                    {isZh ? '点击或扫码加密聊天' : 'Click or scan to chat encrypted'}
                   </p>
-                </div>
+                </a>
                 <div className="group">
                   <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition group-hover:-translate-y-2">
                     <QRCode

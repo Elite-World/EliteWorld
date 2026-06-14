@@ -120,7 +120,7 @@ export function HomePage({
       </HeroSection>
 
       <AchievementsSection isZh={isZh} isDark={isDark} />
-      <TeamSection isZh={isZh} isDark={isDark} />
+      {/* <TeamSection isZh={isZh} isDark={isDark} /> */}
       <DestinationsSection
         isZh={isZh}
         isDark={isDark}

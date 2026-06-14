@@ -43,14 +43,14 @@ const heroImageLoader = ({ src, width }: { src: string; width: number }) => {
       // Clean up any existing transformations if present
       let path = parts[1];
       // Strip any existing quality/format params so we don't duplicate
-      if (path.startsWith('f_') || path.startsWith('q_') || path.includes('q_auto') || path.includes('f_auto')) {
+      if (path.startsWith('f_auto') || path.startsWith('q_') || path.includes('q_auto')) {
         const slashIndex = path.indexOf('/');
         if (slashIndex !== -1) {
           path = path.substring(slashIndex + 1);
         }
       }
-      // Force webp format and maximum eco compression
-      return `${parts[0]}/upload/f_webp,q_auto:eco,w_${width}/${path}`;
+      // q_auto:eco applies maximum compression. Perfect for backgrounds with dark overlays.
+      return `${parts[0]}/upload/f_auto,q_auto:eco,w_${width}/${path}`;
     }
   }
 

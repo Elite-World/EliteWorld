@@ -100,8 +100,8 @@ export async function getNavigationData(
       {
         id: 'contact',
         label: isZh ? '联系我们' : 'Contact Us',
-        href: `${LANDING_URL}/${locale}?source=education#contact`,
-        external: true,
+        href: `/${locale}#contact`,
+        external: false,
         icon: <HiOutlineEnvelope className="w-5 h-5" />,
       },
     ],

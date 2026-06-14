@@ -8,7 +8,9 @@ import { siteConfig } from '@repo/apps-config/education/site-config';
 import { getNavGateway } from '@repo/apps-config/education/navbar-config';
 import { HeroSection, NavigationItem } from '@repo/ui';
 import dynamic from 'next/dynamic';
+import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
+const ContactSection = dynamic(() => import('@repo/domain').then((mod) => mod.ContactSection));
 const AchievementsSection = dynamic(
   () => import('../sections/AchievementsSection'),
 );
@@ -39,6 +41,13 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
   const gatewayButtons = Object.values(navGateway).filter(
     (item) => item.name !== siteConfig.en.name,
   );
+
+  const socialLinks = [
+    { icon: Linkedin, href: currentSiteConfig.social.linkedin },
+    { icon: Twitter, href: currentSiteConfig.social.twitter },
+    { icon: Instagram, href: currentSiteConfig.social.instagram },
+    { icon: Facebook, href: currentSiteConfig.social.facebook },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -85,6 +94,12 @@ export function HomePage({ articles, tips = [], locale }: HomePageProps) {
       <DestinationsSection isZh={isZh} isDark={isDark} />
       <InsightsSection isZh={isZh} isDark={isDark} articles={articles} />
       <TipsSection isZh={isZh} isDark={isDark} tips={tips} />
+      <ContactSection
+        isZh={isZh}
+        currentSiteConfig={currentSiteConfig}
+        isDark={isDark}
+        socialLinks={socialLinks}
+      />
     </div>
   );
 }
