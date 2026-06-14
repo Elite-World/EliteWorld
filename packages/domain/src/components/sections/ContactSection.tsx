@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { MapPin, Phone, Mail, ShieldCheck } from 'lucide-react';
 import { QRCode } from '../shared/QRCode';
 
@@ -117,8 +117,7 @@ export default function ContactSection({
           </div>
 
           {/* Verification & Access */}
-          <div
-            className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden animate-in fade-in duration-500">
+          <div className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden animate-in fade-in duration-500">
             <div className="hidden md:block absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[100px] -mr-32 -mt-32 transform-gpu will-change-transform" />
 
             <div className="relative z-10">
@@ -150,7 +149,9 @@ export default function ContactSection({
                     />
                   </div>
                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mt-6 text-center group-hover:text-blue-600 transition-colors">
-                    {isZh ? '点击或扫码加密聊天' : 'Click or scan to chat encrypted'}
+                    {isZh
+                      ? '点击或扫码加密聊天'
+                      : 'Click or scan to chat encrypted'}
                   </p>
                 </a>
                 <div className="group">
