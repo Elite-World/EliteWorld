@@ -14,7 +14,6 @@ import {
   // ChevronRight,
   Check,
 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useDevStore, useLanguageStore } from '@repo/domain';
 
 interface RankingFiltersProps {
@@ -127,24 +126,14 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
           {isZh ? '筛选' : 'Filters'}
         </button>
       </div>
-
-      <AnimatePresence>
+      <>
         {isMobileOpen && (
           <>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+            <div
               onClick={() => setIsMobileOpen(false)}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden"
-            />
-            <motion.div
-              initial={{ x: '100%' }}
-              animate={{ x: 0 }}
-              exit={{ x: '100%' }}
-              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-              className="fixed inset-y-0 right-0 w-[85%] max-w-sm bg-white dark:bg-zinc-900 z-50 overflow-hidden border-l border-gray-200 dark:border-zinc-800 shadow-2xl md:hidden flex flex-col"
-            >
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 md:hidden animate-in fade-in duration-500" />
+            <div
+              className="fixed inset-y-0 right-0 w-[85%] max-w-sm bg-white dark:bg-zinc-900 z-50 overflow-hidden border-l border-gray-200 dark:border-zinc-800 shadow-2xl md:hidden flex flex-col animate-in fade-in duration-500">
               <div className="flex flex-col h-full bg-white dark:bg-zinc-900">
                 <div className="flex items-center justify-between p-4 border-b border-gray-100 dark:border-zinc-800 shrink-0">
                   {mobileView === 'main' ? (
@@ -390,11 +379,10 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
           </>
         )}
-      </AnimatePresence>
-
+      </>
       {/* Desktop Controls */}
       <div className="hidden md:flex flex-col gap-6 mb-8">
         {/* Tier 1 Tabs */}
@@ -515,16 +503,11 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                 </div>
 
                 {/* Searchable Dropdown */}
-                <AnimatePresence>
+                <>
                   {showSubjectMenu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.15 }}
+                    <div
                       onClick={(e) => e.stopPropagation()}
-                      className="absolute top-full left-0 mt-2 w-[400px] z-50 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-100 dark:border-zinc-700 overflow-hidden flex flex-col max-h-[400px]"
-                    >
+                      className="absolute top-full left-0 mt-2 w-[400px] z-50 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-100 dark:border-zinc-700 overflow-hidden flex flex-col max-h-[400px] animate-in fade-in duration-500">
                       {/* Search Input */}
                       <div className="p-3 border-b border-gray-100 dark:border-zinc-700 bg-white dark:bg-zinc-800 sticky top-0 z-10">
                         <div className="relative">
@@ -597,9 +580,9 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                           </div>
                         )}
                       </div>
-                    </motion.div>
+                    </div>
                   )}
-                </AnimatePresence>
+                </>
               </div>
             )}
 

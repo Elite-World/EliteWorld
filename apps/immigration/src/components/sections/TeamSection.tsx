@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn } from '@repo/domain';
 import Image from 'next/image';
 import { getHomeTeam } from '@repo/apps-config/immigration/home-config';
@@ -15,12 +13,7 @@ export default function TeamSection({
   return (
     <section id="team" className="py-24">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
+        <div className="animate-in fade-in duration-500">
           <h2
             className={cn(
               'text-4xl font-bold text-center mb-4 text-[#010022] dark:text-white',
@@ -39,27 +32,18 @@ export default function TeamSection({
               ? '我们经验丰富的顾问团队致力于为您家庭的全球流动性和财富保值制定量身定制的策略。'
               : "Our experienced counsel are dedicated to architecting bespoke strategies for your family's global mobility and wealth preservation."}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {getHomeTeam(isZh).map((member, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
               className={cn(
                 'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
                 'hover:transform hover:-translate-y-1',
                 isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
                 'h-full',
-              )}
-            >
+              )}>
               <div className="relative h-64 w-full">
                 <Image
                   src={member.image}
@@ -87,7 +71,7 @@ export default function TeamSection({
                   {member.speciality}
                 </p>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

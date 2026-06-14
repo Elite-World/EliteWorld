@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { LoginModal } from '../modals/LoginModal';
 import { MainMenuModal } from '../modals/MainMenuModal';
@@ -14,7 +13,6 @@ const MODALS: Record<ModalType, React.ComponentType<any>> = {
   search: SearchModal,
 };
 
-import { AnimatePresence } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export function ModalProvider(): React.ReactElement | null {
@@ -31,10 +29,10 @@ export function ModalProvider(): React.ReactElement | null {
   if (!mounted) return null;
 
   return (
-    <AnimatePresence mode="wait" initial={false}>
+    <>
       {activeModal && Component && (
         <Component key={activeModal} {...modalProps} />
       )}
-    </AnimatePresence>
+    </>
   );
 }

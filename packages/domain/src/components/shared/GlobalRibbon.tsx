@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useRibbonStore } from '../../lib/stores/useRibbonStore';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import {
@@ -8,7 +7,6 @@ import {
 } from '../../lib/stores/useLanguageStore';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { cn } from '../../lib/utils';
-import { AnimatePresence, motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { ArrowUp, Search, Sun, Moon, Monitor, User } from 'lucide-react';
 import { userMenuItems } from './UserMenu';
@@ -221,10 +219,9 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           />
         </svg>
       </button>
-
       {/* Button List (Desktop always visible, Mobile conditionally visible) */}
-      <AnimatePresence>
-        <motion.div
+      <>
+        <div
           className={cn(
             'flex flex-col-reverse items-end gap-2 pointer-events-auto',
             'md:flex-col md:gap-2',
@@ -232,13 +229,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           )}
         >
           {visibleButtons.map((button) => (
-            <motion.div
-              key={button.id}
-              initial={{ scale: 0.8, opacity: 0, y: 10 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.8, opacity: 0, y: 10 }}
-              className="relative"
-            >
+            <div key={button.id} className="relative animate-in fade-in duration-500">
               {button.component ? (
                 button.component
               ) : (
@@ -273,10 +264,10 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
                   )}
                 </button>
               )}
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      </>
     </div>
   );
 }

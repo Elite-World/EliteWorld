@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn, Article, ArticleCard } from '@repo/domain';
 import Link from 'next/link';
 import { BookOpen, ArrowRight } from 'lucide-react';
@@ -17,13 +15,8 @@ export default function InsightsSection({
   return (
     <section className="py-24">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
-        >
+        <div
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <BookOpen className="w-5 h-5 text-blue-600" />
@@ -55,23 +48,13 @@ export default function InsightsSection({
             {isZh ? '查看所有文章' : 'View All Articles'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles?.slice(0, 3).map((article, index) => (
-            <motion.div
-              key={article.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
+            <div key={article.id} className="animate-in fade-in duration-500">
               <ArticleCard article={article} basePath="/insights" />
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

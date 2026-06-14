@@ -1,8 +1,6 @@
-'use client';
-
+'use client';;
 import React, { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MapPin } from 'lucide-react';
 import DirectoryCard from './DirectoryCard';
 
@@ -95,29 +93,21 @@ function UniversityDirectoryContent({
           </div>
         </div>
       </div>
-
       {/* Header info */}
       <div className="mb-6 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-2">
         <span>
           {locale === 'zh' ? `显示 ${displayedUniversities.length} / ${filteredUniversities.length} 所大学` : `Showing ${displayedUniversities.length} of ${filteredUniversities.length} universities`}
         </span>
       </div>
-
       {/* Grid */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          layout
-          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
+      <>
+        <div
+          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 animate-in fade-in duration-500">
           {displayedUniversities.map((uni) => (
             <DirectoryCard key={uni.id} university={uni} />
           ))}
-        </motion.div>
-      </AnimatePresence>
-
+        </div>
+      </>
       {/* Load More */}
       {hasMore && (
         <div className="mt-16 flex justify-center">

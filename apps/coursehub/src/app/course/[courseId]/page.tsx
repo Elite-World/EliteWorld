@@ -120,7 +120,6 @@ const CourseDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
-
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Navigation & Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
@@ -243,14 +242,14 @@ const CourseDetailPage: React.FC = () => {
               ))
             ) : (
               // Fallbacks if only 1 image exists to keep grid layout intact
-              [...Array(4)].map((_, index) => (
+              ([...Array(4)].map((_, index) => (
                 <div
                   key={`fallback-${index}`}
                   className="relative rounded-4xl overflow-hidden group shadow-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center border border-gray-200 dark:border-white/10"
                 >
                   <div className="w-12 h-12 rounded-full bg-gray-200 dark:bg-white/10 animate-pulse" />
                 </div>
-              ))
+              )))
             )}
           </div>
           <button
@@ -605,7 +604,6 @@ const CourseDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
-
       {/* Full Screen Image Gallery Modal */}
       {isGalleryOpen && (
         <div className="fixed inset-0 z-100 bg-white dark:bg-[#0a0a0a] animate-fade-in flex flex-col">

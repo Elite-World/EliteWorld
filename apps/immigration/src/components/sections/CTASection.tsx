@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import Link from 'next/link';
 import { Building2 } from 'lucide-react';
 
@@ -14,15 +12,9 @@ export default function CTASection({
       <div className="absolute inset-0 bg-blue-900" />
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1565153995831-29e2f4a4bc3b?auto=format&fit=crop&q=80&w=2000')] bg-cover bg-center opacity-20 mix-blend-overlay" />
       <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent" />
-
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl"
-        >
+        <div
+          className="max-w-4xl mx-auto backdrop-blur-xl bg-black/40 border border-white/10 p-12 md:p-20 rounded-3xl text-center shadow-2xl animate-in fade-in duration-500">
           <Building2 className="w-12 h-12 text-blue-400 mx-auto mb-8" />
           <h2 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter mb-6">
             {isZh ? '点亮全球足迹' : 'Establish Your'} <br />{' '}
@@ -42,7 +34,7 @@ export default function CTASection({
               {isZh ? '预约私人咨询' : 'Schedule Private Consultation'}
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

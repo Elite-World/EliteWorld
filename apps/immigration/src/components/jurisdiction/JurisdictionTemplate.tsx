@@ -95,7 +95,6 @@ export function JurisdictionTemplate({
           </div>
         </div>
       </section>
-
       {/* 2. Intelligence Dashboard */}
       {profile && (
         <section className="pt-16 pb-8 relative z-20">
@@ -209,7 +208,6 @@ export function JurisdictionTemplate({
           </div>
         </section>
       )}
-
       {/* 3. Solutions & Pathways */}
       <section className="py-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -253,15 +251,12 @@ export function JurisdictionTemplate({
                         {sol.category.replace('_', ' ')}
                       </span>
                     </div>
-
                     <h3 className="text-2xl font-black text-gray-900 dark:text-white leading-tight mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all">
                       {solName}
                     </h3>
-
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-8 grow">
                       {solDesc}
                     </p>
-
                     <div className="space-y-4 pt-6 border-t border-gray-100 dark:border-white/10">
                       <div className="flex justify-between items-center">
                         <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
@@ -282,7 +277,6 @@ export function JurisdictionTemplate({
                         </span>
                       </div>
                     </div>
-
                     <div className="mt-8 pt-4">
                       {/* Use original english name for URLs, or default to slugification of current name if english missing */}
                       <Link
@@ -311,7 +305,6 @@ export function JurisdictionTemplate({
           )}
         </div>
       </section>
-
       {/* 4. News & Updates Section */}
       <section className="py-24 bg-white dark:bg-[#111] border-t border-gray-100 dark:border-white/5">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

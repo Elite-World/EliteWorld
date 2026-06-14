@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn } from '@repo/domain';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -18,15 +16,9 @@ export default function TopUniversitiesSection({
     <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
       <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
-
       <div className="container mx-auto px-4 relative z-10">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
-        >
+        <div
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <Trophy className="w-5 h-5 text-blue-600" />
@@ -58,22 +50,11 @@ export default function TopUniversitiesSection({
             {isZh ? '查看完整排名' : 'View Full Rankings'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {topUniversitiesShowcase.map((uni, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: idx * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="h-full"
-            >
+            <div key={idx} className="h-full animate-in fade-in duration-500">
               <Link
                 href={`/universities/${uni.country.toLowerCase().replace(/ /g, '-')}/${uni.name.toLowerCase().replace(/ /g, '-')}`}
                 className="group relative flex flex-col h-full rounded-[2.5rem] overflow-hidden bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
@@ -137,7 +118,7 @@ export default function TopUniversitiesSection({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

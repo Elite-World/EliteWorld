@@ -52,11 +52,11 @@ function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale:
         
         {imgError ? (
           /* Premium Mesh Gradient Fallback */
-          <div className="absolute inset-0 z-0">
+          (<div className="absolute inset-0 z-0">
             <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[70%] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen group-hover:bg-blue-500/40 transition-colors duration-700" />
             <div className="absolute bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen group-hover:bg-purple-500/30 transition-colors duration-700" />
             <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
-          </div>
+          </div>)
         ) : (
           <Image 
             src={src} 
@@ -68,7 +68,6 @@ function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale:
           />
         )}
       </div>
-
       {/* Content */}
       <div className="relative z-20 flex flex-col h-full p-8 text-white">
         

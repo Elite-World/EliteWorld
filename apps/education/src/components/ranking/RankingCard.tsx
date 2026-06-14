@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { UniversityRanking, cn } from '@repo/domain';
 import { Building2 } from 'lucide-react';
@@ -20,7 +19,6 @@ interface RankingCardProps {
 
 const RankingCard: React.FC<RankingCardProps> = ({
   university,
-  index,
   onClick,
   selectedSource = 'qs',
   onRankClick,
@@ -39,17 +37,11 @@ const RankingCard: React.FC<RankingCardProps> = ({
   // Resolve logo... (omitted comments)
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.05, ease: 'easeOut' }}
-      whileHover={{ y: -4, scale: 1.01 }}
+    <div
       onClick={() => onClick(university)}
-      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition-all duration-300 cursor-pointer overflow-hidden"
-    >
+      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition-all duration-300 cursor-pointer overflow-hidden animate-in fade-in">
       {/* Decorative Gradient Blob on Hover */}
       <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
       <div className="relative z-10 flex flex-col h-full">
         {/* Top Row: Rank & Logo */}
         <div className="flex justify-between items-start mb-4">
@@ -224,7 +216,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

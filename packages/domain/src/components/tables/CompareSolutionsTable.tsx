@@ -1,9 +1,7 @@
-'use client';
-
+'use client';;
 import { useState, useMemo } from 'react';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
 import { HiOutlineMagnifyingGlass, HiXMark } from 'react-icons/hi2';
 import { SolutionCard, PopulatedSolution } from '../shared/SolutionCard';
 import { CountryFlag } from '../shared/CountryFlag';
@@ -220,7 +218,6 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
   // Selection View
   return (
     <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 pb-48 relative">
-      
       {/* Controls Container (Search + Category Filter) */}
       <div className={cn(
         "sticky top-20 z-40 backdrop-blur-xl mb-12 p-4 md:p-6 rounded-4xl border shadow-2xl transition-all",
@@ -266,19 +263,11 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
           </div>
         </div>
       </div>
-
       {/* Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <AnimatePresence mode="popLayout">
+        <>
           {filteredSolutions.map((sol, idx) => (
-            <motion.div
-              key={sol._id}
-              layout
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 0.4, delay: (idx % 10) * 0.05 }}
-            >
+            <div key={sol._id} className="animate-in fade-in duration-500">
               <SolutionCard 
                 solution={sol} 
                 locale={locale}
@@ -286,9 +275,9 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
                 isSelected={selectedIds.includes(sol._id.toString())}
                 onSelectToggle={toggleSelection}
               />
-            </motion.div>
+            </div>
           ))}
-        </AnimatePresence>
+        </>
         
         {filteredSolutions.length === 0 && (
           <div className="col-span-full py-32 text-center">
@@ -297,19 +286,14 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
           </div>
         )}
       </div>
-
       {/* Floating Bottom Action Bar */}
-      <AnimatePresence>
+      <>
         {selectedIds.length > 0 && (
-          <motion.div 
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
+          <div
             className={cn(
               "fixed bottom-8 left-1/2 -translate-x-1/2 z-50 p-4 md:p-6 rounded-3xl border shadow-2xl backdrop-blur-xl flex items-center justify-between gap-8 w-[90vw] max-w-2xl",
               isDark ? "bg-[#111]/90 border-white/10" : "bg-white/90 border-gray-200"
-            )}
-          >
+            )}>
             <div>
               <p className={cn("text-xs font-bold uppercase tracking-widest mb-1", isDark ? "text-gray-400" : "text-gray-500")}>
                 {selectedIds.length} / 3 {locale === 'zh' ? '已选择' : 'Selected'}
@@ -344,10 +328,9 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
             >
               {selectedIds.length >= 2 ? (locale === 'zh' ? '立即比较' : 'Compare Now') : (locale === 'zh' ? '再选 1 个' : 'Select 1 More')}
             </button>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
-
+      </>
     </div>
   );
 }

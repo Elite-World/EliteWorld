@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn } from '@repo/domain';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,13 +14,8 @@ export default function DestinationsSection({
   return (
     <section className="py-32 bg-white dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
-        >
+        <div
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
           <div>
             <div className="flex items-center gap-2 mb-4">
               <MapPin className="w-5 h-5 text-blue-600" />
@@ -54,17 +47,11 @@ export default function DestinationsSection({
             {isZh ? '查看所有目的地' : 'View All Destinations'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 h-auto md:h-[600px]">
           {/* Main Feature - USA */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, delay: 0, ease: [0.16, 1, 0.3, 1] }}
-            className="md:col-span-8 h-full"
-          >
+          <div className="md:col-span-8 h-full animate-in fade-in duration-500">
             <Link
               href="/destinations/usa"
               className="group relative block rounded-[3rem] overflow-hidden min-h-[400px] h-full"
@@ -94,21 +81,11 @@ export default function DestinationsSection({
                 </div>
               </div>
             </Link>
-          </motion.div>
+          </div>
 
           <div className="md:col-span-4 flex flex-col gap-6">
             {/* Secondary - UK */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="flex-1"
-            >
+            <div className="flex-1 animate-in fade-in duration-500">
               <Link
                 href="/destinations/uk"
                 className="group relative block rounded-[3rem] overflow-hidden min-h-[280px] h-full"
@@ -130,20 +107,10 @@ export default function DestinationsSection({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
 
             {/* Secondary - Australia */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: 0.3,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="flex-1"
-            >
+            <div className="flex-1 animate-in fade-in duration-500">
               <Link
                 href="/destinations/australia"
                 className="group relative block rounded-[3rem] overflow-hidden min-h-[280px] h-full"
@@ -165,7 +132,7 @@ export default function DestinationsSection({
                   </div>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           </div>
         </div>
       </div>

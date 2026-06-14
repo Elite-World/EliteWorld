@@ -39,33 +39,44 @@ export const useLanguageStore = create<LanguageState>()(
 );
 
 import { useRouter, usePathname } from 'next/navigation';
-import { useCallback, useTransition } from 'react';
+import { useCallback, useTransition, useEffect } from 'react';
 
 export function useLanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
-  const { language, toggleLanguage, setLanguage } = useLanguageStore();
+  const { language, setLanguage } = useLanguageStore();
   const [isPending, startTransition] = useTransition();
 
+  const segments = pathname.split('/');
+  const urlLang = segments[1] === 'en' || segments[1] === 'zh' ? segments[1] : null;
+  const activeLanguage = (urlLang as Language) || language;
+
+  // Sync store with URL so other components using the store are updated
+  useEffect(() => {
+    if (urlLang && urlLang !== language) {
+      setLanguage(urlLang as Language);
+    }
+  }, [urlLang, language, setLanguage]);
+
   const handleToggle = useCallback(() => {
-    const newLang = language === 'en' ? 'zh' : 'en';
+    const newLang = activeLanguage === 'en' ? 'zh' : 'en';
     
     startTransition(() => {
-      // 1. Update global state and cookie
-      toggleLanguage();
+      // 1. Update global state and cookie explicitly
+      setLanguage(newLang);
       
       // 2. Perform Next.js soft navigation
       const searchParams = window.location.search;
-      const segments = pathname.split('/');
-      if (segments[1] === 'en' || segments[1] === 'zh') {
-        segments[1] = newLang;
-        const newPath = segments.join('/') + searchParams;
+      const currentSegments = pathname.split('/');
+      if (currentSegments[1] === 'en' || currentSegments[1] === 'zh') {
+        currentSegments[1] = newLang;
+        const newPath = currentSegments.join('/') + searchParams;
         router.push(newPath);
       } else {
         router.push(`/${newLang}${pathname}${searchParams}`);
       }
     });
-  }, [language, toggleLanguage, pathname, router]);
+  }, [activeLanguage, setLanguage, pathname, router]);
 
-  return { language, handleToggle, setLanguage, isPending };
+  return { language: activeLanguage, handleToggle, setLanguage, isPending };
 }

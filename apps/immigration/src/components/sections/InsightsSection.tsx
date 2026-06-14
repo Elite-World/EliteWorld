@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn } from '@repo/domain';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
@@ -19,13 +17,8 @@ export default function InsightsSection({
   return (
     <section className="py-24 bg-gray-50 dark:bg-[#0a0a0a] border-t border-gray-200 dark:border-white/5">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6"
-        >
+        <div
+          className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
           <div>
             <h2 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
               {isZh ? '全球流动性' : 'Global Mobility'}{' '}
@@ -51,21 +44,11 @@ export default function InsightsSection({
             {isZh ? '查看所有智库' : 'View All Intelligence'}
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Link>
-        </motion.div>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {recentArticles.map((article, index) => (
-            <motion.div
-              key={article.id}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-            >
+            <div key={article.id} className="animate-in fade-in duration-500">
               <Link href={`/insights/${article.slug}`} className="group block">
                 <div className="relative aspect-video rounded-2xl overflow-hidden mb-6 bg-gray-200 dark:bg-white/5">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -106,7 +89,7 @@ export default function InsightsSection({
                   </p>
                 </div>
               </Link>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

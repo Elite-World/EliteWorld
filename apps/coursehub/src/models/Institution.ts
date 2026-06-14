@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface IInstitution extends Document {
+export interface IInstitution extends Omit<Document, '_id'> {
   _id: string; // We use the Clerk Organization ID
   name: string;
   description: string;

@@ -107,7 +107,6 @@ export function SolutionCard({
           <div className="absolute -bottom-32 -left-32 w-64 h-64 bg-purple-500/10 rounded-full blur-[80px] pointer-events-none group-hover:bg-purple-500/20 transition-colors duration-500" />
         </>
       )}
-
       <div className="p-6 md:p-8 grow flex flex-col relative z-10">
         {/* Header: Country + Badges */}
         <div className="flex justify-between items-start mb-8">

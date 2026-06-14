@@ -1,5 +1,4 @@
-'use client';
-
+'use client';;
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { Modal } from '../../components/ui/Modal';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
@@ -15,7 +14,6 @@ import {
   HiOutlineXMark,
   HiOutlineChevronLeft,
 } from 'react-icons/hi2';
-import { motion, AnimatePresence } from 'framer-motion';
 
 // Suggestions when empty
 const SUGGESTIONS = [
@@ -97,16 +95,11 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
           isDark ? 'bg-[#1C1C1E]' : 'bg-white',
         )}
       >
-        <AnimatePresence initial={false} mode="popLayout">
+        <>
           {searchMode ? (
-            <motion.div
+            <div
               key="search-view"
-              className="absolute inset-0 flex flex-col h-full bg-inherit z-20"
-              initial={{ x: '100%', opacity: 1 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: '100%', opacity: 1 }} // Slide out to right
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            >
+              className="absolute inset-0 flex flex-col h-full bg-inherit z-20 animate-in fade-in duration-500">
               {/* SEARCH HEADER */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-[76px]">
                 <div className="flex items-center gap-3 w-full">
@@ -194,16 +187,11 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                   </div>
                 )}
               </div>
-            </motion.div>
+            </div>
           ) : (
-            <motion.div
+            <div
               key="menu-view"
-              className="absolute inset-0 flex flex-col h-full bg-inherit z-10"
-              initial={{ x: '-20%', opacity: 0 }} // Start slightly left
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: '-20%', opacity: 0 }} // Slide/Fade out to left
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            >
+              className="absolute inset-0 flex flex-col h-full bg-inherit z-10 animate-in fade-in duration-500">
               {/* MENU HEADER */}
               <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-[76px]">
                 <span
@@ -393,9 +381,9 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                   )}
                 </div>
               </div>
-            </motion.div>
+            </div>
           )}
-        </AnimatePresence>
+        </>
       </div>
     </Modal>
   );

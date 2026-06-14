@@ -47,7 +47,7 @@ export function QRCode({
             />
           ) : (
             // fallback QR image
-            <div
+            (<div
               className={cn(
                 'w-full h-full flex flex-col items-center justify-center rounded-lg border-2 border-dashed',
                 isDark
@@ -69,7 +69,7 @@ export function QRCode({
               >
                 QR Code not available
               </span>
-            </div>
+            </div>)
           )}
         </div>
       </div>

@@ -1,7 +1,5 @@
-'use client';
-
+'use client';;
 import React, { useState, useMemo, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { UniversityRanking, useLanguageStore } from '@repo/domain';
 import RankingCard from './RankingCard';
 import RankingFilters from './RankingFilters';
@@ -273,7 +271,6 @@ const RankingList: React.FC<RankingListProps> = ({
         setSelectedSubject={handleSubjectChange}
         subjects={meta.subjects[selectedSource]} // Pass subjects only for current source
       />
-
       <div className="mb-4 flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 px-1">
         <span>
           {isZh ? (
@@ -292,15 +289,9 @@ const RankingList: React.FC<RankingListProps> = ({
           <span className="text-blue-500 animate-pulse">{isZh ? '更新中...' : 'Updating...'}</span>
         )}
       </div>
-
-      <AnimatePresence mode="wait">
-        <motion.div
-          layout
-          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
+      <>
+        <div
+          className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 animate-in fade-in duration-500">
           {displayedUniversities.map((uni, index) => {
             const countrySlug = (uni.country || 'global')
               .toLowerCase()
@@ -325,9 +316,8 @@ const RankingList: React.FC<RankingListProps> = ({
               />
             );
           })}
-        </motion.div>
-      </AnimatePresence>
-
+        </div>
+      </>
       {hasMore && (
         <div className="mt-12 flex justify-center">
           <button
@@ -338,7 +328,6 @@ const RankingList: React.FC<RankingListProps> = ({
           </button>
         </div>
       )}
-
     </div>
   );
 };

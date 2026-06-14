@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { cn } from '@repo/domain';
 
 export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; isDark: boolean }) {
@@ -10,12 +8,7 @@ export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; i
       className="py-24 bg-linear-to-b from-transparent to-gray-50 dark:to-gray-900"
     >
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-        >
+        <div className="animate-in fade-in duration-500">
           <h2
             className={cn(
               'text-4xl font-bold text-center mb-16',
@@ -24,7 +17,7 @@ export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; i
           >
             {isZh ? '我们的全球影响力' : 'Our Global Impact'}
           </h2>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-4 gap-8">
           {[
@@ -57,24 +50,15 @@ export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; i
                 : 'Decade of excellence in education consulting',
             },
           ].map((stat, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
               className={cn(
                 'text-center p-8 rounded-2xl transition-all duration-300 border',
                 'hover:transform hover:-translate-y-1',
                 isDark
                   ? 'bg-[#1A1A1A] hover:bg-[#222] border-white/5 hover:border-white/10'
                   : 'bg-white hover:bg-white border-gray-100 shadow-sm hover:shadow-xl',
-              )}
-            >
+              )}>
               <div className="text-4xl font-bold bg-linear-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent mb-2">
                 {stat.number}
               </div>
@@ -87,7 +71,7 @@ export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; i
               >
                 {stat.description}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

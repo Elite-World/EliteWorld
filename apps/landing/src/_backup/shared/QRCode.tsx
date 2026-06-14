@@ -43,7 +43,7 @@ export function QRCode({ src, alt, title, description, isDark }: QRCodeProps) {
             />
           ) : (
             // fallback QR image
-            <div
+            (<div
               className={cn(
                 'w-full h-full flex items-center justify-center rounded-lg border-2 border-dashed aspect-square',
                 isDark
@@ -67,7 +67,7 @@ export function QRCode({ src, alt, title, description, isDark }: QRCodeProps) {
                   QR Code not available
                 </span>
               </div>
-            </div>
+            </div>)
           )}
         </div>
       </div>

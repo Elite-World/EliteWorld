@@ -1,8 +1,6 @@
-'use client';
-
+'use client';;
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 export function ExpandableDescription({ text }: { text: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -17,15 +15,10 @@ export function ExpandableDescription({ text }: { text: string }) {
 
   return (
     <div className="mt-6 max-w-2xl relative">
-      <motion.div
-        initial={false}
-        animate={{ height: isExpanded ? 'auto' : '3.5rem' }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg overflow-hidden"
-      >
+      <div
+        className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg overflow-hidden animate-in fade-in duration-500">
         {text}
-      </motion.div>
-      
+      </div>
       <div className="flex justify-center mt-2">
         <button
           onClick={() => setIsExpanded(!isExpanded)}

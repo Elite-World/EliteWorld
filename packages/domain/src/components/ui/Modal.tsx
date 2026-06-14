@@ -1,9 +1,7 @@
-'use client';
-
+'use client';;
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
 import { useEffect } from 'react';
-import { motion } from 'framer-motion';
 
 interface ModalProps {
   isOpen: boolean;
@@ -100,25 +98,15 @@ export function Modal({
   return (
     <div className="relative" style={{ zIndex: 9999 }}>
       {/* Backdrop */}
-      <motion.div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm"
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        variants={backdropVariants}
-        onClick={onClose}
-      />
-
+      <div
+        className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-500"
+        onClick={onClose} />
       {/* Container to position the modal */}
       <div className={wrapperClasses} onClick={onClose}>
-        <motion.div
+        <div
           className={contentClasses}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          variants={modalVariants[variant]}
-          onClick={(e) => e.stopPropagation()} // Prevent closing when clicking content
-        >
+          // Prevent closing when clicking content
+          onClick={(e) => e.stopPropagation()}>
           {/* Bottom Sheet Handle */}
           {variant === 'bottom' && (
             <div className="flex-none py-3" onClick={onClose}>
@@ -126,7 +114,7 @@ export function Modal({
             </div>
           )}
           {children}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

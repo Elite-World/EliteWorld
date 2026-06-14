@@ -1,11 +1,9 @@
-'use client';
-
+'use client';;
 import { useState, useEffect } from 'react';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { useNavbarStore } from '../../lib/stores/useNavbarStore';
 import { useLanguageStore } from '../../lib/stores/useLanguageStore';
 import { cn } from '../../lib/utils';
-import { motion } from 'framer-motion';
 import {
   HiOutlineCalendar,
   HiOutlineGlobeAlt,
@@ -66,15 +64,9 @@ export function ConsultationBooking() {
           <div className="absolute bottom-0 -right-1/4 w-[800px] h-[800px] bg-slate-200/50 rounded-full blur-[100px] pointer-events-none" />
         </>
       )}
-
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
         {/* Left Side: Copy & Value Prop */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="max-w-xl"
-        >
+        <div className="max-w-xl animate-in fade-in duration-500">
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 font-bold text-[10px] uppercase tracking-widest mb-6">
             <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
             {isZh ? '咨询服务' : 'Advisory Services'}
@@ -182,20 +174,16 @@ export function ConsultationBooking() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Right Side: The Booking Form / Glass Panel */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
+        <div
           className={cn(
             'p-8 md:p-10 rounded-[2.5rem] border shadow-2xl relative overflow-hidden backdrop-blur-2xl',
             isDark
               ? 'bg-[#111]/80 border-white/10'
               : 'bg-white border-gray-100',
-          )}
-        >
+          )}>
           {formState === 'success' ? (
             <div className="text-center py-20">
               <div className="w-20 h-20 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto mb-6">
@@ -433,7 +421,7 @@ export function ConsultationBooking() {
               </form>
             </>
           )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );

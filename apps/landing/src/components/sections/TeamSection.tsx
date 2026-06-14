@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { Zap } from 'lucide-react';
 import Image from 'next/image';
 import { getHomeTeam } from '@repo/apps-config/landing/home-config';
@@ -9,13 +7,8 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
   return (
     <section id="team" className="py-32 bg-white dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.8, ease: 'easeOut' }}
-          className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8"
-        >
+        <div
+          className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8 animate-in fade-in duration-500">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-px bg-blue-600" />
@@ -35,22 +28,13 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
               ? '我们经验丰富的顾问致力于为您全球过渡的每个阶段进行架构。'
               : 'Our seasoned consultants are dedicated to architecting every phase of your global transition.'}
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid md:grid-cols-3 gap-8">
           {getHomeTeam(isZh).map((member, index) => (
-            <motion.div
+            <div
               key={index}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-100px' }}
-              transition={{
-                duration: 0.8,
-                delay: index * 0.15,
-                ease: [0.16, 1, 0.3, 1],
-              }}
-              className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500"
-            >
+              className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500 animate-in fade-in duration-500">
               <div className="relative aspect-4/5 w-full overflow-hidden">
                 <Image
                   src={member.image}
@@ -74,7 +58,7 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

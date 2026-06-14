@@ -1,7 +1,5 @@
-'use client';
-
+'use client';;
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../utils';
 
 interface Tab {
@@ -57,41 +55,26 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
 
               {/* Active Indicator Line */}
               {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTabUnderline"
-                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)]"
-                  initial={false}
-                  transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-                />
+                <div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600 rounded-full shadow-[0_0_8px_rgba(37,99,235,0.4)] animate-in fade-in duration-500" />
               )}
             </button>
           ))}
         </div>
         </div>
       )}
-
       {/* Tab Content */}
       <div className="relative">
-        <AnimatePresence mode="wait">
+        <>
           {tabs.map(
             (tab) =>
               tab.id === activeTab && (
-                <motion.div
-                  key={tab.id}
-                  initial={{ opacity: 0, y: 12, filter: 'blur(8px)' }}
-                  animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                  exit={{ opacity: 0, y: -12, filter: 'blur(8px)' }}
-                  transition={{
-                    duration: 0.4,
-                    ease: [0.22, 1, 0.36, 1],
-                  }}
-                  className="w-full"
-                >
+                <div key={tab.id} className="w-full animate-in fade-in duration-500">
                   {tab.content}
-                </motion.div>
+                </div>
               ),
           )}
-        </AnimatePresence>
+        </>
       </div>
     </div>
   );

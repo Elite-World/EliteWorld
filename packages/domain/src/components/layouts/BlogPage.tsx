@@ -1,9 +1,7 @@
-'use client';
-
+'use client';;
 import { Article, Category } from '../../lib/types/content';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
 // @ts-ignore - Newsletter form might be app specific, but we can try to find a common one or pass it as prop
 // For now, we'll accept it as a prop or optional content
 import { HeroSection } from '@repo/ui';
@@ -108,27 +106,19 @@ export function BlogPage({
       />
       <div className="container mx-auto px-4 pt-8 md:pt-12 mb-16">
         {/* Inline Category Tags Bar Removed - Using Ribbon Filter Instead */}
-        <AnimatePresence>
+        <>
           {isFilterOpen && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-60 bg-black/60 backdrop-blur-md flex items-center justify-center p-4"
-              onClick={() => setIsFilterOpen(false)}
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
+            <div
+              className="fixed inset-0 z-60 bg-black/60 backdrop-blur-md flex items-center justify-center p-4 animate-in fade-in duration-500"
+              onClick={() => setIsFilterOpen(false)}>
+              <div
                 className={cn(
                   'w-full max-w-2xl max-h-[80vh] overflow-y-auto rounded-4xl p-8 shadow-2xl border relative',
                   isDark
                     ? 'bg-[#121212] border-white/10'
                     : 'bg-white border-white',
                 )}
-                onClick={(e) => e.stopPropagation()}
-              >
+                onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-between items-center mb-8">
                   <h3
                     className={cn(
@@ -167,10 +157,10 @@ export function BlogPage({
                     </button>
                   ))}
                 </div>
-              </motion.div>
-            </motion.div>
+              </div>
+            </div>
           )}
-        </AnimatePresence>
+        </>
 
         {/* Featured Article */}
         {featuredArticle && (
@@ -193,18 +183,13 @@ export function BlogPage({
                 ? (locale === 'zh' ? '精选文章' : 'Featured')
                 : (locale === 'zh' ? `${selectedCategory} 最新文章` : `Latest in ${selectedCategory}`)}
             </h2>
-            <motion.div
-              key={featuredArticle.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-            >
+            <div key={featuredArticle.id} className="animate-in fade-in duration-500">
               <ArticleCard
                 article={featuredArticle}
                 variant="featured"
                 basePath={basePath}
               />
-            </motion.div>
+            </div>
           </section>
         )}
 
@@ -230,14 +215,9 @@ export function BlogPage({
           )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {visibleRecentArticles.map((article, index) => (
-              <motion.div
-                key={article.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
+              <div key={article.id} className="animate-in fade-in duration-500">
                 <ArticleCard article={article} basePath={basePath} />
-              </motion.div>
+              </div>
             ))}
           </div>
 

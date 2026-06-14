@@ -1,6 +1,4 @@
-'use client';
-
-import { motion } from 'framer-motion';
+'use client';;
 import { MapPin, Phone, Mail, ShieldCheck } from 'lucide-react';
 import { QRCode } from '@repo/domain';
 
@@ -19,12 +17,7 @@ export default function ContactSection({
     <section id="contact" className="py-32 bg-white dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-20">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
+          <div className="animate-in fade-in duration-500">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-px bg-blue-600" />
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
@@ -121,16 +114,11 @@ export default function ContactSection({
                   ))}
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Verification & Access */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: '-100px' }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden"
-          >
+          <div
+            className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden animate-in fade-in duration-500">
             <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[100px] -mr-32 -mt-32" />
 
             <div className="relative z-10">
@@ -181,7 +169,7 @@ export default function ContactSection({
                 </div>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
