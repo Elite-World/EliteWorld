@@ -11,7 +11,7 @@ import { Menu, User, BookOpen, Building2, ShieldCheck, Search } from 'lucide-rea
 import { SignInButton, SignUpButton, Show, UserButton } from '@clerk/nextjs';
 
 const LogoIcon = () => (
-  <div className="p-2.5 rounded-3xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
+  <div className="p-2.5 rounded-3xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition duration-500">
     <BookOpen className="w-5 h-5 text-white dark:text-black" />
   </div>
 );
@@ -50,7 +50,7 @@ const Header: React.FC = () => {
   return (
     <>
       <header
-        className={`sticky top-0 z-50 w-full transition-all duration-300 ease-in-out ${isSearchExpanded ? 'bg-white shadow-md' : 'bg-white/80 backdrop-blur-md shadow-sm'}`}
+        className={`sticky top-0 z-50 w-full transition duration-300 ease-in-out ${isSearchExpanded ? 'bg-white shadow-md' : 'bg-white/80 backdrop-blur-md shadow-sm'}`}
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div
@@ -89,7 +89,7 @@ const Header: React.FC = () => {
               </Link>
               <div className="relative flex items-center" ref={menuRef}>
                 <Show when="signed-in">
-                  <div className="p-1 border border-transparent hover:border-gray-200 dark:hover:border-white/10 rounded-full transition-all">
+                  <div className="p-1 border border-transparent hover:border-gray-200 dark:hover:border-white/10 rounded-full transition">
                     <UserButton>
                       <UserButton.MenuItems>
                         {isAverageUser && (
@@ -135,7 +135,7 @@ const Header: React.FC = () => {
                 </Show>
                 
                 <Show when="signed-out">
-                  <div className="flex items-center gap-2 border border-gray-200 dark:border-white/10 rounded-full p-1 sm:pl-3 sm:pr-1 hover:shadow-lg transition-all bg-white dark:bg-transparent">
+                  <div className="flex items-center gap-2 border border-gray-200 dark:border-white/10 rounded-full p-1 sm:pl-3 sm:pr-1 hover:shadow-lg transition bg-white dark:bg-transparent">
                     <button
                       onClick={() => setIsMenuOpen(!isMenuOpen)}
                       className="flex items-center justify-center gap-2 p-1.5 w-full"
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
                         <SignInButton mode="modal">
                           <button
                             onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition-all w-full text-left"
+                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5 transition w-full text-left"
                           >
                             Log in
                           </button>
@@ -170,7 +170,7 @@ const Header: React.FC = () => {
                         <SignUpButton mode="modal">
                           <button
                             onClick={() => setIsMenuOpen(false)}
-                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50/50 dark:bg-blue-600/10 hover:bg-blue-600 hover:text-white transition-all w-full text-left"
+                            className="flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest text-blue-600 bg-blue-50/50 dark:bg-blue-600/10 hover:bg-blue-600 hover:text-white transition w-full text-left"
                           >
                             Apply for Invitation
                           </button>

@@ -49,7 +49,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
   return (
     <Link
       href={linkDestination}
-      className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl relative transition-all duration-300 hover:shadow-2xl hover:border-blue-500/30 group"
+      className="flex flex-col sm:flex-row items-center gap-6 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl relative transition duration-300 hover:shadow-2xl hover:border-blue-500/30 group"
     >
       <div className="relative w-full sm:w-48 h-32 shrink-0 overflow-hidden rounded-2xl shadow-lg">
         <Image
@@ -94,7 +94,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
             </div>
             <div className="w-full bg-gray-100 dark:bg-white/5 rounded-full h-1.5 overflow-hidden">
               <div
-                className="bg-linear-to-r from-blue-600 to-purple-600 h-full rounded-full transition-all duration-1000"
+                className="bg-linear-to-r from-blue-600 to-purple-600 h-full rounded-full transition duration-1000"
                 style={{ width: `65%` }}
               ></div>
             </div>
@@ -102,7 +102,7 @@ const DashboardCourseCard: React.FC<DashboardCourseCardProps> = ({
         )}
       </div>
 
-      <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition-all">
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 group-hover:translate-x-2 transition">
         <ChevronRight className="w-6 h-6 text-blue-600" />
       </div>
 
@@ -163,7 +163,7 @@ const DashboardPage: React.FC = () => {
     <button
       onClick={() => setActiveTab(tabName)}
       className={cn(
-        'px-6 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition-all duration-300',
+        'px-6 py-2.5 text-xs font-bold uppercase tracking-widest rounded-xl transition duration-300',
         activeTab === tabName
           ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20 translate-y--0.5'
           : 'text-gray-500 hover:bg-gray-200/50 dark:hover:bg-white/5',
@@ -227,7 +227,7 @@ const DashboardPage: React.FC = () => {
               <p className="text-gray-500 font-bold mb-6 italic">{emptyText}</p>
               <Link
                 href="/search"
-                className="px-8 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-blue-500/25 transition-all inline-block"
+                className="px-8 py-3 bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:shadow-blue-500/25 transition inline-block"
               >
                 Discover Elite Content
               </Link>

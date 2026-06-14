@@ -14,8 +14,8 @@ export default function TopUniversitiesSection({
 }) {
   return (
     <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+      <div className="hidden md:block absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48 transform-gpu will-change-transform" />
+      <div className="hidden md:block absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48 transform-gpu will-change-transform" />
       <div className="container mx-auto px-4 relative z-10">
         <div
           className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
@@ -41,7 +41,7 @@ export default function TopUniversitiesSection({
           <Link
             href="/ranking"
             className={cn(
-              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
+              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition shrink-0',
               isDark
                 ? 'bg-white/5 hover:bg-white/10 text-white'
                 : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',
@@ -57,7 +57,7 @@ export default function TopUniversitiesSection({
             <div key={idx} className="h-full animate-in fade-in duration-500">
               <Link
                 href={`/universities/${uni.country.toLowerCase().replace(/ /g, '-')}/${uni.name.toLowerCase().replace(/ /g, '-')}`}
-                className="group relative flex flex-col h-full rounded-[2.5rem] overflow-hidden bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl"
+                className="group relative flex flex-col h-full rounded-[2.5rem] overflow-hidden bg-white dark:bg-white/5 border border-gray-100 dark:border-white/5 transition duration-500 hover:-translate-y-2 hover:shadow-2xl"
               >
                 <div className="relative h-56 shrink-0 w-full overflow-hidden">
                   <Image

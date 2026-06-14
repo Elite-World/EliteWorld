@@ -264,7 +264,7 @@ export function CrimeSpiderChart({ crimeData, historicalCrimeData }: CrimeSpider
                 d={arcPath}
                 fill="#4682b4" // Match target image steel blue
                 fillOpacity={hoveredNode?.type === d.type ? 0.9 : 0.8}
-                className="transition-all duration-300 cursor-pointer"
+                className="transition duration-300 cursor-pointer"
                 onMouseMove={(e) => handleMouseMove(e, d)}
               />
             );
@@ -305,7 +305,7 @@ export function CrimeSpiderChart({ crimeData, historicalCrimeData }: CrimeSpider
         {/* Custom Tooltip */}
         {hoveredNode && (
           <div 
-            className="absolute z-10 pointer-events-none transition-all duration-75"
+            className="absolute z-10 pointer-events-none transition duration-75"
             style={{ 
               left: tooltipPos.x + 20, 
               top: tooltipPos.y + 20
@@ -344,14 +344,14 @@ export function CrimeSpiderChart({ crimeData, historicalCrimeData }: CrimeSpider
           {/* Custom Track */}
           <div className="h-2 w-full bg-gray-200 dark:bg-zinc-700 rounded-full relative overflow-hidden">
             <div 
-              className="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition-all duration-500"
+              className="absolute top-0 left-0 h-full bg-teal-500 rounded-full transition duration-500"
               style={{ width: `${sliderPercent}%` }}
             />
           </div>
           
           {/* Custom Thumb */}
           <div 
-            className="absolute top-1/2 -mt-2.5 w-5 h-5 bg-teal-500 border-2 border-white rounded-full shadow-md z-10 transition-all duration-500"
+            className="absolute top-1/2 -mt-2.5 w-5 h-5 bg-teal-500 border-2 border-white rounded-full shadow-md z-10 transition duration-500"
             style={{ left: `calc(${sliderPercent}% - 10px)` }}
           />
 

@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { LoginModal } from '../modals/LoginModal';
 import { MainMenuModal } from '../modals/MainMenuModal';

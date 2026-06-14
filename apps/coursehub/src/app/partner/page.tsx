@@ -32,7 +32,7 @@ const TabButton: React.FC<{
   <button
     onClick={() => onClick(tabName)}
     className={cn(
-      'relative py-4 px-6 transition-all duration-300 flex items-center gap-3 text-xs font-black uppercase tracking-widest min-w-max',
+      'relative py-4 px-6 transition duration-300 flex items-center gap-3 text-xs font-black uppercase tracking-widest min-w-max',
       activeTab === tabName
         ? 'text-blue-600'
         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
@@ -139,13 +139,13 @@ const PartnerPage: React.FC = () => {
                     <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Quick Actions</h3>
                   </div>
                   <div className="space-y-3">
-                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-blue-500/50 hover:shadow-lg transition-all flex justify-between items-center px-6">
+                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-blue-500/50 hover:shadow-lg transition flex justify-between items-center px-6">
                       Deploy New Course <PlusCircle className="w-4 h-4 text-gray-400" />
                     </button>
-                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-purple-500/50 hover:shadow-lg transition-all flex justify-between items-center px-6">
+                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-purple-500/50 hover:shadow-lg transition flex justify-between items-center px-6">
                       Invite Personnel <UserPlus className="w-4 h-4 text-gray-400" />
                     </button>
-                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-green-500/50 hover:shadow-lg transition-all flex justify-between items-center px-6">
+                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-green-500/50 hover:shadow-lg transition flex justify-between items-center px-6">
                       Request Payout <ArrowUpRight className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>
@@ -161,14 +161,14 @@ const PartnerPage: React.FC = () => {
                 <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Experience Catalog</h2>
                 <p className="text-gray-500 text-sm font-medium">Manage your institution&apos;s intellectual property and market offerings.</p>
               </div>
-              <button className="px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px] flex items-center gap-2">
+              <button className="px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px] flex items-center gap-2">
                  <PlusCircle className="w-4 h-4" /> Create Course
               </button>
             </div>
             
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               {institutionCourses.map(course => (
-                <div key={course.id} className="bg-white dark:bg-[#1A1A1A] p-6 rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl flex flex-col sm:flex-row gap-6 group hover:border-blue-500/30 transition-all">
+                <div key={course.id} className="bg-white dark:bg-[#1A1A1A] p-6 rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl flex flex-col sm:flex-row gap-6 group hover:border-blue-500/30 transition">
                   <div className="relative w-full sm:w-48 h-32 rounded-2xl overflow-hidden shrink-0 shadow-lg">
                     <Image src={course.images[0]} alt={course.title} fill className="object-cover group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute top-2 left-2">
@@ -209,7 +209,7 @@ const PartnerPage: React.FC = () => {
                 <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Personnel Roster</h2>
                 <p className="text-gray-500 text-sm font-medium">Manage your faculty and administrative staff.</p>
               </div>
-              <button className="px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px] flex items-center gap-2">
+              <button className="px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px] flex items-center gap-2">
                  <UserPlus className="w-4 h-4" /> Invite Member
               </button>
             </div>
@@ -217,7 +217,7 @@ const PartnerPage: React.FC = () => {
             <div className="bg-white dark:bg-[#1A1A1A] p-10 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl">
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                  {institutionMembers.map((member, i) => (
-                   <div key={i} className="flex flex-col p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all group relative overflow-hidden">
+                   <div key={i} className="flex flex-col p-6 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition group relative overflow-hidden">
                      <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                         <button className="p-2 text-gray-400 hover:text-red-500 bg-white dark:bg-white/10 rounded-xl shadow-sm transition-colors">
                            <Users className="w-4 h-4" />
@@ -320,7 +320,7 @@ const PartnerPage: React.FC = () => {
                 <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Financials & Ledger</h2>
                 <p className="text-gray-500 text-sm font-medium">Track your gross revenue, platform fees, and payouts.</p>
               </div>
-              <button className="px-8 py-4 bg-white dark:bg-white/5 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 font-black rounded-2xl shadow-sm hover:border-blue-500/50 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px] flex items-center gap-2">
+              <button className="px-8 py-4 bg-white dark:bg-white/5 text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 font-black rounded-2xl shadow-sm hover:border-blue-500/50 hover:-translate-y-1 transition uppercase tracking-widest text-[10px] flex items-center gap-2">
                  Download Report
               </button>
             </div>
@@ -381,7 +381,7 @@ const PartnerPage: React.FC = () => {
                 <h2 className="text-2xl font-black text-gray-900 dark:text-white tracking-tighter">Institution Settings</h2>
                 <p className="text-gray-500 text-sm font-medium">Configure your enterprise branding and financial routing.</p>
               </div>
-              <button className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]">
+              <button className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px]">
                  Update Infrastructure
               </button>
             </div>
@@ -404,13 +404,13 @@ const PartnerPage: React.FC = () => {
                    </div>
                    <div className="grow space-y-2">
                      <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Entity Name</label>
-                     <input type="text" defaultValue={institution.name} className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all" />
+                     <input type="text" defaultValue={institution.name} className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition" />
                    </div>
                 </div>
 
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Public Description</label>
-                  <textarea rows={4} defaultValue={institution.description} className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition-all resize-none"></textarea>
+                  <textarea rows={4} defaultValue={institution.description} className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 transition resize-none"></textarea>
                 </div>
               </form>
             </div>
@@ -434,7 +434,7 @@ const PartnerPage: React.FC = () => {
                  </div>
                  <div className="flex items-center gap-4">
                     <span className="px-3 py-1 bg-green-500/10 text-green-500 rounded-lg text-xs font-black">Active</span>
-                    <button className="px-6 py-3 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-gray-300 dark:hover:border-white/20 transition-all">Manage Account</button>
+                    <button className="px-6 py-3 bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-black uppercase tracking-widest hover:border-gray-300 dark:hover:border-white/20 transition">Manage Account</button>
                  </div>
               </div>
             </div>

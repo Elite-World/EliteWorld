@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 lg:gap-8">
             <div className="lg:col-span-2 pr-0 lg:pr-12">
             <Link href="/" className="flex items-center gap-4 mb-8 group">
-              <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
+              <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition duration-500">
                 <BookOpen className="w-5 h-5 text-white dark:text-black" />
               </div>
               <span className="font-sans font-black text-xl text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors tracking-tighter uppercase">

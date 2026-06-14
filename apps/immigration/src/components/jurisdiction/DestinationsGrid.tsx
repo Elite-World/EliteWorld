@@ -44,7 +44,7 @@ function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale:
   return (
     <Link 
       href={`/destinations/${data.country.slug}`} 
-      className="group relative rounded-4xl overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition-all duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5 bg-zinc-950"
+      className="group relative rounded-4xl overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5 bg-zinc-950"
     >
       {/* Background Image / Fallback */}
       <div className="absolute inset-0">
@@ -53,8 +53,8 @@ function DestinationCard({ data, locale }: { data: JurisdictionCardData; locale:
         {imgError ? (
           /* Premium Mesh Gradient Fallback */
           (<div className="absolute inset-0 z-0">
-            <div className="absolute -top-[20%] -left-[10%] w-[50%] h-[70%] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen group-hover:bg-blue-500/40 transition-colors duration-700" />
-            <div className="absolute bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen group-hover:bg-purple-500/30 transition-colors duration-700" />
+            <div className="hidden md:block absolute -top-[20%] -left-[10%] w-[50%] h-[70%] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen group-hover:bg-blue-500/40 transition-colors duration-700 transform-gpu will-change-transform" />
+            <div className="hidden md:block absolute bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen group-hover:bg-purple-500/30 transition-colors duration-700 transform-gpu will-change-transform" />
             <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
           </div>)
         ) : (

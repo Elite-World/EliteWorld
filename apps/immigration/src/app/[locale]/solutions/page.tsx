@@ -52,7 +52,7 @@ export default async function SolutionsHubPage({ params }: { params: Promise<{ l
               <Link 
                 href={`/solutions/${cat.id}`}
                 key={cat.id}
-                className="group relative rounded-4xl overflow-hidden flex flex-col h-[400px] shadow-xl hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+                className="group relative rounded-4xl overflow-hidden flex flex-col h-[400px] shadow-xl hover:shadow-2xl transition duration-500 hover:-translate-y-2"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
@@ -89,7 +89,7 @@ export default async function SolutionsHubPage({ params }: { params: Promise<{ l
         </div>
 
         {/* Ambient Effects */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none" />
+        <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-blue-600/5 rounded-full blur-[150px] pointer-events-none transform-gpu will-change-transform" />
       </section>
     </div>
   );

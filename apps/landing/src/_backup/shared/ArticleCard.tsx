@@ -26,7 +26,7 @@ export function ArticleCard({
     <Link href={`${basePath}/${article.slug}`} className="group block h-full">
       <article
         className={cn(
-          'bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden h-full flex flex-col transition-all duration-300',
+          'bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden h-full flex flex-col transition duration-300',
           isDark ? 'hover:bg-zinc-800' : 'hover:shadow-lg',
           isFeatured ? 'md:grid md:grid-cols-2 md:gap-8' : ''
         )}

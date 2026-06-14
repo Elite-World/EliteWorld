@@ -80,7 +80,7 @@ export function SearchModal() {
             placeholder="Search articles, guides, and more..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full pl-12 pr-12 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-lg outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition-all"
+            className="w-full pl-12 pr-12 py-3 bg-gray-50 dark:bg-gray-800/50 rounded-xl text-lg outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition"
             autoComplete="off"
           />
           {query ? (

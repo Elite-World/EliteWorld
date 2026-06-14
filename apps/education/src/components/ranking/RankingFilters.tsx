@@ -107,7 +107,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
               <button
                 key={type}
                 onClick={() => setRankType(type as 'General' | 'Subject')}
-                className={`px-4 py-1.5 text-xs font-medium rounded-md transition-all ${
+                className={`px-4 py-1.5 text-xs font-medium rounded-md transition ${
                   rankType === type
                     ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
                     : 'text-gray-500 dark:text-gray-400'
@@ -120,7 +120,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
         )}
         <button
           onClick={() => setIsMobileOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full text-sm font-medium shadow-sm active:scale-95 transition-all"
+          className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 rounded-full text-sm font-medium shadow-sm active:scale-95 transition"
         >
           <SlidersHorizontal className="w-4 h-4" />
           {isZh ? '筛选' : 'Filters'}
@@ -179,7 +179,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                               onClick={() =>
                                 setRankType(type as 'General' | 'Subject')
                               }
-                              className={`flex-1 py-2 text-sm font-medium rounded-lg transition-all ${
+                              className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${
                                 rankType === type
                                   ? 'bg-white dark:bg-zinc-700 text-blue-600 dark:text-blue-400 shadow-sm'
                                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
@@ -266,7 +266,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                             <button
                               key={year}
                               onClick={() => onYearChange(year)}
-                              className={`py-2 rounded-lg text-sm font-medium transition-all ${
+                              className={`py-2 rounded-lg text-sm font-medium transition ${
                                 currentYear === year
                                   ? 'bg-blue-600 text-white'
                                   : 'bg-gray-50 dark:bg-zinc-800 text-gray-600 dark:text-gray-300'
@@ -372,7 +372,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                   <div className="p-4 border-t border-gray-100 dark:border-zinc-800 shrink-0">
                     <button
                       onClick={() => setIsMobileOpen(false)}
-                      className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl active:scale-[0.98] transition-all"
+                      className="w-full py-3 bg-blue-600 text-white font-medium rounded-xl active:scale-[0.98] transition"
                     >
                       {isZh ? '显示结果' : 'View Returns'}
                     </button>
@@ -474,7 +474,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                 >
                   <BookOpen className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                   <div
-                    className={`w-full pl-9 pr-10 py-2.5 text-sm bg-gray-50 dark:bg-zinc-800 rounded-xl border border-transparent transition-all flex items-center justify-between ${
+                    className={`w-full pl-9 pr-10 py-2.5 text-sm bg-gray-50 dark:bg-zinc-800 rounded-xl border border-transparent transition flex items-center justify-between ${
                       showSubjectMenu
                         ? 'ring-2 ring-blue-500/20 bg-white dark:bg-zinc-700'
                         : 'hover:bg-gray-100 dark:hover:bg-zinc-700'
@@ -550,7 +550,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                                       setShowSubjectMenu(false);
                                       setSubjectSearch('');
                                     }}
-                                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition-all flex items-center justify-between group ${
+                                    className={`w-full text-left px-3 py-2 text-sm rounded-lg transition flex items-center justify-between group ${
                                       selectedSubject === subject.value
                                         ? 'bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 font-medium'
                                         : 'text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-zinc-700 hover:text-gray-900 dark:hover:text-gray-100'
@@ -594,7 +594,7 @@ const RankingFilters: React.FC<RankingFiltersProps> = ({
                 <button
                   key={year}
                   onClick={() => onYearChange(year)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition-all whitespace-nowrap ${
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition whitespace-nowrap ${
                     currentYear === year
                       ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
                       : 'bg-white dark:bg-zinc-800 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700 border border-gray-100 dark:border-zinc-700'

@@ -98,7 +98,7 @@ export function SearchModal() {
               placeholder={isZh ? '搜索...' : 'Search...'}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full pl-11 pr-10 py-3 bg-gray-100 dark:bg-gray-800/50 rounded-xl text-base outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
+              className="w-full pl-11 pr-10 py-3 bg-gray-100 dark:bg-gray-800/50 rounded-xl text-base outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 focus:ring-2 focus:ring-blue-500/50 transition font-medium"
               autoComplete="off"
             />
             {query && (

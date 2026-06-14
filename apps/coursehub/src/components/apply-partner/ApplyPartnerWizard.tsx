@@ -77,7 +77,7 @@ export default function ApplyPartnerWizard() {
         </div>
         <div className="h-2 bg-gray-100 dark:bg-white/5 rounded-full overflow-hidden">
           <div
-            className="h-full bg-blue-500 transition-all duration-500 ease-out"
+            className="h-full bg-blue-500 transition duration-500 ease-out"
             style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}
           />
         </div>
@@ -103,7 +103,7 @@ export default function ApplyPartnerWizard() {
         <button
           onClick={handleBack}
           disabled={step === 1 || isSubmitting}
-          className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${
+          className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition ${
             step === 1
               ? 'opacity-0 pointer-events-none'
               : 'text-gray-500 hover:bg-gray-100 dark:hover:bg-white/5'
@@ -124,7 +124,7 @@ export default function ApplyPartnerWizard() {
           <button
             onClick={handleSubmit}
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 hover:scale-105 transition-all disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-8 py-3 bg-blue-600 text-white rounded-full font-bold hover:bg-blue-700 hover:scale-105 transition disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
           >
             {isSubmitting ? (
               <>

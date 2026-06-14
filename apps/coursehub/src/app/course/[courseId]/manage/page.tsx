@@ -34,7 +34,7 @@ const TabButton: React.FC<{
   <button
     onClick={() => onClick(tabName)}
     className={cn(
-      'relative py-4 px-6 transition-all duration-300 flex items-center gap-2 text-xs font-black uppercase tracking-widest',
+      'relative py-4 px-6 transition duration-300 flex items-center gap-2 text-xs font-black uppercase tracking-widest',
       activeTab === tabName
         ? 'text-blue-600'
         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
@@ -88,7 +88,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
               id="title"
               name="title"
               defaultValue={course.title}
-              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
             />
           </div>
 
@@ -105,7 +105,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
               name="description"
               rows={5}
               defaultValue={course.description}
-              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition resize-none"
             ></textarea>
           </div>
 
@@ -123,7 +123,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                   id="category"
                   name="category"
                   defaultValue={course.category}
-                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition cursor-pointer"
                 >
                   {Object.values(CourseCategory).map((cat) => (
                     <option key={cat}>{cat}</option>
@@ -147,7 +147,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                   id="price"
                   name="price"
                   defaultValue={course.price}
-                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
                 />
               </div>
             </div>
@@ -156,7 +156,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
           <div className="flex justify-end gap-4 pt-6">
             <button
               type="submit"
-              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest text-[10px]"
+              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition active:scale-95 uppercase tracking-widest text-[10px]"
             >
               Update Intelligence
             </button>
@@ -203,7 +203,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
               return (
                 <li
                   key={facultyId}
-                  className="flex items-center justify-between p-5 bg-white dark:bg-[#222] rounded-3xl border border-gray-100 dark:border-white/5 group hover:border-blue-500/30 transition-all"
+                  className="flex items-center justify-between p-5 bg-white dark:bg-[#222] rounded-3xl border border-gray-100 dark:border-white/5 group hover:border-blue-500/30 transition"
                 >
                   <div className="flex items-center">
                     <div className="relative w-12 h-12 rounded-2xl mr-4 shrink-0 overflow-hidden border-2 border-white dark:border-gray-800 shadow-sm group-hover:scale-105 transition-transform">
@@ -254,7 +254,7 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                 <select
                   id="user"
                   name="user"
-                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                  className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition cursor-pointer"
                 >
                   <option>Select an expert...</option>
                   {users
@@ -283,10 +283,10 @@ const DetailsPanel: React.FC<{ course: Course; users: User[] }> = ({
                 id="role"
                 name="role"
                 placeholder="e.g., Strategic Instructor"
-                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
               />
             </div>
-            <button className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]">
+            <button className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px]">
               Authorize Agent
             </button>
           </form>
@@ -327,7 +327,7 @@ const SessionsPanel: React.FC<{
             {course.sessions.map((session) => (
               <div
                 key={session.id}
-                className="group bg-white dark:bg-[#1A1A1A] p-6 rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition-all duration-300 relative overflow-hidden"
+                className="group bg-white dark:bg-[#1A1A1A] p-6 rounded-4xl border border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl transition duration-300 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 w-24 h-24 bg-blue-600/5 rounded-full blur-2xl -mr-12 -mt-12 opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -370,13 +370,13 @@ const SessionsPanel: React.FC<{
                   <div className="flex items-center gap-3 mt-4 sm:mt-0">
                     <button
                       onClick={() => onAmend(session)}
-                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-gray-50 dark:bg-white/5 text-gray-400 hover:text-blue-600 border border-gray-100 dark:border-white/10 transition-all hover:-translate-y-0.5"
+                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-gray-50 dark:bg-white/5 text-gray-400 hover:text-blue-600 border border-gray-100 dark:border-white/10 transition hover:-translate-y-0.5"
                     >
                       Amend
                     </button>
                     <Link
                       href={`/course/${course.id}/session/${session.id}/performance`}
-                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition-all text-center"
+                      className="px-5 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-xl bg-linear-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-0.5 transition text-center"
                     >
                       Performance
                     </Link>
@@ -418,7 +418,7 @@ const SessionsPanel: React.FC<{
               id="title"
               name="title"
               placeholder="e.g., Strategic Deep-Dive"
-              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
             />
           </div>
 
@@ -434,13 +434,13 @@ const SessionsPanel: React.FC<{
                 type="date"
                 id="date"
                 name="date"
-                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition-all cursor-pointer"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition cursor-pointer"
               />
               <input
                 type="time"
                 id="time"
                 name="time"
-                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition-all cursor-pointer"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none transition cursor-pointer"
               />
             </div>
           </div>
@@ -457,13 +457,13 @@ const SessionsPanel: React.FC<{
               id="location"
               name="location"
               placeholder="e.g., Secure Terminal A"
-              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+              className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
             />
           </div>
 
           <button
             type="submit"
-            className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
+            className="w-full py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px]"
           >
             Confirm Mission
           </button>
@@ -523,7 +523,7 @@ const AmendSessionModal: React.FC<{
                 type="text"
                 id="session-title"
                 defaultValue={session.title}
-                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
               />
             </div>
             <div className="space-y-2">
@@ -540,7 +540,7 @@ const AmendSessionModal: React.FC<{
                   id="session-price"
                   defaultValue={session.price}
                   placeholder={`Default: $${course.price}`}
-                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                  className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
                 />
               </div>
             </div>
@@ -555,11 +555,11 @@ const AmendSessionModal: React.FC<{
                 {users.map((user) => (
                   <label
                     key={user.id}
-                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white dark:hover:bg-white/10 transition-all cursor-pointer group"
+                    className="flex items-center gap-4 p-4 rounded-2xl hover:bg-white dark:hover:bg-white/10 transition cursor-pointer group"
                   >
                     <input
                       type="checkbox"
-                      className="w-5 h-5 rounded-lg border-2 border-gray-200 dark:border-white/10 text-blue-600 focus:ring-blue-500/20 bg-transparent transition-all"
+                      className="w-5 h-5 rounded-lg border-2 border-gray-200 dark:border-white/10 text-blue-600 focus:ring-blue-500/20 bg-transparent transition"
                       defaultChecked={course.facultyIds.includes(user.id)}
                     />
                     <div className="flex items-center gap-3">
@@ -590,7 +590,7 @@ const AmendSessionModal: React.FC<{
             </button>
             <button
               onClick={onClose}
-              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-[10px]"
+              className="px-10 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-[10px]"
             >
               Commit Changes
             </button>

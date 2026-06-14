@@ -53,7 +53,7 @@ export function NewsletterForm() {
         ) : (
           <form
             onSubmit={handleSubscribe}
-            className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto transition-all"
+            className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto transition"
           >
             <input
               type="email"

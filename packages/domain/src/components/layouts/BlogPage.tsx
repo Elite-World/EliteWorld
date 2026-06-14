@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { Article, Category } from '../../lib/types/content';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
@@ -145,7 +145,7 @@ export function BlogPage({
                         setIsFilterOpen(false);
                       }}
                       className={cn(
-                        'px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition-all duration-200',
+                        'px-6 py-3 rounded-xl text-xs font-bold uppercase tracking-wider transition duration-200',
                         selectedCategory === category.title
                           ? 'bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] scale-105'
                           : isDark
@@ -227,7 +227,7 @@ export function BlogPage({
               <button
                 onClick={() => setVisibleCount((prev) => prev + 6)}
                 className={cn(
-                  'px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition-all transform hover:scale-105 active:scale-95 border',
+                  'px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-[0.2em] transition transform hover:scale-105 active:scale-95 border',
                   isDark
                     ? 'bg-white/5 text-white border-white/20 hover:bg-white/10 hover:border-white/40 backdrop-blur-md shadow-[0_0_15px_rgba(255,255,255,0.05)] hover:shadow-[0_0_30px_rgba(255,255,255,0.1)]'
                     : 'bg-white text-gray-900 border-gray-200 hover:border-gray-900 shadow-md hover:shadow-xl',

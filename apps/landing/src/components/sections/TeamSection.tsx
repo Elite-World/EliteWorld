@@ -34,7 +34,7 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
           {getHomeTeam(isZh).map((member, index) => (
             <div
               key={index}
-              className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition-all duration-500 animate-in fade-in duration-500">
+              className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition duration-500 animate-in fade-in">
               <div className="relative aspect-4/5 w-full overflow-hidden">
                 <Image
                   src={member.image}

@@ -100,7 +100,7 @@ export function Footer({
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-12 lg:gap-8 mb-20">
             <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-4 mb-8 group">
-              <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition-all duration-500">
+              <div className="p-2.5 rounded-2xl bg-[#0a0a0a] dark:bg-white shadow-2xl group-hover:scale-110 transition duration-500">
                 <Globe className="w-5 h-5 text-white dark:text-black" />
               </div>
               <span className="font-sans font-black text-xl text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors tracking-tighter uppercase">
@@ -124,7 +124,7 @@ export function Footer({
               {siteConfig.social?.twitter && (
                 <Link
                   href={siteConfig.social.twitter}
-                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition-all"
+                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition"
                 >
                   <Twitter className="w-4 h-4" />
                 </Link>
@@ -132,7 +132,7 @@ export function Footer({
               {siteConfig.social?.github && (
                 <Link
                   href={siteConfig.social.github}
-                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all"
+                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition"
                 >
                   <Github className="w-4 h-4" />
                 </Link>
@@ -140,7 +140,7 @@ export function Footer({
               {siteConfig.social?.linkedin && (
                 <Link
                   href={siteConfig.social.linkedin}
-                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-700 dark:hover:text-blue-400 transition-all"
+                  className="p-2 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-700 dark:hover:text-blue-400 transition"
                 >
                   <Linkedin className="w-4 h-4" />
                 </Link>
@@ -161,7 +161,7 @@ export function Footer({
                       className="group flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-blue-600 dark:hover:text-blue-500 transition-colors"
                     >
                       {link.label}
-                      <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                      <ArrowUpRight className="w-3 h-3 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition" />
                     </Link>
                   </li>
                 ))}

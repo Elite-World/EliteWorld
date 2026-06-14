@@ -44,8 +44,8 @@ export default async function PassportIndexPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Ambient Effects */}
-        <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+        <div className="hidden md:block absolute top-0 left-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2 transform-gpu will-change-transform" />
+        <div className="hidden md:block absolute bottom-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 translate-y-1/2 transform-gpu will-change-transform" />
       </section>
     </div>
   );

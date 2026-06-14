@@ -114,7 +114,7 @@ const CourseDetailPage: React.FC = () => {
                 ${course.price}
               </div>
             </div>
-            <button className="px-6 py-3 bg-[#FF385C] hover:bg-[#D70466] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-95 text-sm uppercase tracking-wider">
+            <button className="px-6 py-3 bg-[#FF385C] hover:bg-[#D70466] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition active:scale-95 text-sm uppercase tracking-wider">
               Authorize
             </button>
           </div>
@@ -184,7 +184,7 @@ const CourseDetailPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-4">
-            <button className="p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 text-gray-400 hover:text-blue-600">
+            <button className="p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl shadow-xl hover:shadow-2xl transition hover:-translate-y-1 text-gray-400 hover:text-blue-600">
               <Share2 className="w-5 h-5" />
             </button>
             <button
@@ -194,7 +194,7 @@ const CourseDetailPage: React.FC = () => {
                   : addToWishlist(course.id)
               }
               className={cn(
-                'p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1',
+                'p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl shadow-xl hover:shadow-2xl transition hover:-translate-y-1',
                 isInWishlist(course.id)
                   ? 'text-red-500'
                   : 'text-gray-400 hover:text-red-500',
@@ -254,7 +254,7 @@ const CourseDetailPage: React.FC = () => {
           </div>
           <button
             onClick={() => setIsGalleryOpen(true)}
-            className="absolute bottom-6 right-6 px-6 py-3 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl font-bold text-gray-900 dark:text-white hover:scale-105 active:scale-95 transition-all z-10 flex items-center gap-2 text-sm"
+            className="absolute bottom-6 right-6 px-6 py-3 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl shadow-2xl font-bold text-gray-900 dark:text-white hover:scale-105 active:scale-95 transition z-10 flex items-center gap-2 text-sm"
           >
             <div className="flex gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-gray-900 dark:bg-white" />
@@ -321,7 +321,7 @@ const CourseDetailPage: React.FC = () => {
                 {course.whatYouWillLearn.map((item, index) => (
                   <div
                     key={index}
-                    className="group flex gap-4 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl hover:border-blue-500/30 transition-all hover:shadow-xl"
+                    className="group flex gap-4 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl hover:border-blue-500/30 transition hover:shadow-xl"
                   >
                     <div className="shrink-0 w-10 h-10 rounded-xl bg-blue-600/5 text-blue-600 flex items-center justify-center font-black text-xs group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       0{index + 1}
@@ -345,7 +345,7 @@ const CourseDetailPage: React.FC = () => {
                 {course.curriculum.map((item, index) => (
                   <div
                     key={index}
-                    className="group border border-gray-100 dark:border-white/5 rounded-4xl bg-white dark:bg-[#1A1A1A] overflow-hidden transition-all hover:border-blue-500/50 hover:shadow-xl"
+                    className="group border border-gray-100 dark:border-white/5 rounded-4xl bg-white dark:bg-[#1A1A1A] overflow-hidden transition hover:border-blue-500/50 hover:shadow-xl"
                   >
                     <button
                       onClick={() => setExpandedModule(expandedModule === index ? null : index)}
@@ -360,12 +360,12 @@ const CourseDetailPage: React.FC = () => {
                           {item.title}
                         </h3>
                       </div>
-                      <div className={`shrink-0 p-3 rounded-full transition-all transform ${expandedModule === index ? 'bg-blue-600 text-white rotate-90' : 'bg-gray-50 dark:bg-white/5 group-hover:bg-blue-600/10'}`}>
+                      <div className={`shrink-0 p-3 rounded-full transition transform ${expandedModule === index ? 'bg-blue-600 text-white rotate-90' : 'bg-gray-50 dark:bg-white/5 group-hover:bg-blue-600/10'}`}>
                         <ChevronRight className="w-5 h-5" />
                       </div>
                     </button>
                     <div
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${expandedModule === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
+                      className={`overflow-hidden transition duration-300 ease-in-out ${expandedModule === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
                     >
                       <div className="p-8 pt-0 pl-[104px]">
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
@@ -473,7 +473,7 @@ const CourseDetailPage: React.FC = () => {
                 {course.reviews.map((review) => (
                   <div
                     key={review.id}
-                    className="group p-8 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl hover:shadow-2xl transition-all"
+                    className="group p-8 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl hover:shadow-2xl transition"
                   >
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center gap-5">
@@ -511,7 +511,7 @@ const CourseDetailPage: React.FC = () => {
 
           <div className="lg:w-1/3">
             <div className="sticky top-24 p-10 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-[3.5rem] shadow-2xl overflow-hidden group">
-              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/5 rounded-full blur-[80px] -mr-20 -mt-20 group-hover:bg-blue-600/10 transition-all duration-700" />
+              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/5 rounded-full blur-[80px] -mr-20 -mt-20 group-hover:bg-blue-600/10 transition duration-700" />
 
               <div className="relative z-10 text-center mb-10">
                 <div className="text-6xl font-black text-gray-900 dark:text-white tracking-tighter mb-2">
@@ -550,7 +550,7 @@ const CourseDetailPage: React.FC = () => {
                   )}
                 </div>
 
-                <button className="w-full group/btn relative bg-[#0a0a0a] dark:bg-white text-white dark:text-black font-black py-5 rounded-3xl shadow-2xl hover:scale-[1.02] transition-all active:scale-95 overflow-hidden">
+                <button className="w-full group/btn relative bg-[#0a0a0a] dark:bg-white text-white dark:text-black font-black py-5 rounded-3xl shadow-2xl hover:scale-[1.02] transition active:scale-95 overflow-hidden">
                   <div className="absolute inset-0 bg-linear-to-r from-blue-600 to-purple-600 opacity-0 group-hover/btn:opacity-100 transition-opacity" />
                   <span className="relative z-10 uppercase tracking-widest text-xs">
                     Authorize Enrollment

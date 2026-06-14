@@ -38,11 +38,13 @@ export const useLanguageStore = create<LanguageState>()(
   )
 );
 
-import { usePathname } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useCallback, useEffect, useTransition } from 'react';
 
 export function useLanguageSwitcher() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
   const { language, setLanguage } = useLanguageStore();
 
   const segments = pathname.split('/');
@@ -62,17 +64,19 @@ export function useLanguageSwitcher() {
     // 1. Update global state and cookie explicitly
     setLanguage(newLang);
     
-    // 2. Perform hard navigation for clean locale switch
-    const searchParams = window.location.search;
-    const currentSegments = pathname.split('/');
-    if (currentSegments[1] === 'en' || currentSegments[1] === 'zh') {
-      currentSegments[1] = newLang;
-      const newPath = currentSegments.join('/') + searchParams;
-      window.location.href = newPath;
-    } else {
-      window.location.href = `/${newLang}${pathname}${searchParams}`;
-    }
-  }, [activeLanguage, setLanguage, pathname]);
+    // 2. Perform soft SPA navigation for seamless locale switch
+    startTransition(() => {
+      const searchParams = window.location.search;
+      const currentSegments = pathname.split('/');
+      if (currentSegments[1] === 'en' || currentSegments[1] === 'zh') {
+        currentSegments[1] = newLang;
+        const newPath = currentSegments.join('/') + searchParams;
+        router.push(newPath);
+      } else {
+        router.push(`/${newLang}${pathname}${searchParams}`);
+      }
+    });
+  }, [activeLanguage, setLanguage, pathname, router]);
 
-  return { language: activeLanguage, handleToggle, setLanguage, isPending: false };
+  return { language: activeLanguage, handleToggle, setLanguage, isPending };
 }

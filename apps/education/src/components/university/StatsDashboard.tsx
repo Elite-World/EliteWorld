@@ -530,7 +530,7 @@ export function StatsDashboard({ richData }: { richData: any }) {
                           onChange={(e) =>
                             setScoreYear(sliderYears[parseInt(e.target.value)])
                           }
-                          className="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer outline-none hover:bg-gray-300 transition-all"
+                          className="w-full h-1.5 bg-gray-200 dark:bg-zinc-700 rounded-lg appearance-none cursor-pointer outline-none hover:bg-gray-300 transition"
                           style={{ WebkitAppearance: 'none' }}
                         />
                         <style

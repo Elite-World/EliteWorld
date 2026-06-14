@@ -215,7 +215,7 @@ function SearchResultsContent() {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`w-10 h-10 rounded-full text-sm font-bold transition-all ${currentPage === page ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'}`}
+                className={`w-10 h-10 rounded-full text-sm font-bold transition ${currentPage === page ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10'}`}
               >
                 {page}
               </button>
@@ -246,7 +246,7 @@ function SearchResultsContent() {
               <div className="flex items-center gap-3 w-max pr-4">
                 <button
                   onClick={() => setFilters((prev) => ({ ...prev, category: 'All' }))}
-                  className={`px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center ${filters.category === 'All' ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'bg-transparent text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10'}`}
+                  className={`px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition flex items-center justify-center ${filters.category === 'All' ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'bg-transparent text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10'}`}
                 >
                   <span className="sm:hidden block"><LayoutGrid className="w-5 h-5" /></span>
                   <span className="hidden sm:block">All</span>
@@ -257,7 +257,7 @@ function SearchResultsContent() {
                     <button
                       key={cat}
                       onClick={() => setFilters((prev) => ({ ...prev, category: cat }))}
-                      className={`px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition-all whitespace-nowrap flex items-center justify-center ${filters.category === cat ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'bg-transparent text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10'}`}
+                      className={`px-4 py-2.5 sm:px-6 sm:py-2.5 rounded-full text-xs font-bold uppercase tracking-widest transition whitespace-nowrap flex items-center justify-center ${filters.category === cat ? 'bg-gray-900 text-white dark:bg-white dark:text-black shadow-md' : 'bg-transparent text-gray-500 hover:bg-gray-100 dark:hover:bg-white/10'}`}
                     >
                       <span className="sm:hidden block">{Icon && <Icon className="w-5 h-5" />}</span>
                       <span className="hidden sm:block">{cat}</span>
@@ -270,7 +270,7 @@ function SearchResultsContent() {
             <div className="shrink-0 flex items-center bg-white dark:bg-[#1A1A1A] sticky right-0">
               <button
                 onClick={() => setIsFilterModalOpen(true)}
-                className="flex items-center justify-center p-2.5 sm:px-6 sm:py-2.5 bg-white dark:bg-[#1A1A1A] rounded-full border border-gray-200 dark:border-white/10 shadow-sm hover:border-blue-500/50 transition-all"
+                className="flex items-center justify-center p-2.5 sm:px-6 sm:py-2.5 bg-white dark:bg-[#1A1A1A] rounded-full border border-gray-200 dark:border-white/10 shadow-sm hover:border-blue-500/50 transition"
               >
                 <Filter className="w-5 h-5 sm:w-4 sm:h-4 text-gray-600 dark:text-gray-300" />
                 <span className="hidden sm:inline-block ml-2 text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-300">
@@ -353,7 +353,7 @@ function SearchResultsContent() {
 
       {/* Slide-out / Modal for Filters */}
       <div
-        className={`fixed inset-0 z-50 flex justify-end transition-all duration-500 ${isFilterModalOpen ? 'visible' : 'invisible pointer-events-none'}`}
+        className={`fixed inset-0 z-50 flex justify-end transition duration-500 ${isFilterModalOpen ? 'visible' : 'invisible pointer-events-none'}`}
       >
         <div
           className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-500 ${isFilterModalOpen ? 'opacity-100' : 'opacity-0'}`}
@@ -416,7 +416,7 @@ function SearchResultsContent() {
                     <button
                       key={level}
                       onClick={() => setFilters((prev) => ({ ...prev, level }))}
-                      className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-widest transition-all border ${filters.level === level ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent border-gray-200 dark:border-white/10 text-gray-500 hover:border-blue-500/50'}`}
+                      className={`py-3 px-4 rounded-xl text-xs font-bold uppercase tracking-widest transition border ${filters.level === level ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-600/20' : 'bg-transparent border-gray-200 dark:border-white/10 text-gray-500 hover:border-blue-500/50'}`}
                     >
                       {level}
                     </button>

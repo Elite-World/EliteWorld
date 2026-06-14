@@ -27,9 +27,9 @@ export default function DirectoryCard({
 
   return (
     <div
-      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition-all duration-300 overflow-hidden"
+      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition duration-300 overflow-hidden"
     >
-      <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="hidden md:block absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform-gpu will-change-transform" />
 
       <div className="relative z-10 flex flex-col h-full">
         {/* Top Row: Logo */}
@@ -73,7 +73,7 @@ export default function DirectoryCard({
             <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider transition-colors">
               View Profile
             </span>
-            <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+            <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
               <ArrowRight className="w-4 h-4" />
             </div>
           </Link>

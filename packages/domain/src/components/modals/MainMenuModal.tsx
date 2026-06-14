@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { Modal } from '../../components/ui/Modal';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
@@ -106,13 +106,13 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                   <button
                     onClick={() => setSearchMode(false)}
                     className={cn(
-                      'p-2 -ml-2 rounded-full transition-colors',
+                      'p-3 relative z-50 min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 rounded-full transition-colors touch-manipulation',
                       isDark
                         ? 'hover:bg-white/10 text-gray-400'
                         : 'hover:bg-gray-100 text-gray-500',
                     )}
                   >
-                    <HiOutlineChevronLeft className="w-5 h-5" />
+                    <HiOutlineChevronLeft className="w-5 h-5 pointer-events-none" />
                   </button>
                   <div className="relative flex-1">
                     <input
@@ -205,10 +205,10 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                 <button
                   onClick={close}
                   className={cn(
-                    'p-2 rounded-xl transition-colors',
+                    'p-3 relative z-50 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl cursor-pointer',
                     isDark
-                      ? 'hover:bg-white/10 text-gray-400 hover:text-white'
-                      : 'hover:bg-gray-100 text-gray-500 hover:text-black',
+                      ? 'active:bg-white/10 text-gray-400'
+                      : 'active:bg-gray-100 text-gray-500',
                   )}
                 >
                   <svg
@@ -221,6 +221,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="pointer-events-none"
                   >
                     <path d="M18 6 6 18" />
                     <path d="m6 6 12 12" />
@@ -342,7 +343,10 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                       </span>
                       <NavbarLanguageToggle
                         isTransparent={false}
-                        onClick={toggleLanguage}
+                        onClick={() => {
+                          toggleLanguage();
+                          close();
+                        }}
                         language={language}
                       />
                     </div>

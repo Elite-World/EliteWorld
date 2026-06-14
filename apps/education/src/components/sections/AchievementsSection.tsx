@@ -53,7 +53,7 @@ export default function AchievementsSection({ isZh, isDark }: { isZh: boolean; i
             <div
               key={index}
               className={cn(
-                'text-center p-8 rounded-2xl transition-all duration-300 border',
+                'text-center p-8 rounded-2xl transition duration-300 border',
                 'hover:transform hover:-translate-y-1',
                 isDark
                   ? 'bg-[#1A1A1A] hover:bg-[#222] border-white/5 hover:border-white/10'

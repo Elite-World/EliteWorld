@@ -6,8 +6,8 @@ const RankingHero: React.FC = () => {
     <div className="relative bg-white dark:bg-zinc-900 overflow-hidden border-b border-gray-100 dark:border-zinc-800">
       {/* Background Gradients */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute top-0 -left-20 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[100px]" />
-        <div className="absolute bottom-0 -right-20 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[100px]" />
+        <div className="hidden md:block absolute top-0 -left-20 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[100px] transform-gpu will-change-transform" />
+        <div className="hidden md:block absolute bottom-0 -right-20 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[100px] transform-gpu will-change-transform" />
       </div>
       <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 text-center z-10">
         <div className="animate-in fade-in duration-500">

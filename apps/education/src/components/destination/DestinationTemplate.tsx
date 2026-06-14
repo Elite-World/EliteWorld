@@ -66,7 +66,7 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
               return (
                 <div 
                   key={item.id}
-                  className="group relative p-8 md:p-10 rounded-[2.5rem] bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition-all duration-500 hover:shadow-2xl hover:-translate-y-1"
+                  className="group relative p-8 md:p-10 rounded-[2.5rem] bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 hover:border-blue-500/30 dark:hover:border-blue-500/30 transition duration-500 hover:shadow-2xl hover:-translate-y-1"
                 >
                   <div className="absolute top-0 right-0 p-10 opacity-5 group-hover:opacity-10 transition-opacity duration-500">
                     <Icon className="w-32 h-32" />
@@ -104,9 +104,9 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
                   return (
                     <div 
                       key={item.id}
-                      className="group relative p-8 rounded-3xl bg-linear-to-b from-white to-gray-50 dark:from-[#1A1A1A] dark:to-[#111] border border-gray-100 dark:border-white/5 hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition-all duration-500 hover:shadow-xl hover:-translate-y-1"
+                      className="group relative p-8 rounded-3xl bg-linear-to-b from-white to-gray-50 dark:from-[#1A1A1A] dark:to-[#111] border border-gray-100 dark:border-white/5 hover:border-emerald-500/30 dark:hover:border-emerald-500/30 transition duration-500 hover:shadow-xl hover:-translate-y-1"
                     >
-                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition-all duration-500">
+                      <div className="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-emerald-100 dark:group-hover:bg-emerald-900/40 transition duration-500">
                         <Icon className="w-6 h-6 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       
@@ -129,7 +129,7 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
             <div className="inline-block p-1 rounded-full bg-linear-to-r from-blue-600 to-purple-600">
               <Link 
                 href={`/universities?country=${encodeURIComponent(data.name)}`}
-                className="flex items-center gap-4 px-8 py-4 rounded-full bg-white dark:bg-[#0a0a0a] hover:bg-transparent dark:hover:bg-transparent transition-all duration-300 group"
+                className="flex items-center gap-4 px-8 py-4 rounded-full bg-white dark:bg-[#0a0a0a] hover:bg-transparent dark:hover:bg-transparent transition duration-300 group"
               >
                 <span className="font-black text-gray-900 dark:text-white group-hover:text-white uppercase tracking-widest text-sm">
                   {locale === 'zh' ? `探索 ${data.name} 的大学` : `Explore Universities in ${data.name}`}
@@ -144,8 +144,8 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
         </div>
 
         {/* Ambient Background Blur */}
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 -translate-x-1/2" />
-        <div className="absolute top-1/2 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
+        <div className="hidden md:block absolute top-1/2 left-0 w-96 h-96 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 -translate-x-1/2 transform-gpu will-change-transform" />
+        <div className="hidden md:block absolute top-1/2 right-0 w-96 h-96 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2 transform-gpu will-change-transform" />
       </section>
     </div>
   );

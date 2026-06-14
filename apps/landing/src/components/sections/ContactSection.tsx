@@ -107,7 +107,7 @@ export default function ContactSection({
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 transition-all"
+                      className="p-3 rounded-2xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:scale-110 transition"
                     >
                       <social.icon className="w-5 h-5" />
                     </a>
@@ -119,7 +119,7 @@ export default function ContactSection({
           {/* Verification & Access */}
           <div
             className="h-fit @container bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 rounded-4xl md:rounded-[3rem] p-6 md:p-12 relative overflow-hidden animate-in fade-in duration-500">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[100px] -mr-32 -mt-32" />
+            <div className="hidden md:block absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-[100px] -mr-32 -mt-32 transform-gpu will-change-transform" />
 
             <div className="relative z-10">
               <div className="flex items-center gap-2 mb-8 md:mb-10">
@@ -131,7 +131,7 @@ export default function ContactSection({
 
               <div className="grid grid-cols-1 @md:grid-cols-2 gap-6 md:gap-10">
                 <div className="group">
-                  <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                  <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition group-hover:-translate-y-2">
                     <QRCode
                       src={
                         currentSiteConfig.contact.whatsapp.qr ||
@@ -149,7 +149,7 @@ export default function ContactSection({
                   </p>
                 </div>
                 <div className="group">
-                  <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                  <div className="bg-white dark:bg-black p-4 md:p-6 rounded-4xl border border-gray-100 dark:border-white/10 shadow-2xl transition group-hover:-translate-y-2">
                     <QRCode
                       src={
                         currentSiteConfig.contact.wechat.qr ||

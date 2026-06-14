@@ -68,7 +68,7 @@ const SessionPerformancePage: React.FC = () => {
     <div className="bg-white dark:bg-[#1A1A1A] p-8 rounded-[2.5rem] border border-gray-100 dark:border-white/5 shadow-xl relative overflow-hidden group">
       <div
         className={cn(
-          'absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl -mr-12 -mt-12 transition-all duration-500',
+          'absolute top-0 right-0 w-24 h-24 rounded-full blur-2xl -mr-12 -mt-12 transition duration-500',
           variant === 'blue'
             ? 'bg-blue-600/5 group-hover:bg-blue-600/10'
             : variant === 'purple'
@@ -234,7 +234,7 @@ const SessionPerformancePage: React.FC = () => {
                   {performance.engagementData.map((value, index) => (
                     <div key={index} className="grow group/bar relative">
                       <div
-                        className="w-full bg-linear-to-t from-blue-600/40 to-blue-600 group-hover/bar:from-blue-600 group-hover/bar:to-purple-600 transition-all duration-500 rounded-2xl shadow-lg relative z-10"
+                        className="w-full bg-linear-to-t from-blue-600/40 to-blue-600 group-hover/bar:from-blue-600 group-hover/bar:to-purple-600 transition duration-500 rounded-2xl shadow-lg relative z-10"
                         style={{ height: `${value}%` }}
                       >
                         <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-black px-2 py-1 rounded-lg opacity-0 group-hover/bar:opacity-100 transition-opacity whitespace-nowrap">
@@ -268,7 +268,7 @@ const SessionPerformancePage: React.FC = () => {
                     return (
                       <li
                         key={index}
-                        className="group p-5 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all"
+                        className="group p-5 bg-gray-50 dark:bg-white/5 rounded-3xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition"
                       >
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-3">

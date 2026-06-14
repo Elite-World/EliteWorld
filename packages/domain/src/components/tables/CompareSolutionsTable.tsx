@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useState, useMemo } from 'react';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
@@ -84,7 +84,7 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
           <button 
             onClick={() => setIsComparing(false)}
             className={cn(
-              "px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition-all",
+              "px-6 py-3 rounded-xl font-bold text-sm uppercase tracking-wider transition",
               isDark ? "bg-white/10 text-white hover:bg-white/20" : "bg-gray-100 text-gray-900 hover:bg-gray-200"
             )}
           >
@@ -220,7 +220,7 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
     <div className="w-full max-w-7xl mx-auto px-4 lg:px-8 pb-48 relative">
       {/* Controls Container (Search + Category Filter) */}
       <div className={cn(
-        "sticky top-20 z-40 backdrop-blur-xl mb-12 p-4 md:p-6 rounded-4xl border shadow-2xl transition-all",
+        "sticky top-20 z-40 backdrop-blur-xl mb-12 p-4 md:p-6 rounded-4xl border shadow-2xl transition",
         isDark ? "bg-[#0a0a0a]/80 border-white/10" : "bg-white/80 border-gray-100"
       )}>
         <div className="flex flex-col md:flex-row gap-6 items-center justify-between">
@@ -232,7 +232,7 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
                   className={cn(
-                    "px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition-all duration-300",
+                    "px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider whitespace-nowrap transition duration-300",
                     isActive 
                       ? (isDark ? "bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.3)]" : "bg-black text-white shadow-[0_0_20px_rgba(0,0,0,0.15)]")
                       : (isDark ? "bg-white/5 text-gray-400 hover:text-white hover:bg-white/10" : "bg-gray-50 text-gray-500 hover:text-black hover:bg-gray-100")
@@ -254,7 +254,7 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className={cn(
-                "w-full pl-12 pr-4 py-3 rounded-full text-sm font-medium outline-none transition-all border",
+                "w-full pl-12 pr-4 py-3 rounded-full text-sm font-medium outline-none transition border",
                 isDark 
                   ? "bg-white/5 border-white/10 text-white placeholder-gray-500 focus:border-white/30" 
                   : "bg-gray-50 border-gray-100 text-gray-900 placeholder-gray-400 focus:border-gray-300"
@@ -320,7 +320,7 @@ export function CompareSolutionsTable({ solutions, locale }: CompareSolutionsTab
               onClick={() => setIsComparing(true)}
               disabled={selectedIds.length < 2}
               className={cn(
-                "px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm transition-all",
+                "px-8 py-4 rounded-2xl font-black uppercase tracking-widest text-sm transition",
                 selectedIds.length >= 2 
                   ? "bg-blue-600 text-white shadow-[0_0_20px_rgba(37,99,235,0.4)] hover:bg-blue-700 hover:scale-105"
                   : "bg-gray-200 dark:bg-white/10 text-gray-400 cursor-not-allowed"

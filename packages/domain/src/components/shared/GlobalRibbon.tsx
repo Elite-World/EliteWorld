@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useRibbonStore } from '../../lib/stores/useRibbonStore';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import {
@@ -187,7 +187,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
   return (
     <div
       className={cn(
-        'fixed z-100 pointer-events-none transition-all duration-500',
+        'fixed z-100 pointer-events-none transition duration-500',
         // Mobile positioning
         'bottom-8 right-4 flex flex-col-reverse items-end gap-2',
         // Desktop positioning
@@ -198,7 +198,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         className={cn(
-          'md:hidden pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full shadow-2xl transition-all duration-300 z-50',
+          'md:hidden pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full shadow-2xl transition duration-300 z-50',
           isDark
             ? 'bg-white text-black hover:bg-gray-200'
             : 'bg-black text-white hover:bg-gray-800',
@@ -239,7 +239,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
                     setIsMobileMenuOpen(false);
                   }}
                   className={cn(
-                    'group flex flex-col items-center justify-center transition-all duration-300 shadow-lg',
+                    'group flex flex-col items-center justify-center transition duration-300 shadow-lg',
                     // Mobile shape
                     'w-10 h-10 rounded-full md:w-16 md:h-16 md:rounded-l-2xl md:rounded-r-none',
                     // Individual ribbon hover expansion (desktop only)

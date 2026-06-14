@@ -38,11 +38,11 @@ const buttonVariants = {
     ghost:
       'hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-white/10 dark:hover:text-white text-gray-600 dark:text-gray-400',
     link: 'text-blue-600 underline-offset-4 hover:underline',
-    hero: 'bg-gray-900 text-white dark:bg-white dark:text-black font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-500 shadow-lg',
+    hero: 'bg-gray-900 text-white dark:bg-white dark:text-black font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition duration-500 shadow-lg',
     'hero-outline':
-      'bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/30 backdrop-blur-sm text-gray-900 dark:text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-black/10 dark:hover:bg-white/15 hover:border-black/30 dark:hover:border-white/50 transition-all duration-300 hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
+      'bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/30 backdrop-blur-sm text-gray-900 dark:text-white font-black uppercase tracking-[0.2em] rounded-2xl hover:bg-black/10 dark:hover:bg-white/15 hover:border-black/30 dark:hover:border-white/50 transition duration-300 hover:scale-105 shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
     shine:
-      'relative overflow-hidden group bg-white text-black font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl hover:scale-105 transition-all duration-500 hover:text-white',
+      'relative overflow-hidden group bg-white text-black font-black uppercase tracking-[0.2em] rounded-2xl shadow-2xl hover:scale-105 transition duration-500 hover:text-white',
   },
   sizes: {
     default: 'h-10 px-4 py-2',
@@ -76,7 +76,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       buttonVariants.sizes[size] || buttonVariants.sizes.default;
 
     const compClasses = cn(
-      'inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 select-none gap-2',
+      'inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 select-none gap-2',
       variantClass,
       sizeClass,
       className,

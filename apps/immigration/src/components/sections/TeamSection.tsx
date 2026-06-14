@@ -39,7 +39,7 @@ export default function TeamSection({
             <div
               key={index}
               className={cn(
-                'flex flex-col rounded-2xl overflow-hidden transition-all duration-300',
+                'flex flex-col rounded-2xl overflow-hidden transition duration-300',
                 'hover:transform hover:-translate-y-1',
                 isDark ? 'bg-gray-800' : 'bg-white shadow-lg',
                 'h-full',

@@ -72,7 +72,7 @@ export function Modal({
 
   return (
     <div className={cn(
-        "fixed inset-0 z-50 transition-all duration-300 ease-out",
+        "fixed inset-0 z-50 transition duration-300 ease-out",
         isVisible ? "visible" : "invisible" 
       )}
     >
@@ -88,7 +88,7 @@ export function Modal({
       {/* Modal */}
       <div 
         className={cn(
-          'fixed transition-all duration-300',
+          'fixed transition duration-300',
           variant === 'popup' && popupClasses,
           variant === 'bottom' && bottomClasses,
           // Animation States

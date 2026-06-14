@@ -26,7 +26,7 @@ export default function Step2Location({ data, updateData }: Props) {
             value={data.location}
             onChange={(e) => updateData({ location: e.target.value })}
             placeholder="e.g. 123 Tech Avenue, San Francisco, CA"
-            className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            className="w-full pl-12 pr-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
         </div>
       </div>

@@ -52,7 +52,7 @@ export function AdmissionsConsultingContent({
             {mentorTeams.map((team) => (
               <div
                 key={team.id}
-                className="bg-white dark:bg-[#1A1A1A] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 dark:border-white/5 transition-all duration-300 group"
+                className="bg-white dark:bg-[#1A1A1A] rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-gray-100 dark:border-white/5 transition duration-300 group"
               >
                 <div className="h-48 overflow-hidden relative">
                   <Image
@@ -160,7 +160,7 @@ export function AdmissionsConsultingContent({
             {highEndPackages.map((pkg, idx) => (
               <div
                 key={pkg.id}
-                className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-8 shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-100 dark:border-white/5 relative overflow-hidden"
+                className="bg-white dark:bg-[#1a1a1a] rounded-2xl p-8 shadow-sm hover:shadow-2xl transition duration-300 border border-gray-100 dark:border-white/5 relative overflow-hidden"
               >
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <span className="text-6xl font-bold text-transparent bg-clip-text bg-linear-to-r from-blue-500 to-purple-500">
@@ -210,7 +210,7 @@ export function AdmissionsConsultingContent({
                   </div>
                 </div>
 
-                <button className="w-full mt-8 bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
+                <button className="w-full mt-8 bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-full font-bold shadow-md hover:shadow-lg transition hover:scale-[1.02] active:scale-[0.98]">
                   {isZh ? '立即预订' : 'Book Now'}
                 </button>
               </div>
@@ -232,7 +232,7 @@ export function AdmissionsConsultingContent({
           {diyPackages.map((pkg) => (
             <div
               key={pkg.id}
-              className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-100 dark:border-white/5 p-8 flex flex-col md:flex-row gap-6 hover:border-blue-500/50 shadow-sm hover:shadow-xl transition-all group"
+              className="bg-white dark:bg-[#1A1A1A] rounded-2xl border border-gray-100 dark:border-white/5 p-8 flex flex-col md:flex-row gap-6 hover:border-blue-500/50 shadow-sm hover:shadow-xl transition group"
             >
               <div className="grow">
                 <h3 className="text-xl font-bold text-[#010022] dark:text-white mb-2 group-hover:text-[#4c5cec] transition-colors">
@@ -246,7 +246,7 @@ export function AdmissionsConsultingContent({
                 <div className="text-2xl font-bold text-[#010022] dark:text-white mb-4">
                   {pkg.price}
                 </div>
-                <button className="px-6 py-2 bg-linear-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg shadow-sm hover:shadow-md transition-all active:scale-95">
+                <button className="px-6 py-2 bg-linear-to-r from-blue-500 to-purple-500 text-white text-sm font-bold rounded-lg shadow-sm hover:shadow-md transition active:scale-95">
                   {isZh ? '选择' : 'Select'}
                 </button>
               </div>

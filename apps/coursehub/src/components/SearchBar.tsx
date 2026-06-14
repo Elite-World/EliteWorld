@@ -81,7 +81,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
 
       {/* COMPACT PILL */}
       <div
-        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center bg-white border border-gray-300 rounded-full shadow-sm hover:shadow-md cursor-pointer transition-all duration-300 ease-in-out origin-center ${
+        className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center bg-white border border-gray-300 rounded-full shadow-sm hover:shadow-md cursor-pointer transition duration-300 ease-in-out origin-center ${
           isExpanded
             ? 'opacity-0 scale-95 pointer-events-none'
             : 'opacity-100 scale-100 pointer-events-auto'
@@ -130,7 +130,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
 
       {/* EXPANDED BAR */}
       <div
-        className={`absolute top-1/2 left-1/2 w-full transition-all duration-300 ease-in-out origin-center ${
+        className={`absolute top-1/2 left-1/2 w-full transition duration-300 ease-in-out origin-center ${
           isExpanded
             ? 'opacity-100 scale-100 -translate-x-1/2 -translate-y-1/2 pointer-events-auto'
             : 'opacity-0 scale-95 -translate-x-1/2 -translate-y-1/2 pointer-events-none'
@@ -218,7 +218,7 @@ export default function SearchBar({ onExpandChange }: SearchBarProps) {
                 closeSearch();
                 router.push('/s');
               }}
-              className={`h-12 rounded-full bg-[#FF385C] hover:bg-[#D70466] text-white flex items-center justify-center font-bold transition-all duration-200 gap-2 shrink-0 ${activeTab ? 'px-6' : 'w-12 px-0'}`}
+              className={`h-12 rounded-full bg-[#FF385C] hover:bg-[#D70466] text-white flex items-center justify-center font-bold transition duration-200 gap-2 shrink-0 ${activeTab ? 'px-6' : 'w-12 px-0'}`}
             >
               <Search className="w-4 h-4 stroke-4" />
               {activeTab && <span>Search</span>}

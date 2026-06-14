@@ -322,7 +322,7 @@ const RankingList: React.FC<RankingListProps> = ({
         <div className="mt-12 flex justify-center">
           <button
             onClick={handleShowMore}
-            className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition-all active:scale-95"
+            className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition active:scale-95"
           >
             {isZh ? '加载更多大学' : 'Show More Universities'}
           </button>

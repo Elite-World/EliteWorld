@@ -58,7 +58,7 @@ function IconButton({
     <button
       onClick={onClick}
       className={cn(
-        'p-2.5 rounded-xl transition-all duration-300',
+        'p-2.5 rounded-xl transition duration-300',
         isTransparent
           ? 'text-white/80 hover:text-white hover:bg-white/10'
           : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-white/5',
@@ -145,7 +145,7 @@ function DesktopMenuItem({
           ? { target: '_blank', rel: 'noopener noreferrer' }
           : {})}
         className={cn(
-          'flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 relative text-[10px] font-black uppercase tracking-widest',
+          'flex items-center gap-2 px-4 py-2 rounded-xl transition duration-300 relative text-[10px] font-black uppercase tracking-widest',
           isTransparent
             ? 'text-white/90 hover:text-white hover:bg-white/10'
             : 'text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-white/5',
@@ -165,7 +165,7 @@ function DesktopMenuItem({
             'rounded-3xl border border-gray-100 dark:border-white/5 overflow-hidden',
             'transform opacity-0 -translate-y-2 invisible',
             'group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible',
-            'transition-all duration-300 shadow-2xl',
+            'transition duration-300 shadow-2xl',
             isTransparent
               ? 'bg-white/80 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border-gray-200 dark:border-white/10'
               : 'bg-white dark:bg-[#1A1A1A]',
@@ -181,7 +181,7 @@ function DesktopMenuItem({
               key={child.id}
               href={child.href}
               className={cn(
-                'flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition-all',
+                'flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition',
                 isTransparent
                   ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10'
                   : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5',
@@ -243,7 +243,7 @@ export function Navbar({
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 w-full z-100 border-b transition-all duration-500',
+        'fixed top-0 left-0 w-full z-[100] border-b transition duration-500 transform-gpu will-change-transform',
         isScrolled
           ? 'bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-gray-100 dark:border-white/5 shadow-sm py-2'
           : 'bg-transparent border-transparent py-4',
@@ -262,7 +262,7 @@ export function Navbar({
               <Link href="/" className="flex items-center gap-4 py-2">
                 <div
                   className={cn(
-                    'p-2.5 rounded-2xl shadow-2xl transition-all duration-500 group-hover/brand:scale-110',
+                    'p-2.5 rounded-2xl shadow-2xl transition duration-500 group-hover/brand:scale-110',
                     isScrolled ? 'bg-[#0a0a0a] dark:bg-white' : 'bg-white',
                   )}
                 >
@@ -294,7 +294,7 @@ export function Navbar({
                     e.stopPropagation();
                     setIsDomainOpen(!isDomainOpen);
                   }}
-                  className="p-1 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors focus:outline-hidden"
+                  className="hidden md:block p-1 -ml-2 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-colors focus:outline-hidden"
                   aria-label="Toggle Domain Menu"
                 >
                   <ChevronDown
@@ -312,7 +312,7 @@ export function Navbar({
               {navGateway && Object.keys(navGateway).length > 1 && (
                 <div
                   className={cn(
-                    'absolute top-full left-0 mt-2 p-2 w-64 bg-white/90 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-3xl shadow-2xl transition-all duration-300 transform origin-top-left z-110',
+                    'hidden md:block absolute top-full left-0 mt-2 p-2 w-64 bg-white/90 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-3xl shadow-2xl transition duration-300 transform origin-top-left z-110',
                     isDomainOpen
                       ? 'opacity-100 translate-y-0 visible'
                       : 'opacity-0 translate-y-2 invisible group-hover/brand:opacity-100 group-hover/brand:translate-y-0 group-hover/brand:visible',
@@ -329,7 +329,7 @@ export function Navbar({
                         key={key}
                         href={item.href}
                         className={cn(
-                          'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all group',
+                          'flex items-center gap-3 px-4 py-3 rounded-2xl transition group',
                           item.name === siteConfig.name
                             ? 'bg-blue-600/5 dark:bg-blue-600/10'
                             : 'hover:bg-gray-50 dark:hover:bg-white/5',

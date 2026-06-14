@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useState, useEffect } from 'react';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { useNavbarStore } from '../../lib/stores/useNavbarStore';
@@ -401,7 +401,7 @@ export function ConsultationBooking() {
                   type="submit"
                   disabled={formState === 'submitting'}
                   className={cn(
-                    'w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-all mt-4',
+                    'w-full py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition mt-4',
                     isDark
                       ? 'bg-blue-600 text-white hover:bg-blue-500'
                       : 'bg-blue-600 text-white hover:bg-blue-700 shadow-lg shadow-blue-500/20',

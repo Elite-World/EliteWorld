@@ -54,19 +54,19 @@ export function JurisdictionTemplate({
           {/* Premium Mesh Gradient Fallback */}
           <div
             className={cn(
-              'absolute -top-[20%] -left-[10%] w-[50%] h-[70%] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen animate-pulse duration-10000',
+              'hidden md:block absolute -top-[20%] -left-[10%] w-[50%] h-[70%] bg-blue-600/30 blur-[120px] rounded-full mix-blend-screen animate-pulse duration-10000 transform-gpu will-change-transform',
               bgImage ? 'opacity-50' : '',
             )}
           />
           <div
             className={cn(
-              'absolute bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-indigo-600/20 blur-[120px] rounded-full mix-blend-screen',
+              'hidden md:block absolute bottom-[10%] -right-[10%] w-[60%] h-[60%] bg-indigo-600/20 blur-[120px] rounded-full mix-blend-screen transform-gpu will-change-transform',
               bgImage ? 'opacity-50' : '',
             )}
           />
           <div
             className={cn(
-              'absolute top-[20%] left-[40%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen',
+              'hidden md:block absolute top-[20%] left-[40%] w-[40%] h-[40%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen transform-gpu will-change-transform',
               bgImage ? 'opacity-50' : '',
             )}
           />
@@ -243,7 +243,7 @@ export function JurisdictionTemplate({
                 return (
                   <div
                     key={sol._id?.toString()}
-                    className="group bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full"
+                    className="group bg-white dark:bg-[#111] border border-gray-200 dark:border-white/10 rounded-3xl p-8 hover:shadow-2xl transition duration-300 hover:-translate-y-1 cursor-pointer flex flex-col h-full"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <Briefcase className="w-4 h-4 text-blue-600 dark:text-blue-400" />
@@ -251,7 +251,7 @@ export function JurisdictionTemplate({
                         {sol.category.replace('_', ' ')}
                       </span>
                     </div>
-                    <h3 className="text-2xl font-black text-gray-900 dark:text-white leading-tight mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all">
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white leading-tight mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-linear-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition">
                       {solName}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-8 grow">

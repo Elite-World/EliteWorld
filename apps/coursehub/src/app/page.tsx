@@ -50,7 +50,7 @@ function SearchContent() {
                   .getElementById('search-catalog')
                   ?.scrollIntoView({ behavior: 'smooth' })
               }
-              className="group flex items-center gap-3 px-8 py-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-all shadow-xl hover:shadow-2xl"
+              className="group flex items-center gap-3 px-8 py-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition shadow-xl hover:shadow-2xl"
             >
               View Global Registry
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -81,7 +81,7 @@ function SearchContent() {
                 </span>
               </h2>
             </div>
-            <button className="group flex items-center gap-3 px-8 py-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition-all shadow-xl hover:shadow-2xl">
+            <button className="group flex items-center gap-3 px-8 py-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-white transition shadow-xl hover:shadow-2xl">
               Partner With Us
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </button>
@@ -91,9 +91,9 @@ function SearchContent() {
             {MOCK_INSTITUTIONS.map((institution) => (
               <div
                 key={institution.id}
-                className="bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 group hover:shadow-2xl hover:border-blue-500/30 transition-all duration-500 overflow-hidden relative"
+                className="bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-[3rem] p-8 flex flex-col sm:flex-row items-center gap-8 group hover:shadow-2xl hover:border-blue-500/30 transition duration-500 overflow-hidden relative"
               >
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 group-hover:bg-blue-600/10 blur-3xl transition-all" />
+                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/5 group-hover:bg-blue-600/10 blur-3xl transition" />
                 <div className="relative w-32 h-32 rounded-3xl overflow-hidden border-2 border-gray-50 dark:border-[#2A2A2A] shadow-xl shrink-0 group-hover:scale-105 transition-transform duration-500">
                   <Image
                     src={institution.logoUrl}
@@ -164,10 +164,10 @@ function SearchContent() {
                   <ChevronRight className="w-5 h-5 mt-1 text-[#222222] dark:text-white transition-transform group-hover/title:translate-x-1" />
                 </div>
                 <div className="hidden sm:flex gap-2 shrink-0">
-                  <button className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:shadow-md transition-all text-[#222222] dark:text-white bg-white dark:bg-black opacity-50 cursor-not-allowed">
+                  <button className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:shadow-md transition text-[#222222] dark:text-white bg-white dark:bg-black opacity-50 cursor-not-allowed">
                     <ChevronLeft className="w-4 h-4" />
                   </button>
-                  <button className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:shadow-md transition-all text-[#222222] dark:text-white bg-white dark:bg-black">
+                  <button className="p-2 rounded-full border border-gray-200 dark:border-white/10 hover:shadow-md transition text-[#222222] dark:text-white bg-white dark:bg-black">
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>

@@ -86,7 +86,7 @@ export function SolutionCard({
   return (
     <div
       className={cn(
-        'group relative overflow-hidden rounded-[2.5rem] border transition-all h-full flex flex-col',
+        'group relative overflow-hidden rounded-[2.5rem] border transition h-full flex flex-col',
         isDark
           ? 'bg-white/5 border-white/10 hover:border-white/20'
           : 'bg-white border-gray-100 hover:border-gray-200',
@@ -273,7 +273,7 @@ export function SolutionCard({
             <button
               onClick={handleToggle}
               className={cn(
-                'w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition-all',
+                'w-full py-4 rounded-xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 transition',
                 isSelected
                   ? isDark
                     ? 'bg-blue-600 text-white'

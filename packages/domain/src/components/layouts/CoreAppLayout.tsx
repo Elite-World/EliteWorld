@@ -29,15 +29,14 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
   const language = useLanguageStore((state) => state.language);
   
   const openModal = useModalStore((state) => state.open);
-  const activeModal = useModalStore((state) => state.activeModal);
 
   // Keep main menu modal props in sync if navigation changes while open
   const navItemsStr = JSON.stringify(navigation.items);
   useEffect(() => {
-    if (activeModal === 'mainMenu') {
+    if (useModalStore.getState().activeModal === 'mainMenu') {
       openModal('mainMenu', { items: navigation.items, siteConfig });
     }
-  }, [navItemsStr, activeModal, openModal, siteConfig]);
+  }, [navItemsStr, openModal, siteConfig]);
   const showHiddenElements = useDevStore((state) => state.showHiddenElements);
   const forceSolidNavbar = useNavbarStore((state) => state.forceSolid);
 

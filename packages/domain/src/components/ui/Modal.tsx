@@ -1,4 +1,4 @@
-'use client';;
+'use client';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
 import { useEffect } from 'react';
@@ -11,41 +11,7 @@ interface ModalProps {
   variant?: 'popup' | 'bottom' | 'side';
 }
 
-// Animation Variants
-const backdropVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
-  exit: { opacity: 0 },
-};
 
-const modalVariants = {
-  popup: {
-    hidden: { opacity: 0, scale: 0.95, y: 10 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: { type: 'spring', duration: 0.3 },
-    },
-    exit: { opacity: 0, scale: 0.95, y: 10, transition: { duration: 0.2 } },
-  },
-  bottom: {
-    hidden: { y: '100%' },
-    visible: {
-      y: 0,
-      transition: { type: 'spring', damping: 25, stiffness: 300 },
-    },
-    exit: { y: '100%', transition: { duration: 0.2 } },
-  },
-  side: {
-    hidden: { x: '100%' },
-    visible: {
-      x: 0,
-      transition: { type: 'spring', damping: 30, stiffness: 300 },
-    },
-    exit: { x: '100%', transition: { duration: 0.3, ease: 'easeInOut' } },
-  },
-} as const;
 
 export function Modal({
   isOpen,
@@ -56,7 +22,7 @@ export function Modal({
 }: ModalProps) {
   const isDark = useThemeStore((state) => state.isDark);
 
-  // Lock body scroll and Listen for Escape key
+  // Listen for Escape key
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -65,23 +31,23 @@ export function Modal({
     };
 
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
       document.addEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
       document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
       document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = '';
     };
   }, [isOpen, onClose]);
 
   const wrapperClasses = cn(
     variant === 'popup' &&
       'fixed inset-0 flex items-center justify-center p-4',
-    variant === 'side' && 'fixed inset-0 flex justify-end',
-    variant === 'bottom' && 'fixed inset-0 flex items-end',
+    variant === 'side' && 'fixed inset-0 h-[100dvh] flex justify-end',
+    variant === 'bottom' && 'fixed inset-0 h-[100dvh] flex items-end',
   );
 
   const contentClasses = cn(
@@ -96,17 +62,25 @@ export function Modal({
   );
 
   return (
-    <div className="relative" style={{ zIndex: 9999 }}>
+    <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/40 backdrop-blur-sm animate-in fade-in duration-500"
-        onClick={onClose} />
+        className="fixed inset-0 bg-black/60 animate-in fade-in duration-500 z-[9998] cursor-pointer"
+        onClick={onClose}
+        style={{ touchAction: 'none', WebkitTapHighlightColor: 'transparent' }}
+      />
       {/* Container to position the modal */}
-      <div className={wrapperClasses} onClick={onClose}>
+      <div 
+        className={cn(wrapperClasses, 'z-[9999]')} 
+        onClick={onClose}
+        style={{ touchAction: 'none' }}
+      >
         <div
           className={contentClasses}
           // Prevent closing when clicking content
-          onClick={(e) => e.stopPropagation()}>
+          onClick={(e) => e.stopPropagation()}
+          style={{ touchAction: 'auto' }}
+        >
           {/* Bottom Sheet Handle */}
           {variant === 'bottom' && (
             <div className="flex-none py-3" onClick={onClose}>
@@ -116,6 +90,6 @@ export function Modal({
           {children}
         </div>
       </div>
-    </div>
+    </>
   );
 }

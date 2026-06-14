@@ -31,7 +31,7 @@ const TabButton: React.FC<{
   <button
     onClick={() => onClick(tabName)}
     className={cn(
-      'relative py-4 px-6 transition-all duration-300 flex items-center gap-3 text-xs font-black uppercase tracking-widest min-w-max',
+      'relative py-4 px-6 transition duration-300 flex items-center gap-3 text-xs font-black uppercase tracking-widest min-w-max',
       activeTab === tabName
         ? 'text-red-600'
         : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',
@@ -134,10 +134,10 @@ const AdminPage: React.FC = () => {
                     <h3 className="text-xs font-black uppercase tracking-widest text-gray-400">Admin Actions</h3>
                   </div>
                   <div className="space-y-3">
-                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-red-500/50 hover:shadow-lg transition-all flex justify-between items-center px-6">
+                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-red-500/50 hover:shadow-lg transition flex justify-between items-center px-6">
                       Onboard Partner <PlusCircle className="w-4 h-4 text-gray-400" />
                     </button>
-                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-orange-500/50 hover:shadow-lg transition-all flex justify-between items-center px-6">
+                    <button className="w-full py-4 bg-white dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white hover:border-orange-500/50 hover:shadow-lg transition flex justify-between items-center px-6">
                       Approve Courses <ShieldCheck className="w-4 h-4 text-gray-400" />
                     </button>
                   </div>

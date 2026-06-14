@@ -26,8 +26,8 @@ export function SecurityPage({ content }: SecurityPageProps) {
 
       <div className="container mx-auto px-4 py-12 md:py-24 relative">
         {/* Ambient Glows */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10 translate-x-1/2 -translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] -z-10 -translate-x-1/2 translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100" />
+        <div className="hidden md:block absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] -z-10 translate-x-1/2 -translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100 transform-gpu will-change-transform" />
+        <div className="hidden md:block absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[120px] -z-10 -translate-x-1/2 translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100 transform-gpu will-change-transform" />
 
         <div
           className={cn(

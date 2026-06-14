@@ -32,7 +32,7 @@ export function ArticleCard({
     <Link href={`${basePath}/${article.slug}`} className="group block h-full">
       <article
         className={cn(
-          'relative overflow-hidden h-full flex flex-col rounded-2xl transition-all duration-500',
+          'relative overflow-hidden h-full flex flex-col rounded-2xl transition duration-500',
           // Glassmorphism background
           isDark
             ? 'bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 hover:bg-white/10'
@@ -149,12 +149,12 @@ export function ArticleCard({
               isDark ? 'text-white' : 'text-gray-900',
             )}
           >
-            <span className="group-hover:mr-2 transition-all duration-300">
+            <span className="group-hover:mr-2 transition duration-300">
               {isZh ? '阅读文章' : 'Read Article'}
             </span>
             <svg
               className={cn(
-                'w-4 h-4 ml-1 transition-all duration-300 group-hover:translate-x-1 group-hover:text-blue-500',
+                'w-4 h-4 ml-1 transition duration-300 group-hover:translate-x-1 group-hover:text-blue-500',
               )}
               fill="none"
               viewBox="0 0 24 24"

@@ -40,7 +40,7 @@ export default async function DestinationsHubPage({ params }: { params: Promise<
               <Link 
                 href={`/destinations/${dest.id}`} 
                 key={dest.id}
-                className="group relative rounded-4xl overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition-all duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5"
+                className="group relative rounded-4xl overflow-hidden flex flex-col h-[480px] hover:-translate-y-2 transition duration-500 shadow-xl hover:shadow-2xl shadow-blue-900/5"
               >
                 {/* Background Image */}
                 <div className="absolute inset-0">
@@ -94,8 +94,8 @@ export default async function DestinationsHubPage({ params }: { params: Promise<
         </div>
 
         {/* Ambient Effects */}
-        <div className="absolute top-0 left-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 translate-y-1/2" />
+        <div className="hidden md:block absolute top-0 left-0 w-[800px] h-[800px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none -translate-x-1/2 -translate-y-1/2 transform-gpu will-change-transform" />
+        <div className="hidden md:block absolute bottom-0 right-0 w-[800px] h-[800px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none translate-x-1/2 translate-y-1/2 transform-gpu will-change-transform" />
       </section>
     </div>
   );

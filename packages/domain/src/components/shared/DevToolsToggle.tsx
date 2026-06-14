@@ -26,7 +26,7 @@ export function DevToolsToggle() {
       </div>
       <button
         onClick={() => setShowHiddenElements(!showHiddenElements)}
-        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+        className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
           showHiddenElements
             ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400'
             : 'bg-gray-100 text-gray-600 dark:bg-zinc-800 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-zinc-700'

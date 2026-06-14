@@ -39,7 +39,7 @@ export default function InsightsSection({
           <Link
             href="/insights"
             className={cn(
-              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shrink-0',
+              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition shrink-0',
               isDark
                 ? 'bg-white/5 hover:bg-white/10 text-white'
                 : 'bg-white border border-gray-100 hover:border-blue-500/30 text-gray-900 shadow-sm',

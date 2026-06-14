@@ -171,7 +171,7 @@ export function HeroSection({
             )}
 
             {mode === 'main' ? (
-              <h1 className="font-black text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition-all duration-700 select-none pb-4 flex flex-wrap justify-center gap-2 md:gap-4 text-balance">
+              <h1 className="font-black text-4xl sm:text-6xl md:text-8xl lg:text-9xl tracking-tighter leading-[0.9] uppercase transition duration-700 select-none pb-4 flex flex-wrap justify-center gap-2 md:gap-4 text-balance">
                 {title.split(' ').map((word, i) => {
                   const isLast = i === title.split(' ').length - 1;
                   return (
@@ -192,7 +192,7 @@ export function HeroSection({
                 })}
               </h1>
             ) : (
-              <h1 className="font-black text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[1.1] md:leading-[0.9] uppercase transition-all duration-700 select-none pb-4 drop-shadow-xl text-balance">
+              <h1 className="font-black text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tighter leading-[1.1] md:leading-[0.9] uppercase transition duration-700 select-none pb-4 drop-shadow-xl text-balance">
                 {title}
               </h1>
             )}
@@ -227,8 +227,8 @@ export function HeroSection({
 
       {/* Visual Accents */}
       <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-blue-600/50 to-transparent" />
-      <div className="absolute top-1/4 -left-20 w-64 h-64 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-20 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none" />
+      <div className="hidden md:block absolute top-1/4 -left-20 w-64 h-64 bg-blue-600/10 rounded-full blur-[120px] pointer-events-none transform-gpu will-change-transform" />
+      <div className="hidden md:block absolute bottom-1/4 -right-20 w-64 h-64 bg-purple-600/10 rounded-full blur-[120px] pointer-events-none transform-gpu will-change-transform" />
     </section>
   );
 }

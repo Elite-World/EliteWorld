@@ -83,8 +83,8 @@ export default async function ProgramProfilePage({ params }: ProgramPageProps) {
       <section className="relative h-[60vh] flex items-end pb-24 overflow-hidden bg-zinc-950">
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-[#0a0a0a]/50 to-transparent" />
-          <div className="absolute -top-[20%] -right-[10%] w-[50%] h-[70%] bg-blue-600/20 blur-[120px] rounded-full mix-blend-screen" />
-          <div className="absolute bottom-[10%] -left-[10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen" />
+          <div className="hidden md:block absolute -top-[20%] -right-[10%] w-[50%] h-[70%] bg-blue-600/20 blur-[120px] rounded-full mix-blend-screen transform-gpu will-change-transform" />
+          <div className="hidden md:block absolute bottom-[10%] -left-[10%] w-[60%] h-[60%] bg-purple-600/20 blur-[120px] rounded-full mix-blend-screen transform-gpu will-change-transform" />
         </div>
 
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">

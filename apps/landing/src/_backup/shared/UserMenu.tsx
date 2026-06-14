@@ -74,7 +74,7 @@ export function UserMenu({ isMobile = false, isTransparent = false }: UserMenuPr
           className={cn(
             'absolute right-0 top-full pt-2 w-56',
             'opacity-0 invisible group-hover:opacity-100 group-hover:visible',
-            'transition-all duration-200'
+            'transition duration-200'
           )}
         >
           <div className={cn(

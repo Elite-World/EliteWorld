@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+
 import type { ModalType } from '../types/modal';
 
 interface ModalState {
@@ -20,20 +20,15 @@ const initialState: ModalState = {
 };
 
 export const useModalStore = create<ModalStore>()(
-  persist(
-    (set) => ({
-      ...initialState,
-      open: (modal, props = {}) => 
-        set(() => ({ activeModal: modal, modalProps: props }), false),
-      close: () => 
-        set(() => initialState, false),
-    }),
-    {
-      name: 'modal-storage',
-      partialize: (state) => ({ 
-        activeModal: state.activeModal,
-        modalProps: state.modalProps 
-      }),
-    }
-  )
+  (set) => ({
+    ...initialState,
+    open: (modal, props = {}) => 
+      set(() => ({ activeModal: modal, modalProps: props }), false),
+    close: () => {
+      // Defer unmount to prevent iOS Safari orphaned touch target panic
+      setTimeout(() => {
+        set(() => initialState, false);
+      }, 10);
+    },
+  })
 ); 

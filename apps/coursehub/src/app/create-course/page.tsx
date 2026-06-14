@@ -49,7 +49,7 @@ const CreateCoursePage: React.FC = () => {
           </div>
 
           <div className="bg-white dark:bg-[#1A1A1A] p-10 md:p-16 rounded-3xl border border-gray-100 dark:border-white/5 shadow-2xl relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -mr-32 -mt-32 transition-all duration-1000 group-hover:bg-blue-600/10" />
+            <div className="absolute top-0 right-0 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl -mr-32 -mt-32 transition duration-1000 group-hover:bg-blue-600/10" />
 
             <form className="space-y-10 relative z-10">
               <div className="space-y-8">
@@ -73,7 +73,7 @@ const CreateCoursePage: React.FC = () => {
                       id="title"
                       name="title"
                       placeholder="e.g., Global Finance & Wealth Strategy"
-                      className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                      className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
                     />
                   </div>
                   <div className="space-y-2">
@@ -88,7 +88,7 @@ const CreateCoursePage: React.FC = () => {
                       id="tagline"
                       name="tagline"
                       placeholder="A sophisticated summary for elite learners"
-                      className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                      className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
                     />
                   </div>
                 </div>
@@ -105,7 +105,7 @@ const CreateCoursePage: React.FC = () => {
                       <select
                         id="category"
                         name="category"
-                        className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                        className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition cursor-pointer"
                       >
                         {Object.values(CourseCategory).map((cat) => (
                           <option key={cat}>{cat}</option>
@@ -125,7 +125,7 @@ const CreateCoursePage: React.FC = () => {
                       <select
                         id="level"
                         name="level"
-                        className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all cursor-pointer"
+                        className="appearance-none block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl px-6 py-4 text-sm font-bold text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition cursor-pointer"
                       >
                         <option>Beginner</option>
                         <option>Intermediate</option>
@@ -148,7 +148,7 @@ const CreateCoursePage: React.FC = () => {
                         id="price"
                         name="price"
                         placeholder="0.00"
-                        className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all"
+                        className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-2xl pl-12 pr-6 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition"
                       />
                     </div>
                   </div>
@@ -172,7 +172,7 @@ const CreateCoursePage: React.FC = () => {
                     name="description"
                     rows={6}
                     placeholder="Provide a comprehensive overview of the curriculum and expected outcomes..."
-                    className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all resize-none"
+                    className="block w-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/10 rounded-3xl px-6 py-4 text-sm font-medium text-gray-700 dark:text-gray-300 placeholder:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500/50 transition resize-none"
                   ></textarea>
                 </div>
               </div>
@@ -180,7 +180,7 @@ const CreateCoursePage: React.FC = () => {
               <div className="flex justify-end pt-8">
                 <button
                   type="submit"
-                  className="px-12 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all active:scale-95 uppercase tracking-widest text-sm"
+                  className="px-12 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-bold rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition active:scale-95 uppercase tracking-widest text-sm"
                 >
                   Authorize Experience
                 </button>

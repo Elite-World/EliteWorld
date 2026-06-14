@@ -81,7 +81,7 @@ export function NewsletterSection({
         ) : (
           <form
             onSubmit={handleSubmit}
-            className="flex flex-col sm:flex-row gap-3 w-full max-w-md transition-all"
+            className="flex flex-col sm:flex-row gap-3 w-full max-w-md transition"
           >
             <input
               type="email"
@@ -90,12 +90,12 @@ export function NewsletterSection({
               onChange={(e) => setEmail(e.target.value)}
               placeholder={isZh ? '请输入您的电子邮箱' : 'Enter your email'}
               disabled={status === 'loading'}
-              className="flex-1 px-5 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 focus:border-white/40 transition-all font-medium disabled:opacity-70"
+              className="flex-1 px-5 py-3.5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:bg-white/20 focus:border-white/40 transition font-medium disabled:opacity-70"
             />
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="px-6 py-3.5 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-50 active:scale-95 transition-all disabled:opacity-70 disabled:cursor-not-allowed min-w-[120px] flex justify-center items-center shadow-lg hover:shadow-xl"
+              className="px-6 py-3.5 bg-white text-blue-600 font-bold rounded-xl hover:bg-gray-50 active:scale-95 transition disabled:opacity-70 disabled:cursor-not-allowed min-w-[120px] flex justify-center items-center shadow-lg hover:shadow-xl"
             >
               {status === 'loading' ? (
                 <Loader2 className="w-5 h-5 animate-spin" />

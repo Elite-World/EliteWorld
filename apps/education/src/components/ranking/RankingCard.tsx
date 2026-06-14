@@ -39,9 +39,9 @@ const RankingCard: React.FC<RankingCardProps> = ({
   return (
     <div
       onClick={() => onClick(university)}
-      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition-all duration-300 cursor-pointer overflow-hidden animate-in fade-in">
+      className="group relative flex flex-col p-6 bg-white dark:bg-zinc-900/80 backdrop-blur-sm rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl hover:border-blue-500/20 dark:hover:border-blue-500/20 transition duration-300 cursor-pointer overflow-hidden animate-in fade-in">
       {/* Decorative Gradient Blob on Hover */}
-      <div className="absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="hidden md:block absolute -right-20 -top-20 w-40 h-40 bg-blue-500/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 transform-gpu will-change-transform" />
       <div className="relative z-10 flex flex-col h-full">
         {/* Top Row: Rank & Logo */}
         <div className="flex justify-between items-start mb-4">
@@ -171,7 +171,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
                         onRankClick?.(source);
                       }}
                       className={cn(
-                        'flex flex-col items-center p-1.5 rounded-lg transition-all border',
+                        'flex flex-col items-center p-1.5 rounded-lg transition border',
                         isSelected
                           ? 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800 ring-1 ring-blue-500/20'
                           : 'bg-gray-50 border-transparent dark:bg-zinc-800/50 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-200 dark:hover:border-zinc-700',
@@ -211,7 +211,7 @@ const RankingCard: React.FC<RankingCardProps> = ({
           <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
             View Details
           </span>
-          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+          <div className="w-8 h-8 rounded-full bg-gray-50 dark:bg-zinc-800 flex items-center justify-center text-gray-400 group-hover:bg-blue-600 group-hover:text-white transition duration-300">
             <ArrowRight className="w-4 h-4" />
           </div>
         </div>

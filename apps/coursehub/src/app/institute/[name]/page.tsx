@@ -193,7 +193,7 @@ export default function InstituteProfilePage() {
                                 }}
                                 className="absolute inset-0 bg-black/40 flex items-center justify-center hover:bg-black/50 transition-colors group"
                               >
-                                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-bold text-sm border border-white/20 group-hover:scale-105 transition-all">
+                                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-full text-white font-bold text-sm border border-white/20 group-hover:scale-105 transition">
                                   <Grid className="w-4 h-4" />
                                   Show all {institution.images!.length} photos
                                 </div>
@@ -254,7 +254,7 @@ export default function InstituteProfilePage() {
                 {members.map((member) => (
                   <div
                     key={member.userId}
-                    className="flex items-center gap-4 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl shadow-lg hover:shadow-xl transition-all"
+                    className="flex items-center gap-4 p-6 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-3xl shadow-lg hover:shadow-xl transition"
                   >
                     <div className="relative w-16 h-16 rounded-2xl overflow-hidden shrink-0 shadow-md">
                       <Image
@@ -300,7 +300,7 @@ export default function InstituteProfilePage() {
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all ${
+                      className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition ${
                         currentCategory === category
                           ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/20'
                           : 'bg-white dark:bg-white/5 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-white/10 hover:border-blue-600 hover:text-blue-600'
@@ -318,7 +318,7 @@ export default function InstituteProfilePage() {
                     <Link
                       key={course.id}
                       href={`/course/${course.id}`}
-                      className="group flex flex-col sm:flex-row items-center gap-6 p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl hover:shadow-xl transition-all hover:-translate-y-1"
+                      className="group flex flex-col sm:flex-row items-center gap-6 p-4 bg-white dark:bg-[#1A1A1A] border border-gray-100 dark:border-white/5 rounded-4xl hover:shadow-xl transition hover:-translate-y-1"
                     >
                       <div className="relative w-full sm:w-48 h-40 sm:h-32 rounded-2xl overflow-hidden shrink-0">
                         <Image

@@ -29,7 +29,7 @@ export function Tabs({ tabs, defaultTab, className }: TabsProps) {
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={cn(
-                'relative pb-4 transition-all duration-300 outline-none group',
+                'relative pb-4 transition duration-300 outline-none group',
                 activeTab === tab.id
                   ? 'text-blue-600'
                   : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-200',

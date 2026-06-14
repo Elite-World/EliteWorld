@@ -15,8 +15,8 @@ export default function DestinationsSection({
 }) {
   return (
     <section className="py-32 bg-gray-50 dark:bg-[#0a0a0a] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48" />
+      <div className="hidden md:block absolute top-0 right-0 w-96 h-96 bg-blue-500/10 rounded-full blur-[100px] -mr-48 -mt-48 transform-gpu will-change-transform" />
+      <div className="hidden md:block absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] -ml-48 -mb-48 transform-gpu will-change-transform" />
       <div className="container mx-auto px-4 relative z-10">
         <div
           className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 animate-in fade-in duration-500">
@@ -38,7 +38,7 @@ export default function DestinationsSection({
           <Link
             href="/destinations"
             className={cn(
-              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all',
+              'group inline-flex items-center gap-3 px-6 py-4 rounded-full text-[10px] font-black uppercase tracking-widest transition',
               isDark
                 ? 'bg-white/5 hover:bg-white/10 text-white border border-white/10'
                 : 'bg-black/5 hover:bg-black/10 text-black border border-black/10',

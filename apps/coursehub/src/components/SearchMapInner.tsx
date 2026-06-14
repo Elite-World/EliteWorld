@@ -112,7 +112,7 @@ function CustomMapControls({
           e.preventDefault();
           toggleFullscreen();
         }}
-        className="bg-white dark:bg-[#1A1A1A] text-gray-800 dark:text-gray-200 p-2.5 rounded-full shadow-md border border-gray-100 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition-all flex items-center justify-center"
+        className="bg-white dark:bg-[#1A1A1A] text-gray-800 dark:text-gray-200 p-2.5 rounded-full shadow-md border border-gray-100 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-white/5 transition flex items-center justify-center"
         aria-label="Toggle Fullscreen"
       >
         {isFullscreen ? (

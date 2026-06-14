@@ -69,7 +69,7 @@ function UniversityDirectoryContent({
                 setSearchQuery(e.target.value);
                 setVisibleCount(50);
               }}
-              className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition-all outline-none"
+              className="w-full pl-12 pr-4 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition outline-none"
             />
           </div>
 
@@ -81,7 +81,7 @@ function UniversityDirectoryContent({
                 setSelectedCountry(e.target.value);
                 setVisibleCount(50);
               }}
-              className="w-full pl-12 pr-10 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl appearance-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition-all outline-none"
+              className="w-full pl-12 pr-10 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl appearance-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition outline-none"
             >
               <option value="">{locale === 'zh' ? '所有国家' : 'All Countries'}</option>
               {countries.map((country) => (
@@ -113,7 +113,7 @@ function UniversityDirectoryContent({
         <div className="mt-16 flex justify-center">
           <button
             onClick={() => setVisibleCount((prev) => prev + 50)}
-            className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition-all active:scale-95"
+            className="px-8 py-3 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 font-medium rounded-full shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 hover:shadow-md transition active:scale-95"
           >
             {locale === 'zh' ? '加载更多大学' : 'Load More Universities'}
           </button>

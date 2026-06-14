@@ -118,7 +118,7 @@ const StudentCoursePage: React.FC = () => {
             </div>
             <div className="w-full bg-gray-50 dark:bg-white/5 rounded-full h-2 overflow-hidden">
               <div
-                className="bg-linear-to-r from-blue-600 to-purple-600 h-full rounded-full transition-all duration-1000 shadow-[0_0_15px_rgba(37,99,235,0.3)]"
+                className="bg-linear-to-r from-blue-600 to-purple-600 h-full rounded-full transition duration-1000 shadow-[0_0_15px_rgba(37,99,235,0.3)]"
                 style={{ width: `${progressPercentage}%` }}
               ></div>
             </div>
@@ -145,7 +145,7 @@ const StudentCoursePage: React.FC = () => {
                     key={item.title}
                     onClick={() => toggleCompletion(item.title)}
                     className={cn(
-                      'group flex items-start gap-6 p-6 bg-white dark:bg-[#1A1A1A] border rounded-4xl cursor-pointer transition-all duration-300 relative overflow-hidden',
+                      'group flex items-start gap-6 p-6 bg-white dark:bg-[#1A1A1A] border rounded-4xl cursor-pointer transition duration-300 relative overflow-hidden',
                       isCompleted
                         ? 'border-blue-600/20 shadow-sm opacity-80'
                         : 'border-gray-100 dark:border-white/5 shadow-xl hover:shadow-2xl hover:border-blue-500/30',
@@ -192,7 +192,7 @@ const StudentCoursePage: React.FC = () => {
                       </p>
                     </div>
 
-                    <div className="relative z-10 self-center opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all">
+                    <div className="relative z-10 self-center opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition">
                       <PlayCircle className="w-8 h-8 text-blue-600" />
                     </div>
                   </div>
@@ -250,7 +250,7 @@ const StudentCoursePage: React.FC = () => {
                   </div>
                 </div>
 
-                <button className="w-full mt-10 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all uppercase tracking-widest text-xs">
+                <button className="w-full mt-10 px-8 py-4 bg-linear-to-r from-blue-600 to-purple-600 text-white font-black rounded-2xl shadow-xl shadow-blue-500/20 hover:shadow-blue-500/40 hover:-translate-y-1 transition uppercase tracking-widest text-xs">
                   Continue Operation
                 </button>
               </div>

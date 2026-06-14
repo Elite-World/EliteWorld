@@ -23,7 +23,7 @@ export default function Step1BasicInfo({ data, updateData }: Props) {
           value={data.name}
           onChange={(e) => updateData({ name: e.target.value })}
           placeholder="e.g. Silicon Valley AI Academy"
-          className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+          className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
         />
       </div>
 
@@ -36,7 +36,7 @@ export default function Step1BasicInfo({ data, updateData }: Props) {
           onChange={(e) => updateData({ description: e.target.value })}
           placeholder="What makes your institution unique?"
           rows={4}
-          className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all resize-none"
+          className="w-full px-4 py-3 rounded-2xl border border-gray-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] focus:outline-none focus:ring-2 focus:ring-blue-500 transition resize-none"
         />
       </div>
     </div>

@@ -43,7 +43,7 @@ export function EssayCoachingContent({
             {documentTypes.map((item) => (
               <div
                 key={item.id}
-                className="relative aspect-4/3 rounded-xl overflow-hidden group cursor-pointer shadow hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 dark:border-white/5"
+                className="relative aspect-4/3 rounded-xl overflow-hidden group cursor-pointer shadow hover:shadow-xl transition duration-300 hover:-translate-y-1 border border-gray-100 dark:border-white/5"
               >
                 <Image
                   src={item.image}
@@ -77,7 +77,7 @@ export function EssayCoachingContent({
             {packages.map((pkg) => (
               <div
                 key={pkg.id}
-                className="bg-white dark:bg-[#1A1A1A] rounded-3xl p-6 md:p-10 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-white/5"
+                className="bg-white dark:bg-[#1A1A1A] rounded-3xl p-6 md:p-10 shadow-sm hover:shadow-xl transition duration-300 border border-gray-100 dark:border-white/5"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8 border-b border-gray-200/50 dark:border-white/10 pb-6">
                   <div>
@@ -93,7 +93,7 @@ export function EssayCoachingContent({
                       {pkg.tags.map((tag: string) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all cursor-default"
+                          className="px-3 py-1 bg-blue-500/5 dark:bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 rounded-full text-[10px] font-bold uppercase tracking-wider transition cursor-default"
                         >
                           {tag}
                         </span>
@@ -173,7 +173,7 @@ export function EssayCoachingContent({
                       </div>
                     </div>
 
-                    <button className="w-full bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition-all hover:scale-[1.02] active:scale-[0.98]">
+                    <button className="w-full bg-linear-to-r from-blue-500 to-purple-500 text-white py-3 rounded-xl font-bold shadow-md hover:shadow-lg transition hover:scale-[1.02] active:scale-[0.98]">
                       {isZh ? '立即咨询' : 'Order Now'}
                     </button>
                   </div>
