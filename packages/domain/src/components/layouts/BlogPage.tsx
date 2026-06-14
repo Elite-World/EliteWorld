@@ -8,6 +8,7 @@ import { HeroSection } from '@repo/ui';
 import { useState, useEffect } from 'react';
 import { ArticleCard } from '../shared/ArticleCard';
 import { NewsletterSection } from '../shared/NewsletterSection';
+import { subscribeToNewsletter } from '@repo/cms/actions/newsletter';
 import { HiFunnel, HiXMark } from 'react-icons/hi2';
 import { useRibbonStore } from '../../lib/stores/useRibbonStore';
 
@@ -214,7 +215,7 @@ export function BlogPage({
             </div>
           )}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {visibleRecentArticles.map((article, index) => (
+            {visibleRecentArticles.map((article) => (
               <div key={article.id} className="animate-in fade-in duration-500">
                 <ArticleCard article={article} basePath={basePath} />
               </div>
@@ -246,7 +247,7 @@ export function BlogPage({
 
         {/* Newsletter CTA */}
         <div className="mt-16">
-          <NewsletterSection />
+          <NewsletterSection onSubmit={async (email, categories) => { await subscribeToNewsletter(email, categories); }} />
         </div>
       </div>
     </div>
