@@ -8,11 +8,13 @@ import {
   Building2,
   ArrowRight,
 } from 'lucide-react';
-import { RankingSourceCard } from '@/components/ranking/RankingSourceCard';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import { UniversityLocationTab } from '@/components/university/UniversityLocationTab';
-import { StatsDashboard } from './StatsDashboard';
-import { CrimeSpiderChart } from './CrimeSpiderChart';
+
+const StatsDashboard = dynamic(() => import('./StatsDashboard').then(mod => mod.StatsDashboard), { ssr: false });
+const CrimeSpiderChart = dynamic(() => import('./CrimeSpiderChart').then(mod => mod.CrimeSpiderChart), { ssr: false });
+const RankingSourceCard = dynamic(() => import('@/components/ranking/RankingSourceCard').then(mod => mod.RankingSourceCard), { ssr: false });
 import { ExpandableDescription } from '@/components/university/ExpandableDescription';
 import { DevAwareTabs } from './DevAwareTabs';
 import { DevAwareBottomCards } from './DevAwareBottomCards';

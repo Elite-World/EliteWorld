@@ -5,11 +5,11 @@ const sharedContact = {
   whatsapp: {
     label: "+86 187 1510 5148",
     link: "https://wa.me/8618715105148",
-    qr: "https://res.cloudinary.com/dr435quj2/image/upload/v1781140230/qr-whatsapp.webp"
+    qr: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781140230/qr-whatsapp.webp"
   },
   wechat: {
     label: "bjtiew",
-    qr: "https://res.cloudinary.com/dr435quj2/image/upload/v1781140228/qr-wechat.webp"
+    qr: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781140228/qr-wechat.webp"
   },
   social: {
     twitter: '',
@@ -36,10 +36,10 @@ export const companyInfo = {
 } as const;
 
 export const appOgImage ={
-  landing: "https://res.cloudinary.com/dr435quj2/image/upload/v1781334640/landing-2.jpg",
-  immi: "https://res.cloudinary.com/dr435quj2/image/upload/v1781334639/immi-1.jpg",
-  edu: "https://res.cloudinary.com/dr435quj2/image/upload/v1781334639/edu-1.jpg",
-  coursehub: "https://res.cloudinary.com/dr435quj2/image/upload/v1781334640/coursehub-1.jpg",
+  landing: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781334640/landing-2.jpg",
+  immi: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781334639/immi-1.jpg",
+  edu: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781334639/edu-1.jpg",
+  coursehub: "https://res.cloudinary.com/dr435quj2/image/upload/q_auto,f_auto/v1781334640/coursehub-1.jpg",
 } as const;
 
 export const footerConfig = {

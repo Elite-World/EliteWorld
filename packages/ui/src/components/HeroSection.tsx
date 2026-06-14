@@ -42,13 +42,15 @@ const heroImageLoader = ({ src, width }: { src: string; width: number }) => {
     if (parts.length === 2) {
       // Clean up any existing transformations if present
       let path = parts[1];
-      if (path.startsWith('f_auto') || path.startsWith('q_auto')) {
+      // Strip any existing quality/format params so we don't duplicate
+      if (path.startsWith('f_') || path.startsWith('q_') || path.includes('q_auto') || path.includes('f_auto')) {
         const slashIndex = path.indexOf('/');
         if (slashIndex !== -1) {
           path = path.substring(slashIndex + 1);
         }
       }
-      return `${parts[0]}/upload/f_auto,q_auto,w_${width}/${path}`;
+      // Force webp format and maximum eco compression
+      return `${parts[0]}/upload/f_webp,q_auto:eco,w_${width}/${path}`;
     }
   }
 
@@ -58,7 +60,7 @@ const heroImageLoader = ({ src, width }: { src: string; width: number }) => {
       url.searchParams.set('w', width.toString());
       url.searchParams.set('fit', 'crop');
       url.searchParams.set('auto', 'format,compress');
-      url.searchParams.set('q', '70'); // Aggressive compression for mobile hero
+      url.searchParams.set('q', '40'); // Aggressive compression for background hero
       return url.toString();
     } catch (e) {
       return src;

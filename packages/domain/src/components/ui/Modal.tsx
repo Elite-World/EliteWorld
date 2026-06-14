@@ -11,8 +11,6 @@ interface ModalProps {
   variant?: 'popup' | 'bottom' | 'side';
 }
 
-
-
 export function Modal({
   isOpen,
   onClose,
@@ -44,8 +42,7 @@ export function Modal({
   }, [isOpen, onClose]);
 
   const wrapperClasses = cn(
-    variant === 'popup' &&
-      'fixed inset-0 flex items-center justify-center p-4',
+    variant === 'popup' && 'fixed inset-0 flex items-center justify-center p-4',
     variant === 'side' && 'fixed inset-0 h-[100dvh] flex justify-end',
     variant === 'bottom' && 'fixed inset-0 h-[100dvh] flex items-end',
   );
@@ -65,13 +62,13 @@ export function Modal({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 animate-in fade-in duration-500 z-[9998] cursor-pointer"
+        className="fixed inset-0 bg-black/60 animate-in fade-in duration-500 z-9998 cursor-pointer"
         onClick={onClose}
         style={{ touchAction: 'none', WebkitTapHighlightColor: 'transparent' }}
       />
       {/* Container to position the modal */}
-      <div 
-        className={cn(wrapperClasses, 'z-[9999]')} 
+      <div
+        className={cn(wrapperClasses, 'z-9999')}
         onClick={onClose}
         style={{ touchAction: 'none' }}
       >

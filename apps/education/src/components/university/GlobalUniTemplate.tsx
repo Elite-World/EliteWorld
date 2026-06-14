@@ -17,7 +17,9 @@ import {
   Zap,
   Receipt,
 } from 'lucide-react';
-import { RankingSourceCard } from '@/components/ranking/RankingSourceCard';
+import dynamic from 'next/dynamic';
+
+const RankingSourceCard = dynamic(() => import('@/components/ranking/RankingSourceCard').then(mod => mod.RankingSourceCard), { ssr: false });
 import Image from 'next/image';
 import { UniversityLocationTab } from '@/components/university/UniversityLocationTab';
 import { ExpandableDescription } from '@/components/university/ExpandableDescription';

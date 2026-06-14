@@ -1,8 +1,13 @@
 import React from 'react';
 import { Metadata } from 'next';
 import RankingList from '@/components/ranking/RankingList';
+import nextDynamic from 'next/dynamic';
 import { HeroSection } from '@repo/ui';
-import RankingMap from '@/components/ranking/RankingMap';
+
+const RankingMap = nextDynamic(() => import('@/components/ranking/RankingMap'), {
+  ssr: false,
+  loading: () => <div className="w-full h-[500px] bg-gray-100 dark:bg-white/5 rounded-3xl animate-pulse" />
+});
 // import { UniversityRanking } from '@repo/domain';
 import { fetchRankings, fetchMeta } from './actions';
 

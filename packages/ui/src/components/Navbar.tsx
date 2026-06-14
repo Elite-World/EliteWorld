@@ -243,7 +243,7 @@ export function Navbar({
   return (
     <nav
       className={cn(
-        'fixed top-0 left-0 w-full z-[100] border-b transition duration-500 transform-gpu will-change-transform',
+        'fixed top-0 left-0 w-full z-100 border-b transition duration-500 transform-gpu will-change-transform',
         isScrolled
           ? 'bg-white/80 dark:bg-[#0a0a0a]/80 backdrop-blur-xl border-gray-100 dark:border-white/5 shadow-sm py-2'
           : 'bg-transparent border-transparent py-4',
@@ -279,11 +279,13 @@ export function Navbar({
                     isScrolled ? 'text-gray-900 dark:text-white' : 'text-white',
                   )}
                 >
-                  {(siteConfig.enName || siteConfig.name).split(/(?=[A-Z])/).map((part, i) => (
-                    <span key={i} className={i === 1 ? 'text-blue-600' : ''}>
-                      {part.toUpperCase()}
-                    </span>
-                  ))}
+                  {(siteConfig.enName || siteConfig.name)
+                    .split(/(?=[A-Z])/)
+                    .map((part, i) => (
+                      <span key={i} className={i === 1 ? 'text-blue-600' : ''}>
+                        {part.toUpperCase()}
+                      </span>
+                    ))}
                 </span>
               </Link>
 
