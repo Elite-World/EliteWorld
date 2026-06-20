@@ -11,12 +11,14 @@ if (!MONGODB_URI) {
  * in development. This prevents connections growing exponentially
  * during API Route usage.
  */
-// @ts-ignore
-let cached = global.mongoose;
+const globalWithMongoose = global as typeof globalThis & {
+  mongoose: { conn: mongoose.Connection | typeof mongoose | null; promise: Promise<mongoose.Connection | typeof mongoose> | null };
+};
+
+let cached = globalWithMongoose.mongoose;
 
 if (!cached) {
-  // @ts-ignore
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = globalWithMongoose.mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
@@ -27,6 +29,7 @@ async function dbConnect() {
   if (!cached.promise) {
     const opts = {
       bufferCommands: false,
+      maxPoolSize: 10, // Prevent serverless functions from opening too many connections
     };
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((mongoose) => {

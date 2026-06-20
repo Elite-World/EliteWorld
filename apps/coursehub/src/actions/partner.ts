@@ -1,7 +1,7 @@
 'use server';
 
 import { auth, clerkClient } from '@clerk/nextjs/server';
-import connectToDatabase from '../lib/mongoose';
+import dbConnect from '@repo/domain/lib/mongoose';
 import { Institution } from '../models/Institution';
 import { revalidatePath } from 'next/cache';
 
@@ -32,7 +32,7 @@ export async function submitPartnerApplication(data: ApplyPartnerData) {
     });
 
     // 2. Connect to MongoDB
-    await connectToDatabase();
+    await dbConnect();
 
     // 3. Save extended metadata to MongoDB using the Clerk Org ID as _id
     await Institution.create({
