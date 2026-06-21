@@ -37,24 +37,24 @@ export const getHomeStats = (isZh: boolean) => [
 
 export const getHomeTeam = (isZh: boolean) => [
   {
-    name: 'Lu, Peng',
+    name: 'Yue, Liu',
     role: isZh ? '高级学术合伙人' : 'Senior Academic Partner',
     image:
-      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/v1781323575/Lu_Peng.png',
+      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/Yue_Liu.png',
     speciality: isZh ? '高校录取专家' : 'University Admissions',
   },
   {
     name: 'BJ, Tiew',
     role: isZh ? '移民主管' : 'Head of Migration',
     image:
-      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/v1781323574/BJ_Tiew.png',
+      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/BJ_Tiew.png',
     speciality: isZh ? '签证方案专家' : 'Visa Protocols',
   },
   {
-    name: 'Ammin',
+    name: 'Abdullah',
     role: isZh ? '战略顾问' : 'Strategic Advisor',
     image:
-      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/v1781323573/Ammin.png',
+      'https://res.cloudinary.com/dr435quj2/image/upload/q_auto:eco,f_auto/Abdullah.png',
     speciality: isZh ? '全球职业规划专家' : 'Global Career Planning',
   },
 ];
