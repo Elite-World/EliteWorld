@@ -30,7 +30,7 @@ export function HomePage({ locale: propsLocale }: { locale?: string }) {
   const { locale: paramsLocale } = useParams();
   const locale = (propsLocale || paramsLocale || 'en') as 'en' | 'zh';
   const isZh = locale === 'zh';
-  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'];
+  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'] || siteConfig['en'];
   const navGateway = getNavGateway(locale);
 
   // Define the social media links with proper icon types
