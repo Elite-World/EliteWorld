@@ -18,6 +18,9 @@ export async function generateMetadata({
   return {
     title: currentSiteConfig.name,
     description: currentSiteConfig.description,
+    icons: {
+      icon: '/favicon.ico',
+    },
   };
 }
 

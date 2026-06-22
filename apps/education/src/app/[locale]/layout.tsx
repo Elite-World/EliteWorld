@@ -12,6 +12,9 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: currentSiteConfig.name,
     description: currentSiteConfig.description,
+    icons: {
+      icon: '/favicon.ico',
+    },
   };
 }
 

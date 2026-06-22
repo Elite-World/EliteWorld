@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {
   MapPin,
@@ -19,7 +20,13 @@ import {
 } from 'lucide-react';
 import dynamic from 'next/dynamic';
 
-const RankingSourceCard = dynamic(() => import('@/components/ranking/RankingSourceCard').then(mod => mod.RankingSourceCard), { ssr: false });
+const RankingSourceCard = dynamic(
+  () =>
+    import('@/components/ranking/RankingSourceCard').then(
+      (mod) => mod.RankingSourceCard,
+    ),
+  { ssr: false },
+);
 import Image from 'next/image';
 import { UniversityLocationTab } from '@/components/university/UniversityLocationTab';
 import { ExpandableDescription } from '@/components/university/ExpandableDescription';
@@ -416,10 +423,10 @@ export function GlobalUniTemplate({ university }: { university: any }) {
     <div className="min-h-screen bg-gray-50/50 dark:bg-black/20 pb-20">
       {/* Custom Header */}
       <div className="relative border-b border-gray-200 dark:border-zinc-800 pb-12 pt-32 md:pt-40 overflow-hidden">
-        <HeroCoverImage 
-          universityId={university.id} 
-          universityName={university.name} 
-          coverUrl={university.coverUrl} 
+        <HeroCoverImage
+          universityId={university.id}
+          universityName={university.name}
+          coverUrl={university.coverUrl}
         />
 
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
@@ -450,7 +457,8 @@ export function GlobalUniTemplate({ university }: { university: any }) {
               </h1>
               <div className="flex flex-wrap gap-6 text-sm md:text-base text-gray-200">
                 <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-gray-300" /> {university.country}
+                  <MapPin className="w-4 h-4 text-gray-300" />{' '}
+                  {university.country}
                 </div>
                 {university.websiteUrl && (
                   <a

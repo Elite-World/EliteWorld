@@ -1,13 +1,9 @@
 import React from 'react';
 import { Metadata } from 'next';
 import RankingList from '@/components/ranking/RankingList';
-import nextDynamic from 'next/dynamic';
 import { HeroSection } from '@repo/ui';
 
-const RankingMap = nextDynamic(() => import('@/components/ranking/RankingMap'), {
-  ssr: false,
-  loading: () => <div className="w-full h-[500px] bg-gray-100 dark:bg-white/5 rounded-3xl animate-pulse" />
-});
+import { RankingMap } from '@/components/ranking/RankingMapWrapper';
 // import { UniversityRanking } from '@repo/domain';
 import { fetchRankings, fetchMeta } from './actions';
 
@@ -19,7 +15,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isZh = locale === 'zh';
   return {
-    title: isZh ? '全球大学排名 | 寰宇精英教育' : 'Global University Rankings | Elite World Education',
+    title: isZh
+      ? '全球大学排名 | 寰宇精英教育'
+      : 'Global University Rankings | Elite World Education',
     description: isZh
       ? '探索由 QS 和泰晤士高等教育 (THE) 指标排名的全球顶尖大学。支持按国家和专业进行筛选。'
       : 'Explore top universities worldwide ranked by QS and THE metrics. Filter by country and subject.',
@@ -44,14 +42,20 @@ export default async function RankingPage({
 
   const yearParam = urlParams.year as string | undefined;
   const sourceParam = (urlParams.source as string) || 'qs';
-  const rankTypeParam = (urlParams.rankType as 'General' | 'Subject') || 'General';
+  const rankTypeParam =
+    (urlParams.rankType as 'General' | 'Subject') || 'General';
   const subjectParam = urlParams.subject as string | undefined;
   const countryParam = urlParams.country as string | undefined;
 
   const selectedYear = yearParam ? parseInt(yearParam, 10) : undefined;
 
   const [universities, meta] = await Promise.all([
-    fetchRankings(selectedYear, sourceParam, rankTypeParam, subjectParam as string | undefined),
+    fetchRankings(
+      selectedYear,
+      sourceParam,
+      rankTypeParam,
+      subjectParam as string | undefined,
+    ),
     fetchMeta(),
   ]);
 
