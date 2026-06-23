@@ -82,7 +82,7 @@ async function updateRankings() {
   await dbConnect();
   
   const allUnis = await University.find({}, '_id name.en').lean();
-  const uniDict = allUnis.map(u => ({ id: u._id, name_en: u.name.en }));
+  const uniDict = allUnis.map(u => ({ id: u._id, name_en: u.name?.en || '' }));
 
   console.log(`🔍 Mapping universities...`);
   
@@ -142,12 +142,12 @@ async function updateRankings() {
   for (const [sysSlug, generalBuckets] of Object.entries(systemBuckets)) {
     if (Object.keys(generalBuckets).length === 0) continue;
     
-    // Convert object to Map for Mongoose
-    const generalMap = new Map();
+    // Convert object for Mongoose
+    const generalObj: Record<string, any[]> = {};
     for (const [year, entries] of Object.entries(generalBuckets)) {
       // Sort entries by rank for easier consumption
       entries.sort((a, b) => a.rank - b.rank);
-      generalMap.set(year, entries);
+      generalObj[year] = entries;
     }
 
     await RankingSystem.findOneAndUpdate(
@@ -155,7 +155,7 @@ async function updateRankings() {
       { 
         $set: { 
           name: systemNames[sysSlug],
-          general: generalMap
+          general: generalObj
         } 
       },
       { upsert: true, new: true }

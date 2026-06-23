@@ -21,7 +21,7 @@ const AchievementsSection = dynamic(
 );
 const TeamSection = dynamic(() => import('../sections/TeamSection'));
 const CTASection = dynamic(() => import('../sections/CTASection'));
-const ContactSection = dynamic(() => import('@repo/domain').then(mod => mod.ContactSection));
+import { ContactSection } from '@repo/domain';
 
 export function HomePage({ locale: propsLocale }: { locale?: string }) {
   const [mounted, setMounted] = useState(false);

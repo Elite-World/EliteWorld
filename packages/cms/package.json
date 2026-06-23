@@ -5,7 +5,8 @@
   "exports": {
     ".": "./src/index.ts",
     "./notion": "./src/notion/index.ts",
-    "./actions/newsletter": "./src/actions/newsletter.ts"
+    "./actions/newsletter": "./src/actions/newsletter.ts",
+    "./actions/content": "./src/actions/content.ts"
   },
   "dependencies": {
     "@notionhq/client": "^5.6.0",

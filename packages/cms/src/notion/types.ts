@@ -17,6 +17,7 @@ export interface Article {
   image?: string;
   readTime?: number;
   slug: string;
+  isGated?: boolean;
   recordMap?: any; // For react-notion-x
 }
 

@@ -25,6 +25,60 @@ export class NotionXProvider extends NotionProvider {
         console.log(`[NotionXProvider] Fetching RecordMap for ${article.title} (${article.id}) (Attempt ${i + 1}/${MAX_RETRIES})`);
         const recordMap = await notionX.getPage(article.id);
         
+        // 1. Globally unwrap blocks to fix notion-client double-wrapping
+        // This is necessary because some blocks come wrapped as { value: { value: { type: ... } } }
+        Object.keys(recordMap.block).forEach(key => {
+          const b = recordMap.block[key];
+          if ((b as any)?.value?.value) {
+            recordMap.block[key] = {
+              role: b.role || (b as any).value.role,
+              value: (b as any).value.value
+            };
+          }
+        });
+
+        if (article.isGated) {
+          // Process recordMap to slice out content after the "Password" marker
+          // The page block has the same UUID as the article.id
+          const pageBlockId = Object.keys(recordMap.block).find(id => id.replace(/-/g, '') === article.id.replace(/-/g, ''));
+          if (pageBlockId) {
+            const pageBlock = recordMap.block[pageBlockId];
+            if (pageBlock?.value?.content) {
+              const contentIds: string[] = pageBlock.value.content;
+              let cutoffIndex = -1;
+
+              for (let i = 0; i < contentIds.length; i++) {
+                const childId = contentIds[i];
+                const childBlock = recordMap.block[childId];
+                const blockData = childBlock?.value;
+
+                // Check if it's a quote block containing "Password"
+                if (blockData?.type === 'quote') {
+                  const titleArr = blockData.properties?.title;
+                  if (titleArr && titleArr[0] && titleArr[0][0]) {
+                    const textContent = titleArr[0][0].trim().toLowerCase();
+                    if (textContent === 'password') {
+                      cutoffIndex = i;
+                      break;
+                    }
+                  }
+                }
+              }
+
+              if (cutoffIndex !== -1) {
+                // We found the marker!
+                // 1. Slice the content array
+                const gatedContentIds = contentIds.splice(cutoffIndex); // Removes marker and everything after it
+                
+                // 2. Delete the gated blocks from recordMap so they aren't sent to the client
+                gatedContentIds.forEach(id => {
+                  delete recordMap.block[id];
+                });
+              }
+            }
+          }
+        }
+
         article.recordMap = recordMap;
         return article;
       } catch (error) {

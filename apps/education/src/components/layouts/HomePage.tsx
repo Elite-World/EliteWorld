@@ -10,7 +10,8 @@ import { HeroSection, NavigationItem } from '@repo/ui';
 import dynamic from 'next/dynamic';
 import { Linkedin, Twitter, Instagram, Facebook } from 'lucide-react';
 
-const ContactSection = dynamic(() => import('@repo/domain').then((mod) => mod.ContactSection));
+import { ContactSection } from '@repo/domain';
+
 const AchievementsSection = dynamic(
   () => import('../sections/AchievementsSection'),
 );

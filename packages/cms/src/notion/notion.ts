@@ -304,6 +304,7 @@ export class NotionProvider implements ContentProvider {
         const category = props[P.CATEGORY]?.select?.name || undefined;
         const tags = props[P.TAGS]?.multi_select?.map((t: any) => t.name) || [];
         const solutionIds = props['MongoDB ID']?.multi_select?.map((t: any) => t.name) || [];
+        const password = props['Password']?.rich_text?.[0]?.plain_text || '';
         
         let image = '/images/placeholder.jpg';
         
@@ -331,7 +332,8 @@ export class NotionProvider implements ContentProvider {
             solutionIds,
             image,
             readTime: 5, 
-            content: '' 
+            content: '',
+            isGated: !!password
         };
       } catch (e) {
           console.warn('Failed to map Notion page to Article:', e);

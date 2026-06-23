@@ -11,6 +11,7 @@ export interface Article {
   readTime?: number;
   slug: string;
   recordMap?: any; // For react-notion-x
+  isGated?: boolean;
 }
 
 export interface Category {

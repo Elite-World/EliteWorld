@@ -104,16 +104,16 @@ async function rebuild() {
     for (const [sysSlug, generalBuckets] of Object.entries(systemBuckets)) {
         if (Object.keys(generalBuckets).length === 0) continue;
         
-        const generalMap = new Map();
+        const generalObj: Record<string, any[]> = {};
         for (const [year, entries] of Object.entries(generalBuckets)) {
             entries.sort((a, b) => a.rank - b.rank);
-            generalMap.set(year, entries);
+            generalObj[year] = entries;
         }
 
         await RankingSystem.create({
             name: systemNames[sysSlug],
             slug: sysSlug,
-            general: generalMap
+            general: generalObj
         });
         console.log(`✅ Created RankingSystem: ${systemNames[sysSlug]}`);
     }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Article, Category } from '../../lib/types/content';
 import { HeroSection } from '@repo/ui';
 import { useThemeStore } from '../../lib/stores/useThemeStore';
@@ -9,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { HiArrowLeft, HiArrowRight } from 'react-icons/hi2';
 import { ArticleCard } from '../shared/ArticleCard';
+import { PasswordGate } from '../shared/PasswordGate';
 
 // react-notion-x imports
 import { NotionRenderer } from 'react-notion-x';
@@ -41,10 +42,26 @@ export function ArticlePageX({
 }: BaseLayoutProps) {
   const isDarkStore = useThemeStore((state) => state.isDark);
   const [isMounted, setIsMounted] = useState(false);
+  const [recordMap, setRecordMap] = useState(article?.recordMap);
+  const [isGated, setIsGated] = useState(article?.isGated);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, clientWidth } = scrollContainerRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth * 0.8 : scrollLeft + clientWidth * 0.8;
+      scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
+
+  useEffect(() => {
+    setRecordMap(article?.recordMap);
+    setIsGated(article?.isGated);
+  }, [article]);
 
   const isDark = isMounted ? isDarkStore : false;
 
@@ -65,9 +82,7 @@ export function ArticlePageX({
       />
 
       <div className="container mx-auto px-4 max-w-4xl -mt-20 relative z-10">
-        {/* Ambient Glows */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[120px] -z-10 translate-x-1/2 -translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -z-10 -translate-x-1/2 translate-y-1/4 pointer-events-none opacity-50 dark:opacity-100" />
+        {/* Ambient Glows removed due to Safari rendering bugs with huge blurs */}
 
         {/* Article Card Wrapper */}
         <div
@@ -159,12 +174,11 @@ export function ArticlePageX({
           )}
 
           {/* Content via NotionRenderer */}
-          {article.recordMap && isMounted ? (
+          {recordMap && isMounted ? (
             <div className={isDark ? 'dark-mode' : ''}>
               {(() => {
                 // Fix react-notion-x crash: "Cannot read properties of undefined (reading 'replaceAll')"
                 // This happens when the Notion API returns blocks with { role: "none" } and no value.id
-                const recordMap = article.recordMap;
                 if (recordMap?.block) {
                   Object.keys(recordMap.block).forEach((key) => {
                     const block = recordMap.block[key];
@@ -198,11 +212,22 @@ export function ArticlePageX({
                 .notion-page-icon-wrapper { display: none !important; }
                 .notion-title { display: none !important; }
                 .notion-header { display: none !important; }
+                
+                /* High Specificity Overrides for react-notion-x */
+                div.notion { background: transparent !important; overflow: visible !important; }
+                div.notion-frame { overflow: visible !important; }
+                div.notion-app { overflow: visible !important; }
+                div.notion-page { 
+                  width: 100% !important; 
+                  padding-left: 0 !important; 
+                  padding-right: 0 !important; 
+                  background: transparent !important;
+                }
               `,
                 }}
               />
               <NotionRenderer
-                recordMap={article.recordMap}
+                recordMap={recordMap}
                 fullPage={false}
                 disableHeader={true}
                 darkMode={isDark}
@@ -222,6 +247,18 @@ export function ArticlePageX({
             <div className="text-red-500">
               RecordMap not found. Fetch failed.
             </div>
+          )}
+
+          {/* Password Gate for Premium Content */}
+          {isGated && isMounted && (
+            <PasswordGate
+              articleId={article.id}
+              isDark={isDark}
+              onUnlocked={(fullRecordMap) => {
+                setRecordMap(fullRecordMap);
+                setIsGated(false);
+              }}
+            />
           )}
         </div>
 
@@ -309,15 +346,48 @@ export function ArticlePageX({
                 Discover More
               </span>
             </div>
-            <h3
-              className={cn(
-                'text-3xl md:text-4xl font-black uppercase tracking-tighter mb-12',
-                isDark ? 'text-white' : 'text-gray-900',
-              )}
+            <div className="flex items-end justify-between mb-12">
+              <h3
+                className={cn(
+                  'text-3xl md:text-4xl font-black uppercase tracking-tighter',
+                  isDark ? 'text-white' : 'text-gray-900',
+                )}
+              >
+                You might also like
+              </h3>
+              
+              <div className="hidden md:flex gap-3">
+                <button
+                  onClick={() => scroll('left')}
+                  className={cn(
+                    "p-3 rounded-full border transition hover:scale-105 active:scale-95",
+                    isDark 
+                      ? "border-white/10 text-white/70 hover:bg-white/10 hover:text-white" 
+                      : "border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                  aria-label="Scroll left"
+                >
+                  <HiArrowLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => scroll('right')}
+                  className={cn(
+                    "p-3 rounded-full border transition hover:scale-105 active:scale-95",
+                    isDark 
+                      ? "border-white/10 text-white/70 hover:bg-white/10 hover:text-white" 
+                      : "border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                  aria-label="Scroll right"
+                >
+                  <HiArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div 
+              ref={scrollContainerRef}
+              className="flex gap-6 md:gap-8 overflow-x-auto p-8 -m-8 snap-x snap-mandatory no-scrollbar w-[calc(100%+4rem)] max-w-none"
             >
-              You might also like
-            </h3>
-            <div className="flex gap-6 md:gap-8 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar w-full">
               {relatedArticles.map((related) => (
                 <div 
                   key={related.id} 

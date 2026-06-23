@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { Article, Category } from '../../lib/types/content';
 import { HeroSection } from '@repo/ui';
@@ -34,6 +34,15 @@ export function ArticlePage({
 }: BaseLayoutProps) {
   const isDarkStore = useThemeStore((state) => state.isDark);
   const [isMounted, setIsMounted] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, clientWidth } = scrollContainerRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth * 0.8 : scrollLeft + clientWidth * 0.8;
+      scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     setIsMounted(true);
@@ -273,15 +282,48 @@ export function ArticlePage({
                 Discover More
               </span>
             </div>
-            <h3
-              className={cn(
-                'text-3xl md:text-4xl font-black uppercase tracking-tighter mb-12',
-                isDark ? 'text-white' : 'text-gray-900',
-              )}
+            <div className="flex items-end justify-between mb-12">
+              <h3
+                className={cn(
+                  'text-3xl md:text-4xl font-black uppercase tracking-tighter',
+                  isDark ? 'text-white' : 'text-gray-900',
+                )}
+              >
+                You might also like
+              </h3>
+              
+              <div className="hidden md:flex gap-3">
+                <button
+                  onClick={() => scroll('left')}
+                  className={cn(
+                    "p-3 rounded-full border transition hover:scale-105 active:scale-95",
+                    isDark 
+                      ? "border-white/10 text-white/70 hover:bg-white/10 hover:text-white" 
+                      : "border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                  aria-label="Scroll left"
+                >
+                  <HiArrowLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => scroll('right')}
+                  className={cn(
+                    "p-3 rounded-full border transition hover:scale-105 active:scale-95",
+                    isDark 
+                      ? "border-white/10 text-white/70 hover:bg-white/10 hover:text-white" 
+                      : "border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-gray-900"
+                  )}
+                  aria-label="Scroll right"
+                >
+                  <HiArrowRight className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div 
+              ref={scrollContainerRef}
+              className="flex gap-6 md:gap-8 overflow-x-auto p-8 -m-8 snap-x snap-mandatory no-scrollbar w-[calc(100%+4rem)] max-w-none"
             >
-              You might also like
-            </h3>
-            <div className="flex gap-6 md:gap-8 overflow-x-auto pb-8 snap-x snap-mandatory no-scrollbar w-full">
               {relatedArticles.map((related) => (
                 <div 
                   key={related.id} 
