@@ -159,37 +159,39 @@ function DesktopMenuItem({
 
       {/* Dropdown Menu */}
       {hasChildren && (
-        <div
-          className={cn(
-            'absolute top-full left-0 mt-2 py-3 min-w-[240px]',
-            'rounded-3xl border border-gray-100 dark:border-white/5 overflow-hidden',
-            'transform opacity-0 -translate-y-2 invisible',
-            'group-hover:opacity-100 group-hover:translate-y-0 group-hover:visible',
-            'transition duration-300 shadow-2xl',
-            isTransparent
-              ? 'bg-white/80 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border-gray-200 dark:border-white/10'
-              : 'bg-white dark:bg-[#1A1A1A]',
-          )}
-        >
-          <div className="px-4 py-2 mb-2 border-b border-gray-50 dark:border-white/5">
-            <span className="text-[8px] font-black uppercase tracking-widest text-gray-400">
-              {isZh ? '快捷导航' : 'Navigation'}
-            </span>
+        <div className="absolute top-full left-0 pt-2 invisible group-hover:visible z-50">
+          <div
+            className={cn(
+              'py-3 min-w-[240px]',
+              'rounded-3xl border border-gray-100 dark:border-white/5 overflow-hidden',
+              'transform opacity-0 -translate-y-2',
+              'group-hover:opacity-100 group-hover:translate-y-0',
+              'transition duration-300 shadow-2xl',
+              isTransparent
+                ? 'bg-white/80 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border-gray-200 dark:border-white/10'
+                : 'bg-white dark:bg-[#1A1A1A]',
+            )}
+          >
+            <div className="px-4 py-2 mb-2 border-b border-gray-50 dark:border-white/5">
+              <span className="text-[8px] font-black uppercase tracking-widest text-gray-400">
+                {isZh ? '快捷导航' : 'Navigation'}
+              </span>
+            </div>
+            {item.children?.map((child: NavigationItem) => (
+              <Link
+                key={child.id}
+                href={child.href}
+                className={cn(
+                  'flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition',
+                  isTransparent
+                    ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5',
+                )}
+              >
+                {child.label}
+              </Link>
+            ))}
           </div>
-          {item.children?.map((child: NavigationItem) => (
-            <Link
-              key={child.id}
-              href={child.href}
-              className={cn(
-                'flex items-center gap-3 px-6 py-3 text-[10px] font-black uppercase tracking-widest transition',
-                isTransparent
-                  ? 'text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-blue-600 hover:bg-gray-50 dark:hover:bg-white/5',
-              )}
-            >
-              {child.label}
-            </Link>
-          ))}
         </div>
       )}
     </div>
@@ -312,54 +314,59 @@ export function Navbar({
 
               {/* Domain Switcher Dropdown */}
               {navGateway && Object.keys(navGateway).length > 1 && (
-                <div
-                  className={cn(
-                    'hidden md:block absolute top-full left-0 mt-2 p-2 w-64 bg-white/90 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-3xl shadow-2xl transition duration-300 transform origin-top-left z-110',
-                    isDomainOpen
-                      ? 'opacity-100 translate-y-0 visible'
-                      : 'opacity-0 translate-y-2 invisible group-hover/brand:opacity-100 group-hover/brand:translate-y-0 group-hover/brand:visible',
-                  )}
-                >
-                  <div className="px-4 py-3 border-b border-gray-50 dark:border-white/5 mb-2">
-                    <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">
-                      {isZh ? '关联服务站点' : 'Top-Level Domains'}
-                    </p>
-                  </div>
-                  <div className="space-y-1">
-                    {Object.entries(navGateway).map(([key, item]) => (
-                      <a
-                        key={key}
-                        href={item.href}
-                        className={cn(
-                          'flex items-center gap-3 px-4 py-3 rounded-2xl transition group',
-                          item.name === siteConfig.name
-                            ? 'bg-blue-600/5 dark:bg-blue-600/10'
-                            : 'hover:bg-gray-50 dark:hover:bg-white/5',
-                        )}
-                      >
-                        <div
+                <div className={cn(
+                  "hidden md:block absolute top-full left-0 pt-2 z-110",
+                  isDomainOpen ? "visible" : "invisible group-hover/brand:visible"
+                )}>
+                  <div
+                    className={cn(
+                      'p-2 w-64 bg-white/90 dark:bg-[#1A1A1A]/95 backdrop-blur-xl border border-gray-100 dark:border-white/10 rounded-3xl shadow-2xl transition duration-300 transform origin-top-left',
+                      isDomainOpen
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-2 group-hover/brand:opacity-100 group-hover/brand:translate-y-0',
+                    )}
+                  >
+                    <div className="px-4 py-3 border-b border-gray-50 dark:border-white/5 mb-2">
+                      <p className="text-[8px] font-black uppercase tracking-widest text-gray-400">
+                        {isZh ? '关联服务站点' : 'Top-Level Domains'}
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      {Object.entries(navGateway).map(([key, item]) => (
+                        <a
+                          key={key}
+                          href={item.href}
                           className={cn(
-                            'w-1.5 h-1.5 rounded-full transition-colors',
+                            'flex items-center gap-3 px-4 py-3 rounded-2xl transition group',
                             item.name === siteConfig.name
-                              ? 'bg-blue-600 animate-pulse'
-                              : 'bg-gray-300 dark:bg-gray-700 group-hover:bg-blue-600',
-                          )}
-                        />
-                        <span
-                          className={cn(
-                            'text-[10px] font-black uppercase tracking-widest transition-colors',
-                            item.name === siteConfig.name
-                              ? 'text-blue-600'
-                              : 'text-gray-500 dark:text-gray-400 group-hover:text-blue-600',
+                              ? 'bg-blue-600/5 dark:bg-blue-600/10'
+                              : 'hover:bg-gray-50 dark:hover:bg-white/5',
                           )}
                         >
-                          {item.name}
-                        </span>
-                        {item.name === siteConfig.name && (
-                          <Sparkles className="w-3 h-3 text-blue-600 ml-auto" />
-                        )}
-                      </a>
-                    ))}
+                          <div
+                            className={cn(
+                              'w-1.5 h-1.5 rounded-full transition-colors',
+                              item.name === siteConfig.name
+                                ? 'bg-blue-600 animate-pulse'
+                                : 'bg-gray-300 dark:bg-gray-700 group-hover:bg-blue-600',
+                            )}
+                          />
+                          <span
+                            className={cn(
+                              'text-[10px] font-black uppercase tracking-widest transition-colors',
+                              item.name === siteConfig.name
+                                ? 'text-blue-600'
+                                : 'text-gray-500 dark:text-gray-400 group-hover:text-blue-600',
+                            )}
+                          >
+                            {item.name}
+                          </span>
+                          {item.name === siteConfig.name && (
+                            <Sparkles className="w-3 h-3 text-blue-600 ml-auto" />
+                          )}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
