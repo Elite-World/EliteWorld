@@ -31,11 +31,16 @@ export interface HighEndPackage {
   target: string;
 }
 
-export interface DIYPackage {
+export interface ALaCarteService {
   id: string;
   title: string;
   price: string;
   description: string;
+}
+
+export interface RegionalConsultingData {
+  mentors: MentorTeam[];
+  packages: HighEndPackage[];
 }
 
 export const getMentorTeams = (locale: string): MentorTeam[] => {
@@ -141,7 +146,7 @@ export const getHighEndPackages = (locale: string): HighEndPackage[] => {
   ];
 };
 
-export const getDiyPackages = (locale: string): DIYPackage[] => {
+export const getALaCarteServices = (locale: string): ALaCarteService[] => {
   const isZh = locale === 'zh';
   return [
     {
@@ -169,4 +174,38 @@ export const getDiyPackages = (locale: string): DIYPackage[] => {
       description: isZh ? '专业导师指导在线申请流程，创建时间表并管理具体要求，提高效率。' : 'Professional mentors guide the online application process, creating a timeline and managing specific requirements for efficiency.',
     },
   ];
+};
+
+export const getRegionalConsultingData = (locale: string, countryId: string): RegionalConsultingData => {
+  const allMentors = getMentorTeams(locale);
+  const allPackages = getHighEndPackages(locale);
+
+  let mentors: MentorTeam[] = [];
+  let packages: HighEndPackage[] = [];
+
+  switch (countryId) {
+    case 'usa':
+    case 'canada':
+      mentors = allMentors.filter(m => m.id === 'gaotong');
+      packages = allPackages.filter(p => p.id === 'shuzhuo');
+      break;
+    case 'uk':
+    case 'australia':
+    case 'new-zealand':
+      mentors = allMentors.filter(m => m.id === 'taozhou');
+      packages = allPackages.filter(p => p.id === 'taozhou_uk');
+      break;
+    case 'singapore':
+    case 'hong-kong':
+    case 'malaysia':
+      mentors = allMentors.filter(m => m.id === 'wangyi');
+      packages = allPackages.filter(p => p.id === 'wangyi_asia');
+      break;
+    default:
+      mentors = allMentors;
+      packages = allPackages;
+      break;
+  }
+
+  return { mentors, packages };
 };

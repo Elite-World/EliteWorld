@@ -3,6 +3,7 @@
 import React from 'react';
 import { HeroSection } from '@repo/ui';
 import { DestinationInfo, MustKnowItem } from '@repo/apps-config/content/education/destinations';
+import { RegionalConsultingData } from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 import { Landmark, Wallet, Briefcase, Heart, ArrowRight, Building2, Users, BookOpen, GraduationCap, Trophy, Rocket, Globe } from 'lucide-react';
 import Link from 'next/link';
 
@@ -18,7 +19,7 @@ const iconMap = {
   Globe
 };
 
-export function DestinationTemplate({ data, locale = 'en' }: { data: DestinationInfo; locale?: string }) {
+export function DestinationTemplate({ data, regionalConsulting, locale = 'en' }: { data: DestinationInfo; regionalConsulting?: RegionalConsultingData; locale?: string }) {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-[#0a0a0a]">
       {/* Hero Section */}
@@ -124,11 +125,71 @@ export function DestinationTemplate({ data, locale = 'en' }: { data: Destination
             </div>
           )}
 
+
+
+          {/* High-End Packages Section */}
+          {regionalConsulting && regionalConsulting.packages.length > 0 && (
+            <div className="mt-24">
+              <div className="text-center max-w-3xl mx-auto mb-16">
+                <h2 className="text-3xl md:text-4xl font-black text-gray-900 dark:text-white uppercase tracking-tighter mb-4">
+                  {locale === 'zh' ? '专属高端申请方案' : 'Premium Admissions Packages'}
+                </h2>
+                <div className="h-1 w-20 bg-linear-to-r from-blue-600 to-purple-600 mx-auto rounded-full" />
+              </div>
+              <div className="flex flex-wrap justify-center gap-8">
+                {regionalConsulting.packages.map((pkg) => (
+                  <div
+                    key={pkg.id}
+                    className="w-full md:w-[calc(50%-1rem)] max-w-lg bg-linear-to-br from-white to-gray-50 dark:from-[#1a1a1a] dark:to-[#111] rounded-[2.5rem] p-10 shadow-xl hover:shadow-2xl transition duration-300 border border-gray-100 dark:border-white/10 relative overflow-hidden group"
+                  >
+                    <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+                      <Trophy className="w-32 h-32 text-blue-600" />
+                    </div>
+                    <div className="inline-block px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-bold tracking-wide uppercase mb-6">
+                      {pkg.region}
+                    </div>
+                    <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-4 pr-8">
+                      {pkg.title}
+                    </h3>
+                    <div className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600 text-4xl font-black tracking-tight mb-10">
+                      {pkg.price}
+                      <span className="text-base text-gray-400 dark:text-gray-500 font-medium tracking-normal ml-2">
+                        {locale === 'zh' ? '起' : 'Starting at'}
+                      </span>
+                    </div>
+
+                    <div className="space-y-5">
+                      {[
+                        { label: locale === 'zh' ? '目标' : 'Target', value: pkg.target },
+                        { label: locale === 'zh' ? '申请数量' : 'Schools', value: pkg.schoolCount },
+                        { label: locale === 'zh' ? '加申学校' : 'Extra School', value: pkg.extraPrice },
+                        { label: locale === 'zh' ? '服务周期' : 'Validity', value: pkg.validity },
+                      ].map((feature, i) => (
+                        <div key={i} className="flex justify-between items-center border-b border-gray-100 dark:border-white/5 pb-4">
+                          <span className="text-gray-500 dark:text-gray-400 font-medium">
+                            {feature.label}
+                          </span>
+                          <span className="font-bold text-gray-900 dark:text-white text-right max-w-[60%]">
+                            {feature.value}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    <button className="w-full mt-10 bg-gray-900 dark:bg-white text-white dark:text-gray-900 py-4 rounded-2xl font-black text-lg hover:bg-blue-600 dark:hover:bg-blue-400 hover:text-white transition-colors duration-300">
+                      {locale === 'zh' ? '预约咨询' : 'Book a Strategy Call'}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* CTA Section */}
           <div className="mt-24 text-center">
             <div className="inline-block p-1 rounded-full bg-linear-to-r from-blue-600 to-purple-600">
               <Link 
-                href={`/universities?country=${encodeURIComponent(data.name)}`}
+                href={`/universities?country=${encodeURIComponent(data.englishName)}`}
                 className="flex items-center gap-4 px-8 py-4 rounded-full bg-white dark:bg-[#0a0a0a] hover:bg-transparent dark:hover:bg-transparent transition duration-300 group"
               >
                 <span className="font-black text-gray-900 dark:text-white group-hover:text-white uppercase tracking-widest text-sm">

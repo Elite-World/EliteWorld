@@ -10,6 +10,7 @@ export interface MustKnowItem {
 export interface DestinationInfo {
   id: string;
   name: string;
+  englishName: string;
   tagline: string;
   description: string;
   heroImage: string;
@@ -29,6 +30,7 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'usa',
       name: isZh ? '美国' : 'United States',
+      englishName: 'United States',
       tagline: isZh ? '充满机遇与创新的土地' : 'The Land of Opportunity and Innovation',
       description: isZh
         ? '常春藤盟校和全球最顶尖科研机构的所在地。美国提供无与伦比的学术灵活性、前沿的技术以及多元的校园文化。'
@@ -112,7 +114,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'uk',
       name: isZh ? '英国' : 'United Kingdom',
-      tagline: isZh ? '数世纪积淀的学术殿堂' : 'Centuries of Academic Excellence',
+      englishName: 'United Kingdom',
+      tagline: isZh ? '几个世纪以来的学术卓越' : 'Centuries of Academic Excellence',
       description: isZh
         ? '在拥有数百年历史的学府深造。英国的学位学制通常较短（本科 3 年，硕士 1 年），为您节省宝贵的时间和学费支出。'
         : "Study at institutions with centuries of history. UK degrees are typically shorter (3-year Bachelor's, 1-year Master's), saving you both time and tuition fees.",
@@ -195,7 +198,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'canada',
       name: isZh ? '加拿大' : 'Canada',
-      tagline: isZh ? '包容多元且风光地图' : 'Welcoming, Diverse, and Beautiful',
+      englishName: 'Canada',
+      tagline: isZh ? '包容的社会与世界级教育' : 'Inclusive Society and World-Class Education',
       description: isZh
         ? '以壮丽的自然风光、极高的社会安全度以及极其包容的移民政策而闻名。加拿大提供世界一流的教育，并拥有清晰的永久居民申请通道。'
         : 'Known for its incredible natural beauty, safety, and highly welcoming immigration policies. Canada offers a world-class education with a clear pathway to permanent residency.',
@@ -278,7 +282,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'australia',
       name: isZh ? '澳大利亚' : 'Australia',
-      tagline: isZh ? '南半球的世界一流教育' : 'World-Class Education Down Under',
+      englishName: 'Australia',
+      tagline: isZh ? '高品质生活与顶尖教育的结合' : 'High Quality of Life meets Top Education',
       description: isZh
         ? '充沛的阳光、迷人的海滩和戏谑的生活方式，与高排名的顶尖学府完美融合。澳大利亚是全球科研与创新的重镇。'
         : 'Sunshine, stunning beaches, and a relaxed lifestyle paired with high-ranking universities. Australia is a powerhouse in global research and innovation.',
@@ -361,7 +366,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'new-zealand',
       name: isZh ? '新西兰' : 'New Zealand',
-      tagline: isZh ? '冒险精神与学术卓越的融合' : 'Adventure and Academic Excellence',
+      englishName: 'New Zealand',
+      tagline: isZh ? '独特的自然风光与卓越教育' : 'Unique Landscapes and Excellent Education',
       description: isZh
         ? '一个和平、景色壮美且拥有稳健教育体系的国家。其所有的大学均位列全球前 3% 强。'
         : 'A peaceful, incredibly scenic country with a robust education system. All of its universities rank in the global top 3%.',
@@ -444,7 +450,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'singapore',
       name: isZh ? '新加坡' : 'Singapore',
-      tagline: isZh ? '亚洲的教育枢纽' : 'The Educational Hub of Asia',
+      englishName: 'Singapore',
+      tagline: isZh ? '亚洲通往世界的门户' : 'Asia\'s Gateway to the World',
       description: isZh
         ? '一个活力四射、连接东西方的超现代城市国家。新加坡拥有极严苛的学术标准，并且是重要的全球金融中心。'
         : 'A dynamic, hyper-modern city-state bridging East and West. Singapore offers rigorous academic standards and is a major global financial hub.',
@@ -527,7 +534,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'hong-kong',
       name: isZh ? '香港' : 'Hong Kong',
-      tagline: isZh ? '东西方文化的交汇之地' : 'Where East Meets West',
+      englishName: 'Hong Kong',
+      tagline: isZh ? '东西方文化的交汇点' : 'Where East Meets West',
       description: isZh
         ? '一个节奏飞快、活力四射的国际大都市，提供世界一流的高校，也是深入探寻亚洲及中国内地市场的独特窗口。'
         : 'A fast-paced, electrifying metropolis offering world-class universities and a unique vantage point into the Asian market.',
@@ -610,7 +618,8 @@ export const getDestinations = (locale: string): DestinationInfo[] => {
     {
       id: 'malaysia',
       name: isZh ? '马来西亚' : 'Malaysia',
-      tagline: isZh ? '卓越教育品质与极佳性价比' : 'High Quality, Incredible Value',
+      englishName: 'Malaysia',
+      tagline: isZh ? '高性价比的多元文化中心' : 'Cost-Effective Multicultural Hub',
       description: isZh
         ? '一个快速成长的教育枢纽，以远低于西方国家的开销，提供众多海外名校的直属分校以及优质的本地高等院校。'
         : 'A rapidly growing educational hub offering foreign university branch campuses and high-quality local institutions at a fraction of Western costs.',

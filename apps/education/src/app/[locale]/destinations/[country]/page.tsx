@@ -1,4 +1,5 @@
 import { getDestinationById } from '@repo/apps-config/content/education/destinations';
+import { getRegionalConsultingData } from '@repo/apps-config/content/education/pricing/admissionsConsulting';
 import { DestinationTemplate } from '@/components/destination/DestinationTemplate';
 import { notFound } from 'next/navigation';
 
@@ -20,5 +21,7 @@ export default async function DestinationPage({ params }: { params: Promise<{ co
     notFound();
   }
 
-  return <DestinationTemplate data={data} locale={locale} />;
+  const regionalConsulting = getRegionalConsultingData(locale, country);
+
+  return <DestinationTemplate data={data} regionalConsulting={regionalConsulting} locale={locale} />;
 }

@@ -1,6 +1,6 @@
 'use client';;
 import React, { useState, useMemo, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Search, MapPin } from 'lucide-react';
 import DirectoryCard from './DirectoryCard';
 
@@ -18,13 +18,14 @@ function UniversityDirectoryContent({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCountry, setSelectedCountry] = useState(initialCountry);
 
+  const router = useRouter();
+  const pathname = usePathname();
+
   // Sync state if URL changes (e.g. back navigation)
   useEffect(() => {
-    const countryParam = searchParams.get('country');
-    if (countryParam !== null && countryParam !== selectedCountry) {
-      setSelectedCountry(countryParam);
-    }
-  }, [searchParams, selectedCountry]);
+    const countryParam = searchParams.get('country') || '';
+    setSelectedCountry(countryParam);
+  }, [searchParams]);
   const [visibleCount, setVisibleCount] = useState(50);
 
   const countries = useMemo(() => {
@@ -78,8 +79,18 @@ function UniversityDirectoryContent({
             <select
               value={selectedCountry}
               onChange={(e) => {
-                setSelectedCountry(e.target.value);
+                const newCountry = e.target.value;
+                setSelectedCountry(newCountry);
                 setVisibleCount(50);
+                
+                // Update URL to match state
+                const params = new URLSearchParams(searchParams.toString());
+                if (newCountry) {
+                  params.set('country', newCountry);
+                } else {
+                  params.delete('country');
+                }
+                router.replace(`${pathname}?${params.toString()}`, { scroll: false });
               }}
               className="w-full pl-12 pr-10 py-4 bg-gray-50 dark:bg-zinc-800/50 border-0 rounded-2xl appearance-none focus:ring-2 focus:ring-blue-500/20 focus:bg-white dark:focus:bg-zinc-800 transition outline-none"
             >
