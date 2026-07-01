@@ -9,7 +9,7 @@ const DATA_FILE = path.join(__dirname, '../forwardpathway_data.json');
 
 async function scrape() {
   console.log('🚀 Starting Forward Pathway API Scraper (Fast Fetch Mode)...');
-  const browser = await puppeteer.launch({ headless: false });
+  const browser = await puppeteer.launch({ headless: true });
   const page = await browser.newPage();
   
   let ajaxBody = '';

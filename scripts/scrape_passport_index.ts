@@ -11,7 +11,7 @@ dotenv.config({ path: path.resolve(process.cwd(), 'apps/immigration/.env.local')
 import dbConnect from '../packages/domain/src/lib/mongoose';
 import { Country, JurisdictionProfile } from '../packages/domain/src/data/models';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 async function scrapePassportRankings() {
   console.log('🌍 Fetching latest passport rankings...');
@@ -81,7 +81,7 @@ async function scrapePassportRankings() {
   `;
 
   console.log('📧 Sending email report via Resend...');
-  if (process.env.RESEND_API_KEY) {
+  if (resend) {
     try {
       await resend.emails.send({
         from: 'Elite World Automation <onboarding@resend.dev>',
