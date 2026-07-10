@@ -7,8 +7,9 @@ description: Create a new UI component (`src/components/[Name].tsx`) following s
     - Identify its purpose and props.
 
 2.  **Scaffold the File (`src/components/[Name].tsx`)**:
+    - **Interactivity**:
+      - Default to React Server Components (RSC). Do NOT add `'use client';` unless the component requires event listeners (e.g., `onClick`), state hooks (`useState`, `useEffect`), or browser-only APIs.
     - **Imports**:
-      - `'use client';` (Default to client components for interaction).
       - `import React from 'react';`
       - `import { cn } from '@/lib/utils';` (or equivalent).
       - `import { IconName } from 'lucide-react';` (Use Lucide for all icons).
@@ -28,8 +29,6 @@ description: Create a new UI component (`src/components/[Name].tsx`) following s
 3.  **Template Code**:
 
     ```tsx
-    'use client';
-
     import React from 'react';
     import { cn } from '@/lib/utils'; // Or equivalent
     import { Sparkles } from 'lucide-react';

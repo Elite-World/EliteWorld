@@ -1,3 +1,8 @@
+---
+name: pre-flight-performance-scrub
+description: Performs an automated performance audit, scrubs large dependencies, inline CSS optimizations, animates properties using only transform/opacity, and optimizes third-party scripts.
+---
+
 # Skill: Pre-Flight Performance Scrub
 
 Execute the following sequence on the current codebase:

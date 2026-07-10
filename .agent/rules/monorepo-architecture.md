@@ -8,14 +8,14 @@ You must strictly adhere to these rules when creating new apps, installing depen
 
 ## 1. Share Logic, Not Dependencies
 
-- **DEPENDENCY ISOLATION**: Apps (e.g., `apps/coursehub`) MUST explicitly declare their own runtime dependencies (`react`, `framer-motion`, `tailwindcss`) in their `package.json`.
+- **DEPENDENCY ISOLATION**: Apps (e.g., `apps/coursehub`) MUST explicitly declare their own runtime dependencies (`react`, `lucide-react`, `tailwindcss`) in their `package.json`.
 - **NO ROOT DEPENDENCIES**: NEVER rely on the root `package.json` to provide runtime libraries for apps. The root is ONLY for dev tools (`turbo`, `prettier`, `husky`).
 - **NO PHANTOM DEPENDENCIES**: Do not import a library in an app unless it is in that app's `package.json`, even if it works locally due to hoisting.
 
 ## 2. Shared Packages (`packages/*`)
 
 - **DECOUPLING**: Shared packages (`@repo/ui`) must NOT force specific dependency versions on consumers.
-- **PEER DEPENDENCIES**: Prefer using `peerDependencies` for libraries like `react` or `framer-motion` in shared packages to allow apps to control the version.
+- **PEER DEPENDENCIES**: Prefer using `peerDependencies` for libraries like `react` or `lucide-react` in shared packages to allow apps to control the version.
 - **NO CIRCULAR IMPORTS**: A shared package MUST NEVER import from an App.
 
 ## 3. Implementation Guidelines
@@ -30,7 +30,6 @@ All workspaces must adhere to these exact versions to prevent duplicate instance
 - **React**: `19.0.0` (Use this EXACT version to match Root Override)
 - **Next.js**: `16.1.x`
 - **Tailwind CSS**: `v4.x` (Native, NO Autoprefixer)
-- **Framer Motion**: `12.x`
 - **Lucide React**: `0.563.x`
 
 If you need to upgrade a core library, you MUST upgrade it across the entire Monorepo at once using:

@@ -30,10 +30,16 @@ If a new app is added, use the next available port (**3005+**).
 
 ## 3. Configuration Syncing
 
-- **Tailwind**: All apps must use `postcss.config.mjs` with `@tailwindcss/postcss`. No `tailwind.config.ts` unless specific custom plugins are needed (Legacy support).
+- **Tailwind**: All apps must use `postcss.config.mjs` with `@tailwindcss/postcss`. Do NOT use `tailwind.config.ts` or `tailwind.config.js`. Under Tailwind CSS v4, all theme configurations (custom colors, fonts, shadows, transitions, etc.) must be declared in the main CSS file using the `@theme` directive.
 - **TypeScript**: Apps MUST extend the base config. Always prefer path mappings via `@repo/*`.
 
 ## 4. Content Sources
 
 - **Static Assets**: Prefer placing standard icons/logos in `@repo/ui/src/assets` if they are used by >1 app.
 - **Environment Variables**: Use `NEXT_PUBLIC_` prefix for any variable needed on the client. Keep `.env.local` strictly for secrets.
+
+## 5. Repository Hygiene (Scratchpads & Test Files)
+
+- **Scratch Files**: Always run temporary/test scripts (like one-off DB query tests, third-party API probes, or playground scripts) inside a dedicated `scratch/` folder.
+- **Git Hygiene**: Add all temporary playground files and scratch folders to your local `.gitignore`. NEVER commit scratchpads, mock datasets, or conceptual draft schemas to git unless explicitly documented as a production seed script under `scripts/`.
+- **CLI Script Hygiene**: All runner or seed scripts in the `scripts/` folder that connect to MongoDB must explicitly call `process.exit(0)` or `await mongoose.disconnect()` upon completion to prevent CI/CD jobs and terminals from hanging.

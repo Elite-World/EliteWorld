@@ -34,6 +34,7 @@ Use this workflow when adding a new business service (e.g., "Visa Consulting") t
 - Import the static data and the Layout component.
 - Keep the page as a Server Component if possible, passing data to the "Client Component" Layout.
 
-## 6. Verify Design
+## 6. Verify Design & Monorepo Build
 
 - Run `/design-critique` on the new component to ensure it meets the Elite standards.
+- Run `npm run lint` and `npx turbo build` (or build the specific app using `npx turbo build --filter=[app]`) to verify that TypeScript compilation, imports, exports, and path mappings compile successfully before declaring the task complete.

@@ -1,3 +1,8 @@
+---
+name: content-architect
+description: Standardized method for designing, implementing, and maintaining complex business data schemas (pricing, school hierarchies, etc.) in the Elite World monorepo.
+---
+
 # Content Architect Skill
 
 This skill provides a structured method for designing, implementing, and maintaining complex business data (e.g., pricing tables, school hierarchies, service workflows) in the Elite World monorepo.
