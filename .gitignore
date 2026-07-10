@@ -46,3 +46,9 @@ next-env.d.ts
 # docker
 .docker/
 docker-compose.override.yml
+
+# scratchpads & developer tests
+/scratch/
+/scratch.js
+/test-*.js
+/unmatched_universities.csv
