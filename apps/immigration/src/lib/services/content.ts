@@ -8,14 +8,16 @@ export function getProviderForSection(sectionSlug: string, locale: string = 'en'
   const config = getSectionConfig(sectionSlug);
   if (!config) return null;
 
+  const normalizedLocale = ['zh', 'cn', 'tw', 'hk'].includes(locale.toLowerCase()) ? 'zh' : 'en';
+
   switch (config.engine) {
     case 'markdown':
       if (!config.config.folderPath) throw new Error(`Section ${sectionSlug} is missing folderPath configuration`);
       return new MarkdownProvider({ folderPath: config.config.folderPath });
     case 'notion':
-      return new NotionProvider({ databaseId: config.config.databaseId, locale });
+      return new NotionProvider({ databaseId: config.config.databaseId, locale: normalizedLocale });
     case 'notion-x':
-      return new NotionXProvider({ databaseId: config.config.databaseId, locale });
+      return new NotionXProvider({ databaseId: config.config.databaseId, locale: normalizedLocale });
     default:
       return null;
   }

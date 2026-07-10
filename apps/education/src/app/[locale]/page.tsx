@@ -9,13 +9,14 @@ export async function generateStaticParams() {
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const normalizedLocale = ['zh', 'cn', 'tw', 'hk'].includes(locale.toLowerCase()) ? 'zh' : 'en';
   
-  const insightsProvider = getProviderForSection('insights', locale);
+  const insightsProvider = getProviderForSection('insights', normalizedLocale);
   const articles = insightsProvider ? await insightsProvider.getArticles() : [];
 
-  const tipsProvider = getProviderForSection('tips', locale);
+  const tipsProvider = getProviderForSection('tips', normalizedLocale);
   const tips = tipsProvider ? await tipsProvider.getArticles() : [];
 
-  return <HomePage articles={articles} tips={tips} locale={locale} />;
+  return <HomePage articles={articles} tips={tips} locale={normalizedLocale} />;
 }
 

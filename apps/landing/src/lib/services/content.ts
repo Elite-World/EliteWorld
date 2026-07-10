@@ -4,9 +4,11 @@ import { ContentProvider, NotionProvider, MarkdownProvider, NotionXProvider } fr
 import { contentSections, ContentSection, getSectionConfig } from '@repo/apps-config/landing/content-sources';
 
 // Factory to create provider from config
-export function getProviderForSection(sectionSlug: string, locale?: string): ContentProvider | null {
+export function getProviderForSection(sectionSlug: string, locale: string = 'en'): ContentProvider | null {
   const config = getSectionConfig(sectionSlug);
   if (!config) return null;
+
+  const normalizedLocale = ['zh', 'cn', 'tw', 'hk'].includes(locale.toLowerCase()) ? 'zh' : 'en';
 
   switch (config.engine) {
     case 'markdown':
@@ -14,9 +16,9 @@ export function getProviderForSection(sectionSlug: string, locale?: string): Con
       // Markdown provider could support locale later
       return new MarkdownProvider({ folderPath: config.config.folderPath });
     case 'notion':
-      return new NotionProvider({ databaseId: config.config.databaseId, locale });
+      return new NotionProvider({ databaseId: config.config.databaseId, locale: normalizedLocale });
     case 'notion-x':
-      return new NotionXProvider({ databaseId: config.config.databaseId, locale });
+      return new NotionXProvider({ databaseId: config.config.databaseId, locale: normalizedLocale });
     default:
       return null;
   }

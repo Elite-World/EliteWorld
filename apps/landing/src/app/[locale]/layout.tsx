@@ -14,7 +14,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'] || siteConfig['en'];
+  const normalizedLocale = ['zh', 'cn', 'tw', 'hk'].includes(locale.toLowerCase()) ? 'zh' : 'en';
+  const currentSiteConfig = siteConfig[normalizedLocale] || siteConfig['en'];
   return {
     title: currentSiteConfig.name,
     description: currentSiteConfig.description,
@@ -32,13 +33,14 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const navigation = await getNavigationData(locale);
-  const localizedNavGateway = getNavGateway(locale);
+  const normalizedLocale = ['zh', 'cn', 'tw', 'hk'].includes(locale.toLowerCase()) ? 'zh' : 'en';
+  const navigation = await getNavigationData(normalizedLocale);
+  const localizedNavGateway = getNavGateway(normalizedLocale);
 
-  const currentSiteConfig = siteConfig[locale as 'en' | 'zh'] || siteConfig['en'];
+  const currentSiteConfig = siteConfig[normalizedLocale] || siteConfig['en'];
 
   return (
-    <html lang={locale} className="dark" suppressHydrationWarning>
+    <html lang={normalizedLocale} className="dark" suppressHydrationWarning>
       <body className="antialiased" suppressHydrationWarning>
         <CoreAppLayout
           navigation={navigation}
