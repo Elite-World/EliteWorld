@@ -7,3 +7,4 @@ export * from './components/UserMenu';
 export * from './components/ui/Button';
 export * from './types';
 export * from './components/Tabs';
+export * from './components/ui/SegmentedControl';
