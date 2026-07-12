@@ -91,7 +91,8 @@ export function Footer({
   return (
     <footer
       className={cn(
-        'bg-white dark:bg-[#0a0a0a] border-t border-gray-100 dark:border-white/5 pt-20 pb-12 transition-colors duration-300',
+        'bg-white dark:bg-[#0a0a0a] border-t border-gray-100 dark:border-white/5 pb-12 transition-colors duration-300',
+        showHiddenElements && 'pt-20', 
         className,
       )}
     >
@@ -191,6 +192,7 @@ export function Footer({
         </div>
         )}
 
+        {/* real bottom */}
         <div className="pt-12 border-t border-gray-100 dark:border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
           <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em]">
             © {currentYear} {siteConfig.name} | {isZh ? '版权所有' : 'ALL RIGHTS RESERVED.'}
