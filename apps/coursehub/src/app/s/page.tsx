@@ -9,7 +9,7 @@ import { CourseCategory } from '@/types';
 import { geocodeLocation, getDistance } from '@/utils/geo';
 import { Filter, Trophy, X, ChevronLeft, ChevronRight, Map, Code, Brush, Briefcase, Languages, Tent, LayoutGrid } from 'lucide-react';
 import { MapBounds } from '@/components/SearchMapInner';
-import { Drawer } from 'vaul';
+import { Drawer, DrawerPortal, DrawerContent, DrawerTitle, Sheet, SheetPortal, SheetContent, SheetTitle } from '@repo/ui';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 
 const categoryIcons: Record<string, React.ElementType> = {
@@ -294,7 +294,7 @@ function SearchResultsContent() {
 
               {/* Right Pane: Sticky Map */}
               <div className="w-[45%] shrink-0 pb-8">
-                <div className="sticky top-[155px] h-[calc(100vh-185px)]">
+                <div className="sticky top-38.75 h-[calc(100vh-185px)]">
                   <SearchMap
                     courses={filteredCourses}
                     center={mapCenter}
@@ -307,7 +307,7 @@ function SearchResultsContent() {
             <>
               {/* MOBILE LAYOUT */}
               {/* Map as fixed full background below filter bar */}
-              <div className="fixed inset-0 top-[129px] z-0">
+              <div className="fixed inset-0 top-32.25 z-0">
                 <SearchMap
                   courses={filteredCourses}
                   center={mapCenter}
@@ -316,8 +316,8 @@ function SearchResultsContent() {
                 />
               </div>
 
-              {/* Vaul Bottom Sheet Drawer for Cards */}
-              <Drawer.Root
+              {/* Premium Shared Drawer for Cards */}
+              <Drawer
                 snapPoints={[0.15, 0.5, 1]}
                 activeSnapPoint={snap}
                 setActiveSnapPoint={setSnap}
@@ -325,54 +325,36 @@ function SearchResultsContent() {
                 dismissible={false}
                 modal={false}
               >
-                <Drawer.Portal>
-                  <Drawer.Content className="fixed bottom-0 left-0 right-0 z-50 flex flex-col rounded-t-[32px] bg-white dark:bg-[#1A1A1A] outline-none shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.7)] border border-gray-200 dark:border-white/10 h-full max-h-[calc(100vh-129px)] pointer-events-auto">
-                    <Drawer.Title className="sr-only">Experiences in map area</Drawer.Title>
-                    {/* Drawer Handle fixed at top */}
-                    <div 
-                      className="pt-4 pb-2 bg-white dark:bg-[#1A1A1A] rounded-t-[32px] shrink-0 cursor-grab active:cursor-grabbing"
-                      onClick={() => {
-                        if (snap === 0.15) setSnap(0.5);
-                        else if (snap === 0.5) setSnap(1);
-                        else setSnap(0.15);
-                      }}
-                    >
-                      <div className="mx-auto w-12 h-1.5 rounded-full bg-gray-300 dark:bg-white/20 hover:bg-gray-400 transition-colors" />
-                    </div>
-                    {/* Scrollable content below handle */}
-                    <div className="flex-1 px-6 pb-6 flex flex-col overflow-y-auto">
+                <DrawerPortal>
+                  <DrawerContent className="h-full max-h-[calc(100vh-129px)] pointer-events-auto shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.3)] dark:shadow-[0_-20px_60px_-15px_rgba(0,0,0,0.7)]">
+                    <DrawerTitle className="sr-only">Experiences in map area</DrawerTitle>
+                    <div className="flex-1 px-6 pb-6 pt-4 flex flex-col overflow-y-auto">
                       {renderCardsContent()}
                     </div>
-                  </Drawer.Content>
-                </Drawer.Portal>
-              </Drawer.Root>
+                  </DrawerContent>
+                </DrawerPortal>
+              </Drawer>
             </>
           )}
         </div>
       </div>
 
-      {/* Slide-out / Modal for Filters */}
-      <div
-        className={`fixed inset-0 z-50 flex justify-end transition duration-500 ${isFilterModalOpen ? 'visible' : 'invisible pointer-events-none'}`}
-      >
-        <div
-          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-500 ${isFilterModalOpen ? 'opacity-100' : 'opacity-0'}`}
-          onClick={() => setIsFilterModalOpen(false)}
-        />
-        <div
-          className={`relative w-full max-w-md bg-white dark:bg-[#1A1A1A] h-full shadow-2xl p-8 overflow-y-auto border-l border-white/10 transition-transform duration-500 ease-[cubic-bezier(0.32,0.72,0,1)] ${isFilterModalOpen ? 'translate-x-0' : 'translate-x-full'}`}
-        >
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
-              Advanced <span className="text-blue-600">Filters</span>
-            </h2>
-            <button
-              onClick={() => setIsFilterModalOpen(false)}
-              className="p-2 bg-gray-100 dark:bg-white/5 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
-            >
-              <X className="w-5 h-5 text-gray-500" />
-            </button>
-          </div>
+      {/* Headless UI Sheet for Filters */}
+      <Sheet open={isFilterModalOpen} onOpenChange={setIsFilterModalOpen}>
+        <SheetPortal>
+          <SheetContent className="overflow-y-auto pb-32 pt-8">
+            <SheetTitle className="sr-only">Advanced Filters</SheetTitle>
+            <div className="flex items-center justify-between mb-10">
+              <h2 className="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                Advanced <span className="text-blue-600">Filters</span>
+              </h2>
+              <button
+                onClick={() => setIsFilterModalOpen(false)}
+                className="p-2 bg-gray-100 dark:bg-white/5 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors"
+              >
+                <X className="w-5 h-5 text-gray-500" />
+              </button>
+            </div>
 
           <div className="space-y-10">
             <div>
@@ -426,16 +408,17 @@ function SearchResultsContent() {
             </div>
           </div>
 
-          <div className="absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-white dark:from-[#1A1A1A] to-transparent">
+          <div className="absolute bottom-0 left-0 right-0 p-8 bg-linear-to-t from-white dark:from-[#1A1A1A] to-transparent pointer-events-none">
             <button
               onClick={() => setIsFilterModalOpen(false)}
-              className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-widest rounded-2xl shadow-xl hover:scale-[1.02] transition-transform"
+              className="w-full py-4 bg-gray-900 dark:bg-white text-white dark:text-black font-black uppercase tracking-widest rounded-2xl shadow-xl hover:scale-[1.02] transition-transform pointer-events-auto"
             >
               Show {filteredCourses.length} Experiences
             </button>
           </div>
-        </div>
-      </div>
+          </SheetContent>
+        </SheetPortal>
+      </Sheet>
     </div>
   );
 }

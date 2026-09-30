@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import NextImage from 'next/image';
 import { Course } from '../types';
 import { useAppContext } from '../context/AppContext';
-import { ChevronLeft, ChevronRight, Heart, Star } from 'lucide-react';
+import { Heart, Star } from 'lucide-react';
+import { ScaleOnTap, SwipeCarousel } from '@repo/ui';
 
 interface CourseCardProps {
   course: Course;
@@ -13,7 +13,6 @@ interface CourseCardProps {
 }
 
 const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const {
     currentUser,
     isInWishlist,
@@ -22,21 +21,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
     getCourseOwner,
   } = useAppContext();
   const owner = getCourseOwner(course);
-
-  const nextImage = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex((prevIndex) => (prevIndex + 1) % course.images.length);
-  };
-
-  const prevImage = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setCurrentImageIndex(
-      (prevIndex) =>
-        (prevIndex - 1 + course.images.length) % course.images.length,
-    );
-  };
 
   const handleWishlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -53,35 +37,13 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
   const inWishlist = isInWishlist(course.id);
 
   return (
-    <Link
-      href={`/course/${course.id}`}
-      className={`group block cursor-pointer ${className}`}
-    >
-      <div className="relative aspect-20/19 w-full overflow-hidden rounded-xl bg-gray-200 dark:bg-[#222222]">
-        <NextImage
-          src={course.images[currentImageIndex]}
-          alt={course.title}
-          fill
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-
-        {/* Navigation Arrows */}
-        {course.images.length > 1 && (
-          <>
-            <button
-              onClick={prevImage}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/90 border border-black/5 text-black rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-sm hover:scale-105"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              onClick={nextImage}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/90 border border-black/5 text-black rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:bg-white shadow-sm hover:scale-105"
-            >
-              <ChevronRight size={16} />
-            </button>
-          </>
-        )}
+    <ScaleOnTap className={className}>
+      <Link
+        href={`/course/${course.id}`}
+        className="group block cursor-pointer"
+      >
+        <div className="relative aspect-20/19 w-full overflow-hidden rounded-xl bg-gray-200 dark:bg-[#222222]">
+        <SwipeCarousel images={course.images} alt={course.title} />
 
         {/* Wishlist Button */}
         {currentUser && (
@@ -129,7 +91,8 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
         </span>
         <span className="text-[#222222] dark:text-white font-light text-[13px]">total</span>
       </div>
-    </Link>
+      </Link>
+    </ScaleOnTap>
   );
 };
 

@@ -35,13 +35,10 @@ import { DevAwareBottomCards } from './DevAwareBottomCards';
 import { HeroCoverImage } from './HeroCoverImage';
 
 export function GlobalUniTemplate({ university }: { university: any }) {
+  const [logoError, setLogoError] = React.useState(false);
+  const logoUrl = university.logoUrl || `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/${university.id}.png`;
+
   // Helper to get initials
-  const initials =
-    university.nameEn
-      ?.split(' ')
-      .map((n: string) => n[0])
-      .join('')
-      .slice(0, 2) || 'U';
 
   // --- TABS CONTENT ---
   const OverviewTab = (
@@ -432,22 +429,18 @@ export function GlobalUniTemplate({ university }: { university: any }) {
         <div className="container mx-auto px-4 max-w-6xl relative z-10">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             <div className="w-24 h-24 md:w-32 md:h-32 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-gray-100 dark:border-zinc-700 p-3 flex items-center justify-center shrink-0">
-              {university.logoUrl || university.id ? (
+              {logoUrl && !logoError ? (
                 <div className="relative w-full h-full">
                   <Image
-                    src={
-                      university.logoUrl ||
-                      `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dr435quj2'}/image/upload/${university.id}.png`
-                    }
+                    src={logoUrl}
                     alt={university.name}
                     fill
                     className="object-contain"
+                    onError={() => setLogoError(true)}
                   />
                 </div>
               ) : (
-                <span className="text-3xl font-bold text-gray-300">
-                  {initials}
-                </span>
+                <Building2 className="w-12 h-12 text-gray-300 dark:text-zinc-600" />
               )}
             </div>
 

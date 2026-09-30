@@ -26,6 +26,7 @@ const SUGGESTIONS = [
 export interface MainMenuModalProps {
   items: any[];
   siteConfig: {
+    name?: string;
     features: {
       search: boolean;
       mode: boolean;
@@ -33,9 +34,10 @@ export interface MainMenuModalProps {
       language?: boolean;
     };
   };
+  navGateway?: Record<string, { href: string; name: string }>;
 }
 
-export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
+export function MainMenuModal({ items = [], siteConfig, navGateway = {} }: MainMenuModalProps) {
   const isDark = useThemeStore((state) => state.isDark);
   const mode = useThemeStore((state) => state.mode);
   const setMode = useThemeStore((state) => state.setMode);
@@ -101,12 +103,12 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
               key="search-view"
               className="absolute inset-0 flex flex-col h-full bg-inherit z-20 animate-in fade-in duration-500">
               {/* SEARCH HEADER */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-[76px]">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-19">
                 <div className="flex items-center gap-3 w-full">
                   <button
                     onClick={() => setSearchMode(false)}
                     className={cn(
-                      'p-3 relative z-50 min-w-[44px] min-h-[44px] flex items-center justify-center -ml-2 rounded-full transition-colors touch-manipulation',
+                      'p-3 relative z-50 min-w-11 min-h-11 flex items-center justify-center -ml-2 rounded-full transition-colors touch-manipulation',
                       isDark
                         ? 'hover:bg-white/10 text-gray-400'
                         : 'hover:bg-gray-100 text-gray-500',
@@ -193,10 +195,10 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
               key="menu-view"
               className="absolute inset-0 flex flex-col h-full bg-inherit z-10 animate-in fade-in duration-500">
               {/* MENU HEADER */}
-              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-[76px]">
+              <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 dark:border-white/5 min-h-19">
                 <span
                   className={cn(
-                    'text-sm font-bold uppercase tracking-widest',
+                    'text-[10px] font-black uppercase tracking-[0.3em]',
                     isDark ? 'text-gray-400' : 'text-gray-500',
                   )}
                 >
@@ -205,7 +207,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                 <button
                   onClick={close}
                   className={cn(
-                    'p-3 relative z-50 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-xl cursor-pointer',
+                    'p-3 relative z-50 min-w-11 min-h-11 flex items-center justify-center rounded-xl cursor-pointer',
                     isDark
                       ? 'active:bg-white/10 text-gray-400'
                       : 'active:bg-gray-100 text-gray-500',
@@ -231,6 +233,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
 
               {/* MENU CONTENT */}
               <div className="flex-1 overflow-y-auto py-2">
+
                 {/* Search Trigger */}
                 {siteConfig?.features?.search && (
                   <div className="border-b border-gray-50 dark:border-white/5">
@@ -243,7 +246,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                           : 'text-gray-900 hover:bg-gray-50',
                       )}
                     >
-                      <span className="font-bold text-base flex items-center gap-3">
+                      <span className="font-black text-sm uppercase tracking-widest flex items-center gap-3">
                         <span
                           className={cn(
                             'p-1.5 rounded-lg',
@@ -290,7 +293,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                       )}
                       onClick={close}
                     >
-                      <span className="font-semibold text-base">
+                      <span className="font-black text-xl uppercase tracking-tighter">
                         {item.label}
                       </span>
                     </Link>
@@ -310,7 +313,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                             )}
                             onClick={close}
                           >
-                            <span className="text-sm font-medium">
+                            <span className="text-[10px] font-black uppercase tracking-widest">
                               {child.label}
                             </span>
                           </Link>
@@ -330,12 +333,35 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     : 'border-gray-100 bg-gray-50/80',
                 )}
               >
+                {navGateway && Object.keys(navGateway).length > 1 && (
+                  <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-6 -mx-2 px-2 border-b border-gray-200/50 dark:border-white/5 mb-6">
+                    {Object.entries(navGateway).map(([key, item]) => (
+                      <a
+                        key={key}
+                        href={item.href}
+                        className={cn(
+                          'flex-none flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300',
+                          item.name === siteConfig?.name
+                            ? 'border-blue-600 bg-blue-600/5 text-blue-600'
+                            : 'border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20'
+                        )}
+                      >
+                        <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
+                          {item.name}
+                        </span>
+                        {item.name === siteConfig?.name && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                )}
                 <div className="space-y-4">
                   {siteConfig?.features?.language !== false && (
                     <div className="flex items-center justify-between">
                       <span
                         className={cn(
-                          'text-xs font-semibold uppercase tracking-wider',
+                          'text-[10px] font-black uppercase tracking-[0.2em]',
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >
@@ -356,7 +382,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     <div className="flex items-center justify-between">
                       <span
                         className={cn(
-                          'text-xs font-semibold uppercase tracking-wider',
+                          'text-[10px] font-black uppercase tracking-[0.2em]',
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >
@@ -374,7 +400,7 @@ export function MainMenuModal({ items = [], siteConfig }: MainMenuModalProps) {
                     <div className="flex items-center justify-between pt-4 border-t border-gray-200/50 dark:border-white/5">
                       <span
                         className={cn(
-                          'text-xs font-semibold uppercase tracking-wider',
+                          'text-[10px] font-black uppercase tracking-[0.2em]',
                           isDark ? 'text-gray-500' : 'text-gray-400',
                         )}
                       >

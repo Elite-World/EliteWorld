@@ -59,7 +59,7 @@ export default function ContactSection({
               ].map((contact, index) => {
                 const content = (
                   <>
-                    <div className="w-10 h-10 rounded-xl bg-blue-600/5 text-blue-600 flex items-center justify-center group-hover:bg-blue-600/10 transition-colors">
+                    <div className="shrink-0 w-10 h-10 rounded-xl bg-blue-600/5 text-blue-600 flex items-center justify-center group-hover:bg-blue-600/10 transition-colors">
                       <contact.icon className="w-5 h-5" />
                     </div>
                     <div>
@@ -79,12 +79,12 @@ export default function ContactSection({
                     href={contact.href}
                     target={contact.isExternal ? '_blank' : undefined}
                     rel={contact.isExternal ? 'noopener noreferrer' : undefined}
-                    className="flex flex-col gap-4 group cursor-pointer"
+                    className="flex flex-row items-center gap-4 group cursor-pointer"
                   >
                     {content}
                   </a>
                 ) : (
-                  <div key={index} className="flex flex-col gap-4">
+                  <div key={index} className="flex flex-row items-center gap-4">
                     {content}
                   </div>
                 );

@@ -95,7 +95,7 @@ export function CoreAppLayout({ children, navigation, siteConfig, navGateway }: 
         mode={mounted ? mode : 'system'} // Pass correct mode here, matching server initially
         onToggleTheme={toggleTheme}
         onOpenSearch={() => openModal('search')}
-        onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig })}
+        onOpenMenu={(items) => openModal('mainMenu', { items, siteConfig, navGateway })}
         forceSolid={forceSolidNavbar}
         language={mounted ? language : 'en'}
         onToggleLanguage={handleToggle}

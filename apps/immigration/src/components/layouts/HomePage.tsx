@@ -100,6 +100,7 @@ export function HomePage({
           </em>
         }
       >
+        {/*
         {gatewayButtons.map((button: NavigationItem, index: number) => (
           <a
             key={index}
@@ -108,8 +109,8 @@ export function HomePage({
             rel="noopener noreferrer"
             className={cn(
               // Base styles
-              'px-8 py-3 rounded-lg text-lg font-medium text-center',
-              'text-white border-2 w-48 backdrop-blur-sm transition duration-300',
+              'px-8 py-3.5 rounded-full text-xs font-black uppercase tracking-widest text-center',
+              'text-white border-2 w-full sm:w-48 backdrop-blur-sm transition duration-500',
               // Highlight state matching hover preview
               'bg-white/5 border-white/30 shadow-[0_0_15px_rgba(255,255,255,0.1)] hover:bg-white/15 hover:border-white hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]',
             )}
@@ -117,6 +118,7 @@ export function HomePage({
             {button.label}
           </a>
         ))}
+        */}
       </HeroSection>
 
       <AchievementsSection isZh={isZh} isDark={isDark} />

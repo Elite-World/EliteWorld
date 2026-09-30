@@ -15,6 +15,7 @@ export default async function Home({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+
   let latestArticles: any[] = [];
   const provider = getProviderForSection('insights', locale);
   if (provider) {

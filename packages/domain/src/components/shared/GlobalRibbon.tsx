@@ -8,7 +8,7 @@ import {
 import { useModalStore } from '../../lib/stores/useModalStore';
 import { cn } from '../../lib/utils';
 import { useEffect, useState } from 'react';
-import { ArrowUp, Search, Sun, Moon, Monitor, User } from 'lucide-react';
+import { ArrowUp, Search, Sun, Moon, Monitor, User, Phone } from 'lucide-react';
 import { userMenuItems } from './UserMenu';
 
 export interface GlobalRibbonProps {
@@ -51,6 +51,7 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
         updateButton('theme-ribbon', { visible: isScrolled });
       if (siteConfig?.features?.user !== false)
         updateButton('user-ribbon', { visible: isScrolled });
+      updateButton('contact-ribbon', { visible: isScrolled });
     };
 
     window.addEventListener('scroll', updateVisibility);
@@ -103,6 +104,18 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
           }),
       });
     }
+
+    // 4. Contact
+    registerButton({
+      id: 'contact-ribbon',
+      priority: 80, // High priority, near the top
+      visible: false, // Updated by listener
+      label: 'Contact Us',
+      icon: Phone,
+      onClick: () => {
+        window.location.href = '#contact';
+      },
+    });
   }, [registerButton, openModal, siteConfig]);
 
   // 4. Theme Toggle (Needs separate effect because mode changes)
@@ -245,7 +258,9 @@ export function GlobalRibbon({ siteConfig }: GlobalRibbonProps) {
                     // Individual ribbon hover expansion (desktop only)
                     'md:translate-x-[calc(100%-8px)] hover:md:translate-x-0',
                     // Colors
-                    button.id === 'user-ribbon'
+                    button.id === 'contact-ribbon'
+                      ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-400'
+                      : button.id === 'user-ribbon'
                       ? 'bg-emerald-600 text-white hover:bg-emerald-700 dark:bg-emerald-500 dark:text-gray-900 dark:hover:bg-emerald-400'
                       : button.id === 'search-ribbon'
                         ? 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-400 dark:text-gray-900 dark:hover:bg-blue-300'

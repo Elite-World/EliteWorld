@@ -8,7 +8,7 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
     <section id="team" className="py-32 bg-white dark:bg-[#0a0a0a]">
       <div className="container mx-auto px-4">
         <div
-          className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8 animate-in fade-in duration-500">
+          className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8 animate-in fade-in duration-500">
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 mb-6">
               <div className="w-8 h-px bg-blue-600" />
@@ -34,7 +34,7 @@ export default function TeamSection({ isZh }: { isZh: boolean }) {
           {getHomeTeam(isZh).map((member, index) => (
             <div
               key={index}
-              className="group relative rounded-[2.5rem] overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition duration-500 animate-in fade-in">
+              className="group relative rounded-premium overflow-hidden bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 transition duration-500 animate-in fade-in">
               <div className="relative aspect-4/5 w-full overflow-hidden">
                 <Image
                   src={member.image}

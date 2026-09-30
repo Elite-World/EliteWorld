@@ -24,10 +24,10 @@ export default function CTASection({ isZh }: { isZh: boolean }) {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 justify-center items-center">
+        <div className="flex flex-col md:flex-row gap-6 justify-center items-center w-full max-w-md mx-auto md:max-w-none">
           <Button
             variant="hero"
-            className="px-10 py-5 h-auto text-[10px]"
+            className="px-10 py-5 h-auto text-[10px] w-full sm:w-auto"
             rightIcon={
               <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             }
@@ -36,7 +36,7 @@ export default function CTASection({ isZh }: { isZh: boolean }) {
           </Button>
           <Button
             variant="hero-outline"
-            className="px-10 py-5 h-auto text-[10px]"
+            className="px-10 py-5 h-auto text-[10px] w-full sm:w-auto"
           >
             {isZh ? '获取简章' : 'Request Prospectus'}
           </Button>

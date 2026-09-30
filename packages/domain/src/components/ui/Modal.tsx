@@ -2,6 +2,7 @@
 import { useThemeStore } from '../../lib/stores/useThemeStore';
 import { cn } from '../../lib/utils';
 import { useEffect } from 'react';
+import { useModalStore } from '../../lib/stores/useModalStore';
 
 interface ModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export function Modal({
   variant = 'popup',
 }: ModalProps) {
   const isDark = useThemeStore((state) => state.isDark);
+  const isClosing = useModalStore((state) => state.isClosing);
 
   // Listen for Escape key
   useEffect(() => {
@@ -43,18 +45,26 @@ export function Modal({
 
   const wrapperClasses = cn(
     variant === 'popup' && 'fixed inset-0 flex items-center justify-center p-4',
-    variant === 'side' && 'fixed inset-0 h-[100dvh] flex justify-end',
-    variant === 'bottom' && 'fixed inset-0 h-[100dvh] flex items-end',
+    variant === 'side' && 'fixed inset-0 flex justify-end',
+    variant === 'bottom' && 'fixed inset-0 flex items-end',
   );
 
   const contentClasses = cn(
-    'relative w-full shadow-2xl overflow-hidden',
+    'relative w-full shadow-2xl overflow-hidden duration-500',
     isDark ? 'bg-[#1C1C1E]' : 'bg-white',
     // Shape & Size
     variant === 'popup' && 'max-w-lg rounded-2xl',
     variant === 'side' &&
       'w-[85vw] max-w-sm h-full rounded-l-2xl border-l border-gray-100 dark:border-white/10',
     variant === 'bottom' && 'h-[80vh] rounded-t-2xl',
+    // Entry Animations
+    !isClosing && variant === 'popup' && 'animate-in fade-in zoom-in-95',
+    !isClosing && variant === 'side' && 'animate-in slide-in-from-right',
+    !isClosing && variant === 'bottom' && 'animate-in slide-in-from-bottom',
+    // Exit Animations
+    isClosing && variant === 'popup' && 'animate-out fade-out zoom-out-95',
+    isClosing && variant === 'side' && 'animate-out slide-out-to-right',
+    isClosing && variant === 'bottom' && 'animate-out slide-out-to-bottom',
     className,
   );
 
@@ -62,7 +72,10 @@ export function Modal({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/60 animate-in fade-in duration-500 z-9998 cursor-pointer"
+        className={cn(
+          "fixed inset-0 bg-black/60 z-9998 cursor-pointer duration-500 fill-mode-forwards",
+          isClosing ? "animate-out fade-out" : "animate-in fade-in"
+        )}
         onClick={onClose}
         style={{ touchAction: 'none', WebkitTapHighlightColor: 'transparent' }}
       />
