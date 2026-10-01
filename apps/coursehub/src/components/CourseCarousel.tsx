@@ -15,7 +15,7 @@ export default function CourseCarousel({
 }: CourseCarouselProps) {
   return (
     <div
-      className={`flex sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-4 ${gapYClass} overflow-x-auto sm:overflow-x-visible snap-x snap-mandatory pb-4 sm:pb-0 -mx-8 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
+      className={`flex sm:grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-x-4 ${gapYClass} overflow-x-auto sm:overflow-x-visible overscroll-x-contain snap-x snap-mandatory pb-4 sm:pb-0 -mx-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden`}
     >
       {/* Explicit spacer guarantees left scroll padding on all mobile browsers */}
       <div className="w-4 shrink-0 sm:hidden" aria-hidden="true" />
@@ -24,7 +24,7 @@ export default function CourseCarousel({
         <CourseCard
           key={course.id}
           course={course}
-          className="w-[45vw] min-w-[45vw] sm:w-auto sm:min-w-0 shrink-0 snap-center sm:snap-align-none"
+          className="w-[65vw] min-w-[65vw] sm:w-auto sm:min-w-0 shrink-0 snap-center sm:snap-align-none"
         />
       ))}
 

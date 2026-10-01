@@ -1,8 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useDrag } from '@use-gesture/react';
+import React, { useState, useRef } from 'react';
 import NextImage from 'next/image';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '../../utils';
@@ -14,79 +12,50 @@ export interface SwipeCarouselProps {
 }
 
 export function SwipeCarousel({ images, alt = '', className }: SwipeCarouselProps) {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
 
-  const paginate = (newDirection: number, e?: React.MouseEvent | React.TouchEvent | PointerEvent) => {
-    if (e && 'preventDefault' in e) {
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const scrollLeft = scrollRef.current.scrollLeft;
+    const width = scrollRef.current.clientWidth;
+    const newIndex = Math.round(scrollLeft / width);
+    if (newIndex !== index) {
+      setIndex(newIndex);
+    }
+  };
+
+  const paginate = (direction: number, e?: React.MouseEvent) => {
+    if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    setDirection(newDirection);
-    setIndex((prevIndex) => {
-      let nextIndex = prevIndex + newDirection;
-      if (nextIndex < 0) nextIndex = images.length - 1;
-      if (nextIndex >= images.length) nextIndex = 0;
-      return nextIndex;
-    });
-  };
-
-  const bind = useDrag(({ active, movement: [mx], direction: [xDir], distance: [dx], cancel, event }: any) => {
-    // Only capture horizontal swipes to allow vertical scrolling on mobile
-    if (active && dx > 40) {
-      event.stopPropagation();
-      paginate(xDir > 0 ? -1 : 1);
-      cancel();
-    }
-  }, { axis: 'x', filterTaps: true });
-
-  const variants = {
-    enter: (direction: number) => ({
-      x: direction > 0 ? '100%' : '-100%',
-      opacity: 0,
-    }),
-    center: {
-      z: 1,
-      x: 0,
-      opacity: 1,
-    },
-    exit: (direction: number) => ({
-      z: 0,
-      x: direction < 0 ? '100%' : '-100%',
-      opacity: 0,
-    }),
+    if (!scrollRef.current) return;
+    const width = scrollRef.current.clientWidth;
+    scrollRef.current.scrollBy({ left: direction * width, behavior: 'smooth' });
   };
 
   if (!images || images.length === 0) return null;
 
   return (
-    <div 
-      className={cn('relative w-full h-full overflow-hidden group touch-pan-y', className)}
-      {...(bind() as any)}
-    >
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.div
-          key={index}
-          custom={direction}
-          variants={variants}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{
-            x: { type: 'spring', stiffness: 300, damping: 30 },
-            opacity: { duration: 0.2 },
-          }}
-          className="absolute inset-0 w-full h-full"
-        >
-          <NextImage
-            src={images[index]}
-            alt={`${alt} ${index + 1}`}
-            fill
-            className="object-cover pointer-events-none"
-            priority={index === 0}
-          />
-        </motion.div>
-      </AnimatePresence>
+    <div className={cn('relative w-full h-full overflow-hidden group', className)}>
+      <div 
+        ref={scrollRef}
+        onScroll={handleScroll}
+        className="flex w-full h-full overflow-x-auto overscroll-x-contain snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+      >
+        {images.map((img, i) => (
+          <div key={i} className="relative w-full h-full shrink-0 snap-center">
+            <NextImage
+              src={img}
+              alt={`${alt} ${i + 1}`}
+              fill
+              className="object-cover"
+              priority={i === 0}
+            />
+          </div>
+        ))}
+      </div>
 
       {/* Navigation Arrows */}
       {images.length > 1 && (
@@ -105,7 +74,7 @@ export function SwipeCarousel({ images, alt = '', className }: SwipeCarouselProp
           </button>
           
           {/* Dots Indicator */}
-          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10">
+          <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-1.5 z-10 pointer-events-none">
             {images.map((_, i) => (
               <div 
                 key={i} 

@@ -24,6 +24,7 @@ import {
   Calendar as CalendarIcon,
 } from 'lucide-react';
 import { cn } from '@repo/domain';
+import { SwipeCarousel } from '@repo/ui';
 import Link from 'next/link';
 import SearchMap from '@/components/SearchMap';
 
@@ -133,7 +134,7 @@ const CourseDetailPage: React.FC = () => {
               </div>
             </div>
 
-            <h1 className="text-5xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter leading-tight mb-6">
+            <h1 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter leading-tight mb-6">
               {course.title.split(' ').slice(0, -1).join(' ')}{' '}
               <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-600 to-purple-600">
                 {course.title.split(' ').slice(-1)}
@@ -208,8 +209,20 @@ const CourseDetailPage: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 md:h-[600px] mb-20 relative">
-          <div className="md:col-span-2 relative rounded-[3rem] overflow-hidden group shadow-2xl">
+        {/* Mobile Swipe Gallery */}
+        <div className="md:hidden relative w-screen -mx-4 sm:-mx-6 h-[40vh] min-h-75 mb-12">
+          <SwipeCarousel images={course.images} alt={course.title} />
+          <button
+            onClick={() => setIsGalleryOpen(true)}
+            className="absolute bottom-4 right-4 px-4 py-2 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-xl shadow-xl font-bold text-gray-900 dark:text-white active:scale-95 transition z-20 text-xs"
+          >
+            All photos
+          </button>
+        </div>
+
+        {/* Desktop Grid Gallery */}
+        <div className="hidden md:grid grid-cols-4 gap-4 h-150 mb-20 relative">
+          <div className="col-span-2 relative rounded-[3rem] overflow-hidden group shadow-2xl">
             <Image
               src={course.images[0]}
               alt={course.title}
@@ -224,7 +237,7 @@ const CourseDetailPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="md:col-span-2 grid grid-cols-2 gap-4">
+          <div className="col-span-2 grid grid-cols-2 gap-4">
             {course.images.length > 1 ? (
               course.images.slice(1, 5).map((img, index) => (
                 <div
@@ -365,9 +378,9 @@ const CourseDetailPage: React.FC = () => {
                       </div>
                     </button>
                     <div
-                      className={`overflow-hidden transition duration-300 ease-in-out ${expandedModule === index ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}
+                      className={`overflow-hidden transition duration-300 ease-in-out ${expandedModule === index ? 'max-h-125 opacity-100' : 'max-h-0 opacity-0'}`}
                     >
-                      <div className="p-8 pt-0 pl-[104px]">
+                      <div className="p-8 pt-0 pl-26">
                         <p className="text-sm font-medium text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl">
                           {item.description}
                         </p>
@@ -433,7 +446,7 @@ const CourseDetailPage: React.FC = () => {
               <h2 className="text-3xl font-bold mb-8 text-gray-900 dark:text-white">
                 Where you&apos;ll be
               </h2>
-              <div className="h-[300px] w-full rounded-3xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-inner mb-6 relative">
+              <div className="h-75 w-full rounded-3xl overflow-hidden border border-gray-100 dark:border-white/5 shadow-inner mb-6 relative">
                 <SearchMap 
                   courses={[course]} 
                   center={course.coordinates}
@@ -595,7 +608,7 @@ const CourseDetailPage: React.FC = () => {
                 </div>
 
                 <div className="text-center pt-8">
-                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-loose max-w-[200px] mx-auto">
+                  <p className="text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em] leading-loose max-w-50 mx-auto">
                     Vetted Tier 1 Experience Protocol Validated
                   </p>
                 </div>
@@ -604,6 +617,25 @@ const CourseDetailPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Sticky Bottom CTA */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 p-4 pb-8 bg-white dark:bg-[#1A1A1A] border-t border-gray-100 dark:border-white/5 shadow-[0_-10px_40px_rgba(0,0,0,0.05)] z-40 flex items-center justify-between">
+        <div>
+          <div className="text-xl font-black text-gray-900 dark:text-white leading-none mb-1">
+            ${course.price}
+          </div>
+          <div className="text-[10px] font-black uppercase tracking-widest text-blue-600 leading-none">
+            Total Investment
+          </div>
+        </div>
+        <button 
+          onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+          className="px-8 py-3.5 bg-[#0a0a0a] dark:bg-white text-white dark:text-black font-black uppercase tracking-widest text-xs rounded-full active:scale-95 transition-transform"
+        >
+          Authorize
+        </button>
+      </div>
+
       {/* Full Screen Image Gallery Modal */}
       {isGalleryOpen && (
         <div className="fixed inset-0 z-100 bg-white dark:bg-[#0a0a0a] animate-fade-in flex flex-col">

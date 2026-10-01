@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Course } from '../types';
 import { useAppContext } from '../context/AppContext';
 import { Heart, Star } from 'lucide-react';
-import { ScaleOnTap, SwipeCarousel } from '@repo/ui';
+import { SwipeCarousel } from '@repo/ui';
 
 interface CourseCardProps {
   course: Course;
@@ -37,12 +37,11 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
   const inWishlist = isInWishlist(course.id);
 
   return (
-    <ScaleOnTap className={className}>
       <Link
         href={`/course/${course.id}`}
-        className="group block cursor-pointer"
+        className={`group block cursor-pointer ${className || ''}`}
       >
-        <div className="relative aspect-20/19 w-full overflow-hidden rounded-xl bg-gray-200 dark:bg-[#222222]">
+        <div className="relative aspect-20/19 w-full overflow-hidden rounded-3xl bg-gray-100 dark:bg-white/5 border border-gray-100 dark:border-white/5 shadow-sm group-hover:shadow-xl transition-all duration-500">
         <SwipeCarousel images={course.images} alt={course.title} />
 
         {/* Wishlist Button */}
@@ -65,34 +64,33 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, className }) => {
         )}
       </div>
 
-      <div className="mt-3 flex justify-between items-start">
-        <h3 className="font-semibold text-[14px] text-[#222222] dark:text-white leading-5 line-clamp-1 pr-4">
+      <div className="mt-4 flex justify-between items-start">
+        <h3 className="font-black text-sm uppercase tracking-tight text-gray-900 dark:text-white leading-5 line-clamp-1 pr-4 group-hover:text-blue-600 transition-colors">
           {course.title}
         </h3>
-        <div className="flex items-center gap-1 shrink-0 mt-px">
-          <Star className="w-3 h-3 text-[#222222] dark:text-white fill-current" />
-          <span className="text-[#222222] dark:text-white text-[13px] font-light">
+        <div className="flex items-center gap-1 shrink-0 mt-px bg-white dark:bg-white/10 px-1.5 py-0.5 rounded shadow-sm border border-gray-100 dark:border-white/5">
+          <Star className="w-3 h-3 text-yellow-500 fill-current" />
+          <span className="text-gray-900 dark:text-white text-[10px] font-black uppercase tracking-widest">
             {course.rating.toFixed(2)}
           </span>
         </div>
       </div>
 
-      <p className="text-[13px] text-[#717171] leading-5 truncate mt-0.5">
+      <p className="text-xs font-medium text-gray-500 dark:text-gray-400 leading-5 truncate mt-1">
         Designed by {owner?.name || 'Grand Architect'}
       </p>
 
-      <div className="flex items-center gap-1 text-[13px] text-[#717171] leading-5 truncate">
+      <div className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 leading-5 truncate mt-0.5">
         {course.duration.split(' ')[0]} {course.duration.split(' ')[1]}
       </div>
 
-      <div className="mt-1.5 flex items-center gap-1 text-[14px]">
-        <span className="font-semibold text-[#222222] dark:text-white">
+      <div className="mt-2 flex items-center gap-1.5">
+        <span className="font-black text-lg text-gray-900 dark:text-white">
           ${course.price}
         </span>
-        <span className="text-[#222222] dark:text-white font-light text-[13px]">total</span>
+        <span className="text-gray-400 dark:text-gray-500 font-bold text-[10px] uppercase tracking-widest mt-1">total</span>
       </div>
       </Link>
-    </ScaleOnTap>
   );
 };
 

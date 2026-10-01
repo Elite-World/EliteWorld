@@ -27,6 +27,7 @@ export interface MainMenuModalProps {
   items: any[];
   siteConfig: {
     name?: string;
+    enName?: string;
     features: {
       search: boolean;
       mode: boolean;
@@ -90,7 +91,7 @@ export function MainMenuModal({ items = [], siteConfig, navGateway = {} }: MainM
   };
 
   return (
-    <Modal isOpen onClose={close} variant="side" className="w-full">
+    <Modal isOpen onClose={close} variant="side">
       <div
         className={cn(
           'h-full w-full overflow-hidden relative', // key: overflow-hidden for sliding
@@ -335,13 +336,15 @@ export function MainMenuModal({ items = [], siteConfig, navGateway = {} }: MainM
               >
                 {navGateway && Object.keys(navGateway).length > 1 && (
                   <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-6 -mx-2 px-2 border-b border-gray-200/50 dark:border-white/5 mb-6">
-                    {Object.entries(navGateway).map(([key, item]) => (
+                    {Object.entries(navGateway).map(([key, item]) => {
+                      const isActive = item.name === (siteConfig?.enName || siteConfig?.name);
+                      return (
                       <a
                         key={key}
                         href={item.href}
                         className={cn(
                           'flex-none flex items-center gap-2 px-4 py-2.5 rounded-full border transition-all duration-300',
-                          item.name === siteConfig?.name
+                          isActive
                             ? 'border-blue-600 bg-blue-600/5 text-blue-600'
                             : 'border-gray-200 dark:border-white/10 text-gray-500 dark:text-gray-400 hover:border-gray-300 dark:hover:border-white/20'
                         )}
@@ -349,11 +352,12 @@ export function MainMenuModal({ items = [], siteConfig, navGateway = {} }: MainM
                         <span className="text-[10px] font-black uppercase tracking-widest whitespace-nowrap">
                           {item.name}
                         </span>
-                        {item.name === siteConfig?.name && (
+                        {isActive && (
                           <div className="w-1.5 h-1.5 rounded-full bg-blue-600 animate-pulse" />
                         )}
                       </a>
-                    ))}
+                      );
+                    })}
                   </div>
                 )}
                 <div className="space-y-4">

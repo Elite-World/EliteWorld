@@ -24,6 +24,7 @@ export interface NavbarConfig {
     mode: boolean;
     user: boolean;
     language?: boolean;
+    navigationStyle?: 'drawer' | 'dropdown';
   };
   name: string;
   enName?: string;
@@ -162,7 +163,7 @@ function DesktopMenuItem({
         <div className="absolute top-full left-0 pt-2 invisible group-hover:visible z-50">
           <div
             className={cn(
-              'py-3 min-w-[240px]',
+              'py-3 min-w-60',
               'rounded-3xl border border-gray-100 dark:border-white/5 overflow-hidden',
               'transform opacity-0 -translate-y-2',
               'group-hover:opacity-100 group-hover:translate-y-0',
@@ -251,6 +252,7 @@ export function Navbar({
           : 'bg-transparent border-transparent py-4',
         !isScrollingUp && scrollY > 20 ? '-translate-y-full' : 'translate-y-0',
       )}
+      style={{ paddingRight: 'var(--scrollbar-compensation, 0px)' }}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
@@ -332,13 +334,15 @@ export function Navbar({
                       </p>
                     </div>
                     <div className="space-y-1">
-                      {Object.entries(navGateway).map(([key, item]) => (
+                      {Object.entries(navGateway).map(([key, item]) => {
+                        const isActive = item.name === (siteConfig?.enName || siteConfig?.name);
+                        return (
                         <a
                           key={key}
                           href={item.href}
                           className={cn(
                             'flex items-center gap-3 px-4 py-3 rounded-2xl transition group',
-                            item.name === siteConfig.name
+                            isActive
                               ? 'bg-blue-600/5 dark:bg-blue-600/10'
                               : 'hover:bg-gray-50 dark:hover:bg-white/5',
                           )}
@@ -346,7 +350,7 @@ export function Navbar({
                           <div
                             className={cn(
                               'w-1.5 h-1.5 rounded-full transition-colors',
-                              item.name === siteConfig.name
+                              isActive
                                 ? 'bg-blue-600 animate-pulse'
                                 : 'bg-gray-300 dark:bg-gray-700 group-hover:bg-blue-600',
                             )}
@@ -354,18 +358,19 @@ export function Navbar({
                           <span
                             className={cn(
                               'text-[10px] font-black uppercase tracking-widest transition-colors',
-                              item.name === siteConfig.name
+                              isActive
                                 ? 'text-blue-600'
                                 : 'text-gray-500 dark:text-gray-400 group-hover:text-blue-600',
                             )}
                           >
                             {item.name}
                           </span>
-                          {item.name === siteConfig.name && (
+                          {isActive && (
                             <Sparkles className="w-3 h-3 text-blue-600 ml-auto" />
                           )}
                         </a>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -373,63 +378,77 @@ export function Navbar({
             </div>
           </div>
 
-          <div className="hidden md:flex items-center gap-2">
-            <div className="flex items-center gap-1 mr-4">
-              {navigation.items.map((item: NavigationItem) => (
-                <DesktopMenuItem
-                  key={item.id}
-                  item={item}
-                  isTransparent={!isScrolled}
-                  isDark={isDark}
-                  language={language}
-                />
-              ))}
-            </div>
+          {/* DESKTOP DROPDOWN NAVIGATION */}
+          {siteConfig?.features?.navigationStyle !== 'drawer' && (
+            <div className="hidden md:flex items-center gap-2">
+              <div className="flex items-center gap-1 mr-4">
+                {navigation.items.map((item: NavigationItem) => (
+                  <DesktopMenuItem
+                    key={item.id}
+                    item={item}
+                    isTransparent={!isScrolled}
+                    isDark={isDark}
+                    language={language}
+                  />
+                ))}
+              </div>
 
-            <div
-              className={cn(
-                'flex items-center gap-2 pl-6 border-l transition-colors duration-500',
-                isScrolled
-                  ? 'border-gray-100 dark:border-white/5'
-                  : 'border-gray-200 dark:border-white/10',
-              )}
-            >
-              {siteConfig.features.search && (
-                <IconButton
-                  icon={<Search className="w-4 h-4" />}
-                  label="Registry Search"
-                  onClick={onOpenSearch}
-                  isTransparent={!isScrolled}
-                />
-              )}
-              {siteConfig.features.language !== false && (
-                <NavbarLanguageToggle
-                  isTransparent={!isScrolled}
-                  onClick={onToggleLanguage}
-                  language={language}
-                />
-              )}
-              {siteConfig.features.mode && (
-                <NavbarModeToggle
-                  isTransparent={!isScrolled}
-                  onClick={onToggleTheme}
-                  mode={mode}
-                />
-              )}
-              {siteConfig.features.user && (
-                <div className="ml-2">
-                  <UserMenu isTransparent={!isScrolled} />
-                </div>
-              )}
+              <div
+                className={cn(
+                  'flex items-center gap-2 pl-6 border-l transition-colors duration-500',
+                  isScrolled
+                    ? 'border-gray-100 dark:border-white/5'
+                    : 'border-gray-200 dark:border-white/10',
+                )}
+              >
+                {siteConfig.features.search && (
+                  <IconButton
+                    icon={<Search className="w-4 h-4" />}
+                    label="Registry Search"
+                    onClick={onOpenSearch}
+                    isTransparent={!isScrolled}
+                  />
+                )}
+                {siteConfig.features.language !== false && (
+                  <NavbarLanguageToggle
+                    isTransparent={!isScrolled}
+                    onClick={onToggleLanguage}
+                    language={language}
+                  />
+                )}
+                {siteConfig.features.mode && (
+                  <NavbarModeToggle
+                    isTransparent={!isScrolled}
+                    onClick={onToggleTheme}
+                    mode={mode}
+                  />
+                )}
+                {siteConfig.features.user && (
+                  <div className="ml-2">
+                    <UserMenu isTransparent={!isScrolled} />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
-          <div className="flex items-center gap-3 md:hidden">
-            {siteConfig.features.user && (
-              <UserMenu isTransparent={!isScrolled} />
+          {/* MINIMALIST DRAWER NAVIGATION & MOBILE OVERRIDE */}
+          <div className={cn("flex items-center gap-2", siteConfig?.features?.navigationStyle !== 'drawer' && "md:hidden")}>
+            {siteConfig?.features.search && (
+              <IconButton
+                icon={<Search className="w-5 h-5" />}
+                label="Registry Search"
+                onClick={onOpenSearch}
+                isTransparent={!isScrolled}
+              />
+            )}
+            {siteConfig?.features.user && (
+              <div className="mr-1">
+                <UserMenu isTransparent={!isScrolled} />
+              </div>
             )}
             <IconButton
-              icon={<Menu className="w-5 h-5" />}
+              icon={<Menu className="w-6 h-6" />}
               label="Main menu"
               onClick={() => onOpenMenu?.(navigation.items)}
               isTransparent={!isScrolled}

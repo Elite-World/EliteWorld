@@ -186,9 +186,10 @@ export default function SearchMapInner({
           scrollWheelZoom={true}
           style={{ height: '100%', width: '100%', zIndex: 0 }}
         >
+          {/* Map Layer (Esri World Street Map - No API Key Required) */}
           <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+            attribution='Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, USGS, Intermap, iPC, NRCAN, Esri Japan, METI, Esri China (Hong Kong), Esri (Thailand), TomTom, 2012'
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}"
           />
           <MapUpdater center={center} />
           <MapResizeHandler isFullscreen={isFullscreen} />
@@ -210,7 +211,7 @@ export default function SearchMapInner({
               >
                 <Popup>
                   <div className="font-sans">
-                    <div className="font-bold text-gray-900 truncate max-w-[200px]">
+                    <div className="font-bold text-gray-900 truncate max-w-50">
                       {course.title}
                     </div>
                     <div className="text-sm text-gray-500">

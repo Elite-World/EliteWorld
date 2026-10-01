@@ -7,19 +7,16 @@ export const siteConfig = {
   en: {
     ...baseSiteConfig.en,
     ogImage,
-    features: {
-      ...baseSiteConfig.en.features,
-      search: false,
-      user: false,
-    },
   },
   zh: {
     ...baseSiteConfig.zh,
     ogImage,
-    features: {
-      ...baseSiteConfig.zh.features,
-      search: false,
-      user: false,
-    },
-  }
+  },
+  features: {
+    ...baseSiteConfig.features,
+    search: false,
+    user: false,
+    // navigationStyle: 'drawer',
+  },
+  apps: baseSiteConfig.apps,
 } as const;

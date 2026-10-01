@@ -5,6 +5,8 @@ const features = {
   mode: true,
   user: true,
   language: true,
+  navigationStyle: 'dropdown',
+  // navigationStyle: 'drawer',
 } as const;
 
 const apps = {
@@ -27,8 +29,6 @@ export const baseSiteConfig = {
       wechat: companyInfo.en.wechat,
     },
     social: companyInfo.en.social,
-    features,
-    apps,
   },
   zh: {
     name: companyInfo.zh.name,
@@ -42,7 +42,7 @@ export const baseSiteConfig = {
       wechat: companyInfo.zh.wechat,
     },
     social: companyInfo.zh.social,
-    features,
-    apps,
-  }
+  },
+  features,
+  apps,
 } as const;

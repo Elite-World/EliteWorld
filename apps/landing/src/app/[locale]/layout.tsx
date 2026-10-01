@@ -44,7 +44,7 @@ export default async function RootLayout({
       <body className="antialiased" suppressHydrationWarning>
         <CoreAppLayout
           navigation={navigation}
-          siteConfig={{ ...currentSiteConfig, enName: siteConfig.en.name }}
+          siteConfig={{ ...currentSiteConfig, enName: siteConfig.en.name, features: siteConfig.features }}
           navGateway={localizedNavGateway}
         >
           {children}

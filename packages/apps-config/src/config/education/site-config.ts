@@ -17,10 +17,6 @@ export const siteConfig = {
       ...baseSiteConfig.en.contact,
       ...contactOverride,
     },
-    features: {
-      ...baseSiteConfig.en.features,
-      user: false,
-    },
   },
   zh: {
     ...baseSiteConfig.zh,
@@ -31,9 +27,11 @@ export const siteConfig = {
       ...baseSiteConfig.zh.contact,
       ...contactOverride,
     },
-    features: {
-      ...baseSiteConfig.zh.features,
-      user: false,
-    },
-  }
+  },
+  features: {
+    ...baseSiteConfig.features,
+    user: false,
+    // navigationStyle: 'drawer',
+  },
+  apps: baseSiteConfig.apps,
 } as const;

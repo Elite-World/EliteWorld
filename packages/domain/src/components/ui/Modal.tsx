@@ -32,14 +32,21 @@ export function Modal({
 
     if (isOpen) {
       document.addEventListener('keydown', handleKeyDown);
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
       document.body.style.overflow = 'hidden';
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      document.documentElement.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
     } else {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.documentElement.style.removeProperty('--scrollbar-compensation');
     }
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+      document.documentElement.style.removeProperty('--scrollbar-compensation');
     };
   }, [isOpen, onClose]);
 

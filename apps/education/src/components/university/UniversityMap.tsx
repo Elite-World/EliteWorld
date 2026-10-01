@@ -78,10 +78,10 @@ const UniversityMap: React.FC<UniversityMapProps> = ({
         style={{ width: '100%', height: '100%', backgroundColor: 'transparent' }}
         className="z-0 focus:outline-none"
       >
-        {/* Abstract Minimalist Map Layer (Carto Light No Labels) */}
+        {/* Abstract Minimalist Map Layer (Esri Light Gray Canvas - No API Key Required) */}
         <TileLayer
-          attribution='&copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
+          attribution='Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
           className="map-tiles"
         />
 

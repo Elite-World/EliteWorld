@@ -5,6 +5,7 @@ import { ClerkProvider } from '@clerk/nextjs';
 import { AppProvider } from '@/context/AppContext';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { ScrollProgress } from '@repo/domain';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,7 +35,10 @@ export default function RootLayout({
       >
         <ClerkProvider>
           <AppProvider>
-            <div className="flex flex-col min-h-screen text-gray-900">
+            <div className="flex flex-col min-h-screen w-full text-gray-900 bg-white dark:bg-black transition-colors duration-500 overflow-x-hidden">
+              <div className="fixed top-0 left-0 right-0 z-60 pointer-events-none">
+                <ScrollProgress />
+              </div>
               <Header />
               <main className="grow">{children}</main>
               <Footer />
