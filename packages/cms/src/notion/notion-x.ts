@@ -2,7 +2,15 @@ import { NotionProvider } from './notion';
 import { NotionAPI } from 'notion-client';
 import { Article } from './types';
 
-const notionX = new NotionAPI();
+const notionX = new NotionAPI({
+  activeUser: process.env.NOTION_ACTIVE_USER,
+  authToken: process.env.NOTION_TOKEN_V2,
+  ofetchOptions: {
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    },
+  },
+});
 
 export class NotionXProvider extends NotionProvider {
   async getArticleById(id: string): Promise<Article | null> {

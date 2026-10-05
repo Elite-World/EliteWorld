@@ -128,7 +128,7 @@ const Header: React.FC = () => {
             onClick={() => setIsMenuOpen(false)}
             className="flex items-center gap-3 px-6 py-4 sm:py-3 text-[10px] font-black uppercase tracking-widest text-gray-900 dark:text-white bg-gray-50 dark:bg-white/5 hover:bg-gray-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-all duration-500 w-full text-left"
           >
-            Apply for Invitation
+            Become A Partner
           </button>
         </SignUpButton>
       </Show>
